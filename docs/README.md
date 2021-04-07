@@ -1,5 +1,7 @@
 # Our Blog
 
+https://uwrealitylab.github.io/xrcapstone21sp-team7/
+
 ## Usage
 
 First time: run `npm install`.
