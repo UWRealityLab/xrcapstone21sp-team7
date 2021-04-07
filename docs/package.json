@@ -3,7 +3,7 @@
     "name": "startbootstrap-clean-blog",
     "version": "5.1.0",
     "scripts": {
-        "build": "cp -r dist backup && npm run build:pug && npm run build:scss && npm run build:scripts && npm run build:assets",
+        "build": "rm -rf css dist js rm assets && npm run build:pug && npm run build:scss && npm run build:scripts && npm run build:assets && mv -f dist/* . && rm -r dist",
         "build:assets": "node scripts/build-assets.js",
         "build:pug": "node scripts/build-pug.js",
         "build:scripts": "node scripts/build-scripts.js",
