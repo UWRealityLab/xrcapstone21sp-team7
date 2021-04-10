@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <script src="https://aframe.io/releases/1.1.0/aframe.min.js"></script>
+    <script src="https://raw.githubusercontent.com/n5ro/aframe-extras/master/dist/aframe-extras.min.js"></script>
+    <script src="https://unpkg.com/aframe-template-component@3.x.x/dist/aframe-template-component.min.js"></script>
+    <script src="https://unpkg.com/aframe-layout-component@4.x.x/dist/aframe-layout-component.min.js"></script>
+    <script src="https://unpkg.com/aframe-event-set-component@5.x.x/dist/aframe-event-set-component.min.js"></script>
+
+    
+    <!-- Define templates -->
+    <script id="sphere" type="text/html">
+        <a-sphere class="link"
+            color="blue"
+        ></a-sphere>
+    </script>
+
+    <title>Zendin</title>
+  </head>
+
+  <body>
+    <a-scene cursor="rayOrigin: mouse">
+      <a-assets>
+        <a-asset-item id="rock-flat-asset" src="https://raw.githubusercontent.com/UWRealityLab/xrcapstone21sp-team7/master/assets/rocks/rock-flat.glb"></a-asset-item>
+        <a-asset-item id="rock-medium-asset" src="https://raw.githubusercontent.com/UWRealityLab/xrcapstone21sp-team7/master/assets/rocks/rock-medium.glb"></a-asset-item>
+        <a-asset-item id="rock-tall-asset" src="https://raw.githubusercontent.com/UWRealityLab/xrcapstone21sp-team7/master/assets/rocks/rock-tall.glb"></a-asset-item>
+        <a-asset-item id="tree-asset" src="https://raw.githubusercontent.com/UWRealityLab/xrcapstone21sp-team7/master/assets/trees/tree.glb"></a-asset-item>
+        <a-asset-item id="corner-wall-asset" src="https://raw.githubusercontent.com/UWRealityLab/xrcapstone21sp-team7/master/assets/structures/corner-wall.glb"></a-asset-item>
+        <a-asset-item id="single-wall-asset" src="https://raw.githubusercontent.com/UWRealityLab/xrcapstone21sp-team7/master/assets/structures/single-wall.glb"></a-asset-item>
+      </a-assets>
+
+      <a-entity light="type: ambient; color: #BBB"></a-entity>
+      <a-entity id="light" light="type: directional; color: yellow; intensity: 0.7" position="-10 3 1"></a-entity>
+
+      <a-sky src="https://cdn.glitch.com/2b4aff49-28a2-40af-847a-d2b291f6c30e%2F47e93852-bc4e-485b-bde3-7923ba2679db.image.png?v=1617686253924"></a-sky>
+
+      <a-entity id="sphere" template="src: #sphere"></a-entity>
+
+      <!-- <a-entity gltf-model="#tree-asset" position="0 0 0"></a-entity> -->
+
+      <a-entity id="rig" rotation="0 -180 0">
+        <a-entity id="camera" camera position="0 1.6 2" look-controls wasd-controls>
+          <a-cursor
+            id="cursor"
+            raycaster
+            fuse="true"
+            fusetimeout="3000"
+          ></a-cursor>
+        </a-entity>
+      </a-entity>
+    </a-scene>
+  </body>
+</html>
