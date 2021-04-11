@@ -8,7 +8,7 @@ AFRAME.registerComponent('base-garden', {
         sceneWidth: { default: 10, type: 'int' },
         sceneDepth: { default: 10, type: 'int' }
     },
-    init: function() {
+    init: function () {
         const { THREE } = AFRAME;
 
         let el = this.el;
@@ -34,7 +34,6 @@ AFRAME.registerComponent('base-garden', {
             wall.setAttribute('gltf-model', '#single-wall-asset');
             wall.setAttribute('position', el.object3D.worldToLocal(position));
             wall.setAttribute('rotation', el.object3D.worldToLocal(rotation));
-            wall.setAttribute('croquet', name);
             wall.setAttribute('id', name);
             el.appendChild(wall);
         };
@@ -87,7 +86,6 @@ AFRAME.registerComponent('base-garden', {
         floorPlane.setAttribute('height', sceneDepth);
         floorPlane.setAttribute('rotation', '-90 0 0');
         floorPlane.setAttribute('id', 'floor');
-        floorPlane.setAttribute('croquet', 'floor');
         floorPlane.setAttribute('color', 'green');
         el.appendChild(floorPlane);
     }

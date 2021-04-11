@@ -1,4 +1,4 @@
-// Constants used by Croquet for stuff like logging, physics engine config, etc
+// Constants used by Croquet for stuff like logging, etc
 
 /* global Croquet */
 const Q = Croquet.Constants;
@@ -17,10 +17,5 @@ Q.LOGGING = {
     EntityModel: false,
     EntityView: false,
 
-    PhysicsModel: false,
-
     DemosView: false
 };
-
-Q.GRAVITY = -9.82;
-Q.STEP_MS = 1000 / 20;

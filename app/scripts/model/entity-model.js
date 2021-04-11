@@ -18,7 +18,6 @@ class EntityModel extends Croquet.Model {
 
         this.lastTimeComponentsWereSet = this.now();
         this.lastTimeComponentsWereSetByUser = {}; // {userViewId: timestamp}
-        this.lastTimePhysicsBodyWasSet = this.now();
         this.subscribe(this.id, "set-components", this.setComponents);
         this.subscribe(this.sessionId, "view-exit", this.onViewExit);
 
@@ -114,7 +113,7 @@ class EntityModel extends Croquet.Model {
             }
         }
 
-        // check if position/rotation/scale were changed, updating this.physicsBody and THREE.js position/quaternion/scale/matrix
+        // check if position/rotation/scale were changed, update THREE.js position/quaternion/scale/matrix
         let didPositionRotationOrScaleUpdate = false;
         if ("position" in componentDifferences) {
             didPositionRotationOrScaleUpdate = true;
@@ -163,7 +162,6 @@ class EntityModel extends Croquet.Model {
 
     destroy() {
         super.destroy();
-        this.removePhysicsBody();
     }
 }
 EntityModel.register("Entity");

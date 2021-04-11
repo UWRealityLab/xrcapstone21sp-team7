@@ -1,18 +1,136 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="utf-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <script src="https://aframe.io/releases/1.1.0/aframe.min.js"></script>
-    <script src="https://raw.githubusercontent.com/n5ro/aframe-extras/master/dist/aframe-extras.min.js"></script>
-
+<head>
     <title>Zendin</title>
-  </head>
 
-  <body>
-    <a href="global-garden.html">Global Garden</a>
-    <a href="local-garden.html">Local Garden</a>
-  </body>
+    <script src="https://unpkg.com/@croquet/croquet@0.4.0"></script>
+    <script src="https://aframe.io/releases/1.2.0/aframe.min.js"></script>
+    <script src="https://raw.githubusercontent.com/n5ro/aframe-extras/master/dist/aframe-extras.min.js"></script>
+    <script src="https://cdn.rawgit.com/mrturck/aframe-joystick/master/joystick.min.js"></script>
+    <script src="https://unpkg.com/aframe-template-component@3.x.x/dist/aframe-template-component.min.js"></script>
+    <script src="https://unpkg.com/aframe-layout-component@4.x.x/dist/aframe-layout-component.min.js"></script>
+    <script src="https://unpkg.com/aframe-event-set-component@5.x.x/dist/aframe-event-set-component.min.js"></script>
+
+    <script src="./scripts/constants.js"></script>
+    <script src="./scripts/system.js"></script>
+    <script src="./scripts/component.js"></script>
+    <script src="./scripts/generate-base-garden.js"></script>
+    <script src="./scripts/palette.js"></script>
+    <script src="./scripts/model-selector.js"></script>
+    <script src="./scripts/index.js" type="module"></script>
+</head>
+
+<body>
+    <a-scene croquet cursor="rayOrigin: mouse">
+        <!-- Load in assets -->
+        <a-assets>
+            <img id="tree-img"
+                src="https://raw.githubusercontent.com/UWRealityLab/xrcapstone21sp-team7/master/assets/trees/tree.png"
+                crossorigin="anonymous">
+            <img id="rock-flat-img"
+                src="https://raw.githubusercontent.com/UWRealityLab/xrcapstone21sp-team7/master/assets/rocks/rocks.png">
+            <img id="rock-medium-img"
+                src="https://raw.githubusercontent.com/UWRealityLab/xrcapstone21sp-team7/master/assets/rocks/rocks.png">
+            <img id="rock-tall-img"
+                src="https://raw.githubusercontent.com/UWRealityLab/xrcapstone21sp-team7/master/assets/rocks/rocks.png">
+            <img id="sky-img"
+                src="https://cdn.glitch.com/2b4aff49-28a2-40af-847a-d2b291f6c30e%2F47e93852-bc4e-485b-bde3-7923ba2679db.image.png?v=1617686253924">
+            <a-asset-item id="rock-flat-asset"
+                src="https://raw.githubusercontent.com/UWRealityLab/xrcapstone21sp-team7/master/assets/rocks/rock-flat.glb">
+            </a-asset-item>
+            <a-asset-item id="rock-medium-asset"
+                src="https://raw.githubusercontent.com/UWRealityLab/xrcapstone21sp-team7/master/assets/rocks/rock-medium.glb">
+            </a-asset-item>
+            <a-asset-item id="rock-tall-asset"
+                src="https://raw.githubusercontent.com/UWRealityLab/xrcapstone21sp-team7/master/assets/rocks/rock-tall.glb">
+            </a-asset-item>
+            <a-asset-item id="tree-asset"
+                src="https://raw.githubusercontent.com/UWRealityLab/xrcapstone21sp-team7/master/assets/trees/tree.glb">
+            </a-asset-item>
+            <a-asset-item id="corner-wall-asset"
+                src="https://raw.githubusercontent.com/UWRealityLab/xrcapstone21sp-team7/master/assets/structures/corner-wall.glb">
+            </a-asset-item>
+            <a-asset-item id="single-wall-asset"
+                src="https://raw.githubusercontent.com/UWRealityLab/xrcapstone21sp-team7/master/assets/structures/single-wall.glb">
+            </a-asset-item>
+            <a-asset-item id="right-hand-low"
+                src="https://cdn.glitch.com/d278d22e-cba0-423d-9948-00c332e0a3d7%2FrightHandLow.glb?v=1618165510298">
+            </a-asset-item>
+            <a-asset-item id="left-hand-low"
+                src="https://cdn.glitch.com/d278d22e-cba0-423d-9948-00c332e0a3d7%2FleftHandLow.glb?v=1618165510356">
+            </a-asset-item>
+
+            <template id="user-template">
+                <a-entity class="user">
+                    <a-sphere class="head" color="#ffffff" scale="0.2 0.3 0.2"></a-sphere>
+                    <a-entity class="face" position="0 0.05 0">
+                        <a-sphere class="eye" color="#efefef" position="0.16 0.08 -0.1" scale="0.05 0.05 0.05">
+                            <a-sphere class="pupil" color="#000" position="0 0 -1" scale="0.2 0.2 0.2"></a-sphere>
+                        </a-sphere>
+                        <a-sphere class="eye" color="#efefef" position="-0.16 0.08 -0.1" scale="0.05 0.05 0.05">
+                            <a-sphere class="pupil" color="#000" position="0 0 -1" scale="0.2 0.2 0.2"></a-sphere>
+                        </a-sphere>
+                        <a-cylinder class="mouth" color="#000000" position="0 -0.128 -0.132" rotation="130 0 0"
+                            scale="0.1 0.1 0.1"></a-cylinder>
+                    </a-entity>
+                </a-entity>
+            </template>
+
+            <template id="user-hands">
+                <a-entity class="user">
+                    <a-entity id="leftHand" class="left"
+                        hand-controls="hand: left; handModelStyle: lowPoly; color: #ff0000"></a-entity>
+                    <a-entity id="rightHand" class="right"
+                        hand-controls="hand: right; handModelStyle: lowPoly; color: #ffcccc">
+
+                        <a-entity id="palette-plane" position="0 0.2 -0.2" rotation="-45 0 0" visible="true"
+                            scale="0.2 0.2 0.2" geometry="primitive: plane; width: 1.5; height: 1.8"
+                            material="color: #333333; shader: flat;" palette>
+
+                            <a-entity material="src: #tree-img" visible="true" mixin="poster"
+                                model-selector="model: #tree-asset" position="-0.3 .4 0.1"></a-entity>
+                            <a-entity material="src: #rock-flat-img" visible="true" mixin="poster"
+                                model-selector="model: #rock-flat-asset" position="0.3 0.4 0.1"></a-entity>
+                            <a-entity material="src: #rock-medium-img" visible="true" mixin="poster"
+                                model-selector="model: #rock-medium-asset" position="-0.3 -0.4 0.1"></a-entity>
+                            <a-entity material="src: #rock-tall-img" visible="true" mixin="poster"
+                                model-selector="model: #rock-tall-asset" position="0.3 -0.4 0.1"></a-entity>
+
+                            <!-- For testing, a bunch of stuff that doesn't fit on the screen at once, TODO in pallet.js, when a pressed, rotate through next quadrant that needs displaying in this list of entities -->
+                            <a-entity material="src: #tree-img" visible="false" mixin="poster" position="-0.3 .4 0.1">
+                            </a-entity>
+                            <a-entity material="src: #rock-flat-img" visible="false" mixin="poster"
+                                position="0.3 0.4 0.1"></a-entity>
+                            <a-entity material="src: #rock-medium-img" visible="false" mixin="poster"
+                                position="-0.3 -0.4 0.1"></a-entity>
+                            <a-entity material="src: #rock-tall-img" visible="false" mixin="poster"
+                                position="0.3 -0.4 0.1"></a-entity>
+                        </a-entity>
+                    </a-entity>
+                </a-entity>
+            </template>
+
+            <template id="user-hands-fake">
+                <a-entity class="user">
+                    <a-entity id="leftHandFake" class="left" gltf-model="#left-hand-low"></a-entity>
+                    <a-entity id="rightHandFake" class="right" gltf-model="#right-hand-low"></a-entity>
+                </a-entity>
+            </template>
+
+            <a-mixin id="poster" geometry="primitive: plane; width: 0.544768; height: 0.786432"
+                material="color: white; shader: flat"></a-mixin>
+        </a-assets>
+
+        <a-entity light="type: ambient; color: #BBB"></a-entity>
+        <a-entity id="light" light="type: directional; color: #FFF; intensity: 0.7" position="-10 3 1"></a-entity>
+        <a-sky src="#sky-img">
+        </a-sky>
+        <a-entity base-garden="sceneWidth: 10; sceneDepth: 10"></a-entity>
+    </a-scene>
+
+    <script src="./scripts/joystick.js"></script>
+    <script src="./scripts/randomizeLocation.js"></script>
+</body>
+
 </html>

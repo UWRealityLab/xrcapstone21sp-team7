@@ -12,7 +12,6 @@ class EntityView extends Croquet.View {
         this.eventListeners = [];
 
         this.lastTimeComponentsWereUpdated = 0;
-        this.lastTimePhysicsBodyWasUpdated = 0;
 
         this.parentEntity = this.parentName
             ? this.getEntityByName(name)
@@ -123,9 +122,6 @@ class EntityView extends Croquet.View {
     get parentName() {
         return this.model.parentName;
     }
-    get isPhysicsEnabled() {
-        return this.model.isPhysicsEnabled;
-    }
     get lastTimeComponentsWereSet() {
         return this.model.lastTimeComponentsWereSet;
     }
@@ -147,12 +143,6 @@ class EntityView extends Croquet.View {
             }
         }
         return haveComponentsBeenUpdated;
-    }
-    get lastTimePhysicsBodyWasSet() {
-        return this.model.lastTimePhysicsBodyWasSet;
-    }
-    get hasPhysicsBeenUpdated() {
-        return this.lastTimePhysicsBodyWasSet === this.lastTimePhysicsBodyWasUpdated;
     }
 
     // Helper for adding/removing eventlisteners to entities that automatically get removed when detaching from the session
@@ -260,11 +250,9 @@ class EntityView extends Croquet.View {
                     // check if there are any differences between the entity and model
                     if (Object.keys(componentDifference).length) {
                         // we also comment this out because it's annoying
-                        if (!this.isPhysicsEnabled) {
-                            this.log(
-                                `About to set "${componentName}" component with "${attributeValue}"`
-                            );
-                        }
+                        this.log(
+                            `About to set "${componentName}" component with "${attributeValue}"`
+                        );
                         try {
                             this.entity.setAttribute(componentName, attributeValue);
                         } catch (error) {
@@ -290,12 +278,6 @@ class EntityView extends Croquet.View {
         }
     }
 
-    updatePhysicsComponents() {
-        if (this.isPhysicsEnabled && !this.hasPhysicsBeenUpdated) {
-            this.updateComponents(["position", "rotation"]);
-        }
-    }
-
     // compare component values stored in the model vs values stored in the entity itself
     // if there's a difference, then it must have changed locally, so we'll publish the change to the model
     checkComponentsForDifferences() {
@@ -311,11 +293,7 @@ class EntityView extends Croquet.View {
                 if (
                     componentName in this.entity.components &&
                     this.entity.components[componentName].initialized &&
-                    !this.componentsWaitingToBeInitialized.has(componentName) &&
-                    !(
-                        this.isPhysicsEnabled &&
-                        this.entity.components[componentName].isPositionRotationScale
-                    ) // skip position/rotation/scale if physics is enabled
+                    !this.componentsWaitingToBeInitialized.has(componentName)
                 ) {
                     const entityComponentData = this.getEntityComponentData(
                         componentName
@@ -370,8 +348,6 @@ class EntityView extends Croquet.View {
         } else {
             this.updateComponents();
         }
-
-        this.updatePhysicsComponents();
     }
 
     detach(removeEntity) {

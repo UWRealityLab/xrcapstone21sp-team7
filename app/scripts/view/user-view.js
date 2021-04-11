@@ -3,6 +3,7 @@
 class UserView extends Croquet.View {
     constructor(model) {
         super(model);
+        // The user-model is associated with this view, you can access stuff in the model this way
         this.model = model;
 
         this.log(`Creating User View with userViewId "${this.userViewId}"`);
@@ -15,22 +16,59 @@ class UserView extends Croquet.View {
         // check if this user represents you or a remote user. If it's you there's no need to create a User entity, and we'll focus on publishing our camera matrix to our User Model
         this.log("Checking if this UserView represents you or a remote user");
         if (this.isMyUser) {
+            // create actual user hands in our scene
+            let handEntity = document
+                .getElementById("user-hands")
+                .content.cloneNode(true)
+                .querySelector(".user");
+
+            this.leftHand = handEntity.querySelector(".left");
+            this.leftHand.setAttribute("color", "#ff0000");
+            this.lastTimeLeftHandUpdated = 0;
+            this.log("Remote User Left Hand Entity Created", this.leftHand);
+            this.scene.appendChild(this.leftHand);
+
+            this.rightHand = handEntity.querySelector('.right');
+            this.rightHand.setAttribute('color', '#00ff00');
+            this.lastTimeLeftHandUpdated = 0;
+            this.log('Remote User Right Hand Entity Created', this.rightHand);
+            this.scene.appendChild(this.rightHand);
+
             this.log("This UserView represents you. Adding a throttled function to publish our camera matrix to the UserModel");
             this.publishCameraMatrix = AFRAME.utils.throttle(
                 () => {
-                    // instead of just publishing the camera matrix, we check if the camera matrix has changed since we last updated the model matrix
-                    // in the model we also decompose the matrix to position/quaternion/scale, so rather than compare matrix elements we could check position difference and quaternion angle for more fine-tuned conditions
-
-                    // only publish camera matrix if it moved
                     const hasCameraMovedSinceLastModelMatrixUpdate = this.camera.matrixWorld.elements.every((value, index) => value === this.model.matrix.elements[index]);
                     if (!hasCameraMovedSinceLastModelMatrixUpdate) {
-                        //this.log("Camera movement detected");
                         this.publish(this.viewId, "set-matrix", this.camera.matrixWorld);
                     }
                 },
                 1000 / 24,
                 this
             );
+            this.publishLeftHandMatrix = AFRAME.utils.throttle(
+                () => {
+                    if (!this.leftHand || !this.leftHand.object3D || !this.leftHand.object3D.matrixWorld) return;
+
+                    const moved = this.leftHand.object3D.matrixWorld.elements.every((value, index) => value === this.model.leftHandMatrix.elements[index]);
+                    if (!moved) {
+                        this.publish(this.viewId, "set-left-hand-matrix", this.leftHand.object3D.matrixWorld);
+                    }
+                },
+                1000 / 24,
+                this
+            );
+            this.publishRightHandMatrix = AFRAME.utils.throttle(
+                () => {
+                    if (!this.rightHand || !this.rightHand.object3D || !this.rightHand.object3D.matrixWorld) return;
+
+                    const moved = this.rightHand.object3D.matrixWorld.elements.every((value, index) => value === this.model.rightHandMatrix.elements[index]);
+                    if (!moved) {
+                        this.publish(this.viewId, "set-right-hand-matrix", this.rightHand.object3D.matrixWorld);
+                    }
+                },
+                1000 / 24,
+                this
+            )
         } else {
             this.log("This UserView represents a remote user. Creating a User Entity");
             // cloning the user template in our scene to create a user entity
@@ -42,7 +80,7 @@ class UserView extends Croquet.View {
             this.head.setAttribute("color", this.color);
             this.subscribe(this.userViewId, "update-color", this.updateColor);
             this.lastTimeMatrixWasUpdated = 0;
-            this.log("Remote User Entity Created", this.entity)
+            this.log("Remote User Entity Created", this.entity);
             this.addEventListener(this.head, "componentchanged", this.onHeadComponentChanged);
             this.entity.addEventListener(
                 "loaded",
@@ -55,6 +93,43 @@ class UserView extends Croquet.View {
             );
             this.log("Adding remote user entity to the scene");
             this.scene.appendChild(this.entity);
+
+            // create fake user hands in our scene if this user view is not the actual user
+            let handEntity = document
+                .getElementById("user-hands-fake")
+                .content.cloneNode(true)
+                .querySelector(".user");
+
+            this.leftHand = handEntity.querySelector(".left");
+            this.leftHand.setAttribute("color", "#ff0000");
+            this.lastTimeLeftHandUpdated = 0;
+            this.log("Remote User Left Hand Entity Created", this.leftHand);
+            this.leftHand.addEventListener(
+                "loaded",
+                event => {
+                    this.log("Remote User Left Hand Entity Loaded", this.leftHand);
+                    // We want to manually update the matrix in our "update" method
+                    this.leftHand.object3D.matrixAutoUpdate = false;
+                },
+                { once: true }
+            );
+            this.log("Adding remote left hand user entity to the scene");
+            this.scene.appendChild(this.leftHand);
+
+            this.rightHand = handEntity.querySelector('.right');
+            this.rightHand.setAttribute('color', '#00ff00');
+            this.lastTimeRightHandUpdated = 0;
+            this.log('Remote User Right Hand Entity Created', this.rightHand);
+            this.rightHand.addEventListener(
+                'loaded',
+                event => {
+                    this.log('Remote User Right Hand Entity Loaded', this.rightHand);
+                    this.rightHand.object3D.matrixAutoUpdate = false;
+                },
+                { once: true }
+            )
+            this.log('Adding remote right hand user entity to the scene');
+            this.scene.appendChild(this.rightHand);
         }
     }
 
@@ -78,6 +153,16 @@ class UserView extends Croquet.View {
                 this.setColor(color);
                 break;
         }
+    }
+
+    onLeftHandComponentChanged(event) {
+        const componentName = event.detail.name;
+        this.log(`"${componentName}" changed for left hand`);
+    }
+
+    onRightHandComponentChanged(event) {
+        const componentName = event.detail.name;
+        this.log(`"${componentName}" changed for right hand`);
     }
 
     // Helper for adding/removing eventlisteners to entities that automatically get removed when detaching from the session
@@ -149,8 +234,20 @@ class UserView extends Croquet.View {
     get matrix() {
         return this.model.matrix;
     }
+    get leftHandMatrix() {
+        return this.model.leftHandMatrix;
+    }
+    get rightHandMatrix() {
+        return this.model.rightHandMatrix;
+    }
     get lastTimeMatrixWasSet() {
         return this.model.lastTimeMatrixWasSet;
+    }
+    get lastTimeLeftHandSet() {
+        return this.model.lastTimeLeftHandSet;
+    }
+    get lastTimeRightHandSet() {
+        return this.model.lastTimeRightHandSet;
     }
 
     // useful to determine whether to create an entity or not
@@ -160,9 +257,13 @@ class UserView extends Croquet.View {
 
     update() {
         if (this.isMyUser) {
+            // If this is the user, publish some stuff
             this.publishCameraMatrix();
+            this.publishLeftHandMatrix();
+            this.publishRightHandMatrix();
         } else {
-            // check if the remote user has moved since last time we updated their matrix
+            // otherwise, check if the remote user has moved since last time we updated their matrix
+            // from the model
             if (
                 this.entity &&
                 this.entity.hasLoaded &&
@@ -171,6 +272,28 @@ class UserView extends Croquet.View {
                 this.entity.object3D.matrix.copy(this.matrix);
                 this.entity.object3D.matrixWorldNeedsUpdate = true;
                 this.lastTimeMatrixWasUpdated = this.lastTimeMatrixWasSet;
+            }
+
+            if (
+                this.leftHand &&
+                this.leftHand.hasLoaded &&
+                this.leftHand.object3D &&
+                this.lastTimeLeftHandSet > this.lastTimeLeftHandUpdated
+            ) {
+                this.leftHand.object3D.matrix.copy(this.leftHandMatrix);
+                this.leftHand.object3D.matrixWorldNeedsUpdate = true;
+                this.lastTimeLeftHandUpdated = this.lastTimeLeftHandSet;
+            }
+
+            if (
+                this.rightHand &&
+                this.rightHand.hasLoaded &&
+                this.rightHand.object3D &&
+                this.lastTimeRightHandSet > this.lastTimeRightHandUpdated
+            ) {
+                this.rightHand.object3D.matrix.copy(this.rightHandMatrix);
+                this.rightHand.object3D.matrixWorldNeedsUpdate = true;
+                this.lastTimeRightHandUpdated = this.lastTimeRightHandSet;
             }
         }
     }
@@ -187,6 +310,10 @@ class UserView extends Croquet.View {
             this.log(`removing user entity from our scene`);
             this.entity.remove();
         }
+
+        this.log(`removing user hand entity from our scene`);
+        this.leftHand.remove();
+        this.rightHand.remove();
     }
 }
 

@@ -16,14 +16,32 @@ class UserModel extends Croquet.Model {
         this.log(`Created a random color ${this.color} for our user`);
         this.subscribe(this.userViewId, "set-color", this.setColor);
 
+        // Head-specific information
         this.matrix = new THREE.Matrix4();
         this.position = new THREE.Vector3();
         this.quaternion = new THREE.Quaternion();
         this.scale = new THREE.Vector3();
         this.matrix.decompose(this.position, this.quaternion, this.scale);
         this.subscribe(this.userViewId, "set-matrix", this.setMatrix);
-
         this.lastTimeMatrixWasSet = this.now();
+
+        // Left hand-related matricies 
+        this.leftHandMatrix = new THREE.Matrix4();
+        this.leftHandPosition = new THREE.Vector3();
+        this.leftHandQuaternion = new THREE.Quaternion();
+        this.leftHandScale = new THREE.Vector3();
+        this.leftHandMatrix.decompose(this.leftHandPosition, this.leftHandQuaternion, this.leftHandScale);
+        this.subscribe(this.userViewId, "set-left-hand-matrix", this.setLeftHandMatrix);
+        this.lastTimeLeftHandSet = this.now();
+
+        // Right hand-related matricies
+        this.rightHandMatrix = new THREE.Matrix4();
+        this.rightHandPosition = new THREE.Vector3();
+        this.rightHandQuaternion = new THREE.Quaternion();
+        this.rightHandScale = new THREE.Vector3();
+        this.rightHandMatrix.decompose(this.rightHandPosition, this.rightHandQuaternion, this.rightHandScale);
+        this.subscribe(this.userViewId, "set-right-hand-matrix", this.setRightHandMatrix);
+        this.lastTimeRightHandSet = this.now();
     }
 
     log(string, ...etc) {
@@ -52,6 +70,18 @@ class UserModel extends Croquet.Model {
         this.matrix.copy(matrix);
         this.matrix.decompose(this.position, this.quaternion, this.scale);
         this.lastTimeMatrixWasSet = this.now();
+    }
+
+    setLeftHandMatrix(matrix) {
+        this.leftHandMatrix.copy(matrix);
+        this.leftHandMatrix.decompose(this.leftHandPosition, this.leftHandQuaternion, this.leftHandScale);
+        this.lastTimeLeftHandSet = this.now();
+    }
+
+    setRightHandMatrix(matrix) {
+        this.rightHandMatrix.copy(matrix);
+        this.rightHandMatrix.decompose(this.rightHandPosition, this.rightHandQuaternion, this.rightHandScale);
+        this.lastTimeRightHandSet = this.now();
     }
 
     destroy() {
