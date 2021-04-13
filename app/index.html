@@ -17,7 +17,7 @@
     <script src="./scripts/system.js"></script>
     <script src="./scripts/component.js"></script>
     <script src="./scripts/generate-base-garden.js"></script>
-    <script src="./scripts/model-selector.js"></script>
+    <script src="./scripts/builder-controls.js"></script>
     <script src="./scripts/index.js" type="module"></script>
     <script src="./scripts/selector.js"></script>
 </head>
@@ -83,17 +83,17 @@
             <template id="user-hands">
                 <a-entity class="user">
                     <!-- Left Hand -->
-                    <a-entity class="left" id="leftHand" hand-controls="hand: left; handModelStyle: lowPoly; color: #ff0000">
-                        <a-entity id="rightItem" file="kfarr_bases_valencia" objectGroup="kfarr_bases" objectId="0" obj-model="obj: url(assets/obj/kfarr_bases_valencia.obj); mtl: url(assets/obj/kfarr_bases_valencia.mtl)" rotation="-56.8 0 0" scale="0.004 0.004 0.004" position="0 -0.08 -0.09"></a-entity>
-                        <a-entity select-bar="controllerID: leftHand" id="menuActions" scale="0.7 0.7 0.7" position="0 0.14 -0.03" rotation="-85 0 0">
-                            <optgroup label="Actions" value="actions">
-                                <option value="foo" src="#tree-img" selected>Foo</option>
-                                <option value="bar" src="#tree-img">Bar</option>
-                                <option value="baz" src="#tree-img">Baz</option>
-                                <option value="tree" src="#tree-img">Tree</option>
-                                <option value="largerock" src="#rock-tall-img">Large Rock</option>
-                                <option value="mediumrock" src="#rock-medium-img">Medium Rock</option>
-                                <option value="flatrock" src="#rock-flat-img">Flat Rock</option>
+                    <a-entity class="left" id="leftHand" hand-controls="hand: left; handModelStyle: lowPoly; color: #ff0000" builder-controls="menuId: menuItems">
+                        <a-entity id="leftItem" file="kfarr_bases_valencia" objectGroup="trees" objectId="0" gltf-model="url(../assets/glb/cherry-blossom.glb)" rotation="-56.8 0 0" scale="0.05 0.05 0.05" position="0 -0.08 -0.09"></a-entity>
+                        <a-entity select-bar="controllerID: leftHand" id="menuItems" scale="0.7 0.7 0.7" position="0 0.14 -0.03" rotation="-85 0 0">
+                            <optgroup label="Actions" value="plants">
+                                <option value="cherryblossom" src="url(../assets/img/cherry-blossom.png)" selected>Cherry Blossom</option>
+                                <option value="tree" src="url(../assets/img/tree.png)">Tree</option>
+                                <option value="flatrock" src="url(../assets/img/rock-flat.png)">Flat Rock</option>
+                                <option value="mediumrock" src="url(../assets/img/rock-medium.png)">Medium Rock</option>
+                                <option value="largerock" src="url(../assets/img/rock-tall.png)">Large Rock</option>
+                                <option value="pottedplantsmall" src="url(../assets/img/potted_plant_small.png)">Potted Plant Small</option>
+                                <option value="pottedplantsmall2" src="">Potted Plant Small 2</option>
                             </optgroup>
                         </a-entity>
                     </a-entity>

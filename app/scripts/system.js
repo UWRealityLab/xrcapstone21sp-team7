@@ -31,7 +31,7 @@ AFRAME.registerSystem("croquet", {
                     this.log(
                         `Created Croquet Session with Session id "${session.id}", and we have a viewId of "${session.view.viewId}"`
                     );
-                    document.title = `Hello, WebVR! | ${Croquet.App.autoSession()}`;
+                    document.title = `Zendin | ${Croquet.App.autoSession()}`;
 
                     // also make the croquet session globally available for debugging
                     window.croquetSession = session;

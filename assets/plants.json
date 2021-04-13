@@ -1,0 +1,30 @@
+[
+  {
+    "file": "cherry-blossom",
+    "scale": ".05 .05 .05"
+  },
+  {
+    "file": "tree",
+    "scale": ".05 .05 .05"
+  },
+  {
+    "file": "rock-flat",
+    "scale": ".2 .2 .2"
+  },
+  {
+    "file": "rock-medium",
+    "scale": ".2 .2 .2"
+  },
+  {
+    "file": "rock-tall",
+    "scale": ".2 .2 .2"
+  },
+  {
+    "file": "potted_plant_small",
+    "scale": ".05 .05 .05"
+  },
+  {
+    "file": "potted_plant_small",
+    "scale": ".05 .05 .05"
+  }
+]
