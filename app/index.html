@@ -11,20 +11,23 @@
     <script src="https://unpkg.com/aframe-template-component@3.x.x/dist/aframe-template-component.min.js"></script>
     <script src="https://unpkg.com/aframe-layout-component@4.x.x/dist/aframe-layout-component.min.js"></script>
     <script src="https://unpkg.com/aframe-event-set-component@5.x.x/dist/aframe-event-set-component.min.js"></script>
+    <script src="https://raw.githubusercontent.com/msj121/aframe-animation-component/master/dist/aframe-animation-component.min.js"></script>
 
     <script src="./scripts/constants.js"></script>
     <script src="./scripts/system.js"></script>
     <script src="./scripts/component.js"></script>
     <script src="./scripts/generate-base-garden.js"></script>
-    <script src="./scripts/palette.js"></script>
     <script src="./scripts/model-selector.js"></script>
     <script src="./scripts/index.js" type="module"></script>
+    <script src="./scripts/selector.js"></script>
 </head>
 
 <body>
     <a-scene croquet cursor="rayOrigin: mouse">
         <!-- Load in assets -->
         <a-assets>
+            <a-asset-item id="env_arrow" src="../assets/env_arrow.obj"></a-asset-item>
+
             <img id="tree-img"
                 src="https://raw.githubusercontent.com/UWRealityLab/xrcapstone21sp-team7/master/assets/trees/tree.png"
                 crossorigin="anonymous">
@@ -79,34 +82,24 @@
 
             <template id="user-hands">
                 <a-entity class="user">
-                    <a-entity id="leftHand" class="left"
-                        hand-controls="hand: left; handModelStyle: lowPoly; color: #ff0000"></a-entity>
-                    <a-entity id="rightHand" class="right"
-                        hand-controls="hand: right; handModelStyle: lowPoly; color: #ffcccc">
-
-                        <a-entity id="palette-plane" position="0 0.2 -0.2" rotation="-45 0 0" visible="true"
-                            scale="0.2 0.2 0.2" geometry="primitive: plane; width: 1.5; height: 1.8"
-                            material="color: #333333; shader: flat;" palette>
-
-                            <a-entity material="src: #tree-img" visible="true" mixin="poster"
-                                model-selector="model: #tree-asset" position="-0.3 .4 0.1"></a-entity>
-                            <a-entity material="src: #rock-flat-img" visible="true" mixin="poster"
-                                model-selector="model: #rock-flat-asset" position="0.3 0.4 0.1"></a-entity>
-                            <a-entity material="src: #rock-medium-img" visible="true" mixin="poster"
-                                model-selector="model: #rock-medium-asset" position="-0.3 -0.4 0.1"></a-entity>
-                            <a-entity material="src: #rock-tall-img" visible="true" mixin="poster"
-                                model-selector="model: #rock-tall-asset" position="0.3 -0.4 0.1"></a-entity>
-
-                            <!-- For testing, a bunch of stuff that doesn't fit on the screen at once, TODO in pallet.js, when a pressed, rotate through next quadrant that needs displaying in this list of entities -->
-                            <a-entity material="src: #tree-img" visible="false" mixin="poster" position="-0.3 .4 0.1">
-                            </a-entity>
-                            <a-entity material="src: #rock-flat-img" visible="false" mixin="poster"
-                                position="0.3 0.4 0.1"></a-entity>
-                            <a-entity material="src: #rock-medium-img" visible="false" mixin="poster"
-                                position="-0.3 -0.4 0.1"></a-entity>
-                            <a-entity material="src: #rock-tall-img" visible="false" mixin="poster"
-                                position="0.3 -0.4 0.1"></a-entity>
+                    <!-- Left Hand -->
+                    <a-entity class="left" id="leftHand" hand-controls="hand: left; handModelStyle: lowPoly; color: #ff0000">
+                        <a-entity id="rightItem" file="kfarr_bases_valencia" objectGroup="kfarr_bases" objectId="0" obj-model="obj: url(assets/obj/kfarr_bases_valencia.obj); mtl: url(assets/obj/kfarr_bases_valencia.mtl)" rotation="-56.8 0 0" scale="0.004 0.004 0.004" position="0 -0.08 -0.09"></a-entity>
+                        <a-entity select-bar="controllerID: leftHand" id="menuActions" scale="0.7 0.7 0.7" position="0 0.14 -0.03" rotation="-85 0 0">
+                            <optgroup label="Actions" value="actions">
+                                <option value="foo" src="#tree-img" selected>Foo</option>
+                                <option value="bar" src="#tree-img">Bar</option>
+                                <option value="baz" src="#tree-img">Baz</option>
+                                <option value="tree" src="#tree-img">Tree</option>
+                                <option value="largerock" src="#rock-tall-img">Large Rock</option>
+                                <option value="mediumrock" src="#rock-medium-img">Medium Rock</option>
+                                <option value="flatrock" src="#rock-flat-img">Flat Rock</option>
+                            </optgroup>
                         </a-entity>
+                    </a-entity>
+
+                    <!-- Right Hand -->
+                    <a-entity class="right" id="rightHand" hand-controls="hand: right; handModelStyle: lowPoly; color: #00ff00">
                     </a-entity>
                 </a-entity>
             </template>
