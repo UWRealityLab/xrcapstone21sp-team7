@@ -24,15 +24,7 @@
         "scale": "0.1 0.1 0.1"
     },
     {
-        "file": "single-wall",
-        "scale": "0.1 0.1 0.1"
-    },
-    {
         "file": "tall-tree",
-        "scale": "0.1 0.1 0.1"
-    },
-    {
-        "file": "corner-wall",
         "scale": "0.1 0.1 0.1"
     },
     {
