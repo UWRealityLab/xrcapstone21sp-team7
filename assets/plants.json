@@ -1,30 +1,62 @@
 [
-  {
-    "file": "cherry-blossom",
-    "scale": ".05 .05 .05"
-  },
-  {
-    "file": "tree",
-    "scale": ".05 .05 .05"
-  },
-  {
-    "file": "rock-flat",
-    "scale": ".2 .2 .2"
-  },
-  {
-    "file": "rock-medium",
-    "scale": ".2 .2 .2"
-  },
-  {
-    "file": "rock-tall",
-    "scale": ".2 .2 .2"
-  },
-  {
-    "file": "potted_plant_small",
-    "scale": ".05 .05 .05"
-  },
-  {
-    "file": "potted_plant_small",
-    "scale": ".05 .05 .05"
-  }
+    {
+        "file": "cherry-blossom",
+        "scale": "0.1 0.1 0.1"
+    },
+    {
+        "file": "evergreen-tree-1",
+        "scale": "0.1 0.1 0.1"
+    },
+    {
+        "file": "flat-rock",
+        "scale": "0.1 0.1 0.1"
+    },
+    {
+        "file": "potted_plant_small",
+        "scale": "0.1 0.1 0.1"
+    },
+    {
+        "file": "round-rock-patch",
+        "scale": "0.1 0.1 0.1"
+    },
+    {
+        "file": "scattered-rocks",
+        "scale": "0.1 0.1 0.1"
+    },
+    {
+        "file": "single-wall",
+        "scale": "0.1 0.1 0.1"
+    },
+    {
+        "file": "tall-tree",
+        "scale": "0.1 0.1 0.1"
+    },
+    {
+        "file": "corner-wall",
+        "scale": "0.1 0.1 0.1"
+    },
+    {
+        "file": "evergreen-tree-2",
+        "scale": "0.1 0.1 0.1"
+    },
+    {
+        "file": "large-rock",
+        "scale": "0.1 0.1 0.1"
+    },
+    {
+        "file": "medium-rock",
+        "scale": "0.1 0.1 0.1"
+    },
+    {
+        "file": "round-tree-1",
+        "scale": "0.1 0.1 0.1"
+    },
+    {
+        "file": "short-grass",
+        "scale": "0.1 0.1 0.1"
+    },
+    {
+        "file": "tall-rock",
+        "scale": "0.1 0.1 0.1"
+    }
 ]
