@@ -28,7 +28,8 @@
     <script src="./scripts/meditation-emitter.js"></script>
     <script src="./scripts/meditation-mode.js"></script>
     <script src="./scripts/meditation-light-mode.js"></script>
-
+    <script src="./scripts/blink-teleportation.js"></script>
+    <script src="./scripts/teleportation-checkpoint.js"></script>
 </head>
 
 <body>
@@ -131,8 +132,29 @@
         <a-entity id="light" light="type: directional; color: #FFF; intensity: 0.7" position="-10 3 1" meditation-light-mode></a-entity>
         <a-sky src="#sky-img" color="#FFF" sound="src: #background-music; autoplay: false; loop: true; positional: false; volume: 0.1" meditation-mode>
         </a-sky>
+
         <a-entity id="garden" base-garden="sceneWidth: 30; sceneDepth: 30"></a-entity>
         <a-entity id="new-asset-container"></a-entity>
+
+<!--         <a-entity id="garden" base-garden="sceneWidth: 10; sceneDepth: 10"></a-entity> -->
+        <!-- Camera and hands live here for teleportation -->
+<!--         <a-entity id="camRig">
+          <a-camera
+            id="cam"
+            wasd-controls-enabled="false"
+            look-controls
+          ></a-camera>
+          <a-entity
+            id="leftHand"
+            hand-controls="hand: left"
+            laser-controls="hand: left"
+          ></a-entity>
+          <a-entity
+            id="rightHand"
+            hand-controls="hand: right"
+            laser-controls="hand: right"
+          ></a-entity>
+        </a-entity> -->
     </a-scene>
 
     <script src="./scripts/joystick.js"></script>
