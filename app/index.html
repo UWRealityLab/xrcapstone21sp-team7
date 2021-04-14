@@ -60,13 +60,13 @@
                 </a-entity>
             </template>
 
-            <template id="user-hands">
+<!--             <template id="user-hands">
                 <a-entity class="left"
                           id="leftHand"
                           hand-controls="hand: left; handModelStyle: lowPoly; color: #ff0000"
                           raycaster="showLine: true; objects: .leftclickable;"
                           builder-controls="menuId: menuItems">
-                    <a-entity id="leftItem" file="kfarr_bases_valencia" objectGroup="plants" objectId="0" gltf-model="url(../assets/glb/cherry-blossom.glb)" rotation="-56.8 0 0" scale="0.05 0.05 0.05" position="0 -0.08 -0.09"></a-entity>
+                    <a-entity id="leftItem" file="kfarr_bases_valencia" objectGroup="plants" objectId="0" gltf-model="url(../assets/glb/cherry-blossom.glb)" rotation="-5 0 0" scale="0.1 0.1 0.1" position="0 -0.08 -0.09"></a-entity>
                     <a-entity select-bar="controllerID: leftHand" id="menuItems" scale="0.7 0.7 0.7" position="0 0.14 -0.03" rotation="-85 0 0">
                         <optgroup label="Items" value="plants">
                             <option value="cherry-blossom" src="url(../assets/img/cherry-blossom.png)">Cherry Blossom</option>
@@ -86,12 +86,12 @@
                     </a-entity>
                 </a-entity>
 
-                <!-- Right Hand -->
+
                 <a-entity class="right" id="rightHand" super-hands hand-controls="hand: right; handModelStyle: lowPoly; color: #00ff00"
                           sphere-collider="objects: a-box"
                           raycaster="showLine: true; objects: .clickable, a-box">
                 </a-entity>
-            </template>
+            </template> -->
 
             <template id="user-hands-fake">
                 <a-entity class="user">
@@ -121,8 +121,7 @@
         <!-- enabling physics may be necessary for grabbable objects, just set gravity to 0 when they work -->
         <a-entity class="cherry-blossom" mixin="cherry-blossom" position="0 1 -1"></a-entity>
         <a-box grabbable stretchable dynamic-body position="0 1 -1" depth="0.5" height="0.5" width="0.5" material="color: red" class="clickable"></a-box>
-      
-      
+
         <!-- meditation post -->
         <a-cylinder class="clickable" position="2 0.75 -2" radius="0.5" height="1.5" color="#FFC65D" meditation-emitter>
           <!--a-entity light="type: point; color: #FFB600; intensity: 0.5" position="0, 5, 0"></a-entity-->
@@ -138,13 +137,15 @@
 
 <!--         <a-entity id="garden" base-garden="sceneWidth: 10; sceneDepth: 10"></a-entity> -->
         <!-- Camera and hands live here for teleportation -->
-<!--         <a-entity id="camRig">
+      
+        <a-sphere class="clickable" blink-teleportation teleportation-checkpoint position="0 0 -6"></a-sphere>
+        <a-entity id="camRig">
           <a-camera
             id="cam"
             wasd-controls-enabled="false"
             look-controls
           ></a-camera>
-          <a-entity
+<!--           <a-entity
             id="leftHand"
             hand-controls="hand: left"
             laser-controls="hand: left"
@@ -153,8 +154,41 @@
             id="rightHand"
             hand-controls="hand: right"
             laser-controls="hand: right"
-          ></a-entity>
-        </a-entity> -->
+          ></a-entity> -->
+          <template id="user-hands">
+                <a-entity class="left"
+                          id="leftHand"
+                          hand-controls="hand: left; handModelStyle: lowPoly; color: #ff0000"
+                          raycaster="showLine: true; objects: .leftclickable;"
+                          builder-controls="menuId: menuItems">
+                    <a-entity id="leftItem" file="kfarr_bases_valencia" objectGroup="plants" objectId="0" gltf-model="url(../assets/glb/cherry-blossom.glb)" rotation="-20.8 0 0" scale="0.05 .05 .05" position="0 -0.04  -0.3"></a-entity>
+                    <a-entity select-bar="controllerID: leftHand" id="menuItems" scale="0.7 0.7 0.7" position="0 0.14 -0.03" rotation="-85 0 0">
+                        <optgroup label="Items (1/10 scale)" value="plants">
+                            <option value="cherry-blossom" src="url(../assets/img/cherry-blossom.png)">Cherry Blossom</option>
+                            <option value="evergreen-tree-1" src="url(../assets/img/evergreen-tree-1.png)">Evergreen Tree 1</option>
+                            <option value="flat-rock" src="url(../assets/img/flat-rock.png)">Flat Rock</option>
+                            <option value="potted_plant_small" src="url(../assets/img/potted_plant_small.png)">Potted Plant</option>
+                            <option value="round-rock-patch" src="url(../assets/img/round-rock-patch.png)">Round Rock Patch</option>
+                            <option value="scattered-rocks" src="url(../assets/img/scattered-rocks.png)">Scattered Rocks</option>
+                            <option value="tall-tree" src="url(../assets/img/tall-tree.png)">Tall Tree</option>
+                            <option value="evergreen-tree-2" src="url(../assets/img/evergreen-tree-2.png)">Evergreen Tree 2</option>
+                            <option value="large-rock" src="url(../assets/img/large-rock.png)">Large Rock</option>
+                            <option value="medium-rock" src="url(../assets/img/medium-rock.png)">Medium Rock</option>
+                            <option value="round-tree-1" src="url(../assets/img/round-tree-1.png)">Round Tree 1</option>
+                            <option value="short-grass" src="url(../assets/img/short-grass.png)">Short Grass</option>
+                            <option value="tall-rock" src="url(../assets/img/tall-rock.png)">Tall Rock</option>
+                        </optgroup>
+                    </a-entity>
+                </a-entity>
+
+                <!-- Right Hand -->
+                <a-entity class="right" id="rightHand" super-hands hand-controls="hand: right; handModelStyle: lowPoly; color: #00ff00"
+                          sphere-collider="objects: a-box"
+                          raycaster="showLine: true; objects: .clickable, a-box"
+                          laser-controls="hand: right">
+                </a-entity>
+            </template>
+        </a-entity>
     </a-scene>
 
     <script src="./scripts/joystick.js"></script>

@@ -1,54 +1,80 @@
 [
     {
         "file": "cherry-blossom",
-        "scale": "0.1 0.1 0.1"
+        "actualScale": "1 1 1",
+        "replicaScale": "0.05 0.05 0.05",
+        "replicaPosition": "0 -0.04 -0.3"
     },
     {
         "file": "evergreen-tree-1",
-        "scale": "0.1 0.1 0.1"
+        "actualScale": "1 1 1",
+        "replicaScale": "0.1 0.1 0.1",
+        "replicaPosition": "0 -0.08 -0.16"
     },
     {
         "file": "flat-rock",
-        "scale": "0.1 0.1 0.1"
+        "actualScale": "1 1 1",
+        "replicaScale": "0.1 0.1 0.1",
+        "replicaPosition": "0 0.12 -0.13"
     },
     {
         "file": "potted_plant_small",
-        "scale": "0.1 0.1 0.1"
+        "actualScale": "0.7 0.7 0.7",
+        "replicaScale": "0.1 0.1 0.1",
+        "replicaPosition": "0 .12 -.13"
     },
     {
         "file": "round-rock-patch",
-        "scale": "0.1 0.1 0.1"
+        "actualScale": "0.8 0.8 0.8",
+        "replicaScale": "0.1 0.1 0.1",
+        "replicaPosition": "0 .12 -.2"
     },
     {
         "file": "scattered-rocks",
-        "scale": "0.1 0.1 0.1"
+        "actualScale": "1 1 1",
+        "replicaScale": "0.1 0.1 0.1",
+        "replicaPosition": "0 .12 -.2"
     },
     {
         "file": "tall-tree",
-        "scale": "0.1 0.1 0.1"
+        "actualScale": "1 1 1",
+        "replicaScale": "0.05 .05 .05",
+        "replicaPosition": "0 -0.08 -.13"
     },
     {
         "file": "evergreen-tree-2",
-        "scale": "0.1 0.1 0.1"
+        "actualScale": "1 1 1",
+        "replicaScale": "0.1 0.1 0.1",
+        "replicaPosition": "0 .09 -0.14"
     },
     {
         "file": "large-rock",
-        "scale": "0.1 0.1 0.1"
+        "actualScale": "0.6 0.6 0.6",
+        "replicaScale": "0.05 .05 .05",
+        "replicaPosition": "0 .06 -.2"
     },
     {
         "file": "medium-rock",
-        "scale": "0.1 0.1 0.1"
+        "actualScale": "1 1 1",
+        "replicaScale": "0.1 0.1 0.1",
+        "replicaPosition": "0 0.12 -0.13"
     },
     {
         "file": "round-tree-1",
-        "scale": "0.1 0.1 0.1"
+        "actualScale": "1 1 1",
+        "replicaScale": "0.1 0.1 0.1",
+        "replicaPosition": "0 -0.08 -0.09"
     },
     {
         "file": "short-grass",
-        "scale": "0.1 0.1 0.1"
+        "actualScale": "1 1 1",
+        "replicaScale": "0.1 0.1 0.1",
+        "replicaPosition": "0 0.12 -0.13"
     },
     {
         "file": "tall-rock",
-        "scale": "0.1 0.1 0.1"
+        "actualScale": "1 1 1",
+        "replicaScale": "0.1 0.1 0.1",
+        "replicaPosition": "0 0.12 -0.13"
     }
 ]

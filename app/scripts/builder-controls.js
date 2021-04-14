@@ -168,7 +168,7 @@ AFRAME.registerComponent('builder-controls', {
         let newEntity = document.createElement('a-entity');
         newEntity.setAttribute('id', newId);
         newEntity.setAttribute('class', 'movable-plants');
-        newEntity.setAttribute('scale', '1 1 1');  // TODO unhardcode, but should be different than objectArray[objectId].scale
+        newEntity.setAttribute('scale', objectArray[objectId].actualScale);
         // TODO handle rotation
         newEntity.setAttribute('gltf-model', '../assets/glb/' + objectArray[objectId].file + '.glb');
         newEntity.setAttribute('position', originalPositionString);
@@ -227,7 +227,8 @@ AFRAME.registerComponent('builder-controls', {
 
         // Set the preview object to be the currently selected "preview" item
         thisItemEl.setAttribute('gltf-model', '../assets/glb/' + objectArray[newObjectId].file + '.glb');
-        thisItemEl.setAttribute('scale', objectArray[newObjectId].scale);
+        thisItemEl.setAttribute('scale', objectArray[newObjectId].replicaScale);
+        thisItemEl.setAttribute('position', objectArray[newObjectId].replicaPosition);
         thisItemEl.setAttribute('objectId', newObjectId);
         thisItemEl.setAttribute('objectGroup', objectGroup);
         thisItemEl.flushToDOM();
