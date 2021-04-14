@@ -12,6 +12,10 @@
     <script src="https://unpkg.com/aframe-layout-component@4.x.x/dist/aframe-layout-component.min.js"></script>
     <script src="https://unpkg.com/aframe-event-set-component@5.x.x/dist/aframe-event-set-component.min.js"></script>
     <script src="https://raw.githubusercontent.com/msj121/aframe-animation-component/master/dist/aframe-animation-component.min.js"></script>
+    
+    <script src="https://cdn.jsdelivr.net/gh/n5ro/aframe-physics-system@v4.0.1/dist/aframe-physics-system.min.js"></script>
+    <script src="https://unpkg.com/aframe-physics-extras/dist/aframe-physics-extras.min.js"></script>
+    <script src="https://unpkg.com/super-hands@^3.0.1/dist/super-hands.min.js"></script>
 
     <script src="./scripts/constants.js"></script>
     <script src="./scripts/system.js"></script>
@@ -20,10 +24,14 @@
     <script src="./scripts/builder-controls.js"></script>
     <script src="./scripts/index.js" type="module"></script>
     <script src="./scripts/selector.js"></script>
+  
+    <script src="./scripts/meditation-emitter.js"></script>
+    <script src="./scripts/meditation-mode.js"></script>
+    <script src="./scripts/meditation-light-mode.js"></script>
 </head>
 
 <body>
-    <a-scene croquet cursor="rayOrigin: mouse">
+    <a-scene physics croquet cursor="rayOrigin: mouse">
         <!-- Load in assets -->
         <a-assets>
             <a-asset-item id="env_arrow" src="../assets/env_arrow.obj"></a-asset-item>
@@ -32,6 +40,7 @@
             <a-asset-item id="single-wall-asset" src="../assets/glb/single-wall.glb"></a-asset-item>
             <a-asset-item id="right-hand-low" src="../assets/glb/rightHandLow.glb"></a-asset-item>
             <a-asset-item id="left-hand-low" src="../assets/glb/leftHandLow.glb"></a-asset-item>
+            <img id="sky-img" src="https://cdn.glitch.com/2b4aff49-28a2-40af-847a-d2b291f6c30e%2F47e93852-bc4e-485b-bde3-7923ba2679db.image.png?v=1617686253924">
 
             <template id="user-template">
                 <a-entity class="user">
@@ -52,8 +61,8 @@
             <template id="user-hands">
                 <a-entity class="user">
                     <!-- Left Hand -->
-                    <a-entity class="left" id="leftHand" hand-controls="hand: left; handModelStyle: lowPoly; color: #ff0000" builder-controls="menuId: menuItems">
-                        <a-entity id="leftItem" file="kfarr_bases_valencia" objectGroup="trees" objectId="0" gltf-model="url(../assets/glb/cherry-blossom.glb)" rotation="-56.8 0 0" scale="0.05 0.05 0.05" position="0 -0.08 -0.09"></a-entity>
+                    <a-entity class="left" id="leftHand" super-hands hand-controls="hand: left; handModelStyle: lowPoly; color: #ff0000" builder-controls="menuId: menuItems">
+                        <a-entity id="leftItem" file="kfarr_bases_valencia" objectGroup="plants" objectId="0" gltf-model="url(../assets/glb/cherry-blossom.glb)" rotation="-56.8 0 0" scale="0.05 0.05 0.05" position="0 -0.08 -0.09"></a-entity>
                         <a-entity select-bar="controllerID: leftHand" id="menuItems" scale="0.7 0.7 0.7" position="0 0.14 -0.03" rotation="-85 0 0">
                             <optgroup label="Actions" value="plants">
                                 <option value="cherry-blossom" src="url(../assets/img/cherry-blossom.png)">Cherry Blossom</option>
@@ -76,7 +85,9 @@
                     </a-entity>
 
                     <!-- Right Hand -->
-                    <a-entity class="right" id="rightHand" hand-controls="hand: right; handModelStyle: lowPoly; color: #00ff00">
+                    <a-entity class="right" id="rightHand" super-hands hand-controls="hand: right; handModelStyle: lowPoly; color: #00ff00"
+                              sphere-collider="objects: a-box"
+                              raycaster="showLine: true; objects: .clickable, a-box">
                     </a-entity>
                 </a-entity>
             </template>
@@ -90,13 +101,37 @@
 
             <a-mixin id="poster" geometry="primitive: plane; width: 0.544768; height: 0.786432"
                 material="color: white; shader: flat"></a-mixin>
+          
+            <!-- testing drag and drop object functionality - not showing up? -->
+            <a-mixin id="cherry-blossom" src="../assets/glb/cherry-blossom.glb"
+                     hoverable grabbable stretchable draggable droppable shadow
+                     event-set__hoveron="_event: hover-start; material.opacity: 0.7; transparent: true"
+                     event-set__hoveroff="_event: hover-end; material.opacity: 1; transparent: false"
+                     event-set__dragon="_event: dragover-start; material.wireframe: true"
+                     event-set__dragoff="_event: dragover-end; material.wireframe: false"></a-mixin>
+            <!-- end of testing drag and drop -->
+          
+            <!-- music -->
+            <audio id="background-music" src="https://cdn.glitch.com/cb7fdbe5-13ac-4455-9973-1f3a8bb8bba2%2Frelax_music.m4a?v=1618364745593"></audio>
+            <audio id="meditation-music" src="https://cdn.glitch.com/cb7fdbe5-13ac-4455-9973-1f3a8bb8bba2%2Fmeditation.m4a?v=1618372302780"></audio>
         </a-assets>
+      
+        <!-- testing drag and drop object functionality - cherry blossom not showing up? -->
+        <!-- enabling physics may be necessary for grabbable objects, just set gravity to 0 when they work -->
+        <a-entity class="cherry-blossom" mixin="cherry-blossom" position="0 1 -1"></a-entity>
+        <a-box grabbable stretchable dynamic-body position="0 1 -1" depth="0.5" height="0.5" width="0.5" material="color: red"></a-box>
+      
+      
+        <!-- meditation post -->
+        <a-cylinder position="2 0.75 -2" radius="0.5" height="1.5" color="#FFC65D" meditation-emitter>
+          <a-entity light="type: point; color: #FFB600; intensity: 0.5" position="0, 5, 0"></a-entity>
+        </a-cylinder>
 
-        <a-entity light="type: ambient; color: #BBB"></a-entity>
-        <a-entity id="light" light="type: directional; color: #FFF; intensity: 0.7" position="-10 3 1"></a-entity>
-        <a-sky src="#sky-img">
+        <a-entity light="type: ambient; color: #BBB" meditation-light-mode></a-entity>
+        <a-entity id="light" light="type: directional; color: #FFF; intensity: 0.7" position="-10 3 1" meditation-light-mode></a-entity>
+        <a-sky src="#sky-img" color="#FFF" sound="src: #background-music; autoplay: false; loop: true; positional: false; volume: 0.1" meditation-mode>
         </a-sky>
-        <a-entity base-garden="sceneWidth: 10; sceneDepth: 10"></a-entity>
+<!--         <a-entity id="garden" base-garden="sceneWidth: 10; sceneDepth: 10"></a-entity> -->
     </a-scene>
 
     <script src="./scripts/joystick.js"></script>
