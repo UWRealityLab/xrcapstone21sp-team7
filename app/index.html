@@ -63,8 +63,8 @@
                 <a-entity class="left"
                           id="leftHand"
                           hand-controls="hand: left; handModelStyle: lowPoly; color: #ff0000"
-                          builder-controls="menuId: menuItems"
-                          raycaster="showLine: true; objects: .leftclickable;">
+                          raycaster="showLine: true; objects: .leftclickable;"
+                          builder-controls="menuId: menuItems">
                     <a-entity id="leftItem" file="kfarr_bases_valencia" objectGroup="plants" objectId="0" gltf-model="url(../assets/glb/cherry-blossom.glb)" rotation="-56.8 0 0" scale="0.05 0.05 0.05" position="0 -0.08 -0.09"></a-entity>
                     <a-entity select-bar="controllerID: leftHand" id="menuItems" scale="0.7 0.7 0.7" position="0 0.14 -0.03" rotation="-85 0 0">
                         <optgroup label="Items" value="plants">
@@ -123,8 +123,8 @@
       
       
         <!-- meditation post -->
-        <a-cylinder position="2 0.75 -2" radius="0.5" height="1.5" color="#FFC65D" meditation-emitter>
-          <a-entity light="type: point; color: #FFB600; intensity: 0.5" position="0, 5, 0"></a-entity>
+        <a-cylinder class="clickable" position="2 0.75 -2" radius="0.5" height="1.5" color="#FFC65D" meditation-emitter>
+          <!--a-entity light="type: point; color: #FFB600; intensity: 0.5" position="0, 5, 0"></a-entity-->
         </a-cylinder>
 
         <a-entity light="type: ambient; color: #BBB" meditation-light-mode></a-entity>
@@ -132,6 +132,7 @@
         <a-sky src="#sky-img" color="#FFF" sound="src: #background-music; autoplay: false; loop: true; positional: false; volume: 0.1" meditation-mode>
         </a-sky>
         <a-entity id="garden" base-garden="sceneWidth: 30; sceneDepth: 30"></a-entity>
+        <a-entity id="new-asset-container"></a-entity>
     </a-scene>
 
     <script src="./scripts/joystick.js"></script>

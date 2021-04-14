@@ -18,17 +18,13 @@ AFRAME.registerComponent('builder-controls', {
     },
 
     /**
-     * Set if component needs multiple instancing.
-     */
-    multiple: false,
-
-    /**
      * Add event listeners.
      */
     addEventListeners: function () {
         var el = this.el;
         el.addEventListener('gripup', this.handReleased.bind(this));
         el.addEventListener('gripdown', this.handSqueezed.bind(this));
+        el.addEventListener('xbuttondown', this.onUndo.bind(this));
 
         // the rest of the controls are handled by the menu element
         var menuEl = document.getElementById(this.data.menuId);
@@ -43,6 +39,7 @@ AFRAME.registerComponent('builder-controls', {
         var el = this.el;
         el.removeEventListener('gripup', this.handReleased);
         el.removeEventListener('gripdown', this.handSqueezed);
+        el.addEventListener('xbuttondown', this.onUndo);
 
         var menuEl = document.getElementById(this.data.menuId);
         menuEl.removeEventListener('menuChanged', this.onObjectChange);
@@ -101,7 +98,10 @@ AFRAME.registerComponent('builder-controls', {
         var thisItemID = (this.el.id === 'leftHand') ? '#leftItem' : '#rightItem';
         var thisItemEl = document.querySelector(thisItemID);
 
+        // disable raycaster and hide the selected item
         thisItemEl.setAttribute('visible', 'false');
+        this.el.setAttribute('raycaster', 'enabled', false);
+        this.el.setAttribute('raycaster', 'showLine', false);
 
         this.groupJSONArray = groupJSONArray;
     },
@@ -174,7 +174,8 @@ AFRAME.registerComponent('builder-controls', {
         newEntity.setAttribute('position', originalPositionString);
         newEntity.setAttribute('croquet', '');
 
-        this.el.sceneEl.appendChild(newEntity);
+        // Place entity as a child of the floor
+        document.getElementById('new-asset-container').appendChild(newEntity);
     },
 
     handSqueezed: function (evt) {
@@ -186,6 +187,9 @@ AFRAME.registerComponent('builder-controls', {
         var thisItemEl = document.querySelector(thisItemID);
 
         thisItemEl.setAttribute('visible', 'true');
+
+        this.el.setAttribute('raycaster', 'enabled', true);
+        this.el.setAttribute('raycaster', 'showLine', true);
     },
 
     handReleased: function (evt) {
@@ -197,12 +201,15 @@ AFRAME.registerComponent('builder-controls', {
         var thisItemEl = document.querySelector(thisItemID);
 
         thisItemEl.setAttribute('visible', 'false');
+
+        this.el.setAttribute('raycaster', 'enabled', false);
+        this.el.setAttribute('raycaster', 'showLine', false);
     },
 
     onObjectChange: function () {
-        console.log("onObjectChange triggered");
+        // console.log("onObjectChange triggered");
 
-        // Fetch the Item element (the placeable city object) selected on this controller
+        // Fetch the Item element selected on this controller
         var thisItemID = (this.el.id === 'leftHand') ? '#leftItem' : '#rightItem';
         var thisItemEl = document.querySelector(thisItemID);
 
@@ -230,5 +237,15 @@ AFRAME.registerComponent('builder-controls', {
      * Undo - deletes the most recently placed object
      */
     onUndo: function () {
+        // Check to see if builder is visible (meaning we can remove items)
+        var thisItemID = (this.el.id === 'leftHand') ? '#leftItem' : '#rightItem';
+        var thisItemEl = document.querySelector(thisItemID);
+        if (thisItemEl.getAttribute('visible') == false) return;
+
+        let assetsCreatedCount = document.getElementById('new-asset-container').childElementCount;
+        if (assetsCreatedCount > 0) {
+            let elementToRemove = document.getElementById('new-asset-container').children[assetsCreatedCount - 1];
+            elementToRemove.parentNode.removeChild(elementToRemove);
+        }
     }
 });
