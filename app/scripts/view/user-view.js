@@ -19,8 +19,7 @@ class UserView extends Croquet.View {
             // create actual user hands in our scene
             let handEntity = document
                 .getElementById("user-hands")
-                .content.cloneNode(true)
-                .querySelector(".user");
+                .content.cloneNode(true);
 
             this.leftHand = handEntity.querySelector(".left");
             this.leftHand.setAttribute("color", "#ff0000");

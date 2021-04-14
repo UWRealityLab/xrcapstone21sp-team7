@@ -6,8 +6,10 @@ const CORNER_WALL_SEG_WIDTH = 1;
 AFRAME.registerComponent('base-garden', {
     schema: {
         sceneWidth: { default: 10, type: 'int' },
-        sceneDepth: { default: 10, type: 'int' }
+        sceneDepth: { default: 10, type: 'int' },
+        intersectedPoint: { default: null, type: 'vec3' }
     },
+
     init: function () {
         const { THREE } = AFRAME;
 
@@ -81,12 +83,42 @@ AFRAME.registerComponent('base-garden', {
 
         // Add floor
         console.log('width: ' + sceneWidth + ' depth: ' + sceneDepth);
-        let floorPlane = document.createElement('a-plane');
-        floorPlane.setAttribute('width', sceneWidth);
-        floorPlane.setAttribute('height', sceneDepth);
-        floorPlane.setAttribute('rotation', '-90 0 0');
-        floorPlane.setAttribute('id', 'floor');
-        floorPlane.setAttribute('color', 'green');
-        el.appendChild(floorPlane);
+        this.floorPlane = document.createElement('a-plane');
+        this.floorPlane.setAttribute('width', sceneWidth);
+        this.floorPlane.setAttribute('height', sceneDepth);
+        this.floorPlane.setAttribute('rotation', '-90 0 0');
+        this.floorPlane.setAttribute('id', 'floor');
+        this.floorPlane.setAttribute('color', 'green');
+        this.floorPlane.setAttribute('class', 'leftclickable');
+        el.appendChild(this.floorPlane);
+
+        this.floorPlane.addEventListener('raycaster-intersected', this.raycasterIntersected.bind(this));
+        this.floorPlane.addEventListener('raycaster-intersected-cleared', this.raycasterIntersectedCleared.bind(this));
+    },
+
+    remove: function () {
+        this.floorPlane.removeEventListener('raycaster-intersected', this.raycasterIntersected);
+        this.floorPlane.removeEventListener('raycaster-intersected-cleared', this.raycasterIntersectedCleared);
+    },
+
+    raycasterIntersected: function (evt) {
+        this.raycaster = evt.detail.el;
+    },
+
+    raycasterIntersectedCleared: function () {
+        this.raycaster = null;
+    },
+
+    tick: function () {
+        if (!this.raycaster) {
+            this.data.intersectedPoint = null;
+        } else {
+            let intersection = this.raycaster.components.raycaster.getIntersection(this.floorPlane);
+            if (!intersection) {
+                this.data.intersectedPoint = null;
+            } else {
+                this.data.intersectedPoint = intersection.point;
+            }
+        }
     }
 });
