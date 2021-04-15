@@ -12,7 +12,7 @@
     <script src="https://unpkg.com/aframe-layout-component@4.x.x/dist/aframe-layout-component.min.js"></script>
     <script src="https://unpkg.com/aframe-event-set-component@5.x.x/dist/aframe-event-set-component.min.js"></script>
     <script src="https://raw.githubusercontent.com/msj121/aframe-animation-component/master/dist/aframe-animation-component.min.js"></script>
-    
+
     <script src="https://cdn.jsdelivr.net/gh/n5ro/aframe-physics-system@v4.0.1/dist/aframe-physics-system.min.js"></script>
     <script src="https://unpkg.com/aframe-physics-extras/dist/aframe-physics-extras.min.js"></script>
     <script src="https://unpkg.com/super-hands@^3.0.1/dist/super-hands.min.js"></script>
@@ -60,13 +60,13 @@
                 </a-entity>
             </template>
 
-<!--             <template id="user-hands">
+            <template id="user-hands">
                 <a-entity class="left"
                           id="leftHand"
                           hand-controls="hand: left; handModelStyle: lowPoly; color: #ff0000"
                           raycaster="showLine: true; objects: .leftclickable;"
                           builder-controls="menuId: menuItems">
-                    <a-entity id="leftItem" file="kfarr_bases_valencia" objectGroup="plants" objectId="0" gltf-model="url(../assets/glb/cherry-blossom.glb)" rotation="-5 0 0" scale="0.1 0.1 0.1" position="0 -0.08 -0.09"></a-entity>
+                    <a-entity id="leftItem" file="kfarr_bases_valencia" objectGroup="plants" objectId="0" gltf-model="url(../assets/glb/cherry-blossom.glb)" rotation="-5 0 0" scale="0.05 .05 .05" position="0 -0.04 -0.4"></a-entity>
                     <a-entity select-bar="controllerID: leftHand" id="menuItems" scale="0.7 0.7 0.7" position="0 0.14 -0.03" rotation="-85 0 0">
                         <optgroup label="Items" value="plants">
                             <option value="cherry-blossom" src="url(../assets/img/cherry-blossom.png)">Cherry Blossom</option>
@@ -86,12 +86,11 @@
                     </a-entity>
                 </a-entity>
 
-
                 <a-entity class="right" id="rightHand" super-hands hand-controls="hand: right; handModelStyle: lowPoly; color: #00ff00"
                           sphere-collider="objects: a-box"
-                          raycaster="showLine: true; objects: .clickable, a-box">
+                          raycaster="showLine: true; objects: .clickable, a-box" laser-controls="hand: right; model: false">
                 </a-entity>
-            </template> -->
+            </template>
 
             <template id="user-hands-fake">
                 <a-entity class="user">
@@ -104,12 +103,12 @@
                 material="color: white; shader: flat"></a-mixin>
           
             <!-- testing drag and drop object functionality - not showing up? -->
-            <a-mixin id="cherry-blossom" src="../assets/glb/cherry-blossom.glb"
+<!--             <a-mixin id="cherry-blossom" src="../assets/glb/cherry-blossom.glb"
                      hoverable grabbable stretchable draggable droppable shadow
                      event-set__hoveron="_event: hover-start; material.opacity: 0.7; transparent: true"
                      event-set__hoveroff="_event: hover-end; material.opacity: 1; transparent: false"
                      event-set__dragon="_event: dragover-start; material.wireframe: true"
-                     event-set__dragoff="_event: dragover-end; material.wireframe: false"></a-mixin>
+                     event-set__dragoff="_event: dragover-end; material.wireframe: false"></a-mixin> -->
             <!-- end of testing drag and drop -->
           
             <!-- music -->
@@ -118,10 +117,8 @@
         </a-assets>
       
         <!-- testing drag and drop object functionality - cherry blossom not showing up? -->
-        <!-- enabling physics may be necessary for grabbable objects, just set gravity to 0 when they work -->
-        <a-entity class="cherry-blossom" mixin="cherry-blossom" position="0 1 -1"></a-entity>
-        <a-box grabbable stretchable dynamic-body position="0 1 -1" depth="0.5" height="0.5" width="0.5" material="color: red" class="clickable"></a-box>
-
+<!--         <a-box grabbable stretchable dynamic-body position="0 1 -1" depth="0.5" height="0.5" width="0.5" material="color: red" class="clickable"></a-box>
+ -->
         <!-- meditation post -->
         <a-cylinder class="clickable" position="2 0.75 -2" radius="0.5" height="1.5" color="#FFC65D" meditation-emitter>
           <!--a-entity light="type: point; color: #FFB600; intensity: 0.5" position="0, 5, 0"></a-entity-->
@@ -133,30 +130,20 @@
         </a-sky>
 
         <a-entity id="garden" base-garden="sceneWidth: 30; sceneDepth: 30"></a-entity>
-        <a-entity id="new-asset-container"></a-entity>
+        <a-entity id="new-asset-container" croquet="name: new-asset-container"></a-entity>
 
 <!--         <a-entity id="garden" base-garden="sceneWidth: 10; sceneDepth: 10"></a-entity> -->
         <!-- Camera and hands live here for teleportation -->
       
-        <a-sphere class="clickable" blink-teleportation teleportation-checkpoint position="0 0 -6"></a-sphere>
+        <a-sphere class="clickable" blink-teleportation teleportation-checkpoint position="0 0 6"></a-sphere>
+        <a-entity class="clickable" gltf-model="url(../assets/glb/tall-rock.glb)" blink-teleportation teleportation-checkpoint position="5 0 0"></a-entity>
         <a-entity id="camRig">
           <a-camera
             id="cam"
-            wasd-controls-enabled="false"
+            wasd-controls-enabled="true"  
             look-controls
-          ></a-camera>
-<!--           <a-entity
-            id="leftHand"
-            hand-controls="hand: left"
-            laser-controls="hand: left"
-          ></a-entity>
-          <a-entity
-            id="rightHand"
-            hand-controls="hand: right"
-            laser-controls="hand: right"
-          ></a-entity> -->
-          <template id="user-hands">
-                <a-entity class="left"
+          ></a-camera><!-- wasd-controls-enabled="false" -->
+<!--                 <a-entity class="left"
                           id="leftHand"
                           hand-controls="hand: left; handModelStyle: lowPoly; color: #ff0000"
                           raycaster="showLine: true; objects: .leftclickable;"
@@ -181,13 +168,12 @@
                     </a-entity>
                 </a-entity>
 
-                <!-- Right Hand -->
                 <a-entity class="right" id="rightHand" super-hands hand-controls="hand: right; handModelStyle: lowPoly; color: #00ff00"
                           sphere-collider="objects: a-box"
-                          raycaster="showLine: true; objects: .clickable, a-box"
                           laser-controls="hand: right">
-                </a-entity>
-            </template>
+                          raycaster="showLine: true; objects: .clickable, a-box"
+                  
+                </a-entity> -->
         </a-entity>
     </a-scene>
 

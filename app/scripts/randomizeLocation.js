@@ -2,11 +2,12 @@
 
 /* global AFRAME */
 if (AFRAME.scenes.length) {
-    const scene = AFRAME.scenes[0];
-    const camera = scene.querySelector("a-camera");
-    if (camera) {
-        const x = (Math.random() * 10) - 5;
-        const z = (Math.random() * 10) - 5;
-        camera.setAttribute("position", `${x} 1 ${z}`);
-    }
+  const scene = AFRAME.scenes[0];
+  // const camera = scene.querySelector("a-camera");
+  const camera = scene.querySelector("#camRig");
+  if (camera) {
+    const x = Math.random() * 10 - 5;
+    const z = Math.random() * 10 - 5;
+    camera.setAttribute("position", `${x} 1 ${z}`);
+  }
 }

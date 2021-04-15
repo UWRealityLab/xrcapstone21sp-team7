@@ -172,7 +172,7 @@ AFRAME.registerComponent('builder-controls', {
         // TODO handle rotation
         newEntity.setAttribute('gltf-model', '../assets/glb/' + objectArray[objectId].file + '.glb');
         newEntity.setAttribute('position', originalPositionString);
-        newEntity.setAttribute('croquet', '');
+        newEntity.setAttribute('croquet', 'name: ' + newId);
 
         // Place entity as a child of the floor
         document.getElementById('new-asset-container').appendChild(newEntity);

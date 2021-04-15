@@ -14,7 +14,7 @@ class EntityView extends Croquet.View {
         this.lastTimeComponentsWereUpdated = 0;
 
         this.parentEntity = this.parentName
-            ? this.getEntityByName(name)
+            ? this.getEntityByName(this.parentName)
             : this.scene;
 
         this.log(`Looking for entity with name "${this.name}"`);

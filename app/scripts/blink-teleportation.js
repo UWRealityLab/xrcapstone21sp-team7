@@ -21,28 +21,22 @@ AFRAME.registerComponent("blink-teleportation", {
       "[blink-teleportation]"
     );
     // Set raycaster intersections
-    let raycastParams = {
-      objects: data.raycasterObjects,
-      showLine: true
-    };
-    let leftHand = document.querySelector("#leftHand");
-    let rightHand = document.querySelector("#rightHand");
-    leftHand.setAttribute("raycaster", raycastParams);
-    rightHand.setAttribute("raycaster", raycastParams);
-    // var controller_RH = document.createElement("a-entity");
-    // controller_RH.setAttribute("laser-controls", "hand", "right");
-    // controller_RH.setAttribute("raycaster", "objects", data.raycasterObjects);
-    // var controller_LH = document.createElement("a-entity");
-    // controller_LH.setAttribute("laser-controls", "hand", "left");
-    // controller_LH.setAttribute("raycaster", "objects", data.raycasterObjects);
-    // data.cameraRig.appendChild(controller_RH);
-    // data.cameraRig.appendChild(controller_LH);
+    // let raycastParams = {
+    //   objects: data.raycasterObjects,
+    //   showLine: true
+    // };
+    // let leftHand = document.querySelector("#leftHand");
+    // let rightHand = document.querySelector("#rightHand");
+    // leftHand.setAttribute("raycaster", raycastParams);
+    // rightHand.setAttribute("raycaster", raycastParams);
 
     // CREATE A TRANSPARENT BLACK IMAGE
     var blink = document.createElement("a-image");
     blink.setAttribute("material", {
       color: data.color,
-      opacity: 0
+      opacity: 0,
+      transparent: true,
+      alphaTest: 0.5
     });
     blink.setAttribute("animation", {
       dur: data.dur,
