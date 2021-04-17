@@ -14,7 +14,7 @@ AFRAME.registerComponent('meditation-light-mode', {
         
         light = {
           property: 'light.intensity',
-          to: 0.1,
+          to: 0.2,
           dur: 2000,
           easing: 'linear'
         };

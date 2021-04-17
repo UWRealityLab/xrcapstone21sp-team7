@@ -16,14 +16,30 @@ AFRAME.registerComponent("teleportation-checkpoint", {
     console.log(cameraPosition);
     
     // Arbitrary values used, can be anything
+    // Current values should teleport you to ontop the object - calibrated for the white cubes
     let checkpointPosition = {
-      x: myPosition.x + 2,
-      y: cameraPosition.y,
-      z: myPosition.z + 2,
+      x: myPosition.x,
+      // y: cameraPosition.y,
+      y: myPosition.y + 0.6,
+      z: myPosition.z,
     };
     
     el.setAttribute("blink-teleportation", { pos: checkpointPosition });
     // el.setAttribute("look-at", "#cam");
+    
+    this.teleportationIntersected = function() {
+      el.setAttribute('color', 'grey');
+    }
+    
+    this.teleportationCleared = function() {
+      el.setAttribute('color', 'white');
+    }
+    
+    this.el.addEventListener('raycaster-intersected', this.teleportationIntersected);
+    this.el.addEventListener('raycaster-intersected-cleared', this.teleportationCleared);
   },
-  remove: function() {}
+  remove: function() {
+    this.el.removeEventListener('raycaster-intersected', this.teleportationIntersected);
+    this.el.removeEventListener('raycaster-intersected-cleared', this.teleportationCleared);
+  }
 });

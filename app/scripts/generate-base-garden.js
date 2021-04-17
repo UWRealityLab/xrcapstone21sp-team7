@@ -36,6 +36,8 @@ AFRAME.registerComponent('base-garden', {
             wall.setAttribute('gltf-model', '#single-wall-asset');
             wall.setAttribute('position', el.object3D.worldToLocal(position));
             wall.setAttribute('rotation', el.object3D.worldToLocal(rotation));
+            wall.setAttribute('croquet', 'name: ' + name);
+            wall.setAttribute('shadow', 'receive: true; cast: true');
             wall.setAttribute('id', name);
             el.appendChild(wall);
         };
@@ -78,6 +80,7 @@ AFRAME.registerComponent('base-garden', {
             corner.setAttribute('position', el.object3D.worldToLocal(cornerPositions[i]));
             corner.setAttribute('rotation', el.object3D.worldToLocal(cornerRotations[i]));
             corner.setAttribute('croquet', 'name: corner' + i.toString());
+            corner.setAttribute('shadow', 'receive: true; cast: true');
             el.appendChild(corner);
         }
 
@@ -90,10 +93,30 @@ AFRAME.registerComponent('base-garden', {
         this.floorPlane.setAttribute('id', 'floor');
         this.floorPlane.setAttribute('color', 'green');
         this.floorPlane.setAttribute('class', 'leftclickable');
+        this.floorPlane.setAttribute('roughness', '0.9')
+        this.floorPlane.setAttribute('shadow', 'receive: true; cast: false');
+
         el.appendChild(this.floorPlane);
 
         this.floorPlane.addEventListener('raycaster-intersected', this.raycasterIntersected.bind(this));
         this.floorPlane.addEventListener('raycaster-intersected-cleared', this.raycasterIntersectedCleared.bind(this));
+      
+        // Add teleportation cubes
+        let halfWidth = sceneWidth / 2;
+        let halfDepth = sceneDepth / 2;
+        let teleportIncrement = 10;
+        for (let width = -halfWidth + 5; width < halfWidth; width += teleportIncrement) {
+          for (let depth = -halfDepth + 5; depth < halfDepth; depth += teleportIncrement) {
+            let teleport = document.createElement('a-box')
+            teleport.setAttribute('class', 'clickable');
+            teleport.setAttribute('blink-teleportation', {});
+            teleport.setAttribute('teleportation-checkpoint', {});
+            teleport.setAttribute('position', {x: width, y: -0.35, z: depth});
+            // Not sure if necessary but saw the corners had these, so just in case
+            teleport.setAttribute('croquet', 'name: teleport-' + width.toString() + '-' + depth.toString());
+            el.appendChild(teleport);
+          }
+        }
     },
 
     remove: function () {
