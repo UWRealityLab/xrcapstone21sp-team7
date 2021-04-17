@@ -43,6 +43,104 @@
                 </div>
             </div>
         </header>
+        <article>
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-8 col-md-10 mx-auto">
+                        <h2 id="blog2">Week 3 Blog: Planting Seeds for our Zen Garden Experience</h2>
+                        <span class="meta">
+                            Posted by
+                            <a href="#!">AR/VR Capstone Team 7</a>
+                            on 15 April 2021
+                        </span>
+                        <p>
+                            This was our first week where we started developing many of the ideas we have been sketching out. We also made some great progress on fleshing out our
+                            <a href="deliverables.html#prd">product requirement document</a>
+                            (PRD). We also completed out
+                            <a href="deliverables.html#project-pitch">project pitch.</a>
+                            We are excited to review the progress we made this week and get started with our tasks for next week.
+                        </p>
+                        <h3>What every member did and Project Resources</h3>
+                        <p>Collectively, we worked on the project presentation due April 13. We also split up responsibilities related to the PRD, then worked together to nail down the scope of the project and what we wanted to focus on each week. Particularly, after our presentation we realized that the meditation/yoga aspect was a more appealing feature than we previously realized so we tailored our PRD so that our garden customization is still present but simple so we can focus on interesting meditation tools.</p>
+                        <p>
+                            Furthermore, we each started designing particular base components of our simulation that would be needed no matter what stretch goals we decided to focus on. In particular, Phi found some UI components that we could plug into our application and after deciding on a design Matthew ported the UI component from a
+                            <a href="https://github.com/kfarr/aframe-city-builder/tree/f7f7c9c9ade67daa0c3d89c4aeb7f9021ad794d8">city builder game</a>
+                            to work on the Oculus 2 with our plant assets. Similarly Phi got some basic asset placement and movement working with the UI. A simple way of undoing the last placed asset was added as well.
+                            <br />
+                            <img src="assets/img/palette.gif" width="500px" />
+                            <br />
+                            <i>Showcasing initial prototype of the asset placement UI.</i>
+                        </p>
+                        <p>Since we wanted some simple multiplayer interactions in our garden, Matthew set up Croquet integration with the project. This facilitates unique "rooms" that can be accessed by anyone by typing in a "room id". They can thus enter a room with others and view any modifications to the room and see the other players in the room since assets are mirrored over using Croquet's view/model system.</p>
+                        <p>
+                            We also needed a simple way to navigate around the garden, so Hristo researched some teleportation based locomotion techniques and integrated a teleportation based system into our project with predefined checkpoints that the user may select to teleport to.
+                            <br />
+                            <img src="assets/img/teleport-base.gif" width="500px" />
+                            <br />
+                            <i>Showcasing initial teleport prototype</i>
+                        </p>
+                        <p>
+                            Jane focused first on getting music working in A-Frame using
+                            <a href="">this music management component.</a>
+                            Once that was complete, she started developing what the meditation UI should look like and what sort of information we are going to be recording and giving feedback about to the user.
+                        </p>
+                        <p>
+                            We also had some fun with blender to get some basic low-poly plants to interact with in our garden. Hristo, for example, made this nice looking cherry-blossom asset.
+                            <img src="assets/img/cherry-blossom.png" />
+                        </p>
+                        <p>
+                            All in all, good progress was made this week. We are developing our codebase in Glitch and using Github for version control, so you can see our ongoing project development
+                            <a href="https://glitch.com/edit/#!/team-7-glitch-workspace">here.</a>
+                            <strong>You can view the prototype application</strong>
+                            <strong><a href="https://team-7-glitch-workspace.glitch.me/xrcapstone21sp-team7/app/">here.</a></strong>
+                        </p>
+                        <h3>Plan for Next Week</h3>
+                        <p>Next week we plan on finishing up some of the bugs that we have yet to resolve in the UI and start working on the meditation aspect of the project. In particular, we have assigned ourselves the following:</p>
+                        <ul>
+                            <li>
+                                Hristo and Jane:
+                                <ul>
+                                    <li>Finish basic locomotion</li>
+                                    <li>A more elegant asset shall be used to mark a teleportation site</li>
+                                    <li>
+                                        Start work on meditation-specific UI, add in music selection and integrate locomotion into the UI
+                                        <ul>
+                                            <li>User may select from a number of soundtracks</li>
+                                            <li>The user can select from a menu which meditation technique to use, what music should play, if they would like to teleport, and music volume</li>
+                                            <li>The UI component shall be the same as that used in asset placement</li>
+                                            <li>Write script for initial meditation tutorial</li>
+                                        </ul>
+                                    </li>
+                                </ul>
+                            </li>
+                            <li>
+                                Phi and Matthew:
+                                <ul>
+                                    <li>
+                                        Finish asset placement UI.
+                                        <ul>
+                                            <li>The y component of the left joystick shall allow the user to rotate the sample object in the user’s hand and when placed the object shall reflect this angle.</li>
+                                            <li>The bug in the asset placement UI that causes the right arrow to intermittently disappear shall be resolved</li>
+                                            <li>Add option for up/down arrows to menu UI to be used in meditation UI</li>
+                                        </ul>
+                                    </li>
+                                    <li>
+                                        Investigate meditation feedback mechanisms that may be used to monitor the user
+                                        <ul>
+                                            <li>Use phone to monitor heart rate</li>
+                                            <li>Test oculus quest speaker system, see if microphone can capture breathing</li>
+                                            <li>Explore possibility of webcam capture for capturing body positions</li>
+                                        </ul>
+                                    </li>
+                                </ul>
+                            </li>
+                        </ul>
+                        <h3>Blocking Issues</h3>
+                        <p>We believe we have a good grasp of what our initial product should look like, the only thing left now is to continue to implement it! Right now there are a lot of tasks to do, all of which are currently going smoothly so we don't forsee any major blocking issues the next week.</p>
+                    </div>
+                </div>
+            </div>
+        </article>
         <!-- Post Content-->
         <article>
             <div class="container">
