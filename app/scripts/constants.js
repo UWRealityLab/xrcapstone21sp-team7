@@ -17,5 +17,13 @@ Q.LOGGING = {
     EntityModel: false,
     EntityView: false,
 
-    DemosView: false
+    DemosView: false,
+
+    GardenControls: true,
+};
+
+Q.GARDEN_BUILDER = {
+    AssetsDir: '../assets/',
+    GardenAssetLocation: '../assets/glb/',
+    RotationSpeedModifier: 4,
 };
