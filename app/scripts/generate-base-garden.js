@@ -102,21 +102,21 @@ AFRAME.registerComponent('base-garden', {
         this.floorPlane.addEventListener('raycaster-intersected-cleared', this.raycasterIntersectedCleared.bind(this));
       
         // Add teleportation cubes
-        let halfWidth = sceneWidth / 2;
-        let halfDepth = sceneDepth / 2;
-        let teleportIncrement = 10;
-        for (let width = -halfWidth + 5; width < halfWidth; width += teleportIncrement) {
-          for (let depth = -halfDepth + 5; depth < halfDepth; depth += teleportIncrement) {
-            let teleport = document.createElement('a-box')
-            teleport.setAttribute('class', 'clickable');
-            teleport.setAttribute('blink-teleportation', {});
-            teleport.setAttribute('teleportation-checkpoint', {});
-            teleport.setAttribute('position', {x: width, y: -0.35, z: depth});
-            // Not sure if necessary but saw the corners had these, so just in case
-            teleport.setAttribute('croquet', 'name: teleport-' + width.toString() + '-' + depth.toString());
-            el.appendChild(teleport);
-          }
-        }
+        // let halfWidth = sceneWidth / 2;
+        // let halfDepth = sceneDepth / 2;
+        // let teleportIncrement = 10;
+        // for (let width = -halfWidth + 5; width < halfWidth; width += teleportIncrement) {
+        //   for (let depth = -halfDepth + 5; depth < halfDepth; depth += teleportIncrement) {
+        //     let teleport = document.createElement('a-box')
+        //     teleport.setAttribute('class', 'clickable');
+        //     teleport.setAttribute('blink-teleportation', {});
+        //     teleport.setAttribute('teleportation-checkpoint', {});
+        //     teleport.setAttribute('position', {x: width, y: -0.35, z: depth});
+        //     // Not sure if necessary but saw the corners had these, so just in case
+        //     teleport.setAttribute('croquet', 'name: teleport-' + width.toString() + '-' + depth.toString());
+        //     el.appendChild(teleport);
+        //   }
+        // }
     },
 
     remove: function () {
