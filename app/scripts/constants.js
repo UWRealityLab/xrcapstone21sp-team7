@@ -19,8 +19,8 @@ Q.LOGGING = {
 
     DemosView: false,
 
-    GardenControls: false,
-    Selector: true,
+    GardenControls: true,
+    Selector: false,
 };
 
 Q.GARDEN_BUILDER = {
