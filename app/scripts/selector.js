@@ -157,7 +157,10 @@ AFRAME.registerComponent('select-bar', {
         selectRenderEl.innerHTML = `
   <a-box id="${this.idPrefix}Frame" scale="0.4 0.15 0.005" position="0 0 -0.0075"  material="opacity: 0.5; transparent: true; color: #000000"></a-box>
   <a-entity id="${this.idPrefix}arrowRight" position="0.225 0 -0.005" rotation="90 180 -180" scale="0.004 0.002 0.004" obj-model="obj:#env_arrow" material="opacity: 0.5; transparent: true; color: #000000"></a-entity>
-  <a-entity id="${this.idPrefix}arrowLeft" position="-0.225 0 0" rotation="90 180 0" scale="0.004 0.002 0.004" obj-model="obj:#env_arrow" material="opacity:0.5; transparent:true; color:#000000"></a-entity>`;
+  <a-entity id="${this.idPrefix}arrowLeft" position="-0.225 0 0" rotation="90 180 0" scale="0.004 0.002 0.004" obj-model="obj:#env_arrow" material="opacity:0.5; transparent:true; color:#000000"></a-entity>
+  <a-entity id="${this.idPrefix}arrowUp" position="0 0.1 0" rotation="0 270 90" scale="0.004 0.002 0.004" obj-model="obj:#env_arrow" material="opacity: 0.5; transparent: true; color: #000000"></a-entity>
+  <a-entity id="${this.idPrefix}arrowDown" position="0 -0.1 -0.005" rotation="0 270 -90" scale="0.004 0.002 0.004" obj-model="obj:#env_arrow" material="opacity: 0.5; transparent: true; color: #000000"></a-entity>`;
+
         this.el.appendChild(selectRenderEl);
 
         let optgroups = this.el.getElementsByTagName('optgroup');  // Get the optgroups
@@ -174,18 +177,18 @@ AFRAME.registerComponent('select-bar', {
     },
 
     removeSelectOptionsRow: function (index) {
-        // // find the appropriate select options row
-        // let selectOptionsRowEl = document.getElementById(this.idPrefix + "selectOptionsRow" + index);
-        // let optgroupLabelEl = document.getElementById(this.idPrefix + "optgroupLabel" + index);
+        // find the appropriate select options row
+        let selectOptionsRowEl = document.getElementById(this.idPrefix + "selectOptionsRow" + index);
+        let optgroupLabelEl = document.getElementById(this.idPrefix + "optgroupLabel" + index);
 
-        // // delete all children of selectOptionsRowEl
-        // while (selectOptionsRowEl.firstChild) {
-        //     selectOptionsRowEl.removeChild(selectOptionsRowEl.firstChild);
-        // }
+        // delete all children of selectOptionsRowEl
+        while (selectOptionsRowEl.firstChild) {
+            selectOptionsRowEl.removeChild(selectOptionsRowEl.firstChild);
+        }
 
-        // // delete selectOptionsRowEl and optgroupLabelEl
-        // optgroupLabelEl.parentNode.removeChild(optgroupLabelEl);
-        // selectOptionsRowEl.parentNode.removeChild(selectOptionsRowEl);
+        // delete selectOptionsRowEl and optgroupLabelEl
+        optgroupLabelEl.parentNode.removeChild(optgroupLabelEl);
+        selectOptionsRowEl.parentNode.removeChild(selectOptionsRowEl);
     },
 
     logThumbstick: function (evt) {
@@ -201,14 +204,17 @@ AFRAME.registerComponent('select-bar', {
             return;
         }
 
-        // For now ignore up/down
-        // if (evt.detail.y > 0.95) {
-        //   this.onOptgroupNext();
-        //   // console.log('DOWN');
-        // } else if (evt.detail.y < -0.95) {
-        //   this.onOptgroupPrevious();
-        //   // console.log('UP');
-        if (evt.detail.x < -0.95) {
+        if (evt.detail.y > 0.95) {
+            if (this.prevPressed != 'up') {
+                this.onOptgroupNext();
+                this.prevPressed = 'up';
+            }
+        } else if (evt.detail.y < -0.95) {
+            if (this.prevPressed != 'down') {
+                this.onOptgroupPrevious();
+                this.prevPressed = 'down';
+            }
+        } else if (evt.detail.x < -0.95) {
             if (this.prevPressed != 'left') {
                 this.onOptionSwitch('previous');
                 this.prevPressed = 'left';
@@ -293,114 +299,84 @@ AFRAME.registerComponent('select-bar', {
     },
 
     onOptgroupNext: function () {
-        // var optgroups = this.el.getElementsByTagName('optgroup');  // Get the optgroups
-        // var selectRenderEl = document.getElementById(this.idPrefix + "selectRender');
+        var optgroups = this.el.getElementsByTagName('optgroup');  // Get the optgroups
+        var selectRenderEl = document.getElementById(this.idPrefix + 'selectRender');
 
-        // if (this.selectedOptgroupIndex + 2 > optgroups.length) {
-        //     // CAN'T DO THIS, show red arrow
-        //     var arrow = document.getElementById(this.idPrefix + "arrowDown');
-        //     arrow.removeAttribute('animation__color');
-        //     arrow.removeAttribute('animation__opacity');
-        //     arrow.removeAttribute('animation__scale');
-        //     arrow.setAttribute('animation__color', { property: 'material.color', dur: 500, from: "#FF0000", to: "#000000" });
-        //     arrow.setAttribute('animation__opacity', { property: 'material.opacity', dur: 500, from: "1", to: "0.5" });
-        //     arrow.setAttribute('animation__scale', { property: 'scale', dur: 500, from: "-0.006 0.003 0.006", to: "-0.004 0.002 0.004" });
-        // } else {
-        //     // CAN DO THIS, show next optgroup
+        if (this.selectedOptgroupIndex + 2 > optgroups.length) {
+            this.animateArrow(this.idPrefix + 'arrowDown', '#FF0000');
+        } else {
+            this.removeSelectOptionsRow(this.selectedOptgroupIndex); // remove the old optgroup row
 
-        //     this.removeSelectOptionsRow(this.selectedOptgroupIndex); // remove the old optgroup row
+            this.selectedOptgroupIndex += 1;
+            var selectedOptgroupEl = optgroups[this.selectedOptgroupIndex];  // fetch the currently selected optgroup
+            this.selectedOptgroupValue = selectedOptgroupEl.getAttribute('value'); // set component property to opgroup value
 
-        //     this.selectedOptgroupIndex += 1;
-        //     var selectedOptgroupEl = optgroups[this.selectedOptgroupIndex];  // fetch the currently selected optgroup
-        //     this.selectedOptgroupValue = selectedOptgroupEl.getAttribute('value'); // set component property to opgroup value
+            this.el.flushToDOM();
 
-        //     this.el.flushToDOM();
+            var nextSelectedOptgroupEl = optgroups[this.selectedOptgroupIndex];  // fetch the currently selected optgroup
+            this.makeSelectOptionsRow(nextSelectedOptgroupEl, selectRenderEl, this.selectedOptgroupIndex, 0, this.idPrefix);
 
-        //     var nextSelectedOptgroupEl = optgroups[this.selectedOptgroupIndex];  // fetch the currently selected optgroup
-        //     // this.makeSelectOptionsRow(nextSelectedOptgroupEl, selectRenderEl, this.selectedOptgroupIndex, -0.15);
-        //     this.makeSelectOptionsRow(nextSelectedOptgroupEl, selectRenderEl, this.selectedOptgroupIndex, 0, this.idPrefix);
+            // Change selected option element when optgroup is changed
+            var selectOptionsRowEl = document.getElementById(this.idPrefix + 'selectOptionsRow' + this.selectedOptgroupIndex);
+            var newlySelectedMenuEl = selectOptionsRowEl.getElementsByClassName('selected')[0];
 
-        //     // Change selected option element when optgroup is changed
-        //     var selectOptionsRowEl = document.getElementById(this.idPrefix + 'selectOptionsRow' + this.selectedOptgroupIndex);
-        //     var newlySelectedMenuEl = selectOptionsRowEl.getElementsByClassName('selected')[0];
+            // update selectOptionsValue and Index
+            this.selectedOptionValue = newlySelectedMenuEl.getAttribute('value');
+            this.selectedOptionIndex = newlySelectedMenuEl.getAttribute('optionid');
 
-        //     // update selectOptionsValue and Index
-        //     this.selectedOptionValue = newlySelectedMenuEl.getAttribute('value');
-        //     this.selectedOptionIndex = newlySelectedMenuEl.getAttribute('optionid');
+            this.el.flushToDOM();
 
-        //     this.el.flushToDOM();
+            this.el.emit('menuOptgroupNext');
+            this.el.emit('menuChanged');
 
-        //     this.el.emit('menuOptgroupNext');
-        //     this.el.emit('menuChanged');
-
-        //     var arrow = document.getElementById(this.idPrefix + "arrowDown');
-        //     arrow.removeAttribute('animation__color');
-        //     arrow.removeAttribute('animation__opacity');
-        //     arrow.removeAttribute('animation__scale');
-        //     arrow.setAttribute('animation__color', { property: 'material.color', dur: 500, from: "#FFFF00", to: "#000000" });
-        //     arrow.setAttribute('animation__opacity', { property: 'material.opacity', dur: 500, from: "1", to: "0.5" });
-        //     arrow.setAttribute('animation__scale', { property: 'scale', dur: 500, from: "-0.006 0.003 0.006", to: "-0.004 0.002 0.004" });
-        // }
+            this.animateArrow(this.idPrefix + 'arrowDown');
+        }
     },
 
     onOptgroupPrevious: function (evt) {
-        // var optgroups = this.el.getElementsByTagName('optgroup');  // Get the optgroups
-        // var selectRenderEl = document.getElementById(this.idPrefix + "selectRender');
+        var optgroups = this.el.getElementsByTagName('optgroup');  // Get the optgroups
+        var selectRenderEl = document.getElementById(this.idPrefix + 'selectRender');
 
-        // if (this.selectedOptgroupIndex - 1 < 0) {
-        //     // CAN'T DO THIS, show red arrow
-        //     var arrow = document.getElementById(this.idPrefix + "arrowUp');
-        //     arrow.removeAttribute('animation__color');
-        //     arrow.removeAttribute('animation__opacity');
-        //     arrow.removeAttribute('animation__scale');
-        //     arrow.setAttribute('animation__color', { property: 'material.color', dur: 500, from: "#FF0000", to: "#000000" });
-        //     arrow.setAttribute('animation__opacity', { property: 'material.opacity', dur: 500, from: "1", to: "0.5" });
-        //     arrow.setAttribute('animation__scale', { property: 'scale', dur: 500, from: "0.006 0.003 0.006", to: "0.004 0.002 0.004" });
+        if (this.selectedOptgroupIndex - 1 < 0) {
+            this.animateArrow(this.idPrefix + 'arrowUp', '#FF0000');
+        } else {
+            // CAN DO THIS, show previous optgroup
 
-        // } else {
-        //     // CAN DO THIS, show previous optgroup
+            this.removeSelectOptionsRow(this.selectedOptgroupIndex); // remove the old optgroup row
 
-        //     this.removeSelectOptionsRow(this.selectedOptgroupIndex); // remove the old optgroup row
+            this.selectedOptgroupIndex -= 1;
+            var selectedOptgroupEl = optgroups[this.selectedOptgroupIndex];  // fetch the currently selected optgroup
+            this.selectedOptgroupValue = selectedOptgroupEl.getAttribute('value'); // set component property to opgroup value
 
-        //     this.selectedOptgroupIndex -= 1;
-        //     var selectedOptgroupEl = optgroups[this.selectedOptgroupIndex];  // fetch the currently selected optgroup
-        //     this.selectedOptgroupValue = selectedOptgroupEl.getAttribute('value'); // set component property to opgroup value
+            this.el.flushToDOM();
 
-        //     this.el.flushToDOM();
+            var nextSelectedOptgroupEl = optgroups[this.selectedOptgroupIndex];  // fetch the currently selected optgroup
+            this.makeSelectOptionsRow(nextSelectedOptgroupEl, selectRenderEl, this.selectedOptgroupIndex, 0, this.idPrefix);
 
-        //     var nextSelectedOptgroupEl = optgroups[this.selectedOptgroupIndex];  // fetch the currently selected optgroup
-        //     // this.makeSelectOptionsRow(nextSelectedOptgroupEl, selectRenderEl, this.selectedOptgroupIndex, -0.15);
-        //     this.makeSelectOptionsRow(nextSelectedOptgroupEl, selectRenderEl, this.selectedOptgroupIndex, 0, this.idPrefix);
+            // Change selected option element when optgroup is changed
+            var selectOptionsRowEl = document.getElementById(this.idPrefix + 'selectOptionsRow' + this.selectedOptgroupIndex);
+            var newlySelectedMenuEl = selectOptionsRowEl.getElementsByClassName('selected')[0];
 
-        //     // Change selected option element when optgroup is changed
-        //     var selectOptionsRowEl = document.getElementById(this.idPrefix + 'selectOptionsRow' + this.selectedOptgroupIndex);
-        //     var newlySelectedMenuEl = selectOptionsRowEl.getElementsByClassName('selected')[0];
+            // update selectOptionsValue and Index
+            this.selectedOptionValue = newlySelectedMenuEl.getAttribute('value');
+            this.selectedOptionIndex = newlySelectedMenuEl.getAttribute('optionid');
 
-        //     // update selectOptionsValue and Index
-        //     this.selectedOptionValue = newlySelectedMenuEl.getAttribute('value');
-        //     this.selectedOptionIndex = newlySelectedMenuEl.getAttribute('optionid');
+            this.el.flushToDOM();
 
-        //     this.el.flushToDOM();
+            this.el.emit('menuOptgroupNext');
+            this.el.emit('menuChanged');
 
-        //     this.el.emit('menuOptgroupNext');
-        //     this.el.emit('menuChanged');
-
-        //     var arrow = document.getElementById(this.idPrefix + "arrowUp');
-        //     arrow.removeAttribute('animation__color');
-        //     arrow.removeAttribute('animation__opacity');
-        //     arrow.removeAttribute('animation__scale');
-        //     arrow.setAttribute('animation__color', { property: 'material.color', dur: 500, from: "#FFFF00", to: "#000000" });
-        //     arrow.setAttribute('animation__opacity', { property: 'material.opacity', dur: 500, from: "1", to: "0.5" });
-        //     arrow.setAttribute('animation__scale', { property: 'scale', dur: 500, from: "0.006 0.003 0.006", to: "0.004 0.002 0.004" });
-        // }
+            this.animateArrow(this.idPrefix + 'arrowUp');
+        }
     },
 
-    animateArrow: function (arrowId) {
+    animateArrow: function (arrowId, initialAnimationArrowColor) {
+        let color = initialAnimationArrowColor ? initialAnimationArrowColor : '#FFFF00';
         let arrow = document.getElementById(arrowId);
         arrow.removeAttribute('animation__color');
         arrow.removeAttribute('animation__opacity');
         arrow.removeAttribute('animation__scale');
-        arrow.setAttribute('animation__color', { property: 'material.color', dur: 500, from: '#FFFF00', to: '#000000' });
+        arrow.setAttribute('animation__color', { property: 'material.color', dur: 500, from: color, to: '#000000' });
         arrow.setAttribute('animation__opacity', { property: 'material.opacity', dur: 500, from: '1', to: '0.5' });
         arrow.setAttribute('animation__scale', { property: 'scale', dur: 500, from: '0.006 0.003 0.006', to: '0.004 0.002 0.004' });
     },
@@ -427,11 +403,11 @@ AFRAME.registerComponent('select-bar', {
         if (selectOptionsRowEl.hasAttribute('desiredPosition')) {
             var oldPosition = selectOptionsRowEl.getAttribute('desiredPosition');
             var newX = parseFloat(oldPosition.split(' ')[0]) + deltaX;
-            var newPositionString = `${newX.toFixed(2).toString()} ${oldPosition.split(' ')[1]} ${oldPosition.split(' ')[2]}`;
+            var newPositionString = `${newX.toFixed(3).toString()} ${oldPosition.split(' ')[1]} ${oldPosition.split(' ')[2]}`;
         } else {
             var oldPosition = selectOptionsRowEl.object3D.position;
             var newX = oldPosition.x + deltaX; // this could be a variable at the component level
-            var newPositionString = `${newX.toFixed(2).toString()} ${oldPosition.y} ${oldPosition.z}`;
+            var newPositionString = `${newX.toFixed(3).toString()} ${oldPosition.y} ${oldPosition.z}`;
         }
 
         this.log('animating from oldPosition ', oldPosition, ' to newPosition ', newPositionString, ' on option row ', selectOptionsRowEl);

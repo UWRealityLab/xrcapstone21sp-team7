@@ -26,5 +26,5 @@ Q.LOGGING = {
 Q.GARDEN_BUILDER = {
     AssetsDir: '../assets/',
     GardenAssetLocation: '../assets/glb/',
-    RotationSpeedModifier: 4,
+    RotationSpeedModifier: 6,
 };

@@ -54,7 +54,8 @@ AFRAME.registerComponent('garden-controls', {
         el.addEventListener('gripup', this.handReleased.bind(this));
         el.addEventListener('gripdown', this.handSqueezed.bind(this));
         el.addEventListener('xbuttondown', this.onUndo.bind(this));
-        el.addEventListener('thumbstickmoved', this.onJoystickChanged.bind(this));
+        el.addEventListener('triggerdown', this.rotateItem.bind(this));
+        el.addEventListener('triggerup', this.stopRotatingItem.bind(this));
 
         // The rest of the controls are handled by the menu element
         let menuEl = document.getElementById(this.data.menuId);
@@ -70,7 +71,8 @@ AFRAME.registerComponent('garden-controls', {
         el.removeEventListener('gripup', this.handReleased);
         el.removeEventListener('gripdown', this.handSqueezed);
         el.removeEventListener('xbuttondown', this.onUndo);
-        el.removeEventListener('thumbstickmoved', this.onJoystickChanged);
+        el.removeEventListener('triggerdown', this.rotateItem);
+        el.removeEventListener('triggerup', this.stopRotatingItem);
 
         let menuEl = document.getElementById(this.data.menuId);
         menuEl.removeEventListener('menuChanged', this.onObjectChange);
@@ -84,7 +86,7 @@ AFRAME.registerComponent('garden-controls', {
 
         // get the list of object group json directories - which json files should we read?
         // for each group, fetch the json file and populate the optgroup and option elements as children of the appropriate menu element
-        let list = ['plants'];
+        let list = ['plants', 'rocks'];
 
         let groupJSONArray = [];
         const menuId = this.data.menuId;
@@ -119,7 +121,7 @@ AFRAME.registerComponent('garden-controls', {
                 groupJSONArray[groupName].forEach(function (objectDefinition, index) {
                     log(objectDefinition['file']);
                     log(objectDefinition);
-                    optionsHTML += `<option value="${objectDefinition['file']}" src="../../assets/img/${objectDefinition['file']}.png">${humanize(objectDefinition['file'])}</option>`
+                    optionsHTML += `<option value="${objectDefinition['file']}" src="${Q.GARDEN_BUILDER.AssetsDir}img/${objectDefinition['file']}.png">${humanize(objectDefinition['file'])}</option>`
                 });
 
                 newOptgroupEl.innerHTML = optionsHTML;
@@ -139,6 +141,20 @@ AFRAME.registerComponent('garden-controls', {
 
         this.el.setAttribute('raycaster', 'enabled', false);
         this.el.setAttribute('raycaster', 'showLine', false);
+
+        // Function to be called in tick to rotate the item
+        this.rotating = false;
+        this.updateItemRotaton = AFRAME.utils.throttle(() => {
+                if (this.rotating) {
+                    let rotateY = Q.GARDEN_BUILDER.RotationSpeedModifier;
+                    let rotation = thisItemEl.getAttribute('rotation');
+                    rotation.y += rotateY;
+                    thisItemEl.setAttribute('rotation', rotation);
+                }
+            },
+            1000 / 24,
+            this
+        );
     },
 
     /**
@@ -236,6 +252,40 @@ AFRAME.registerComponent('garden-controls', {
         let rotation = thisItemEl.getAttribute('rotation');
         rotation.y += rotateY;
         thisItemEl.setAttribute('rotation', rotation);
+    },
+  
+    rotateItem: function(evt) {
+        // Ignore if not the came controller
+        if (evt.target.id != this.el.id) {
+            return;
+        }
+
+        // Ignore if invisible
+        let thisItemEl = document.getElementById(this.data.previewItemId);
+        if (thisItemEl.getAttribute('visible') == false) {
+            return;
+        }
+      
+        this.rotating = true;
+    },
+  
+    stopRotatingItem: function(evt) {
+        // Ignore if not the came controller
+        if (evt.target.id != this.el.id) {
+            return;
+        }
+      
+        // Ignore if invisible
+        let thisItemEl = document.getElementById(this.data.previewItemId);
+        if (thisItemEl.getAttribute('visible') == false) {
+            return;
+        }
+      
+        this.rotating = false;
+    },
+  
+    tick: function() {
+        this.updateItemRotaton();
     },
 
     /**
