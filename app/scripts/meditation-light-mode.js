@@ -3,13 +3,12 @@ AFRAME.registerComponent('meditation-light-mode', {
     let el = this.el;
     
     this.onMeditation = function(e) {
-      //console.log("It's working");
-      let c = e.detail.returnColor;
-      //console.log(c);
+      
+      let n = e.detail.returnColor;
+      console.log(n);
       
       let light;
-      
-      if (c == "#FFC65D") {
+      if (n == "meditation") {
         // we want to change the sky to lower intensity
         
         light = {
@@ -27,6 +26,7 @@ AFRAME.registerComponent('meditation-light-mode', {
           easing: 'linear'
         };
       }
+      
       //el.setAttribute('src', source);
       el.setAttribute('animation', light);
     }
