@@ -54,7 +54,8 @@ AFRAME.registerComponent('garden-controls', {
         el.addEventListener('gripup', this.handReleased.bind(this));
         el.addEventListener('gripdown', this.handSqueezed.bind(this));
         el.addEventListener('xbuttondown', this.onUndo.bind(this));
-        el.addEventListener('thumbstickmoved', this.onJoystickChanged.bind(this));
+        el.addEventListener('triggerdown', this.rotateItem.bind(this));
+        el.addEventListener('triggerup', this.stopRotatingItem.bind(this));
 
         // The rest of the controls are handled by the menu element
         let menuEl = document.getElementById(this.data.menuId);
@@ -70,7 +71,8 @@ AFRAME.registerComponent('garden-controls', {
         el.removeEventListener('gripup', this.handReleased);
         el.removeEventListener('gripdown', this.handSqueezed);
         el.removeEventListener('xbuttondown', this.onUndo);
-        el.removeEventListener('thumbstickmoved', this.onJoystickChanged);
+        el.removeEventListener('triggerdown', this.rotateItem);
+        el.removeEventListener('triggerup', this.stopRotatingItem);
 
         let menuEl = document.getElementById(this.data.menuId);
         menuEl.removeEventListener('menuChanged', this.onObjectChange);
@@ -78,13 +80,15 @@ AFRAME.registerComponent('garden-controls', {
     },
 
     init: function () {
+        let el = this.el;
+
         this.log.bind(this);
       
         this.log('hello world');
 
         // get the list of object group json directories - which json files should we read?
         // for each group, fetch the json file and populate the optgroup and option elements as children of the appropriate menu element
-        let list = ['plants'];
+        let list = ['plants', 'rocks'];
 
         let groupJSONArray = [];
         const menuId = this.data.menuId;
@@ -119,7 +123,7 @@ AFRAME.registerComponent('garden-controls', {
                 groupJSONArray[groupName].forEach(function (objectDefinition, index) {
                     log(objectDefinition['file']);
                     log(objectDefinition);
-                    optionsHTML += `<option value="${objectDefinition['file']}" src="../../assets/img/${objectDefinition['file']}.png">${humanize(objectDefinition['file'])}</option>`
+                    optionsHTML += `<option value="${objectDefinition['file']}" src="${Q.GARDEN_BUILDER.AssetsDir}img/${objectDefinition['file']}.png">${humanize(objectDefinition['file'])}</option>`
                 });
 
                 newOptgroupEl.innerHTML = optionsHTML;
@@ -139,6 +143,17 @@ AFRAME.registerComponent('garden-controls', {
 
         this.el.setAttribute('raycaster', 'enabled', false);
         this.el.setAttribute('raycaster', 'showLine', false);
+
+        // Function to be called in tick to rotate the item
+        this.rotating = false;
+        this.updateItemRotaton = AFRAME.utils.throttle(() => {
+                if (this.rotating) {
+                    thisItemEl.object3D.rotation.y = (thisItemEl.object3D.rotation.y + Q.GARDEN_BUILDER.RotationSpeedModifier * Math.PI / 180.0) % (2 * Math.PI);
+                }
+            },
+            1000 / 24,
+            this
+        );
     },
 
     /**
@@ -195,8 +210,13 @@ AFRAME.registerComponent('garden-controls', {
         // let thisItemWorldRotation = thisItemEl.object3D.getWorldRotation();
         let position = intersectionPoint.x + ' ' + 0 + ' ' + intersectionPoint.z;
 
-        let itemRotation = thisItemEl.getAttribute('rotation');
-        let rotation = '0 ' + itemRotation.y + ' 0';
+
+        let quaternion = new THREE.Quaternion();
+        let q = thisItemEl.object3D.getWorldQuaternion(quaternion);      
+        let rotation = new THREE.Euler().setFromQuaternion(quaternion, 'XYZ');
+        let rotationStr = '0 ' + (rotation.y * 180 / Math.PI) + ' 0';
+      
+        this.log(rotationStr);
 
         // NEW https://stackoverflow.com/questions/105034/create-guid-uuid-in-javascript
         let newId = 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
@@ -208,7 +228,7 @@ AFRAME.registerComponent('garden-controls', {
         newEntity.setAttribute('class', 'movable-plants');
         newEntity.setAttribute('croquet', 'name: ' + newId);
         newEntity.setAttribute('scale', objectArray[objectId].actualScale);
-        newEntity.setAttribute('rotation', rotation);
+        newEntity.setAttribute('rotation', rotationStr);
         newEntity.setAttribute('gltf-model', `${Q.GARDEN_BUILDER.GardenAssetLocation}${objectArray[objectId].file}.glb`);
         newEntity.setAttribute('position', position);
         newEntity.setAttribute('shadow', 'receive: false; cast: true');
@@ -217,25 +237,39 @@ AFRAME.registerComponent('garden-controls', {
         // Place entity as a child of the floor
         document.getElementById(this.data.newAssetContainerId).appendChild(newEntity);
     },
-
-    /**
-     * The y component of the joystick is used to rotate the preview item.
-     */
-    onJoystickChanged: function (evt) {
+  
+    rotateItem: function(evt) {
         // Ignore if not the came controller
         if (evt.target.id != this.el.id) {
             return;
         }
 
+        // Ignore if invisible
         let thisItemEl = document.getElementById(this.data.previewItemId);
         if (thisItemEl.getAttribute('visible') == false) {
             return;
         }
-
-        let rotateY = Q.GARDEN_BUILDER.RotationSpeedModifier * evt.detail.y;
-        let rotation = thisItemEl.getAttribute('rotation');
-        rotation.y += rotateY;
-        thisItemEl.setAttribute('rotation', rotation);
+      
+        this.rotating = true;
+    },
+  
+    stopRotatingItem: function(evt) {
+        // Ignore if not the came controller
+        if (evt.target.id != this.el.id) {
+            return;
+        }
+      
+        // Ignore if invisible
+        let thisItemEl = document.getElementById(this.data.previewItemId);
+        if (thisItemEl.getAttribute('visible') == false) {
+            return;
+        }
+      
+        this.rotating = false;
+    },
+  
+    tick: function() {
+        this.updateItemRotaton();
     },
 
     /**

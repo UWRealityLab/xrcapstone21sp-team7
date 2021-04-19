@@ -19,12 +19,12 @@ Q.LOGGING = {
 
     DemosView: false,
 
-    GardenControls: false,
-    Selector: true,
+    GardenControls: true,
+    Selector: false,
 };
 
 Q.GARDEN_BUILDER = {
     AssetsDir: '../assets/',
     GardenAssetLocation: '../assets/glb/',
-    RotationSpeedModifier: 4,
+    RotationSpeedModifier: 6,
 };
