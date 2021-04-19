@@ -111,11 +111,12 @@ AFRAME.registerComponent('select-bar', {
             let selected = (menuArrayIndex === 3);
             // index of the optionsElementsArray where optionsElementsArray.element.getattribute('value') = element.getattribute('value')
             let originalOptionsArrayIndex = findWithAttr(optionsElementsArray, 'value', element.getAttribute('value'));
+            let color = selected ? "yellow" : "#747474";
             selectOptionsHTML += `
   <a-entity id="${idPrefix}${originalOptionsArrayIndex}" visible="${visible}" class="preview${(selected) ? " selected" : ""}" optionid="${originalOptionsArrayIndex}" value="${element.getAttribute("value")}" optgroup="${selectedOptgroupEl.getAttribute("value")}" position="${startPositionX} ${offsetY} 0">
-    <a-box class="previewFrame" position="0 0 -0.003" scale="0.06 0.06 0.005" material="color: ${(selected) ? ("yellow") : ("#222222")}"></a-box>
+    <a-box class="previewFrame" position="0 0 -0.003" scale="0.06 0.06 0.005" material="color: ${color}"></a-box>
     <a-image class="previewImage" scale="0.05 0.05 0.05" src="${element.getAttribute("src")}" ></a-image>
-    <a-entity class="objectName" position="0.065 -0.04 -0.003" scale="0.18 0.18 0.18" text="value: ${element.text}; color: ${(selected) ? ("yellow") : ("#747474")}"></a-entity>
+    <a-entity class="objectName" position="0.065 -0.04 -0.003" scale="0.18 0.18 0.18" text="value: ${element.text}; color: ${color}"></a-entity>
   </a-entity>`
             startPositionX += deltaX;
         });
@@ -123,9 +124,9 @@ AFRAME.registerComponent('select-bar', {
         // Append these menu options to a new element with id of "selectOptionsRow"
         let selectOptionsRowEl = document.createElement('a-entity');
         selectOptionsRowEl.id = idPrefix + 'selectOptionsRow' + index;
+        this.log('adding the following html (selectOptionsHTML)', selectOptionsHTML);
         selectOptionsRowEl.innerHTML = selectOptionsHTML;
         parentEl.appendChild(selectOptionsRowEl);
-
     },
 
     init: function () {
@@ -137,6 +138,7 @@ AFRAME.registerComponent('select-bar', {
         this.onOptionSwitch.bind(this);
         this.onOptgroupNext.bind(this);
         this.onOptgroupPrevious.bind(this);
+        this.updateFrameAndTextColor.bind(this);
 
         // Create select bar menu from html child `option` elements beneath parent entity inspired by the html5 spec: http://www.w3schools.com/tags/tag_optgroup.asp
         this.lastTime = new Date();
@@ -154,8 +156,11 @@ AFRAME.registerComponent('select-bar', {
         selectRenderEl.id = this.idPrefix + "selectRender";
         selectRenderEl.innerHTML = `
   <a-box id="${this.idPrefix}Frame" scale="0.4 0.15 0.005" position="0 0 -0.0075"  material="opacity: 0.5; transparent: true; color: #000000"></a-box>
-  <a-entity id="${this.idPrefix}arrowRight" position="0.225 0 0" rotation="90 180 -180" scale="-0.004 0.002 0.004" obj-model="obj:#env_arrow" material="opacity: 0.5; transparent: true; color: #000000"></a-entity>
-  <a-entity id="${this.idPrefix}arrowLeft" position="-0.225 0 0" rotation="90 180 0" scale="0.004 0.002 0.004" obj-model="obj:#env_arrow" material="opacity:0.5; transparent:true; color:#000000"></a-entity>`;
+  <a-entity id="${this.idPrefix}arrowRight" position="0.225 0 -0.005" rotation="90 180 -180" scale="0.004 0.002 0.004" obj-model="obj:#env_arrow" material="opacity: 0.5; transparent: true; color: #000000"></a-entity>
+  <a-entity id="${this.idPrefix}arrowLeft" position="-0.225 0 0" rotation="90 180 0" scale="0.004 0.002 0.004" obj-model="obj:#env_arrow" material="opacity:0.5; transparent:true; color:#000000"></a-entity>
+  <a-entity id="${this.idPrefix}arrowUp" position="0 0.1 0" rotation="0 270 90" scale="0.004 0.002 0.004" obj-model="obj:#env_arrow" material="opacity: 0.5; transparent: true; color: #000000"></a-entity>
+  <a-entity id="${this.idPrefix}arrowDown" position="0 -0.1 -0.005" rotation="0 270 -90" scale="0.004 0.002 0.004" obj-model="obj:#env_arrow" material="opacity: 0.5; transparent: true; color: #000000"></a-entity>`;
+
         this.el.appendChild(selectRenderEl);
 
         let optgroups = this.el.getElementsByTagName('optgroup');  // Get the optgroups
@@ -172,18 +177,18 @@ AFRAME.registerComponent('select-bar', {
     },
 
     removeSelectOptionsRow: function (index) {
-        // // find the appropriate select options row
-        // let selectOptionsRowEl = document.getElementById(this.idPrefix + "selectOptionsRow" + index);
-        // let optgroupLabelEl = document.getElementById(this.idPrefix + "optgroupLabel" + index);
+        // find the appropriate select options row
+        let selectOptionsRowEl = document.getElementById(this.idPrefix + "selectOptionsRow" + index);
+        let optgroupLabelEl = document.getElementById(this.idPrefix + "optgroupLabel" + index);
 
-        // // delete all children of selectOptionsRowEl
-        // while (selectOptionsRowEl.firstChild) {
-        //     selectOptionsRowEl.removeChild(selectOptionsRowEl.firstChild);
-        // }
+        // delete all children of selectOptionsRowEl
+        while (selectOptionsRowEl.firstChild) {
+            selectOptionsRowEl.removeChild(selectOptionsRowEl.firstChild);
+        }
 
-        // // delete selectOptionsRowEl and optgroupLabelEl
-        // optgroupLabelEl.parentNode.removeChild(optgroupLabelEl);
-        // selectOptionsRowEl.parentNode.removeChild(selectOptionsRowEl);
+        // delete selectOptionsRowEl and optgroupLabelEl
+        optgroupLabelEl.parentNode.removeChild(optgroupLabelEl);
+        selectOptionsRowEl.parentNode.removeChild(selectOptionsRowEl);
     },
 
     logThumbstick: function (evt) {
@@ -199,14 +204,17 @@ AFRAME.registerComponent('select-bar', {
             return;
         }
 
-        // For now ignore up/down
-        // if (evt.detail.y > 0.95) {
-        //   this.onOptgroupNext();
-        //   // console.log('DOWN');
-        // } else if (evt.detail.y < -0.95) {
-        //   this.onOptgroupPrevious();
-        //   // console.log('UP');
-        if (evt.detail.x < -0.95) {
+        if (evt.detail.y > 0.95) {
+            if (this.prevPressed != 'up') {
+                this.onOptgroupNext();
+                this.prevPressed = 'up';
+            }
+        } else if (evt.detail.y < -0.95) {
+            if (this.prevPressed != 'down') {
+                this.onOptgroupPrevious();
+                this.prevPressed = 'down';
+            }
+        } else if (evt.detail.x < -0.95) {
             if (this.prevPressed != 'left') {
                 this.onOptionSwitch('previous');
                 this.prevPressed = 'left';
@@ -291,319 +299,210 @@ AFRAME.registerComponent('select-bar', {
     },
 
     onOptgroupNext: function () {
-        // var optgroups = this.el.getElementsByTagName('optgroup');  // Get the optgroups
-        // var selectRenderEl = document.getElementById(this.idPrefix + "selectRender');
+        var optgroups = this.el.getElementsByTagName('optgroup');  // Get the optgroups
+        var selectRenderEl = document.getElementById(this.idPrefix + 'selectRender');
 
-        // if (this.selectedOptgroupIndex + 2 > optgroups.length) {
-        //     // CAN'T DO THIS, show red arrow
-        //     var arrow = document.getElementById(this.idPrefix + "arrowDown');
-        //     arrow.removeAttribute('animation__color');
-        //     arrow.removeAttribute('animation__opacity');
-        //     arrow.removeAttribute('animation__scale');
-        //     arrow.setAttribute('animation__color', { property: 'material.color', dur: 500, from: "#FF0000", to: "#000000" });
-        //     arrow.setAttribute('animation__opacity', { property: 'material.opacity', dur: 500, from: "1", to: "0.5" });
-        //     arrow.setAttribute('animation__scale', { property: 'scale', dur: 500, from: "-0.006 0.003 0.006", to: "-0.004 0.002 0.004" });
-        // } else {
-        //     // CAN DO THIS, show next optgroup
+        if (this.selectedOptgroupIndex + 2 > optgroups.length) {
+            this.animateArrow(this.idPrefix + 'arrowDown', '#FF0000');
+        } else {
+            this.removeSelectOptionsRow(this.selectedOptgroupIndex); // remove the old optgroup row
 
-        //     this.removeSelectOptionsRow(this.selectedOptgroupIndex); // remove the old optgroup row
+            this.selectedOptgroupIndex += 1;
+            var selectedOptgroupEl = optgroups[this.selectedOptgroupIndex];  // fetch the currently selected optgroup
+            this.selectedOptgroupValue = selectedOptgroupEl.getAttribute('value'); // set component property to opgroup value
 
-        //     this.selectedOptgroupIndex += 1;
-        //     var selectedOptgroupEl = optgroups[this.selectedOptgroupIndex];  // fetch the currently selected optgroup
-        //     this.selectedOptgroupValue = selectedOptgroupEl.getAttribute('value'); // set component property to opgroup value
+            this.el.flushToDOM();
 
-        //     this.el.flushToDOM();
+            var nextSelectedOptgroupEl = optgroups[this.selectedOptgroupIndex];  // fetch the currently selected optgroup
+            this.makeSelectOptionsRow(nextSelectedOptgroupEl, selectRenderEl, this.selectedOptgroupIndex, 0, this.idPrefix);
 
-        //     var nextSelectedOptgroupEl = optgroups[this.selectedOptgroupIndex];  // fetch the currently selected optgroup
-        //     // this.makeSelectOptionsRow(nextSelectedOptgroupEl, selectRenderEl, this.selectedOptgroupIndex, -0.15);
-        //     this.makeSelectOptionsRow(nextSelectedOptgroupEl, selectRenderEl, this.selectedOptgroupIndex, 0, this.idPrefix);
+            // Change selected option element when optgroup is changed
+            var selectOptionsRowEl = document.getElementById(this.idPrefix + 'selectOptionsRow' + this.selectedOptgroupIndex);
+            var newlySelectedMenuEl = selectOptionsRowEl.getElementsByClassName('selected')[0];
 
-        //     // Change selected option element when optgroup is changed
-        //     var selectOptionsRowEl = document.getElementById(this.idPrefix + 'selectOptionsRow' + this.selectedOptgroupIndex);
-        //     var newlySelectedMenuEl = selectOptionsRowEl.getElementsByClassName('selected')[0];
+            // update selectOptionsValue and Index
+            this.selectedOptionValue = newlySelectedMenuEl.getAttribute('value');
+            this.selectedOptionIndex = newlySelectedMenuEl.getAttribute('optionid');
 
-        //     // update selectOptionsValue and Index
-        //     this.selectedOptionValue = newlySelectedMenuEl.getAttribute('value');
-        //     this.selectedOptionIndex = newlySelectedMenuEl.getAttribute('optionid');
+            this.el.flushToDOM();
 
-        //     this.el.flushToDOM();
+            this.el.emit('menuOptgroupNext');
+            this.el.emit('menuChanged');
 
-        //     this.el.emit('menuOptgroupNext');
-        //     this.el.emit('menuChanged');
-
-        //     var arrow = document.getElementById(this.idPrefix + "arrowDown');
-        //     arrow.removeAttribute('animation__color');
-        //     arrow.removeAttribute('animation__opacity');
-        //     arrow.removeAttribute('animation__scale');
-        //     arrow.setAttribute('animation__color', { property: 'material.color', dur: 500, from: "#FFFF00", to: "#000000" });
-        //     arrow.setAttribute('animation__opacity', { property: 'material.opacity', dur: 500, from: "1", to: "0.5" });
-        //     arrow.setAttribute('animation__scale', { property: 'scale', dur: 500, from: "-0.006 0.003 0.006", to: "-0.004 0.002 0.004" });
-        // }
+            this.animateArrow(this.idPrefix + 'arrowDown');
+        }
     },
 
     onOptgroupPrevious: function (evt) {
-        // var optgroups = this.el.getElementsByTagName('optgroup');  // Get the optgroups
-        // var selectRenderEl = document.getElementById(this.idPrefix + "selectRender');
+        var optgroups = this.el.getElementsByTagName('optgroup');  // Get the optgroups
+        var selectRenderEl = document.getElementById(this.idPrefix + 'selectRender');
 
-        // if (this.selectedOptgroupIndex - 1 < 0) {
-        //     // CAN'T DO THIS, show red arrow
-        //     var arrow = document.getElementById(this.idPrefix + "arrowUp');
-        //     arrow.removeAttribute('animation__color');
-        //     arrow.removeAttribute('animation__opacity');
-        //     arrow.removeAttribute('animation__scale');
-        //     arrow.setAttribute('animation__color', { property: 'material.color', dur: 500, from: "#FF0000", to: "#000000" });
-        //     arrow.setAttribute('animation__opacity', { property: 'material.opacity', dur: 500, from: "1", to: "0.5" });
-        //     arrow.setAttribute('animation__scale', { property: 'scale', dur: 500, from: "0.006 0.003 0.006", to: "0.004 0.002 0.004" });
+        if (this.selectedOptgroupIndex - 1 < 0) {
+            this.animateArrow(this.idPrefix + 'arrowUp', '#FF0000');
+        } else {
+            // CAN DO THIS, show previous optgroup
 
-        // } else {
-        //     // CAN DO THIS, show previous optgroup
+            this.removeSelectOptionsRow(this.selectedOptgroupIndex); // remove the old optgroup row
 
-        //     this.removeSelectOptionsRow(this.selectedOptgroupIndex); // remove the old optgroup row
+            this.selectedOptgroupIndex -= 1;
+            var selectedOptgroupEl = optgroups[this.selectedOptgroupIndex];  // fetch the currently selected optgroup
+            this.selectedOptgroupValue = selectedOptgroupEl.getAttribute('value'); // set component property to opgroup value
 
-        //     this.selectedOptgroupIndex -= 1;
-        //     var selectedOptgroupEl = optgroups[this.selectedOptgroupIndex];  // fetch the currently selected optgroup
-        //     this.selectedOptgroupValue = selectedOptgroupEl.getAttribute('value'); // set component property to opgroup value
+            this.el.flushToDOM();
 
-        //     this.el.flushToDOM();
+            var nextSelectedOptgroupEl = optgroups[this.selectedOptgroupIndex];  // fetch the currently selected optgroup
+            this.makeSelectOptionsRow(nextSelectedOptgroupEl, selectRenderEl, this.selectedOptgroupIndex, 0, this.idPrefix);
 
-        //     var nextSelectedOptgroupEl = optgroups[this.selectedOptgroupIndex];  // fetch the currently selected optgroup
-        //     // this.makeSelectOptionsRow(nextSelectedOptgroupEl, selectRenderEl, this.selectedOptgroupIndex, -0.15);
-        //     this.makeSelectOptionsRow(nextSelectedOptgroupEl, selectRenderEl, this.selectedOptgroupIndex, 0, this.idPrefix);
+            // Change selected option element when optgroup is changed
+            var selectOptionsRowEl = document.getElementById(this.idPrefix + 'selectOptionsRow' + this.selectedOptgroupIndex);
+            var newlySelectedMenuEl = selectOptionsRowEl.getElementsByClassName('selected')[0];
 
-        //     // Change selected option element when optgroup is changed
-        //     var selectOptionsRowEl = document.getElementById(this.idPrefix + 'selectOptionsRow' + this.selectedOptgroupIndex);
-        //     var newlySelectedMenuEl = selectOptionsRowEl.getElementsByClassName('selected')[0];
+            // update selectOptionsValue and Index
+            this.selectedOptionValue = newlySelectedMenuEl.getAttribute('value');
+            this.selectedOptionIndex = newlySelectedMenuEl.getAttribute('optionid');
 
-        //     // update selectOptionsValue and Index
-        //     this.selectedOptionValue = newlySelectedMenuEl.getAttribute('value');
-        //     this.selectedOptionIndex = newlySelectedMenuEl.getAttribute('optionid');
+            this.el.flushToDOM();
 
-        //     this.el.flushToDOM();
+            this.el.emit('menuOptgroupNext');
+            this.el.emit('menuChanged');
 
-        //     this.el.emit('menuOptgroupNext');
-        //     this.el.emit('menuChanged');
-
-        //     var arrow = document.getElementById(this.idPrefix + "arrowUp');
-        //     arrow.removeAttribute('animation__color');
-        //     arrow.removeAttribute('animation__opacity');
-        //     arrow.removeAttribute('animation__scale');
-        //     arrow.setAttribute('animation__color', { property: 'material.color', dur: 500, from: "#FFFF00", to: "#000000" });
-        //     arrow.setAttribute('animation__opacity', { property: 'material.opacity', dur: 500, from: "1", to: "0.5" });
-        //     arrow.setAttribute('animation__scale', { property: 'scale', dur: 500, from: "0.006 0.003 0.006", to: "0.004 0.002 0.004" });
-        // }
+            this.animateArrow(this.idPrefix + 'arrowUp');
+        }
     },
 
-    animateArrow: function (arrowId) {
+    animateArrow: function (arrowId, initialAnimationArrowColor) {
+        let color = initialAnimationArrowColor ? initialAnimationArrowColor : '#FFFF00';
         let arrow = document.getElementById(arrowId);
         arrow.removeAttribute('animation__color');
         arrow.removeAttribute('animation__opacity');
         arrow.removeAttribute('animation__scale');
-        arrow.setAttribute('animation__color', { property: 'material.color', dur: 500, from: '#FFFF00', to: '#000000' });
+        arrow.setAttribute('animation__color', { property: 'material.color', dur: 500, from: color, to: '#000000' });
         arrow.setAttribute('animation__opacity', { property: 'material.opacity', dur: 500, from: '1', to: '0.5' });
         arrow.setAttribute('animation__scale', { property: 'scale', dur: 500, from: '0.006 0.003 0.006', to: '0.004 0.002 0.004' });
     },
 
+    updateFrameAndTextColor: function (oldMenuEl, newMenuEl, selectedOptionIndex) {
+        oldMenuEl.classList.remove('selected');
+        newMenuEl.classList.add('selected');
+
+        this.selectedOptionValue = newMenuEl.getAttribute('value');
+        this.selectedOptionIndex = selectedOptionIndex;
+
+        this.el.flushToDOM();
+        this.el.emit('menuChanged');
+
+        oldMenuEl.getElementsByClassName('objectName')[0].setAttribute('text', 'color', 'gray');
+        oldMenuEl.getElementsByClassName('previewFrame')[0].setAttribute('material', 'color', '#747474');
+
+        newMenuEl.getElementsByClassName('objectName')[0].setAttribute('text', 'color', 'yellow');
+        newMenuEl.getElementsByClassName('previewFrame')[0].setAttribute('material', 'color', 'yellow');
+        this.log('oldMenuEl.getElementsByClassName', oldMenuEl.getElementsByClassName('objectName'));
+    },
+
+    updateRowAnimation: function (selectOptionsRowEl, deltaX) {
+        if (selectOptionsRowEl.hasAttribute('desiredPosition')) {
+            var oldPosition = selectOptionsRowEl.getAttribute('desiredPosition');
+            var newX = parseFloat(oldPosition.split(' ')[0]) + deltaX;
+            var newPositionString = `${newX.toFixed(3).toString()} ${oldPosition.split(' ')[1]} ${oldPosition.split(' ')[2]}`;
+        } else {
+            var oldPosition = selectOptionsRowEl.object3D.position;
+            var newX = oldPosition.x + deltaX; // this could be a variable at the component level
+            var newPositionString = `${newX.toFixed(3).toString()} ${oldPosition.y} ${oldPosition.z}`;
+        }
+
+        this.log('animating from oldPosition ', oldPosition, ' to newPosition ', newPositionString, ' on option row ', selectOptionsRowEl);
+
+        selectOptionsRowEl.removeAttribute('animation__slide');
+        selectOptionsRowEl.setAttribute('animation__slide', { property: 'position', dur: 500, from: oldPosition, to: newPositionString });
+        this.log('current option row position', selectOptionsRowEl.getAttribute('position'));
+        selectOptionsRowEl.setAttribute('position', newPositionString);
+        selectOptionsRowEl.setAttribute('desiredPosition', newPositionString);
+    },
+
+    makeVisibleAndAnimateNewAsset: function (newlyVisibleOptionEl) {
+        // make visible and animate
+        newlyVisibleOptionEl.setAttribute('visible', 'true');
+        newlyVisibleOptionEl.removeAttribute('animation');
+        newlyVisibleOptionEl.setAttribute('animation', { property: 'scale', dur: 500, from: '0.5 0.5 0.5', to: '1.0 1.0 1.0' });
+        newlyVisibleOptionEl.flushToDOM();
+        this.log('made attribute visible: ', newlyVisibleOptionEl);
+    },
+
     onOptionSwitch: function (direction) {
-        var selectOptionsRowEl = document.getElementById(`${this.idPrefix}selectOptionsRow${this.selectedOptgroupIndex}`);
+        let selectOptionsRowEl = document.getElementById(`${this.idPrefix}selectOptionsRow${this.selectedOptgroupIndex}`);
 
         const oldMenuEl = selectOptionsRowEl.getElementsByClassName('selected')[0];
+        this.log('oldMenuEl: ', oldMenuEl);
 
         let oldSelectedOptionIndex = parseInt(oldMenuEl.getAttribute('optionid'));
-        let selectedOptionIndex = oldSelectedOptionIndex;
+        this.log('oldSelectedOptionIndex ', oldSelectedOptionIndex);
 
         let optgroups = this.el.getElementsByTagName('optgroup');  // Get the optgroups
         let selectedOptgroupEl = optgroups[this.selectedOptgroupIndex];  // fetch the currently selected optgroup
 
+        let selectedOptionIndex = 0;
         if (direction == 'previous') {
             this.el.emit('menuPrevious');
-            // PREVIOUS OPTION MENU START ===============================
-            selectedOptionIndex = this.loopIndex(selectedOptionIndex -= 1, selectedOptgroupEl.childElementCount);
-
-            // menu: animate arrow LEFT
+            selectedOptionIndex = this.loopIndex(oldSelectedOptionIndex - 1, selectedOptgroupEl.childElementCount);
+            this.log('direction == previous, selectedOptionIndex ', selectedOptionIndex);
             this.animateArrow(this.idPrefix + 'arrowLeft');
-
-            // menu: get the newly selected menu element
-            const newMenuEl = selectOptionsRowEl.querySelectorAll(`[optionid='${selectedOptionIndex}']`)[0];
-
-            // menu: remove selected class and change colors
-            oldMenuEl.classList.remove('selected');
-            newMenuEl.classList.add('selected');
-            this.selectedOptionValue = newMenuEl.getAttribute('value');
-            this.selectedOptionIndex = selectedOptionIndex;
-            this.el.flushToDOM();
-            this.el.emit('menuChanged');
-            oldMenuEl.getElementsByClassName('objectName')[0].setAttribute('text', 'color', 'gray');
-            newMenuEl.getElementsByClassName('objectName')[0].setAttribute('text', 'color', 'yellow');
-            oldMenuEl.getElementsByClassName('previewFrame')[0].setAttribute('material', 'color', '#222222');
-            newMenuEl.getElementsByClassName('previewFrame')[0].setAttribute('material', 'color', 'yellow');
-
-            // menu: slide the menu list row RIGHT by 1
-            //      const selectOptionsRowEl = document.querySelector('#selectOptionsRow');
-            // use the desiredPosition attribute (if exists) instead of object3D position as animation may not be done yet
-            if (selectOptionsRowEl.hasAttribute('desiredPosition')) {
-                var oldPosition = selectOptionsRowEl.getAttribute('desiredPosition');
-                var newX = parseFloat(oldPosition.split(' ')[0]) + 0.075;
-                var newPositionString = `${newX.toString()} ${oldPosition.split(' ')[1]} ${oldPosition.split(' ')[2]}`;
-            } else {
-                var oldPosition = selectOptionsRowEl.object3D.position;
-                var newX = oldPosition.x + 0.075; // this could be a variable at the component level
-                var newPositionString = `${newX.toString()} ${oldPosition.y} ${oldPosition.z}`;
-            }
-            selectOptionsRowEl.removeAttribute('animation__slide');
-            selectOptionsRowEl.setAttribute('animation__slide', { property: 'position', dur: 500, from: oldPosition, to: newPositionString });
-            selectOptionsRowEl.setAttribute('desiredPosition', newPositionString);
-
-            // menu: make the hidden most LEFTmost object (-3 from oldMenuEl index) visible
-            var newlyVisibleOptionIndex = this.loopIndex(oldSelectedOptionIndex - 3, selectedOptgroupEl.childElementCount);
-            var newlyVisibleOptionEl = selectOptionsRowEl.querySelectorAll(`[optionid='${newlyVisibleOptionIndex}']`)[0];
-
-            // make visible and animate
-            newlyVisibleOptionEl.setAttribute('visible', 'true');
-            newlyVisibleOptionEl.removeAttribute('animation');
-            newlyVisibleOptionEl.setAttribute('animation', { property: 'scale', dur: 500, from: '0.5 0.5 0.5', to: '1.0 1.0 1.0' });
-            newlyVisibleOptionEl.flushToDOM();
-
-            // menu: destroy the hidden most RIGHTmost object (+3 from oldMenuEl index)
-            var newlyRemovedOptionIndex = this.loopIndex(oldSelectedOptionIndex + 3, selectedOptgroupEl.childElementCount);
-            var newlyRemovedOptionEl = selectOptionsRowEl.querySelectorAll(`[optionid='${newlyRemovedOptionIndex}']`)[0];
-            newlyRemovedOptionEl.flushToDOM();
-            newlyRemovedOptionEl.parentNode.removeChild(newlyRemovedOptionEl);
-
-            // menu: make the second RIGHTmost object (+2 from oldMenuEl index) invisible
-            var newlyInvisibleOptionIndex = this.loopIndex(oldSelectedOptionIndex + 2, selectedOptgroupEl.childElementCount);
-            var newlyInvisibleOptionEl = selectOptionsRowEl.querySelectorAll(`[optionid='${newlyInvisibleOptionIndex}']`)[0];
-            newlyInvisibleOptionEl.setAttribute('visible', 'false');
-            newlyInvisibleOptionEl.flushToDOM();
-
-            // menu: Create the next LEFTmost object preview (-4 from oldMenuEl index) but keep it hidden until it's needed
-            var newlyCreatedOptionEl = newlyVisibleOptionEl.cloneNode(true);
-            newlyCreatedOptionEl.setAttribute('visible', 'false');
-            var newlyCreatedOptionIndex = this.loopIndex(oldSelectedOptionIndex - 4, selectedOptgroupEl.childElementCount);
-
-            // get the actual "option" element that is the source of truth for value, image src and label so that we can populate the new menu option
-            var sourceOptionEl = selectedOptgroupEl.children[newlyCreatedOptionIndex];
-
-            newlyCreatedOptionEl.setAttribute('optionid', newlyCreatedOptionIndex);
-            newlyCreatedOptionEl.setAttribute('id', this.idPrefix + newlyCreatedOptionIndex);
-            newlyCreatedOptionEl.setAttribute('value', sourceOptionEl.getAttribute('value'));
-
-            var newlyVisibleOptionPosition = newlyVisibleOptionEl.object3D.position;
-            newlyCreatedOptionEl.setAttribute('position', (newlyVisibleOptionPosition.x - 0.075) + ' ' + newlyVisibleOptionPosition.y + ' ' + newlyVisibleOptionPosition.z);
-            newlyCreatedOptionEl.flushToDOM();
-
-            // menu: add the newly cloned and modified menu object preview to the dom
-            selectOptionsRowEl.insertBefore(newlyCreatedOptionEl, selectOptionsRowEl.firstChild);
-
-            // menu: get child elements for image and name, populate both appropriately
-            var appendedNewlyCreatedOptionEl = selectOptionsRowEl.querySelectorAll(`[optionid='${newlyCreatedOptionIndex}']`)[0];
-            appendedNewlyCreatedOptionEl.getElementsByClassName('previewImage')[0].setAttribute('src', sourceOptionEl.getAttribute('src'))
-            appendedNewlyCreatedOptionEl.getElementsByClassName('objectName')[0].setAttribute('text', 'value', sourceOptionEl.text);
-            appendedNewlyCreatedOptionEl.getElementsByClassName('objectName')[0].setAttribute('text', 'color', '#747474');
-            appendedNewlyCreatedOptionEl.flushToDOM();
-
-            // PREVIOUS OPTION MENU END ===============================
-
         } else {
             this.el.emit('menuNext');
-            // NEXT OPTION MENU START ===============================
-            selectedOptionIndex = this.loopIndex(selectedOptionIndex += 1, selectedOptgroupEl.childElementCount);
-
-            // menu: animate arrow right
+            selectedOptionIndex = this.loopIndex(oldSelectedOptionIndex + 1, selectedOptgroupEl.childElementCount);
+            this.log('direction == next, selectedOptionIndex ', selectedOptionIndex);
             this.animateArrow(this.idPrefix + 'arrowRight');
-
-            // menu: get the newly selected menu element
-            const newMenuEl = selectOptionsRowEl.querySelectorAll(`[optionid='${selectedOptionIndex}']`)[0];
-
-            // menu: remove selected class and change colors
-            oldMenuEl.classList.remove('selected');
-            newMenuEl.classList.add('selected');
-            this.selectedOptionValue = newMenuEl.getAttribute('value');
-            //      console.log(this.selectedOptionValue);
-            this.selectedOptionIndex = selectedOptionIndex;
-            this.el.flushToDOM();
-            this.el.emit('menuChanged');
-            oldMenuEl.getElementsByClassName('objectName')[0].setAttribute('text', 'color', 'gray');
-            newMenuEl.getElementsByClassName('objectName')[0].setAttribute('text', 'color', 'yellow');
-            oldMenuEl.getElementsByClassName('previewFrame')[0].setAttribute('material', 'color', '#222222');
-            newMenuEl.getElementsByClassName('previewFrame')[0].setAttribute('material', 'color', 'yellow');
-
-            // menu: slide the menu list left by 1
-            //      const selectOptionsRowEl = document.querySelector('#selectOptionsRow');
-            // use the desiredPosition attribute (if exists) instead of object3D position as animation may not be done yet
-            // TODO - error with this code when looping through index
-
-            //      console.log(''true' old position');
-            //      console.log(selectOptionsRowEl.object3D.position);
-
-            if (selectOptionsRowEl.hasAttribute('desiredPosition')) {
-                //        console.log('desiredPosition');
-                var oldPosition = selectOptionsRowEl.getAttribute('desiredPosition');
-                //        console.log(oldPosition);
-                var newX = parseFloat(oldPosition.split(' ')[0]) - 0.075;
-                var newPositionString = newX.toString() + " " + oldPosition.split(' ')[1] + " " + oldPosition.split(' ')[2];
-                //        console.log(newPositionString);
-            } else {
-                var oldPosition = selectOptionsRowEl.object3D.position;
-                var newX = oldPosition.x - 0.075; // this could be a variable soon
-                var newPositionString = newX.toString() + " " + oldPosition.y + " " + oldPosition.z;
-                //        console.log(newPositionString);
-            }
-            selectOptionsRowEl.removeAttribute('animation__slide');
-            selectOptionsRowEl.setAttribute('animation__slide', { property: 'position', dur: 500, from: oldPosition, to: newPositionString });
-            selectOptionsRowEl.setAttribute('desiredPosition', newPositionString);
-
-            // menu: make the hidden most rightmost object (+3 from oldMenuEl index) visible
-            var newlyVisibleOptionIndex = this.loopIndex(oldSelectedOptionIndex + 3, selectedOptgroupEl.childElementCount);
-            var newlyVisibleOptionEl = selectOptionsRowEl.querySelectorAll(`[optionid='${newlyVisibleOptionIndex}']`)[0];
-
-            // make visible and animate
-            newlyVisibleOptionEl.setAttribute('visible', 'true');
-            newlyVisibleOptionEl.removeAttribute('animation');
-            newlyVisibleOptionEl.setAttribute('animation', { property: 'scale', dur: 500, from: '0.5 0.5 0.5', to: '1.0 1.0 1.0' });
-            newlyVisibleOptionEl.flushToDOM();
-
-            // menu: destroy the hidden most leftmost object (-3 from oldMenuEl index)
-            var newlyRemovedOptionIndex = this.loopIndex(oldSelectedOptionIndex - 3, selectedOptgroupEl.childElementCount);
-            var newlyRemovedOptionEl = selectOptionsRowEl.querySelectorAll(`[optionid='${newlyRemovedOptionIndex}']`)[0];
-            newlyRemovedOptionEl.flushToDOM();
-            newlyRemovedOptionEl.parentNode.removeChild(newlyRemovedOptionEl);
-
-            // menu: make the second leftmost object (-2 from oldMenuEl index) invisible
-            var newlyInvisibleOptionIndex = this.loopIndex(oldSelectedOptionIndex - 2, selectedOptgroupEl.childElementCount);
-            var newlyInvisibleOptionEl = selectOptionsRowEl.querySelectorAll(`[optionid='${newlyInvisibleOptionIndex}']`)[0];
-            newlyInvisibleOptionEl.setAttribute('visible', 'false');
-            newlyInvisibleOptionEl.flushToDOM();
-
-            // menu: Create the next rightmost object preview (+4 from oldMenuEl index) but keep it hidden until it's needed
-            var newlyCreatedOptionEl = newlyVisibleOptionEl.cloneNode(true);
-            newlyCreatedOptionEl.setAttribute('visible', 'false');
-            var newlyCreatedOptionIndex = this.loopIndex(oldSelectedOptionIndex + 4, selectedOptgroupEl.childElementCount);
-            //      console.log('newlyCreatedOptionIndex: " + newlyCreatedOptionIndex);
-            // get the actual "option" element that is the source of truth for value, image src and label so that we can populate the new menu option
-            var sourceOptionEl = selectedOptgroupEl.children[newlyCreatedOptionIndex];
-            //      console.log('sourceOptionEl');
-            //      console.log(sourceOptionEl);
-
-            newlyCreatedOptionEl.setAttribute('optionid', newlyCreatedOptionIndex);
-            newlyCreatedOptionEl.setAttribute('id', this.idPrefix + newlyCreatedOptionIndex);
-            newlyCreatedOptionEl.setAttribute('value', sourceOptionEl.getAttribute('value'));
-
-            var newlyVisibleOptionPosition = newlyVisibleOptionEl.object3D.position;
-            newlyCreatedOptionEl.setAttribute('position', (newlyVisibleOptionPosition.x + 0.075) + " " + newlyVisibleOptionPosition.y + " " + newlyVisibleOptionPosition.z);
-            newlyCreatedOptionEl.flushToDOM();
-
-            // menu: add the newly cloned and modified menu object preview
-            selectOptionsRowEl.insertBefore(newlyCreatedOptionEl, selectOptionsRowEl.firstChild);
-
-            // menu: get child elements for image and name, populate both appropriately
-            var appendedNewlyCreatedOptionEl = selectOptionsRowEl.querySelectorAll(`[optionid='${newlyCreatedOptionIndex}']`)[0];
-
-            appendedNewlyCreatedOptionEl.getElementsByClassName('previewImage')[0].setAttribute('src', sourceOptionEl.getAttribute('src'))
-            appendedNewlyCreatedOptionEl.getElementsByClassName('objectName')[0].setAttribute('text', 'value', sourceOptionEl.text);
-            appendedNewlyCreatedOptionEl.getElementsByClassName('objectName')[0].setAttribute('text', 'color', '#747474');
-            appendedNewlyCreatedOptionEl.flushToDOM();
-
-            // NEXT MENU OPTION END ===============================
         }
+
+        let multiplier = (direction == 'previous') ? -1 : 1;
+
+        this.updateFrameAndTextColor(oldMenuEl, selectOptionsRowEl.querySelectorAll(`[optionid='${selectedOptionIndex}']`)[0], selectedOptionIndex);
+
+        this.updateRowAnimation(selectOptionsRowEl, multiplier * -0.075);
+
+        // make the 3rd item from the center visible
+        let newlyVisibleOptionIndex = this.loopIndex(oldSelectedOptionIndex + multiplier * 3, selectedOptgroupEl.childElementCount);
+        let newlyVisibleOptionEl = selectOptionsRowEl.querySelectorAll(`[optionid='${newlyVisibleOptionIndex}']`)[0];
+        this.makeVisibleAndAnimateNewAsset(newlyVisibleOptionEl);
+
+        // destroy 3rd item away from center in opposite direction of movement
+        let newlyRemovedOptionIndex = this.loopIndex(oldSelectedOptionIndex - multiplier * 3, selectedOptgroupEl.childElementCount);
+        let newlyRemovedOptionEl = selectOptionsRowEl.querySelectorAll(`[optionid='${newlyRemovedOptionIndex}']`)[0];
+        newlyRemovedOptionEl.flushToDOM();
+        newlyRemovedOptionEl.parentNode.removeChild(newlyRemovedOptionEl);
+
+        // make the 2nd item away from the center in the opposite direction of movement invisible
+        let newlyInvisibleOptionIndex = this.loopIndex(oldSelectedOptionIndex - multiplier * 2, selectedOptgroupEl.childElementCount);
+        let newlyInvisibleOptionEl = selectOptionsRowEl.querySelectorAll(`[optionid='${newlyInvisibleOptionIndex}']`)[0];
+        newlyInvisibleOptionEl.setAttribute('visible', 'false');
+        newlyInvisibleOptionEl.flushToDOM();
+
+        // create a new item in the direction of movement and make invisible until it is needed
+        let newlyCreatedOptionEl = newlyVisibleOptionEl.cloneNode(true);
+        newlyCreatedOptionEl.setAttribute('visible', 'false');
+        let newlyCreatedOptionIndex = this.loopIndex(oldSelectedOptionIndex + multiplier * 4, selectedOptgroupEl.childElementCount);
+
+        // get the actual "option" element that is the source of truth for value, image src and label so that we can populate the new menu option
+        let sourceOptionEl = selectedOptgroupEl.children[newlyCreatedOptionIndex];
+
+        newlyCreatedOptionEl.setAttribute('optionid', newlyCreatedOptionIndex);
+        newlyCreatedOptionEl.setAttribute('id', this.idPrefix + newlyCreatedOptionIndex);
+        newlyCreatedOptionEl.setAttribute('value', sourceOptionEl.getAttribute('value'));
+
+        let newlyVisibleOptionPosition = newlyVisibleOptionEl.object3D.position;
+        newlyCreatedOptionEl.setAttribute('position', (newlyVisibleOptionPosition.x + multiplier * 0.075) + ' ' + newlyVisibleOptionPosition.y + ' ' + newlyVisibleOptionPosition.z);
+        newlyCreatedOptionEl.flushToDOM();
+
+        // menu: add the newly cloned and modified menu object preview to the dom
+        selectOptionsRowEl.insertBefore(newlyCreatedOptionEl, selectOptionsRowEl.firstChild);
+
+        let appendedNewlyCreatedOptionEl = selectOptionsRowEl.querySelectorAll(`[optionid='${newlyCreatedOptionIndex}']`)[0];
+
+        appendedNewlyCreatedOptionEl.getElementsByClassName('previewImage')[0].setAttribute('src', sourceOptionEl.getAttribute('src'))
+        appendedNewlyCreatedOptionEl.getElementsByClassName('previewFrame')[0].setAttribute('material', 'color', '#747474');
+        appendedNewlyCreatedOptionEl.getElementsByClassName('objectName')[0].setAttribute('text', 'value', sourceOptionEl.text);
+        appendedNewlyCreatedOptionEl.getElementsByClassName('objectName')[0].setAttribute('text', 'color', '#747474');
+        appendedNewlyCreatedOptionEl.flushToDOM();
+
+        this.log('created new option el', appendedNewlyCreatedOptionEl);
     },
 });
