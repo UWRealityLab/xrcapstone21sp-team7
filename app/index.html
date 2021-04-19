@@ -122,6 +122,8 @@
             <!-- music -->
             <audio id="background-music" src="https://cdn.glitch.com/cb7fdbe5-13ac-4455-9973-1f3a8bb8bba2%2Frelax_music.m4a?v=1618364745593"></audio>
             <audio id="meditation-music" src="https://cdn.glitch.com/cb7fdbe5-13ac-4455-9973-1f3a8bb8bba2%2Fmeditation.m4a?v=1618372302780"></audio>
+          
+            <a-asset-item id="meditation-building" src="https://cdn.glitch.com/d278d22e-cba0-423d-9948-00c332e0a3d7%2Fmeditation-room.glb?v=1618801433177"></a-asset-item>
         </a-assets>
 
         <!-- meditation post
@@ -200,11 +202,20 @@
         ></a-entity>
         <a-plane
           rotation="-90 0 0"
-          position="0 0.1 -1"
+          position="0 0.1 1"
           scale="1.5 1.5 1.5"
           color="#FFC65D"
-          meditation-emitter
+          
         ></a-plane>
+      
+        <a-entity
+          name="default" 
+          gltf-model="#meditation-building" 
+          scale="0.5 0.5 0.5" 
+          rotation="0 90 0" 
+          position="0 0.1 -1" 
+          meditation-emitter
+        ></a-entity>
       
         <a-entity id="camRig">
           <a-camera

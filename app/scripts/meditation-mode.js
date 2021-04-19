@@ -3,13 +3,13 @@ AFRAME.registerComponent("meditation-mode", {
     let el = this.el;
 
     this.onMeditation = function(e) {
-      let c = e.detail.returnColor;
+      let n = e.detail.returnColor;
       //console.log(c);
 
       let sound;
       let params;
 
-      if (c == "#FFC65D") {
+      if (n == "meditation") {
         // we want to change the sky to darker
 
         params = {
