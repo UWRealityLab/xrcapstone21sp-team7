@@ -22,12 +22,15 @@ AFRAME.registerComponent("meditation-mode", {
         sound =
           "src: #meditation-music; autoplay: true; loop: true; positional: false; volume: 0.1";
 
+        let flameNum = 0;
         // Turn on lanterns
         document.querySelectorAll(".lantern").forEach(lantern => {
           let flame = document.createElement("a-entity");
           flame.setAttribute("class", "flame");
           flame.setAttribute("position", "0 1 0");
           flame.setAttribute("gltf-model", "#flame");
+          flame.setAttribute('croquet', 'name: flame' + flameNum);
+          flameNum += 1;
           lantern.appendChild(flame);
         });
       } else {
