@@ -17,6 +17,7 @@ AFRAME.registerComponent('meditation-light-mode', {
           dur: 2000,
           easing: 'linear'
         };
+        console.log("ABAHDFJALJFAL!!!");
       } else {
         // we want to change the light to brighter intensity
         light = {
