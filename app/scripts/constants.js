@@ -21,6 +21,7 @@ Q.LOGGING = {
 
     GardenControls: true,
     Selector: false,
+    BaseGardenGenerator: true,
 };
 
 Q.GARDEN_BUILDER = {

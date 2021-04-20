@@ -136,25 +136,50 @@ AFRAME.registerComponent('garden-controls', {
 
         this.groupJSONArray = groupJSONArray;
 
-        let thisItemEl = document.getElementById(this.data.previewItemId);
-        thisItemEl.setAttribute('visible', 'false');
+        this.thisItemEl = document.getElementById(this.data.previewItemId);
+        this.thisItemEl.setAttribute('visible', 'false');
 
         this.el.setAttribute('raycaster', 'enabled', false);
         this.el.setAttribute('raycaster', 'showLine', false);
 
         // Function to be called in tick to rotate the item
         this.rotating = false;
-        this.updateItemRotation = AFRAME.utils.throttle(() => {
+
+        this.updateItemRotaton = AFRAME.utils.throttle(() => {
+            if (this.thisItemEl.getAttribute('visible')) {
                 if (this.rotating) {
-                    let rotateY = Q.GARDEN_BUILDER.RotationSpeedModifier;
-                    let rotation = thisItemEl.getAttribute('rotation')
-                    rotation.y += rotateY;
-                    thisItemEl.setAttribute('rotation', rotation);
+                    this.thisItemEl.object3D.rotation.y = (this.thisItemEl.object3D.rotation.y + Q.GARDEN_BUILDER.RotationSpeedModifier * Math.PI / 180.0) % (2 * Math.PI);
+                    this.previewEl.object3D.rotation.y = this.thisItemEl.object3D.rotation.y;
                 }
+            }
             },
             1000 / 24,
-            this
-        );
+            this);
+
+        this.previewEl = document.createElement('a-entity');
+        this.previewEl.setAttribute('gltf-model', this.thisItemEl.getAttribute('gltf-model'));
+        this.previewEl.setAttribute('visible', 'false');
+        this.previewEl.setAttribute('position', '0 0 0');
+        this.el.sceneEl.appendChild(this.previewEl);
+
+        this.updatePreviewItem = AFRAME.utils.throttle(() => {
+            if (this.thisItemEl.getAttribute('visible')) {
+                let gardenEl = document.getElementById(this.data.gardenBaseId);
+                let intersectionPoint = gardenEl.components['base-garden'].data.intersectedPoint;
+                if (intersectionPoint) {
+                    // Update position of model based on intersection point with ground
+                    this.previewEl.object3D.position.x = intersectionPoint.x;
+                    this.previewEl.object3D.position.z = intersectionPoint.z;
+                    if (!this.previewEl.getAttribute('visible')) {
+                        this.previewEl.setAttribute('visible', 'true');
+                    }
+                } else {
+                    this.previewEl.setAttribute('visible', 'false');
+                }
+            }
+            },
+            1000 / 24,
+            this);
     },
 
     /**
@@ -210,9 +235,8 @@ AFRAME.registerComponent('garden-controls', {
 
         // let thisItemWorldRotation = thisItemEl.object3D.getWorldRotation();
         let position = intersectionPoint.x + ' ' + 0 + ' ' + intersectionPoint.z;
-        
-        let itemRotation = thisItemEl.getAttribute('rotation');
-        let rotation = '0 ' + itemRotation.y + ' 0';
+
+        let rotationStr = '0 ' + (this.thisItemEl.object3D.rotation.y * 180 / Math.PI) + ' 0';
 
         // NEW https://stackoverflow.com/questions/105034/create-guid-uuid-in-javascript
         let newId = 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
@@ -285,7 +309,8 @@ AFRAME.registerComponent('garden-controls', {
     },
   
     tick: function() {
-        this.updateItemRotation();
+        this.updateItemRotaton();
+        this.updatePreviewItem();
     },
 
     /**
@@ -301,8 +326,16 @@ AFRAME.registerComponent('garden-controls', {
         thisItemEl.setAttribute('visible', 'true');
 
         // Show the raycaster
+        this.log('enabling raycaster');
         this.el.setAttribute('raycaster', 'enabled', true);
-        this.el.setAttribute('raycaster', 'showLine', true);
+      
+        let gardenEl = document.getElementById(this.data.gardenBaseId);
+        let intersectionPoint = gardenEl.components['base-garden'].data.intersectedPoint;
+        if (intersectionPoint) {
+            this.previewEl.setAttribute('visible', 'true');
+            this.previewEl.object3D.position.x = intersectionPoint.x;
+            this.previewEl.object3D.position.z = intersectionPoint.z;
+        }
     },
 
     /**
@@ -319,7 +352,8 @@ AFRAME.registerComponent('garden-controls', {
 
         // Hide the raycaster (not necessary to show when items can't be placed)
         this.el.setAttribute('raycaster', 'enabled', false);
-        this.el.setAttribute('raycaster', 'showLine', false);
+      
+        this.previewEl.setAttribute('visible', 'false');
     },
 
     /**
@@ -348,6 +382,9 @@ AFRAME.registerComponent('garden-controls', {
         thisItemEl.setAttribute('objectId', newObjectId);
         thisItemEl.setAttribute('objectGroup', objectGroup);
         thisItemEl.flushToDOM();
+      
+        this.previewEl.setAttribute('gltf-model', `${Q.GARDEN_BUILDER.GardenAssetLocation}${objectArray[newObjectId].file}.glb`);
+        this.previewEl.setAttribute('scale', objectArray[newObjectId].actualScale);
     },
 
     /**
