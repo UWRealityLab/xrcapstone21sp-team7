@@ -1,3 +1,5 @@
+/* global AFRAME, Q, THREE */
+
 // Width of wall segment in meters
 const WALL_SEG_WIDTH = 2;
 // Width (and depth) of corner wall segment in meters
@@ -137,11 +139,23 @@ AFRAME.registerComponent('base-garden', {
             this.data.intersectedPoint = null;
         } else {
             let intersection = this.raycaster.components.raycaster.getIntersection(this.floorPlane);
-            if (!intersection) {
+            // TODO make this less janky
+            if (!intersection || (intersection.point.x == 0 && intersection.point.y == 0 && intersection.point.z == 0)) {
                 this.data.intersectedPoint = null;
             } else {
                 this.data.intersectedPoint = intersection.point;
             }
         }
-    }
+        this.log('intersected point: ', this.data.intersectedPoint);
+    },
+
+    log: function (string, ...etc) {
+        if (!Q.LOGGING.BaseGardenGenerator) {
+            return;
+        }
+
+        console.groupCollapsed(`[Component] ${string}`, ...etc);
+        console.trace(); // hidden in collapsed group
+        console.groupEnd();
+    },
 });
