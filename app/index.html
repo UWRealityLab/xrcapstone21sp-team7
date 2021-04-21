@@ -129,11 +129,26 @@
             <audio id="background-music" src="https://cdn.glitch.com/cb7fdbe5-13ac-4455-9973-1f3a8bb8bba2%2Frelax_music.m4a?v=1618364745593"></audio>
             <audio id="meditation-music" src="https://cdn.glitch.com/cb7fdbe5-13ac-4455-9973-1f3a8bb8bba2%2Fmeditation.m4a?v=1618372302780"></audio>
           
-            <a-asset-item id="meditation-building" src="https://cdn.glitch.com/d278d22e-cba0-423d-9948-00c332e0a3d7%2Fmeditation-room.glb?v=1618801433177"></a-asset-item>
+            <!--a-asset-item id="meditation-building" src="../assets/glb/meditation-room.glb"></a-asset-item-->
+            <a-asset-item id="meditation-building" src="https://cdn.glitch.com/d278d22e-cba0-423d-9948-00c332e0a3d7%2Fmeditation-room-small.glb?v=1618960941936"></a-asset-item>
           
             <!-- yoga images -->
-            <img id="yoga-0" src="../assets/img/cherry-blossom.png">
-            <img id="yoga-1" src="../assets/img/flat-rock.png">
+            <!-- note: there's gotta be a better way to load these. -->
+            <img id="yoga-0" src="../assets/img/yoga/yoga-0.png">
+            <img id="yoga-1" src="../assets/img/yoga/yoga-1.png">
+            <img id="yoga-2" src="../assets/img/yoga/yoga-2.png">
+            <img id="yoga-3" src="../assets/img/yoga/yoga-3.png">
+            <img id="yoga-4" src="../assets/img/yoga/yoga-4.png">
+            <img id="yoga-5" src="../assets/img/yoga/yoga-5.png">
+            <img id="yoga-6" src="../assets/img/yoga/yoga-6.png">
+            <img id="yoga-7" src="../assets/img/yoga/yoga-7.png">
+            <img id="yoga-8" src="../assets/img/yoga/yoga-8.png">
+            <img id="yoga-9" src="../assets/img/yoga/yoga-9.png">
+            <img id="yoga-10" src="../assets/img/yoga/yoga-10.png">
+            <img id="yoga-11" src="../assets/img/yoga/yoga-11.png">
+            <img id="yoga-12" src="../assets/img/yoga/yoga-12.png">
+            <img id="yoga-13" src="../assets/img/yoga/yoga-13.png">
+            <img id="yoga-14" src="../assets/img/yoga/yoga-14.png">
         </a-assets>
 
         <!-- meditation post
@@ -143,9 +158,18 @@
         -->
       
         <!-- yoga stuff -->
-        <a-cylinder id="yoga-cylinder" class="clickable" position="6 0.75 5" radius="0.5" height="1.5" color="#FFC65D" yoga-emitter></a-cylinder>
-        <a-image id="yoga-images" width="5" height="5" position="9 1 6"></a-image>
-        <a-entity id="timer" position="6 3 4.5" scale="8 8 8" rotation="0 180 0" text="color: black; align: center; value: TEST TEXT;"></a-entity>
+        <a-cylinder id="yoga-cylinder" class="clickable" position="3 0.75 14" radius="0.5" height="1.5" color="#FFC65D" yoga-emitter></a-cylinder>
+        <a-image id="yoga-images" width="1.5" height="1.5" position="0 0.75 14.5" rotation="0 180 0">
+          <!-- frame -->
+          <a-box width="3" height="0.5" position="0 -0.95 0" color="#DDBE91"></a-box>
+          <a-box width="1.6" height="0.1" depth="0.5" position="0 0.75 0" color="#DDBE91"></a-box>
+          <a-box width="1.6" height="0.1" depth="0.5" position="0 -0.75 0" color="#DDBE91"></a-box>
+          <a-box width="1.6" height="0.1" depth="0.5" position="0.75 0 0" color="#DDBE91" rotation="0 0 90"></a-box>
+          <a-box width="1.6" height="0.1" depth="0.5" position="-0.75 0 0" color="#DDBE91" rotation="0 0 90"></a-box>
+        </a-image>
+        <a-box id="yoga-mat" height="0.1" width="1" depth="2" position="0 0 11" color="#DB7093"></a-box>
+        <a-entity id="timer" position="2 0.5 14" scale="10 10 10" rotation="0 180 0" visible="false"
+                  text="color: black; align: center; value: TEST TEXT;"></a-entity>
       
 
         <a-entity light="type: ambient; color: #BBB" meditation-light-mode></a-entity>
