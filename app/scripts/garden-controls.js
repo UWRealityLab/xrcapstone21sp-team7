@@ -248,7 +248,7 @@ AFRAME.registerComponent('garden-controls', {
         newEntity.setAttribute('class', 'movable-plants');
         newEntity.setAttribute('croquet', 'name: ' + newId);
         newEntity.setAttribute('scale', objectArray[objectId].actualScale);
-        newEntity.setAttribute('rotation', rotation);
+        newEntity.setAttribute('rotation', rotationStr);
         newEntity.setAttribute('gltf-model', `${Q.GARDEN_BUILDER.GardenAssetLocation}${objectArray[objectId].file}.glb`);
         newEntity.setAttribute('position', position);
         newEntity.setAttribute('shadow', 'receive: false; cast: true');
