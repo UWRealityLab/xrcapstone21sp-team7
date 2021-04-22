@@ -53,6 +53,134 @@ html(lang='en')
             .container
                 .row
                     .col-lg-8.col-md-10.mx-auto
+                        h2(id='blog2') Week 4 Blog: Groundwork for Meditation and Relaxation
+                        span.meta
+                            | Posted by
+                            a(href='#!') AR/VR Capstone Team 7
+                            | on 22 April 2021
+                        p
+                            | This week started off with a successfully completed PRD and continuing the development of our
+                            | various ideas for the project. The base of the customization of the garden as well as the start
+                            | of the meditation activity of this app had been set so this week we spent a lot of time cleaning
+                            | up small bugs and diving deeper into the activities part of our project, where the user will be
+                            | able to participate in various relaxing activities in their zen garden.
+
+                        h3 Successes and accomplishments from this week
+                        p
+                            | Matthew was able to figure out how to add the rotation aspect when placing on object on the floor.
+                            | Instead of the small preview that was there before, when the user wants to place an asset in their
+                            | garden, they will have an accurate representation of how the asset would look like when placed. This
+                            | includes the orientation of the object in relation to the zen garden. There were a few bugs with the
+                            | rotation from the previously small preview of the asset to the rotation of the actual size asset but
+                            | making the preview of the asset the actual size of the asset itself seemed to work well.
+                            br
+                            img(src='assets/img/rotation.gif' width='500px')
+                            br
+                            i Showcasing the rotation functionality when placing down assets.
+                        p
+                            | Matthew also continues to work on and manage the multiplayer component of this zen garden, continuing to 
+                            | make sure that the different activities such as meditation are working on all views of the players. He has
+                            | also been working on fixing up bugs from the open source code that we utilized.
+                        p
+                            | Jane continued to work on the meditation UI. She designed what "meditation mode" would look like, one of
+                            | which was to have lanterns around the garden or close by that would light up, giving off a soft glow look
+                            | which would light up as the sky dimmed, shifting the garden into "meditation mode". She started off by 3d modelling
+                            | the "meditaion building", which for now is the big structure/room in the middle of the garden. She did not 
+                            | have much luck on having that lantern glow effect, but Hristo was able to 3d model some awesome lanterns and lights 
+                            | that would illuminate when the user enters meditation mode. Hristo also added the functionality of when the user
+                            | teleports into the meditation room, "meditation mode" would be triggered and untriggered, so the user will enter
+                            | "meditation mode" by teleporting into the room.
+                            br
+                            img(src='assets/img/meditation_demo.gif' width='500px')
+                            br
+                            i Showcasing how meditation mode is triggered.
+                            br
+                            img(src='assets/img/regular_mode.jpg' width='500px')
+                            br
+                            i The Meditation Building in the Zen Garden
+                            br
+                        p
+                            | Jane is now working on finding more music appropriate for meditation and yoga in the future. She uses preview music from
+                            | the Adobe stock library, to preview what kind of music would be part of this zen garden simulation. Jane has also been
+                            | writing meditation scripts and narrating them. She is also working on some audio editing to combine the scripts with music.
+                        p
+                            | Hristo, along with working on the "meditation mode", continued to work on the locomotion and teleportation functionality of our project. 
+                            | Last week for our demo, we had different bases where the user can teleport to and move around the garden. But now, the user is
+                            | able to use the joystick on the right hand controller to navigate anywhere on the ground of the garden.
+                            br
+                            img(src='assets/img/teleportation.gif' width='500px')
+                            br
+                            i Showcasing how the user can now teleport anywhere in the garden.
+                            br
+                        p
+                            | Hristo is now working on the Meditation UI, how the user can choose between different types of meditation scripts, (along with how
+                            | this UI could also be used with yoga), and also what kind of UI the user will see in order to choose different background music and
+                            | dimming the surroundings.
+                            br
+                            img(src='assets/img/menu.gif' width='500px')
+                            br
+                            i Showcasing what the menu of choosing which meditation mode/yoga/music the user wants.
+                            br
+                        p
+                            | Phi started to work on the yoga component of our vr application. He set up a really cool layout of having a slideshow and timer that
+                            | the user can follow along with different poses. He set up instructional slides, as well as slides and graphics that help the user
+                            | to follow along with the yoga routine. He also added a timer to demonstrate how the user can see when they should go onto the next
+                            | pose. But Phi also noticed that it may be difficult for the user to try and look at the slides while doing the pose, so maybe next steps
+                            | in developing this would be to add a voice narration for the user to follow along, as well as the slides.
+                            br
+                            img(src='assets/img/yoga_1.png' width='500px')
+                            br
+                            img(src='assets/img/yoga_2.png' width='500px')
+                            br
+                            i Showcasing what the slideshow for the yoga tutorial would look like.
+                            br
+                        p
+                            | Overall, we feel as though we made lots of great progress this week. As noted before, we are developing our codebase in Glitch and using 
+                            | Github for version control. This is the link to our ongoing project development
+                            a(href='https://glitch.com/edit/#!/team-7-glitch-workspace') here.
+                            strong You can view the live prototype application
+                            strong
+                                a(href='https://team-7-glitch-workspace.glitch.me/xrcapstone21sp-team7/app/') here.
+                        h3 Plan for Next Week
+                        p
+                            | We will finish wrapping up the main parts of the meditation portion of our application and also continue to fix minor details. But we will
+                            | also start working on the aethetics and what the user sees as well.
+                        ul
+                            li Phi and Jane:
+                                ul
+                                    li Finish design of initial meditation tool with a working proof of concept
+                                    li Find ambient forest sound
+                                        ul
+                                            li The user may select from waterfall noises, rain, morning birds, etc.
+                                    li Ambient forest noise shall be present at all times playing beneath any other music
+                                        ul 
+                                            li Test overlaying multiple audio sources at once
+                                    li Replace placeholder background with a moving sky image
+                            li Hristo: Write blog
+                            li Hristo and Matthew:
+                                ul
+                                    li Design home page one enters when loading the game along with options to join and existing garden or create a new garden.
+                                        ul
+                                            li When entering, a room id is displayed to the user.
+                                            li The user may select the max number of people permitted in a garden during garden creation.
+                                    li Start breath tracking as a standalone application not integrated into the meditation tool.
+                                        ul
+                                            li Identify when user exhales/inhales 
+                                    li Improve lighting
+                                        ul
+                                            li Lighting is currently very gaudy and does not look good, adjust the A-Frame lighting so it looks more natural.
+
+                        h3 Blocking Issues
+                        p.
+                            This past week has been going relatively smoothly. We may run into some blockers when working on user breath tracking, and lighting
+                            in aframe has been a tricky ride. Also, we are out of disk space on glitch... so that is problematic. But it seems like we will be able
+                            to switch and work from gitlab so we hope that will solve that problem. We still have a good vision and idea of what we should do for our tasks, however, so as of right now
+                            we don't forsee any major blocking issues for the upcoming week.
+
+        article
+            .container
+                .row
+                    .col-lg-8.col-md-10.mx-auto
                         h2(id='blog2') Week 3 Blog: Planting Seeds for our Zen Garden Experience
                         span.meta
                             | Posted by
