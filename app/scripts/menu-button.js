@@ -74,14 +74,14 @@ AFRAME.registerComponent("menu-button", {
     this.infoText.setAttribute("animation", {
       property: "material.opacity",
       to: 0.95,
-      dur: 400,
+      dur: 500,
       easing: "easeOutExpo",
     });
 
     this.infoText.setAttribute("animation__text", {
       property: "text.opacity",
       to: 1,
-      dur: 400,
+      dur: 500,
       easing: "easeOutExpo",
     });
   },
@@ -99,14 +99,14 @@ AFRAME.registerComponent("menu-button", {
     this.infoText.setAttribute("animation", {
       property: "material.opacity",
       to: 0,
-      dur: 200,
+      dur: 500,
       easing: "easeOutExpo",
     });
 
     this.infoText.setAttribute("animation__text", {
       property: "text.opacity",
       to: 0,
-      dur: 200,
+      dur: 500,
       easing: "easeOutExpo"
     });
   },
