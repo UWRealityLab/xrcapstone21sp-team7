@@ -52,7 +52,6 @@ AFRAME.registerComponent("menu-controls", {
     Displays the different meditation options
   */
   onMeditationButtonClicked: function () {
-    console.log("recieved click");
     // Deactivate first menu options
     let firstMenu = document.querySelector("#first-menu");
     this.deactivate(firstMenu);
@@ -65,7 +64,15 @@ AFRAME.registerComponent("menu-controls", {
   /*
     Displays the different yoga options
   */
-  onYogaButtonClicked: function () {},
+  onYogaButtonClicked: function () {
+    // Deactivate first menu options
+    let firstMenu = document.querySelector("#first-menu");
+    this.deactivate(firstMenu);
+
+    // Activate meditation options
+    let yogaMenu = document.querySelector("#yoga-menu");
+    this.activate(yogaMenu);
+  },
 
   /*
     Activates menu options so they can be detected by raycasting
