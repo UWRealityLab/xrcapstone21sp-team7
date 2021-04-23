@@ -162,9 +162,9 @@
             <a-mixin
               id="frame"
               geometry="primitive: plane; width: 0.5783552; height: 0.8192"
-              material="color: white; shader: flat"
-              animation__scale="property: scale; to: 1.2 1.2 1.2; dur: 200; startEvents: mouseenter"
-              animation__scale_reverse="property: scale; to: 1 1 1; dur: 200; startEvents: mouseleave"
+              material="color: white; shader: flat; opacity: 0"
+              animation__scale="property: scale; to: 1.2 1.2 1.2; dur: 500; easing: easeOutExpo; startEvents: mouseenter"
+              animation__scale_reverse="property: scale; to: 1 1 1; dur: 500; easing: easeOutExpo; startEvents: mouseleave"
             ></a-mixin>
             <a-mixin
               id="poster"
@@ -172,38 +172,35 @@
               material="color: white; shader: flat"
               position="0 0 0.008"
             ></a-mixin>
+            <a-mixin
+              id="info-text"
+              geometry="primitive: plane; width: 0.544768; height: 0.786432"
+              material="color: black; shader: flat; opacity: 0"
+              position="0 0 0.01"
+            >
+            </a-mixin>
 
             <template id="activity-menu-template">
               <a-entity id="ui" position="0 1.5 -2" visible="false">
                 <!-- 1 -->
                 <a-entity id="first-menu" class="submenu" visible="false">
-                  <a-entity id="meditation-button" class="option" mixin="frame" menu-button position="-0.4 0 0">
-                    <a-entity material="src: #meditation-img" mixin="poster">
-                      <a-entity scale="2 2 2" text="value: Meditate; align: center; shader: msdf"></a-entity>
-                    </a-entity>
+                  <a-entity id="meditation-button" class="option" mixin="frame" position="-0.4 0 0"
+                    menu-button="title: Meditate; info: Take a breather; img: #meditation-img; width: 2">
                   </a-entity>
-                  <a-entity id="yoga-button" class="option" mixin="frame" menu-button position="0.4 0 0">
-                    <a-entity material="src: #yoga-img" mixin="poster">
-                      <a-entity scale="2 2 2" text="value: Yoga; align: center; shader: msdf"></a-entity>
-                    </a-entity>
+                  <a-entity id="yoga-button" class="option" mixin="frame" position="0.4 0 0"
+                    menu-button="title: Yoga; info: Stretch out a bit; img: #yoga-img; width: 2">
                   </a-entity>
                 </a-entity> <!-- 1 -->
                 <!-- meditation submenu - removed class="rightclickable" from each button to avoid raycasting on it  -->
                 <a-entity id="meditation-menu" class="submenu" visible="false">
-                  <a-entity id="guided-meditation-button" class="option" mixin="frame" menu-button position="-0.7 0 0">
-                    <a-entity material="src: #meditation-img" mixin="poster">
-                      <a-entity scale="1.2 1.2 1.2" text="value: Guided Meditation; align: center; shader: msdf"></a-entity>
-                    </a-entity>
+                  <a-entity id="guided-meditation-button" class="option" mixin="frame" position="-0.7 0 0"
+                    menu-button="title: Guided Meditation; info: Let us walk you through; img: #meditation-img; width: 1.2">
                   </a-entity>
-                  <a-entity id="story-telling-button" class="option" mixin="frame" menu-button position="0 0 0">
-                    <a-entity material="src: #meditation-img" mixin="poster">
-                      <a-entity scale="1.2 1.2 1.2" text="value: Story Telling; align: center; shader: msdf"></a-entity>
-                    </a-entity>
+                  <a-entity id="story-telling-button" class="option" mixin="frame" position="0 0 0"
+                    menu-button="title: Story Telling; info: Listen to a brief story; img: #meditation-img; width: 1.2">
                   </a-entity>
-                  <a-entity id="confidence-booster-button" class="option" mixin="frame" menu-button position="0.7 0 0">
-                    <a-entity material="src: #meditation-img" mixin="poster">
-                      <a-entity scale="1.2 1.2 1.2" text="value: Confidence Booster; align: center; shader: msdf"></a-entity>
-                    </a-entity>
+                  <a-entity id="confidence-booster-button" class="option" mixin="frame" position="0.7 0 0"
+                    menu-button="title: Confidence Booster; info: Feel good about yourself; img: #meditation-img; width: 1.2">
                   </a-entity>
                 </a-entity> <!-- meditation submenu -->
               </a-entity>
