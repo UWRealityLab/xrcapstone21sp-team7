@@ -23,14 +23,14 @@ class UserView extends Croquet.View {
         .content.cloneNode(true);
 
       this.leftHand = handEntity.querySelector(".left");
-      this.leftHand.setAttribute("color", "#ff0000");
+      this.leftHand.setAttribute('hand-controls', this.leftHand.getAttribute('hand-controls') + '; color: ' + this.color);
       this.lastTimeLeftHandUpdated = 0;
       this.log("Remote User Left Hand Entity Created", this.leftHand);
       // this.scene.appendChild(this.leftHand);
       cameraRig.appendChild(this.leftHand);
 
       this.rightHand = handEntity.querySelector(".right");
-      this.rightHand.setAttribute("color", "#00ff00");
+      this.rightHand.setAttribute('hand-controls', this.rightHand.getAttribute('hand-controls') + '; color: ' + this.color);
       this.lastTimeLeftHandUpdated = 0;
       this.log("Remote User Right Hand Entity Created", this.rightHand);
       // this.scene.appendChild(this.rightHand);
@@ -137,7 +137,7 @@ class UserView extends Croquet.View {
         .querySelector(".user");
 
       this.leftHand = handEntity.querySelector(".left");
-      this.leftHand.setAttribute("color", "#ff0000");
+      this.leftHand.setAttribute('fake-hands', this.leftHand.getAttribute('fake-hands') + '; color: ' + this.color);
       this.lastTimeLeftHandUpdated = 0;
       this.log("Remote User Left Hand Entity Created", this.leftHand);
       this.leftHand.addEventListener(
@@ -153,7 +153,7 @@ class UserView extends Croquet.View {
       this.scene.appendChild(this.leftHand);
 
       this.rightHand = handEntity.querySelector(".right");
-      this.rightHand.setAttribute("color", "#00ff00");
+      this.rightHand.setAttribute('fake-hands', this.rightHand.getAttribute('fake-hands') + '; color: ' + this.color);
       this.lastTimeRightHandUpdated = 0;
       this.log("Remote User Right Hand Entity Created", this.rightHand);
       this.rightHand.addEventListener(

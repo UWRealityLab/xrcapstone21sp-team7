@@ -38,7 +38,7 @@ AFRAME.registerComponent('base-garden', {
             wall.setAttribute('gltf-model', '#single-wall-asset');
             wall.setAttribute('position', el.object3D.worldToLocal(position));
             wall.setAttribute('rotation', el.object3D.worldToLocal(rotation));
-            wall.setAttribute('croquet', 'name: ' + name);
+            // wall.setAttribute('croquet', 'name: ' + name);
             wall.setAttribute('shadow', 'receive: true; cast: true');
             wall.setAttribute('id', name);
             el.appendChild(wall);
@@ -81,7 +81,7 @@ AFRAME.registerComponent('base-garden', {
             corner.setAttribute('gltf-model', '#corner-wall-asset');
             corner.setAttribute('position', el.object3D.worldToLocal(cornerPositions[i]));
             corner.setAttribute('rotation', el.object3D.worldToLocal(cornerRotations[i]));
-            corner.setAttribute('croquet', 'name: corner' + i.toString());
+            // corner.setAttribute('croquet', 'name: corner' + i.toString());
             corner.setAttribute('shadow', 'receive: true; cast: true');
             el.appendChild(corner);
         }
@@ -146,7 +146,6 @@ AFRAME.registerComponent('base-garden', {
                 this.data.intersectedPoint = intersection.point;
             }
         }
-        this.log('intersected point: ', this.data.intersectedPoint);
     },
 
     log: function (string, ...etc) {

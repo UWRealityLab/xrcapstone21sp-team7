@@ -4,6 +4,8 @@
 <head>
     <title>Zendin</title>
 
+    <link rel="icon" type="image/x-icon" href="../assets/img/favicon.ico" />
+
     <script src="https://unpkg.com/@croquet/croquet@0.4.0"></script>
     <script src="https://aframe.io/releases/1.2.0/aframe.min.js"></script>
     <script src="https://raw.githubusercontent.com/n5ro/aframe-extras/master/dist/aframe-extras.min.js"></script>
@@ -15,27 +17,32 @@
 
     <script src="https://cdn.jsdelivr.net/gh/n5ro/aframe-physics-system@v4.0.1/dist/aframe-physics-system.min.js"></script>
     <script src="https://unpkg.com/aframe-physics-extras/dist/aframe-physics-extras.min.js"></script>
-    <script src="https://unpkg.com/super-hands@^3.0.1/dist/super-hands.min.js"></script>
 
     <script src="./scripts/constants.js"></script>
     <script src="./scripts/system.js"></script>
     <script src="./scripts/component.js"></script>
-    <script src="./scripts/generate-base-garden.js"></script>
-    <script src="./scripts/garden-controls.js"></script>
     <script src="./scripts/index.js" type="module"></script>
-    <script src="./scripts/selector.js"></script>
-  
+
+    <!-- fake hands for croquet -->
+    <script src="./scripts/fake-hands.js"></script>
+
+    <!-- garden generation/creation -->
+    <script src="./scripts/garden-creation/generate-base-garden.js"></script>
+    <script src="./scripts/garden-creation/garden-asset-creation-menu.js"></script>
+    <script src="./scripts/garden-creation/garden-asset-creation.js"></script>
+
     <!-- meditation -->
     <script src="./scripts/meditation-emitter.js"></script>
     <script src="./scripts/meditation-mode.js"></script>
     <script src="./scripts/meditation-light-mode.js"></script>
     <script src="./scripts/meditation-script.js"></script>
   
+    <script src="./scripts/meditation/breath-capture.js"></script>
     <script src="./scripts/blink-teleportation.js"></script>
     <script src="./scripts/teleportation-checkpoint.js"></script>
     <!-- new teleportation -->
     <script src="https://cdn.jsdelivr.net/npm/aframe-blink-controls/dist/aframe-blink-controls.min.js"></script>
-  
+
     <!-- yoga -->
     <script src="./scripts/yoga-emitter.js"></script>
     <script src="./scripts/yoga-mode.js"></script>
@@ -74,21 +81,30 @@
             </template>
 
             <template id="user-hands">
-                <a-entity class="left"
-                          id="leftHand"
-                          hand-controls="hand: left; handModelStyle: lowPoly; color: #ff0000"
-                          raycaster="showLine: false; enabled: false; objects: .leftclickable;"
-                          garden-controls="menuId: menuItems; previewItemId: leftItem; gardenBaseId: garden; newAssetContainerId: new-asset-container">
-                    <a-entity id="leftItem" file="kfarr_bases_valencia" objectGroup="plants" objectId="0" gltf-model="url(../assets/glb/cherry-blossom.glb)" rotation="-5 0 0" scale="0.05 .05 .05" position="0 -0.04 -0.4"></a-entity>
-                    <a-entity select-bar="controllerID: leftHand" id="menuItems" scale="0.7 0.7 0.7" position="0 0.14 -0.03" rotation="-85 0 0">
+                <a-entity
+                    class="left"
+                    id="leftHand"
+                    hand-controls="hand: left; handModelStyle: lowPoly"
+                    raycaster="showLine: false; enabled: false; objects: .leftclickable;"
+                    garden-controls="menuId: menuItems; previewItemId: leftItem; gardenBaseId: garden; newAssetContainerId: new-asset-container"
+                    breath-capture>
+                    <a-entity id="leftItem" file="kfarr_bases_valencia" objectGroup="plants" objectId="0"
+                        gltf-model="url(../assets/glb/cherry-blossom.glb)" rotation="-5 0 0" scale="0.05 .05 .05"
+                        position="0 -0.04 -0.4"></a-entity>
+                    <a-entity select-bar="controllerID: leftHand" id="menuItems" scale="0.7 0.7 0.7"
+                        position="0 0.14 -0.03" rotation="-85 0 0">
                         <optgroup label="Plants" value="plants">
-                            <option value="cherry-blossom" src="url(../assets/img/cherry-blossom.png)" selected>Cherry Blossom</option>
-                            <option value="evergreen-tree-1" src="url(../assets/img/evergreen-tree-1.png)">Evergreen Tree 1</option>
-                            <option value="evergreen-tree-2" src="url(../assets/img/evergreen-tree-2.png)">Evergreen Tree 2</option>
+                            <option value="cherry-blossom" src="url(../assets/img/cherry-blossom.png)" selected>Cherry
+                                Blossom</option>
+                            <option value="evergreen-tree-1" src="url(../assets/img/evergreen-tree-1.png)">Evergreen
+                                Tree 1</option>
+                            <option value="evergreen-tree-2" src="url(../assets/img/evergreen-tree-2.png)">Evergreen
+                                Tree 2</option>
                             <option value="tall-tree" src="url(../assets/img/tall-tree.png)">Tall Tree</option>
                             <option value="round-tree-1" src="url(../assets/img/round-tree-1.png)">Round Tree 1</option>
                             <option value="short-grass" src="url(../assets/img/short-grass.png)">Short Grass</option>
-                            <option value="potted_plant_small" src="url(../assets/img/potted_plant_small.png)">Potted Plant</option>
+                            <option value="potted_plant_small" src="url(../assets/img/potted_plant_small.png)">Potted
+                                Plant</option>
                         </optgroup>
                     </a-entity>
                 </a-entity>
@@ -105,8 +121,8 @@
 
             <template id="user-hands-fake">
                 <a-entity class="user">
-                    <a-entity id="leftHandFake" class="left" gltf-model="#left-hand-low"></a-entity>
-                    <a-entity id="rightHandFake" class="right" gltf-model="#right-hand-low"></a-entity>
+                    <a-entity id="leftHandFake" class="left" fake-hands="hand: left; handModelStyle: lowPoly"></a-entity>
+                    <a-entity id="rightHandFake" class="right" fake-hands="hand: right; handModelStyle: lowPoly"></a-entity>
                 </a-entity>
             </template>
 
@@ -130,7 +146,7 @@
               id="flame"
               src="../assets/glb/lantern-flame.glb"
             ></a-asset-item>
-          
+
             <!-- music -->
             <audio id="background-music" src="../assets/Music/default.m4a"></audio>
             <audio id="meditation-music" src="../assets/Music/meditation.m4a"></audio>
@@ -145,8 +161,10 @@
             <audio id="rain" src="../assets/meditation-scripts/Rain.mp3"></audio>
           
             <!--a-asset-item id="meditation-building" src="../assets/glb/meditation-room.glb"></a-asset-item-->
-            <a-asset-item id="meditation-building" src="https://cdn.glitch.com/d278d22e-cba0-423d-9948-00c332e0a3d7%2Fmeditation-room-small.glb?v=1618960941936"></a-asset-item>
-          
+            <a-asset-item id="meditation-building" 
+                src="https://cdn.glitch.com/d278d22e-cba0-423d-9948-00c332e0a3d7%2Fmeditation-room-small.glb?v=1618960941936">
+            </a-asset-item>
+
             <!-- yoga images -->
             <!-- note: there's gotta be a better way to load these. -->
             <img id="yoga-0" src="../assets/img/yoga/yoga-0.png">
@@ -234,17 +252,16 @@
         <!-- yoga stuff -->
         <a-cylinder id="yoga-cylinder" class="rightclickable" position="3 0.75 14" radius="0.5" height="1.5" color="#FFC65D" yoga-emitter></a-cylinder>
         <a-image id="yoga-images" width="1.5" height="1.5" position="0 0.75 14.5" rotation="0 180 0">
-          <!-- frame -->
-          <a-box width="3" height="0.5" position="0 -0.95 0" color="#DDBE91"></a-box>
-          <a-box width="1.6" height="0.1" depth="0.5" position="0 0.75 0" color="#DDBE91"></a-box>
-          <a-box width="1.6" height="0.1" depth="0.5" position="0 -0.75 0" color="#DDBE91"></a-box>
-          <a-box width="1.6" height="0.1" depth="0.5" position="0.75 0 0" color="#DDBE91" rotation="0 0 90"></a-box>
-          <a-box width="1.6" height="0.1" depth="0.5" position="-0.75 0 0" color="#DDBE91" rotation="0 0 90"></a-box>
+            <!-- frame -->
+            <a-box width="3" height="0.5" position="0 -0.95 0" color="#DDBE91"></a-box>
+            <a-box width="1.6" height="0.1" depth="0.5" position="0 0.75 0" color="#DDBE91"></a-box>
+            <a-box width="1.6" height="0.1" depth="0.5" position="0 -0.75 0" color="#DDBE91"></a-box>
+            <a-box width="1.6" height="0.1" depth="0.5" position="0.75 0 0" color="#DDBE91" rotation="0 0 90"></a-box>
+            <a-box width="1.6" height="0.1" depth="0.5" position="-0.75 0 0" color="#DDBE91" rotation="0 0 90"></a-box>
         </a-image>
         <a-box id="yoga-mat" height="0.1" width="1" depth="2" position="0 0 11" color="#DB7093"></a-box>
         <a-entity id="timer" position="2 0.5 14" scale="10 10 10" rotation="0 180 0" visible="false"
                   text="color: black; align: center; value: TEST TEXT;"></a-entity>
-      
 
         <a-entity light="type: ambient; color: #BBB" meditation-light-mode></a-entity>
         <a-entity id="light" light="type: point; color: #f4f68e; intensity: 0.7; castShadow: true" position="15.648 15.903 -17.785" meditation-light-mode></a-entity>
@@ -256,16 +273,16 @@
         <a-entity id="garden" base-garden="sceneWidth: 30; sceneDepth: 30"></a-entity>
         <a-entity id="new-asset-container" croquet="name: new-asset-container"></a-entity>
 
-<!--         <a-entity id="garden" base-garden="sceneWidth: 10; sceneDepth: 10"></a-entity> -->
+        <!--         <a-entity id="garden" base-garden="sceneWidth: 10; sceneDepth: 10"></a-entity> -->
         <!-- Camera and hands live here for teleportation -->
-      
+
         <!-- testing teleportation points 
         <a-sphere class="clickable" blink-teleportation teleportation-checkpoint position="0 0 6"></a-sphere>
         <a-entity class="clickable" gltf-model="url(../assets/glb/tall-rock.glb)" blink-teleportation teleportation-checkpoint position="5 0 0"></a-entity>
         -->
-        
+
         <!-- controls tutorial -->
-<!--         <a-entity gltf-model="#single-wall-asset"
+        <!-- <a-entity gltf-model="#single-wall-asset"
                   position="-2 0 -3.55"
                   rotation="0 180 0">
         </a-entity>
@@ -304,7 +321,7 @@
                   text="color: black; align: center; font: exo2bold;
                         value: Right Hand: \nclick to on teleport points \non the floor to move!\nclick on buttons to trigger them!;">
         </a-entity> -->
-        
+
         <!-- testing out meditation start -->
         <a-entity
           class="lantern"
@@ -324,7 +341,7 @@
           scale="1.5 1.5 1.5"
           color="#FFC65D"
         ></a-plane>
-      
+
         <a-entity
           name="default" 
           gltf-model="#meditation-building" 
@@ -333,7 +350,7 @@
           position="0 0.1 -1" 
           croquet="name: med"
         ></a-entity>
-      
+
         <a-entity id="camRig">
           <a-camera
             id="cam"

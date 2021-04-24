@@ -1,5 +1,9 @@
 /* global AFRAME, Croquet, Q */
 
+/**
+ * Global croquet system handler
+ */
+
 // https://aframe.io/docs/1.2.0/core/systems.html#registering-a-system
 AFRAME.registerSystem("croquet", {
     init: function () {
@@ -14,7 +18,7 @@ AFRAME.registerSystem("croquet", {
 
                 // https://croquet.studio/sdk/docs/Session.html#.join
                 Croquet.Session.join({
-                    appId: "me.glitch.croquet_hello_webvr_demo", // change the appId to your own custom string when remixing
+                    appId: "com.uw.zendin",
                     name: Croquet.App.autoSession(),
                     password: "secret",
 
