@@ -14,14 +14,14 @@ Q.LOGGING = {
     UserModel: false,
     UserView: false,
 
-    EntityModel: true,
-    EntityView: true,
+    EntityModel: false,
+    EntityView: false,
 
     DemosView: false,
 
-    GardenControls: true,
+    GardenControls: false,
     Selector: false,
-    BaseGardenGenerator: true,
+    BaseGardenGenerator: false,
 };
 
 Q.GARDEN_BUILDER = {
