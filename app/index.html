@@ -29,6 +29,7 @@
     <script src="./scripts/meditation-emitter.js"></script>
     <script src="./scripts/meditation-mode.js"></script>
     <script src="./scripts/meditation-light-mode.js"></script>
+    <script src="./scripts/meditation-script.js"></script>
   
     <script src="./scripts/blink-teleportation.js"></script>
     <script src="./scripts/teleportation-checkpoint.js"></script>
@@ -131,8 +132,17 @@
             ></a-asset-item>
           
             <!-- music -->
-            <audio id="background-music" src="https://cdn.glitch.com/cb7fdbe5-13ac-4455-9973-1f3a8bb8bba2%2Frelax_music.m4a?v=1618364745593"></audio>
-            <audio id="meditation-music" src="https://cdn.glitch.com/cb7fdbe5-13ac-4455-9973-1f3a8bb8bba2%2Fmeditation.m4a?v=1618372302780"></audio>
+            <audio id="background-music" src="../assets/Music/default.m4a"></audio>
+            <audio id="meditation-music" src="../assets/Music/meditation.m4a"></audio>
+
+            <audio id="As-the-rain" src="../assets/Music/As-the-rain_AdobeStock_353732184_preview.m4a"></audio>
+            <audio id="Breath-of-life" src="../assets/Music/Breath-Of-Life_AdobeStock_331838231_preview.m4a"></audio>
+            <audio id="Imaginary-waterfalls" src="../assets/Music/Imaginary-Waterfalls_AdobeStock_356916496_preview.m4a"></audio>
+
+            <!--meditation scripts-->
+            <audio id="confidence-meditation" src="../assets/meditation-scripts/Confidence.mp3"></audio>
+            <audio id="meditation-1" src="../assets/meditation-scripts/Meditation 1.mp3"></audio>
+            <audio id="rain" src="../assets/meditation-scripts/Rain.mp3"></audio>
           
             <!--a-asset-item id="meditation-building" src="../assets/glb/meditation-room.glb"></a-asset-item-->
             <a-asset-item id="meditation-building" src="https://cdn.glitch.com/d278d22e-cba0-423d-9948-00c332e0a3d7%2Fmeditation-room-small.glb?v=1618960941936"></a-asset-item>
@@ -220,12 +230,6 @@
             </template>
             <!-- menu -->
         </a-assets>
-
-        <!-- meditation post
-        <a-cylinder class="clickable" position="2 0.75 -2" radius="0.5" height="1.5" color="#FFC65D" meditation-emitter>
-          <a-entity light="type: point; color: #FFB600; intensity: 0.5" position="0, 5, 0"></a-entity--
-        </a-cylinder>
-        -->
       
         <!-- yoga stuff -->
         <a-cylinder id="yoga-cylinder" class="rightclickable" position="3 0.75 14" radius="0.5" height="1.5" color="#FFC65D" yoga-emitter></a-cylinder>
@@ -244,7 +248,7 @@
 
         <a-entity light="type: ambient; color: #BBB" meditation-light-mode></a-entity>
         <a-entity id="light" light="type: point; color: #f4f68e; intensity: 0.7; castShadow: true" position="15.648 15.903 -17.785" meditation-light-mode></a-entity>
-        <a-sky src="#sky-img" color="#FFF"
+        <a-sky id="sky" src="#sky-img" color="#FFF"
                sound="on: model-loaded; src: #background-music; autoplay: true; loop: true; positional: false; volume: 0.1"
                meditation-mode yoga-mode>
         </a-sky>
@@ -327,7 +331,6 @@
           scale="0.5 0.5 0.5" 
           rotation="0 90 0" 
           position="0 0.1 -1" 
-          meditation-emitter
           croquet="name: med"
         ></a-entity>
       

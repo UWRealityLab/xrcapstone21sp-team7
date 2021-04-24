@@ -16,6 +16,10 @@ AFRAME.registerComponent("menu-controls", {
     this.onMeditationButtonClicked = this.onMeditationButtonClicked.bind(this);
     this.onYogaButtonClicked = this.onYogaButtonClicked.bind(this);
 
+    this.onGuidedMeditationClicked = this.onGuidedMeditationClicked.bind(this);
+    this.onStoryMeditationClicked = this.onStoryMeditationClicked.bind(this);
+    this.onConfidenceBoosterClicked = this.onConfidenceBoosterClicked.bind(this);
+
     // Button event listeners
     this.el.addEventListener("abuttondown", this.onMenuActivate); // maybe change trigger button?
     this.el.sceneEl.addEventListener(
@@ -25,6 +29,16 @@ AFRAME.registerComponent("menu-controls", {
     this.el.sceneEl.addEventListener(
       "yoga-button-clicked",
       this.onYogaButtonClicked
+    );
+
+    this.el.sceneEl.addEventListener(
+      'guided-meditation-button-clicked', this.onGuidedMeditationClicked
+    );
+    this.el.sceneEl.addEventListener(
+      'story-telling-button-clicked', this.onStoryMeditationClicked
+    );
+    this.el.sceneEl.addEventListener(
+      'confidence-booster-button-clicked', this.onConfidenceBoosterClicked
     );
 
     // Helpers
@@ -59,6 +73,30 @@ AFRAME.registerComponent("menu-controls", {
     // Activate meditation options
     let medMenu = document.querySelector("#meditation-menu");
     this.activate(medMenu);
+  },
+
+  // Start the meditation script
+  onGuidedMeditationClicked: function() {
+    let sky = document.querySelector("#sky");
+    sound="on: model-loaded; src: #meditation-1; autoplay: true; loop: false; positional: false; volume: 1";
+      
+    sky.setAttribute('sound', sound);
+  },
+
+  // Start the rain story script
+  onStoryMeditationClicked: function() {
+    let sky = document.querySelector("#sky");
+    sound="on: model-loaded; src: #rain; autoplay: true; loop: false; positional: false; volume: 1";
+      
+    sky.setAttribute('sound', sound);
+  },
+
+  // Start confidence booster script
+  onConfidenceBoosterClicked: function() {
+    let sky = document.querySelector("#sky");
+    sound="on: model-loaded; src: #confidence-meditation; autoplay: true; loop: false; positional: false; volume: 1";
+      
+    sky.setAttribute('sound', sound);
   },
 
   /*
