@@ -44,10 +44,14 @@
     <!-- yoga -->
     <script src="./scripts/yoga-emitter.js"></script>
     <script src="./scripts/yoga-mode.js"></script>
+
+    <!-- menu -->
+    <script src="./scripts/menu-controls.js"></script>
+    <script src="./scripts/menu-button.js"></script>
 </head>
 
 <body>
-    <a-scene renderer="colorManagement: true; physicallyCorrectLights: true" physics croquet cursor="rayOrigin: mouse">
+    <a-scene renderer="colorManagement: true; physicallyCorrectLights: true" physics croquet cursor="rayOrigin: mouse" >
         <!-- Load in assets -->
         <a-assets>
             <a-asset-item id="env_arrow" src="../assets/env_arrow.obj"></a-asset-item>
@@ -107,8 +111,9 @@
                           sphere-collider="objects: a-box"
                           raycaster="showLine: true; objects: .clickable" laser-controls="hand: right; model: false"> -->
                 <a-entity class="right" id="rightHand" super-hands hand-controls="hand: right; handModelStyle: lowPoly; color: #00ff00"
-                          raycaster="showLine: true; objects: .clickable" laser-controls="hand: right; model: false"
-                          blink-controls="cameraRig: #camRig; teleportOrigin: #cam; collisionEntities: #floor">
+                          raycaster="showLine: true; objects: .rightclickable" laser-controls="hand: right; model: false"
+                          blink-controls="cameraRig: #camRig; teleportOrigin: #cam; collisionEntities: #floor"
+                          menu-controls>
                 </a-entity>
             </template>
 
@@ -119,11 +124,26 @@
                 </a-entity>
             </template>
 
-            <a-mixin id="poster" geometry="primitive: plane; width: 0.544768; height: 0.786432"
-                material="color: white; shader: flat"></a-mixin>
-
-            <a-asset-item id="lantern" src="../assets/glb/stone-lantern.glb"></a-asset-item>
-            <a-asset-item id="flame" src="../assets/glb/lantern-flame.glb"></a-asset-item>
+            <!-- <a-mixin id="poster" geometry="primitive: plane; width: 0.544768; height: 0.786432"
+                material="color: white; shader: flat"></a-mixin> -->
+          
+            <!-- testing drag and drop object functionality - not showing up? -->
+<!--             <a-mixin id="cherry-blossom" src="../assets/glb/cherry-blossom.glb"
+                     hoverable grabbable stretchable draggable droppable shadow
+                     event-set__hoveron="_event: hover-start; material.opacity: 0.7; transparent: true"
+                     event-set__hoveroff="_event: hover-end; material.opacity: 1; transparent: false"
+                     event-set__dragon="_event: dragover-start; material.wireframe: true"
+                     event-set__dragoff="_event: dragover-end; material.wireframe: false"></a-mixin> -->
+            <!-- end of testing drag and drop -->
+          
+            <a-asset-item
+              id="lantern"
+              src="../assets/glb/stone-lantern.glb"
+            ></a-asset-item>
+            <a-asset-item
+              id="flame"
+              src="../assets/glb/lantern-flame.glb"
+            ></a-asset-item>
 
             <!-- music -->
             <audio id="background-music"
@@ -153,16 +173,81 @@
             <img id="yoga-12" src="../assets/img/yoga/yoga-12.png">
             <img id="yoga-13" src="../assets/img/yoga/yoga-13.png">
             <img id="yoga-14" src="../assets/img/yoga/yoga-14.png">
+            
+            <!-- menu -->
+            <img id="meditation-img" src="../assets/img/menu/meditation.png"/>
+            <img id="yoga-img" src="../assets/img/menu/yoga.png"/>
+
+            <a-mixin
+              id="frame"
+              geometry="primitive: plane; width: 0.5783552; height: 0.8192"
+              material="color: white; shader: flat"
+              animation__scale="property: scale; to: 1.2 1.2 1.2; dur: 500; easing: easeOutExpo; startEvents: mouseenter"
+              animation__scale_reverse="property: scale; to: 1 1 1; dur: 500; easing: easeOutExpo; startEvents: mouseleave"
+            ></a-mixin>
+            <a-mixin
+              id="poster"
+              geometry="primitive: plane; width: 0.544768; height: 0.786432"
+              material="color: white; shader: flat"
+              position="0 0 0.008"
+            ></a-mixin>
+            <a-mixin
+              id="info-text"
+              geometry="primitive: plane; width: 0.544768; height: 0.786432"
+              material="color: black; shader: flat; opacity: 0"
+              position="0 0 0.01"
+            >
+            </a-mixin>
+
+            <template id="activity-menu-template">
+              <a-entity id="ui" position="0 1.5 -2" visible="false">
+                <!-- 1 -->
+                <a-entity id="first-menu" class="submenu" visible="false">
+                  <a-entity id="meditation-button" class="option" mixin="frame" position="-0.4 0 0"
+                    menu-button="title: Meditate; info: Take a breather; img: #meditation-img; width: 2">
+                  </a-entity>
+                  <a-entity id="yoga-button" class="option" mixin="frame" position="0.4 0 0"
+                    menu-button="title: Yoga; info: Stretch out a bit; img: #yoga-img; width: 2">
+                  </a-entity>
+                </a-entity> <!-- 1 -->
+                <!-- meditation submenu - removed class="rightclickable" from each button to avoid raycasting on it  -->
+                <a-entity id="meditation-menu" class="submenu" visible="false">
+                  <a-entity id="guided-meditation-button" class="option" mixin="frame" position="-0.7 0 0"
+                    menu-button="title: Guided Meditation; info: Let us walk you through; img: #meditation-img; width: 1.2">
+                  </a-entity>
+                  <a-entity id="story-telling-button" class="option" mixin="frame" position="0 0 0"
+                    menu-button="title: Story Telling; info: Listen to a brief story; img: #meditation-img; width: 1.2">
+                  </a-entity>
+                  <a-entity id="confidence-booster-button" class="option" mixin="frame" position="0.7 0 0"
+                    menu-button="title: Confidence Booster; info: Feel good about yourself; img: #meditation-img; width: 1.2">
+                  </a-entity>
+                </a-entity> <!-- meditation submenu -->
+                <!-- yoga submenu -->
+                <a-entity id="yoga-menu" class="submenu" visible="false">
+                  <!-- samples -->
+                  <a-entity id="yoga-button-1" class="option" mixin="frame" position="-0.7 0 0"
+                    menu-button="title: Yoga 1; info: Yoga 1 Info; img: #yoga-img; width: 1.2">
+                  </a-entity>
+                  <a-entity id="yoga-button-2" class="option" mixin="frame" position="0 0 0"
+                    menu-button="title: Yoga 2; info: Yoga 2 Info; img: #yoga-img; width: 1.2">
+                  </a-entity>
+                  <a-entity id="yoga-button-3" class="option" mixin="frame" position="0.7 0 0"
+                    menu-button="title: Yoga 3; info: Yoga 3 Info; img: #yoga-img; width: 1.2">
+                  </a-entity>
+                </a-entity> <!-- meditation submenu -->
+              </a-entity>
+            </template>
+            <!-- menu -->
         </a-assets>
 
         <!-- meditation post
         <a-cylinder class="clickable" position="2 0.75 -2" radius="0.5" height="1.5" color="#FFC65D" meditation-emitter>
-          <!--a-entity light="type: point; color: #FFB600; intensity: 0.5" position="0, 5, 0"></a-entity--
+          <a-entity light="type: point; color: #FFB600; intensity: 0.5" position="0, 5, 0"></a-entity--
         </a-cylinder>
         -->
 
         <!-- yoga stuff -->
-        <a-cylinder id="yoga-cylinder" class="clickable" position="3 0.75 14" radius="0.5" height="1.5" color="#FFC65D" yoga-emitter></a-cylinder>
+        <a-cylinder id="yoga-cylinder" class="rightclickable" position="3 0.75 14" radius="0.5" height="1.5" color="#FFC65D" yoga-emitter></a-cylinder>
         <a-image id="yoga-images" width="1.5" height="1.5" position="0 0.75 14.5" rotation="0 180 0">
             <!-- frame -->
             <a-box width="3" height="0.5" position="0 -0.95 0" color="#DDBE91"></a-box>
