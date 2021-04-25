@@ -38,8 +38,9 @@ AFRAME.registerComponent("menu-button", {
       value: data.info,
       align: "center",
       shader: "msdf",
-      width: 0.8,
+      width: 1,
       opacity: 0,
+      zOffset: 0.005
     });
 
     // add
@@ -73,7 +74,7 @@ AFRAME.registerComponent("menu-button", {
     // evt.target.setAttribute("material", "color", "#046de7");
     this.infoText.setAttribute("animation", {
       property: "material.opacity",
-      to: 0.95,
+      to: 0.9,
       dur: 500,
       easing: "easeOutExpo",
     });
