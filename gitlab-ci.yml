@@ -1,0 +1,10 @@
+stages:
+  - deploy
+
+project_deploy:
+  stage: deploy
+  script: /www/utils/deploy_cse481vsp21.sh
+  variables:
+    team_name: team7
+  only:
+    - master
