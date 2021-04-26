@@ -22,6 +22,8 @@ Q.LOGGING = {
     GardenControls: false,
     Selector: false,
     BaseGardenGenerator: false,
+
+    BreathCapture: true,
 };
 
 Q.GARDEN_BUILDER = {

@@ -8,15 +8,12 @@
 
     <script src="https://unpkg.com/@croquet/croquet@0.4.0"></script>
     <script src="https://aframe.io/releases/1.2.0/aframe.min.js"></script>
-    <script src="https://raw.githubusercontent.com/n5ro/aframe-extras/master/dist/aframe-extras.min.js"></script>
     <script src="https://cdn.rawgit.com/mrturck/aframe-joystick/master/joystick.min.js"></script>
     <script src="https://unpkg.com/aframe-template-component@3.x.x/dist/aframe-template-component.min.js"></script>
     <script src="https://unpkg.com/aframe-layout-component@4.x.x/dist/aframe-layout-component.min.js"></script>
     <script src="https://unpkg.com/aframe-event-set-component@5.x.x/dist/aframe-event-set-component.min.js"></script>
     <script src="https://raw.githubusercontent.com/msj121/aframe-animation-component/master/dist/aframe-animation-component.min.js"></script>
 
-    <script src="https://cdn.jsdelivr.net/gh/n5ro/aframe-physics-system@v4.0.1/dist/aframe-physics-system.min.js"></script>
-    <script src="https://unpkg.com/aframe-physics-extras/dist/aframe-physics-extras.min.js"></script>
 
     <script src="./scripts/constants.js"></script>
     <script src="./scripts/system.js"></script>
@@ -51,7 +48,7 @@
 </head>
 
 <body>
-    <a-scene renderer="colorManagement: true; physicallyCorrectLights: true" physics croquet cursor="rayOrigin: mouse" >
+    <a-scene renderer="colorManagement: true; physicallyCorrectLights: true" croquet cursor="rayOrigin: mouse" >
         <!-- Load in assets -->
         <a-assets>
             <a-asset-item id="env_arrow" src="../assets/env_arrow.obj"></a-asset-item>
@@ -146,10 +143,16 @@
             ></a-asset-item>
 
             <!-- music -->
-            <audio id="background-music"
-                src="https://cdn.glitch.com/cb7fdbe5-13ac-4455-9973-1f3a8bb8bba2%2Frelax_music.m4a?v=1618364745593"></audio>
-            <audio id="meditation-music"
-                src="https://cdn.glitch.com/cb7fdbe5-13ac-4455-9973-1f3a8bb8bba2%2Fmeditation.m4a?v=1618372302780"></audio>
+            <audio
+                id="background-music"
+                src="https://cdn.glitch.com/cb7fdbe5-13ac-4455-9973-1f3a8bb8bba2%2Frelax_music.m4a?v=1618364745593"
+                crossorigin="anonymous"
+            ></audio>
+            <audio
+                id="meditation-music"
+                src="https://cdn.glitch.com/cb7fdbe5-13ac-4455-9973-1f3a8bb8bba2%2Fmeditation.m4a?v=1618372302780"
+                crossorigin="anonymous"
+            ></audio>
 
             <!--a-asset-item id="meditation-building" src="../assets/glb/meditation-room.glb"></a-asset-item-->
             <a-asset-item id="meditation-building" 
