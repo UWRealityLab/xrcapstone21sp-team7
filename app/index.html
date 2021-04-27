@@ -45,6 +45,7 @@
     <!-- menu -->
     <script src="./scripts/menu-controls.js"></script>
     <script src="./scripts/menu-button.js"></script>
+    <script src="./scripts/volume.js"></script>
 </head>
 
 <body>
@@ -207,6 +208,13 @@
 
             <template id="activity-menu-template">
               <a-entity id="ui" position="0 1.5 -2" visible="false">
+                <!-- volume buttons -->
+                <a-entity id="volume-button" visible="false">
+                  <a-sphere id="up-volume" position="-0.2 1 0" scale="0.1 0.1 0.1" color="green" volume-controls></a-sphere>
+                  <a-sphere id="down-volume" position="0.2 1 0" scale="0.1 0.1 0.1" color="red"></a-sphere>
+                </a-entity>
+                
+
                 <!-- 1 -->
                 <a-entity id="first-menu" class="submenu" visible="false">
                   <a-entity id="meditation-button" class="option" mixin="frame" position="-0.4 0 0"

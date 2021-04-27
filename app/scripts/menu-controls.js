@@ -63,6 +63,8 @@ AFRAME.registerComponent("menu-controls", {
       this.el.emit("goMeditation", { returnColor: "meditation" }); // Darken the environment when menu is displayed
       this.ui.setAttribute("visible", "true");
       this.activate(document.querySelector("#first-menu"));
+
+      this.activate(document.querySelector("#volume-button"));
     }
 
     this.displayed = !this.displayed;
@@ -84,25 +86,31 @@ AFRAME.registerComponent("menu-controls", {
   // Start the meditation script
   onGuidedMeditationClicked: function() {
     let sky = document.querySelector("#sky");
-    sound="on: model-loaded; src: #meditation-1; autoplay: true; loop: false; positional: false; volume: 1";
+    // sound="on: model-loaded; src: #meditation-1; autoplay: true; loop: false; positional: false; volume: 1";
+    let attr = sky.getAttribute('sound');
+    attr.src = "#meditation-1";
       
-    sky.setAttribute('sound', sound);
+    sky.setAttribute('sound', attr);
   },
 
   // Start the rain story script
   onStoryMeditationClicked: function() {
     let sky = document.querySelector("#sky");
-    sound="on: model-loaded; src: #rain; autoplay: true; loop: false; positional: false; volume: 1";
-      
-    sky.setAttribute('sound', sound);
+    // sound="on: model-loaded; src: #rain; autoplay: true; loop: false; positional: false; volume: 1";
+    let attr = sky.getAttribute('sound');
+    attr.src = "#rain";  
+
+    sky.setAttribute('sound', attr);
   },
 
   // Start confidence booster script
   onConfidenceBoosterClicked: function() {
     let sky = document.querySelector("#sky");
-    sound="on: model-loaded; src: #confidence-meditation; autoplay: true; loop: false; positional: false; volume: 1";
-      
-    sky.setAttribute('sound', sound);
+    // sound="on: model-loaded; src: #confidence-meditation; autoplay: true; loop: false; positional: false; volume: 1";
+    let attr = sky.getAttribute('sound');
+    attr.src = "#confidence-meditation";  
+
+    sky.setAttribute('sound', attr);
   },
 
   /**
