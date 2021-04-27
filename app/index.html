@@ -184,6 +184,7 @@
             <!-- menu -->
             <img id="meditation-img" src="../assets/img/menu/meditation.png"/>
             <img id="yoga-img" src="../assets/img/menu/yoga.png"/>
+            <img id="volume-img" src="../assets/img/menu/Volume_icon.png">
 
             <a-mixin
               id="frame"
@@ -208,11 +209,16 @@
 
             <template id="activity-menu-template">
               <a-entity id="ui" position="0 1.5 -2" visible="false">
-                <!-- volume buttons -->
-                <a-entity id="volume-button" visible="false">
-                  <a-sphere id="up-volume" position="-0.2 1 0" scale="0.1 0.1 0.1" color="green" volume-controls></a-sphere>
-                  <a-sphere id="down-volume" position="0.2 1 0" scale="0.1 0.1 0.1" color="red"></a-sphere>
-                </a-entity>
+
+                <!-- volume -->
+                <a-entity id="volume-button" class="submenu" visible="false">
+                  <a-entity id="up-volume" class="option" mixin="frame" position="-0.5 1 0" scale="0.1 0.1 0.1"
+                    menu-button="title: Plus; info: Plus; img: #volume-img;">
+                  </a-entity>
+                  <a-entity id="down-volume" class="option" mixin="frame" position="0.5 1 0" scale="0.1 0.1 0.1"
+                    menu-button="title: Minus; info: Minus; img: #volume-img">
+                  </a-entity>
+                </a-entity> <!-- volume -->
                 
 
                 <!-- 1 -->

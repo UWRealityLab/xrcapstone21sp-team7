@@ -47,6 +47,14 @@ AFRAME.registerComponent("menu-controls", {
       'breathing-exercise-button-clicked', this.onBreathingExerciseButtonClicked
     );
 
+    this.el.sceneEl.addEventListener(
+      'up-volume-clicked', this.upVolume
+    );
+
+    this.el.sceneEl.addEventListener(
+      'down-volume-clicked', this.downVolume
+    );
+
     // Helpers
     this.activate = this.activate.bind(this);
     this.deactivate = this.deactivate.bind(this);
@@ -136,6 +144,36 @@ AFRAME.registerComponent("menu-controls", {
     // Activate meditation options
     let yogaMenu = document.querySelector("#yoga-menu");
     this.activate(yogaMenu);
+  },
+
+  upVolume: function () {
+
+    let sky = document.querySelector('#sky');
+    let attr = sky.getAttribute('sound');
+    console.log("Volume before:" + attr.volume);
+    attr.volume = attr.volume + 0.05;
+    console.log("Volume after:" + attr.volume);
+    
+    sky.setAttribute('sound', attr);
+        
+  },
+
+  downVolume: function () {
+
+    let sky = document.querySelector('#sky');
+
+    let attr = sky.getAttribute('sound');
+    console.log("Volume before:" + attr.volume);
+
+    attr.volume = attr.volume - 0.05;
+
+    if (attr.volume < 0) {
+      attr.volume = 0;
+    }
+    console.log("Volume after:" + attr.volume);
+    
+    sky.setAttribute('sound', attr);
+        
   },
 
   /*

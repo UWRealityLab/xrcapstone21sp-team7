@@ -5,7 +5,6 @@ AFRAME.registerComponent('meditation-light-mode', {
     this.onMeditation = function(e) {
       
       let n = e.detail.returnColor;
-      console.log(n);
       
       let light;
       if (n == "meditation") {
@@ -17,7 +16,7 @@ AFRAME.registerComponent('meditation-light-mode', {
           dur: 2000,
           easing: 'linear'
         };
-        console.log("ABAHDFJALJFAL!!!");
+
       } else {
         // we want to change the light to brighter intensity
         light = {
