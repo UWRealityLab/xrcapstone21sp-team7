@@ -19,6 +19,9 @@ AFRAME.registerComponent("menu-controls", {
     this.onGuidedMeditationClicked = this.onGuidedMeditationClicked.bind(this);
     this.onStoryMeditationClicked = this.onStoryMeditationClicked.bind(this);
     this.onConfidenceBoosterClicked = this.onConfidenceBoosterClicked.bind(this);
+    this.onBreathingExerciseButtonClicked = this.onBreathingExerciseButtonClicked.bind(this);
+
+    this.removeEventListeners = this.removeEventListeners.bind(this);
 
     // Button event listeners
     this.el.addEventListener("abuttondown", this.onMenuActivate); // maybe change trigger button?
@@ -39,6 +42,9 @@ AFRAME.registerComponent("menu-controls", {
     );
     this.el.sceneEl.addEventListener(
       'confidence-booster-button-clicked', this.onConfidenceBoosterClicked
+    );
+    this.el.sceneEl.addEventListener(
+      'breathing-exercise-button-clicked', this.onBreathingExerciseButtonClicked
     );
 
     // Helpers
@@ -99,6 +105,18 @@ AFRAME.registerComponent("menu-controls", {
     sky.setAttribute('sound', sound);
   },
 
+  /**
+   * Start breathing exercise.
+   */
+  onBreathingExerciseButtonClicked: function() {
+    // TODO
+    // let sky = document.querySelector('#sky');
+    // sound = 'on: model-loaded; src: #breath-exercise-meditation; autoplay: true; loop: false; positional: false; volume: 1';
+    // sky.setAttribute('sound', sound);
+
+    this.el.sceneEl.emit('breath-capture-start');
+  },
+
   /*
     Displays the different yoga options
   */
@@ -137,15 +155,39 @@ AFRAME.registerComponent("menu-controls", {
     this.currentMenu = null;
   },
 
-  remove: function () {},
+  remove: function () {
+    this.removeEventListeners();
+  },
 
   //   addEventListeners: function() {
   //     this.el.addEventListener('meditation-button-clicked', this.onMeditationButtonClicked);
   //     this.el.addEventListener('yoga-button-clicked', this.onYogaButtonClicked);
   //   },
 
-  //   removeEventListeners: function() {
-  //     this.el.removeEventListener('meditation-button-clicked', this.onMeditationButtonClicked);
-  //     this.el.removeEventListener('yoga-button-clicked', this.on)
-  //   },
+  removeEventListeners: function() {
+    let el = this.el;
+
+    el.removeEventListener('abuttondown', this.onMenuActivate); // maybe change trigger button?
+    el.sceneEl.removeEventListener(
+      'meditation-button-clicked',
+      this.onMeditationButtonClicked
+    );
+    el.sceneEl.removeEventListener(
+      "yoga-button-clicked",
+      this.onYogaButtonClicked
+    );
+
+    el.sceneEl.removeEventListener(
+      'guided-meditation-button-clicked', this.onGuidedMeditationClicked
+    );
+    el.sceneEl.removeEventListener(
+      'story-telling-button-clicked', this.onStoryMeditationClicked
+    );
+    el.sceneEl.removeEventListener(
+      'confidence-booster-button-clicked', this.onConfidenceBoosterClicked
+    );
+    el.sceneEl.removeEventListener(
+      'breathing-exercise-button-clicked', this.onBreathingExerciseButtonClicked
+    );
+  },
 });

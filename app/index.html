@@ -31,7 +31,6 @@
     <script src="./scripts/meditation-emitter.js"></script>
     <script src="./scripts/meditation-mode.js"></script>
     <script src="./scripts/meditation-light-mode.js"></script>
-    <script src="./scripts/meditation-script.js"></script>
 
     <script src="./scripts/meditation/breath-capture.js"></script>
     <script src="./scripts/blink-teleportation.js"></script>
@@ -155,7 +154,9 @@
             <audio id="confidence-meditation" src="../assets/meditation-scripts/Confidence.mp3"></audio>
             <audio id="meditation-1" src="../assets/meditation-scripts/Meditation 1.mp3"></audio>
             <audio id="rain" src="../assets/meditation-scripts/Rain.mp3"></audio>
-          
+            <!-- TODO do this -->
+            <audio id="breath-exercise-meditation" src="../assets/meditation-scripts/TODO.mp3"></audio>
+
             <!--a-asset-item id="meditation-building" src="../assets/glb/meditation-room.glb"></a-asset-item-->
             <a-asset-item id="meditation-building" 
                 src="https://cdn.glitch.com/d278d22e-cba0-423d-9948-00c332e0a3d7%2Fmeditation-room-small.glb?v=1618960941936">
@@ -217,14 +218,17 @@
                 </a-entity> <!-- 1 -->
                 <!-- meditation submenu - removed class="rightclickable" from each button to avoid raycasting on it  -->
                 <a-entity id="meditation-menu" class="submenu" visible="false">
-                  <a-entity id="guided-meditation-button" class="option" mixin="frame" position="-0.7 0 0"
+                  <a-entity id="guided-meditation-button" class="option" mixin="frame" position="-1.05 0 0"
                     menu-button="title: Guided Meditation; info: Let us walk you through; img: #meditation-img; width: 1.2">
                   </a-entity>
-                  <a-entity id="story-telling-button" class="option" mixin="frame" position="0 0 0"
+                  <a-entity id="story-telling-button" class="option" mixin="frame" position="-0.35 0 0"
                     menu-button="title: Story Telling; info: Listen to a brief story; img: #meditation-img; width: 1.2">
                   </a-entity>
-                  <a-entity id="confidence-booster-button" class="option" mixin="frame" position="0.7 0 0"
+                  <a-entity id="confidence-booster-button" class="option" mixin="frame" position="0.35 0 0"
                     menu-button="title: Confidence Booster; info: Feel good about yourself; img: #meditation-img; width: 1.2">
+                  </a-entity>
+                  <a-entity id="breathing-exercise-button" class="option" mixin="frame" position="1.05 0 0"
+                    menu-button="title: Breathing Exercises; info: Improve meditation\nbreathing techniques; img: #meditation-img; width: 1.2">
                   </a-entity>
                 </a-entity> <!-- meditation submenu -->
                 <!-- yoga submenu -->
