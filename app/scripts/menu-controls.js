@@ -58,6 +58,9 @@ AFRAME.registerComponent("menu-controls", {
     this.deactivate = this.deactivate.bind(this);
     this.activateSliders = this.activateSliders.bind(this);
     this.deactivateSliders = this.deactivateSliders.bind(this);
+
+    this.activateSmallButton = this.activateSmallButton.bind(this);
+    this.deactivateSmallButton = this.deactivateSmallButton.bind(this);
   },
 
   /*
@@ -69,6 +72,8 @@ AFRAME.registerComponent("menu-controls", {
       this.deactivate(this.currentMenu);
       // this.deactivate(document.querySelector("#volume-button"));
       this.deactivateSliders();
+
+      this.deactivateSmallButton();
     } else {
       this.el.emit("goMeditation", { returnColor: "meditation" }); // Darken the environment when menu is displayed
       this.ui.setAttribute("visible", "true");
@@ -77,6 +82,8 @@ AFRAME.registerComponent("menu-controls", {
 
       // Turn on sliders
       this.activateSliders();
+
+      this.activateSmallButton();
     }
 
     this.displayed = !this.displayed;
@@ -182,6 +189,29 @@ AFRAME.registerComponent("menu-controls", {
       slider.querySelector(".container").setAttribute("class", "container");
     });
   },
+
+  /*
+    Turn on small-button
+  */
+ activateSmallButton: function () {
+  this.ui.querySelectorAll(".small-button").forEach((button) => {
+    button.setAttribute("visible", true);
+    button
+      .querySelector(".container")
+      .setAttribute("class", "rightclickable container");
+  });
+
+},
+
+/*
+  Turn off small-button
+*/
+deactivateSmallButton: function () {
+  this.ui.querySelectorAll(".small-button").forEach((button) => {
+    button.setAttribute("visible", false);
+    button.querySelector(".container").setAttribute("class", "container");
+  });
+},
 
   /*
     Activates menu options so they can be detected by raycasting

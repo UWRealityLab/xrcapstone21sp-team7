@@ -47,6 +47,7 @@
     <script src="./scripts/menu-button.js"></script>
     <script src="./scripts/volume.js"></script>
     <script src="./scripts/slider.js"></script>
+    <script src="./scripts//small-button.js"></script>
 </head>
 
 <body>
@@ -151,6 +152,7 @@
             <audio id="As-the-rain" src="../assets/Music/As-the-rain_AdobeStock_353732184_preview.m4a"></audio>
             <audio id="Breath-of-life" src="../assets/Music/Breath-Of-Life_AdobeStock_331838231_preview.m4a"></audio>
             <audio id="Imaginary-waterfalls" src="../assets/Music/Imaginary-Waterfalls_AdobeStock_356916496_preview.m4a"></audio>
+            <audio id="Fairy-Forest" src="../assets/Music/Yuriy-Buntov---Fairy-Forest_AdobeStock_353743366_preview (1).m4a"></audio>
 
             <!--meditation scripts-->
             <audio id="confidence-meditation" src="../assets/meditation-scripts/Confidence.mp3"></audio>
@@ -187,6 +189,10 @@
             <img id="yoga-img" src="../assets/img/menu/yoga.png"/>
             <img id="volume-img" src="../assets/img/menu/Volume_icon.png">
 
+            <!-- thumbnails for audio -->
+            <img id="As-in-rain-img" src="../assets/img/rain_img.png">
+            <img id="Fairy-Forest-img" src="../assets/img/forest.png">
+
             <a-mixin
               id="frame"
               geometry="primitive: plane; width: 0.5783552; height: 0.8192"
@@ -207,6 +213,13 @@
               position="0 0 0.01"
             >
             </a-mixin>
+
+            <a-mixin
+              id="thumbnail"
+              geometry="primitive: plane; width: 0.3; height: 0.2"
+              material="color: white; shader: flat"
+              position="0 0 0.008"
+            ></a-mixin>
 
             <template id="activity-menu-template">
               <a-entity id="ui" position="0 1.5 -2" visible="false">
@@ -248,10 +261,6 @@
                   </a-entity>
                 </a-entity> <!-- meditation submenu -->
 
-<<<<<<< HEAD
-                <!-- volume -->
-                <a-entity id="volume-slider" class="slider" slider="title: Music Volume" position="0 -0.7 0" visible="false">
-=======
                  <!-- volume -->
                 <!-- <a-entity id="volume-button" class="submenu" visible="false">
                   <a-entity id="up-volume" class="option" mixin="frame" position="-0.5 1 0" scale="0.1 0.1 0.1"
@@ -263,9 +272,13 @@
                 </a-entity>  -->
                 <a-entity id="volume-slider" class="slider" slider="title: Music" position="0 -0.7 0" visible="false">
                   
->>>>>>> f48a3a12da6a8e71e01519124db51a00e0b85e43
                 </a-entity>
                 <!-- volume -->
+
+                <!-- audio -->
+                <a-entity id="As-in-rain" class="small-button" small-button="title: As In Rain; img: #As-in-rain-img" position="-0.4 -1 0" visible="false"></a-entity>
+                <a-entity id="Forest-Fairy" class="small-button" small-button="title: Fairy Forest; img: #Fairy-Forest-img" position="0.05 -1 0" visible="false"></a-entity>
+                <!-- audio -->
 
               </a-entity>
             </template>
