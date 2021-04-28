@@ -67,12 +67,12 @@ AFRAME.registerComponent("menu-controls", {
     if (this.displayed) {
       this.ui.setAttribute("visible", "false");
       this.deactivate(this.currentMenu);
+      this.deactivate(document.querySelector("#volume-button"));
     } else {
       this.el.emit("goMeditation", { returnColor: "meditation" }); // Darken the environment when menu is displayed
       this.ui.setAttribute("visible", "true");
-      this.activate(document.querySelector("#first-menu"));
-
       this.activate(document.querySelector("#volume-button"));
+      this.activate(document.querySelector("#first-menu"));
     }
 
     this.displayed = !this.displayed;
