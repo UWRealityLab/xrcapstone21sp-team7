@@ -46,6 +46,7 @@
     <script src="./scripts/menu-controls.js"></script>
     <script src="./scripts/menu-button.js"></script>
     <script src="./scripts/volume.js"></script>
+    <script src="./scripts/slider.js"></script>
 </head>
 
 <body>
@@ -209,18 +210,6 @@
 
             <template id="activity-menu-template">
               <a-entity id="ui" position="0 1.5 -2" visible="false">
-
-                <!-- volume -->
-                <a-entity id="volume-button" class="submenu" visible="false">
-                  <a-entity id="up-volume" class="option" mixin="frame" position="-0.5 1 0" scale="0.1 0.1 0.1"
-                    menu-button="title: Plus; info: Plus; img: #volume-img;">
-                  </a-entity>
-                  <a-entity id="down-volume" class="option" mixin="frame" position="0.5 1 0" scale="0.1 0.1 0.1"
-                    menu-button="title: Minus; info: Minus; img: #volume-img">
-                  </a-entity>
-                </a-entity> <!-- volume -->
-                
-
                 <!-- 1 -->
                 <a-entity id="first-menu" class="submenu" visible="false">
                   <a-entity id="meditation-button" class="option" mixin="frame" position="-0.4 0 0"
@@ -258,6 +247,20 @@
                     menu-button="title: Yoga 3; info: Yoga 3 Info; img: #yoga-img; width: 1.2">
                   </a-entity>
                 </a-entity> <!-- meditation submenu -->
+
+                 <!-- volume -->
+                <!-- <a-entity id="volume-button" class="submenu" visible="false">
+                  <a-entity id="up-volume" class="option" mixin="frame" position="-0.5 1 0" scale="0.1 0.1 0.1"
+                    menu-button="title: Plus; info: Plus; img: #volume-img;">
+                  </a-entity>
+                  <a-entity id="down-volume" class="option" mixin="frame" position="0.5 1 0" scale="0.1 0.1 0.1"
+                    menu-button="title: Minus; info: Minus; img: #volume-img">
+                  </a-entity>
+                </a-entity>  -->
+                <a-entity id="volume-slider" class="slider" slider="title: Music Volume" position="0 -0.7 0" visible="false">
+                  
+                </a-entity>
+                <!-- volume -->
               </a-entity>
             </template>
             <!-- menu -->
