@@ -4,12 +4,12 @@ AFRAME.registerComponent("meditation-mode", {
 
     this.onMeditation = function(e) {
       let n = e.detail.returnColor;
-      //console.log(c);
+      console.log("MEDITATION MODE");
 
       let sound;
       let params;
 
-      if (n == "meditation") {
+      if (n == "meditation" && el.getAttribute("sound").src != "#meditation-music") {
         // we want to change the sky to darker
 
         params = {
@@ -19,8 +19,11 @@ AFRAME.registerComponent("meditation-mode", {
           easing: "linear"
         };
 
-        sound =
-          "src: #meditation-music; autoplay: true; loop: true; positional: false; volume: 0.1";
+        sound = el.getAttribute("sound");
+        sound.src = "#meditation-music";
+
+        //sound =
+          //"src: #meditation-music; autoplay: true; loop: true; positional: false; volume: 0.1";
 
         // let flameNum = 0;
         // Turn on lanterns
@@ -37,8 +40,11 @@ AFRAME.registerComponent("meditation-mode", {
           easing: "linear"
         };
 
-        sound =
-          "src: #background-music; autoplay: true; loop: true; positional: false; volume: 0.1";
+        el.getAttribute("sound");
+        sound.src = "#background-music";
+
+        //sound =
+          //"src: #background-music; autoplay: true; loop: true; positional: false; volume: 0.1";
 
         // Turn off lanterns
         document.querySelectorAll(".flame").forEach(flame => {
