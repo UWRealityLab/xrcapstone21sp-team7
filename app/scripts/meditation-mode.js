@@ -22,16 +22,10 @@ AFRAME.registerComponent("meditation-mode", {
         sound =
           "src: #meditation-music; autoplay: true; loop: true; positional: false; volume: 0.1";
 
-        let flameNum = 0;
+        // let flameNum = 0;
         // Turn on lanterns
-        document.querySelectorAll(".lantern").forEach(lantern => {
-          let flame = document.createElement("a-entity");
-          flame.setAttribute("class", "flame");
-          flame.setAttribute("position", "0 1 0");
-          flame.setAttribute("gltf-model", "#flame");
-          flame.setAttribute('croquet', 'name: flame' + flameNum);
-          flameNum += 1;
-          lantern.appendChild(flame);
+        document.querySelectorAll(".flame").forEach(flame => {
+          flame.setAttribute("visible", false);
         });
       } else {
         // we want to change it back to the defualt sky
@@ -47,10 +41,8 @@ AFRAME.registerComponent("meditation-mode", {
           "src: #background-music; autoplay: true; loop: true; positional: false; volume: 0.1";
 
         // Turn off lanterns
-         // Turn on lanterns
-        document.querySelectorAll(".lantern").forEach((lantern) => {
-          // Assuming we only have the flame as the child
-          lantern.removeChild(lantern.firstChild);
+        document.querySelectorAll(".flame").forEach(flame => {
+          flame.setAttribute("visible", false);
         });
       }
       //el.setAttribute('src', source);
