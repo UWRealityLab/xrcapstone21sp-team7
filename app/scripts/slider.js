@@ -77,7 +77,7 @@ AFRAME.registerComponent("slider", {
   },
 
   onClick: function (evt) {
-    const x = evt.detail.intersection.point.x;
+    const x = this.container.object3D.worldToLocal(evt.detail.intersection.point).x;
     const percent = ( x + 0.5 * this.barWidth ) / this.barWidth;
     console.log(percent);
 
