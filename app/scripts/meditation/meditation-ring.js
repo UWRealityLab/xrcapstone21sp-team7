@@ -52,11 +52,6 @@ AFRAME.registerComponent('meditation-ring', {
       el.object3D.scale.x = Math.min(6, Math.max(1, el.object3D.scale.x + scaleChange * SCALE_CHANGE_MAGNITUDE));
       el.object3D.scale.y = Math.min(6, Math.max(1, el.object3D.scale.y + scaleChange * SCALE_CHANGE_MAGNITUDE));
       el.setAttribute('radius-tubular', 0.01 / el.object3D.scale.x);
-
-      el.setAttribute(
-        'light',
-        'intensity',
-        Math.min(1, Math.max(0, el.getAttribute('light','intensity').intensity + scaleChange * LIGHT_CHANGE_MAGNITUDE)));
     }
   },
 
