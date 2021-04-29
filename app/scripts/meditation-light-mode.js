@@ -28,6 +28,6 @@ AFRAME.registerComponent('meditation-light-mode', {
     this.changeLighting(1);
   },
   onMeditationStart: function() {
-    this.changeLighting(0.1);
+    this.changeLighting(0);
   }
 })
