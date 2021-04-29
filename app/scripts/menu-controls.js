@@ -68,16 +68,16 @@ AFRAME.registerComponent("menu-controls", {
   */
   onMenuActivate: function () {
     if (this.displayed) {
+      // TODO: change this, still want if user selected a meditation mode
+      this.el.emit("endMeditation");
       this.ui.setAttribute("visible", "false");
       this.deactivate(this.currentMenu);
-      // this.deactivate(document.querySelector("#volume-button"));
       this.deactivateSliders();
 
       this.deactivateSmallButton();
     } else {
-      this.el.emit("goMeditation", { returnColor: "meditation" }); // Darken the environment when menu is displayed
+      this.el.emit("startMeditation");
       this.ui.setAttribute("visible", "true");
-      // this.activate(document.querySelector("#volume-button"));
       this.activate(document.querySelector("#first-menu"));
 
       // Turn on sliders
