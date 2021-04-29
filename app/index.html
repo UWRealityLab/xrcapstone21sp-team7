@@ -51,7 +51,7 @@
 </head>
 
 <body>
-    <a-scene renderer="colorManagement: true; physicallyCorrectLights: true" croquet cursor="rayOrigin: mouse" >
+    <a-scene renderer="colorManagement: true; physicallyCorrectLights: true" croquet cursor="rayOrigin: mouse" shadow="type: pcfsoft" background="color: #dbf5ff">
         <!-- Load in assets -->
         <a-assets>
             <a-asset-item id="env_arrow" src="../assets/env_arrow.obj"></a-asset-item>
@@ -300,8 +300,10 @@
         <a-entity id="timer" position="2 0.5 14" scale="10 10 10" rotation="0 180 0" visible="false"
                   text="color: black; align: center; value: TEST TEXT;"></a-entity>
 
-        <a-entity light="type: ambient; color: #BBB" meditation-light-mode></a-entity>
-        <a-entity id="light" light="type: point; color: #f4f68e; intensity: 0.7; castShadow: true" position="15.648 15.903 -17.785" meditation-light-mode></a-entity>
+        <!-- <a-entity light="type: ambient; color: #BBB" meditation-light-mode></a-entity> -->
+        <a-entity id="light" light="type: directional; color: #ffffff; intensity: 1; castShadow: true; shadowCameraBottom:-14; shadowCameraTop: 14; shadowCameraLeft: -16; shadowCameraRight: 16"
+          position="10 70 20" meditation-light-mode></a-entity>
+        <a-light type="hemisphere" color="#e0fbff" ground-color="#fffab3" intensity="1.5"></a-light>
         <a-sky id="sky" src="#sky-img" color="#FFF"
                sound="on: model-loaded; src: #background-music; autoplay: true; loop: true; positional: false; volume: 0.1"
                meditation-mode yoga-mode>
@@ -365,6 +367,7 @@
           gltf-model="#lantern"
           position="2 0 -3"
           croquet="name: lantern-1"
+          shadow="receive: false; cast: true"
         >
           </a-entity class="flame" position="0 1 0" gltf-model="#flame" croquet="name: flame1" visible="false">
           </a-entity>
@@ -373,6 +376,7 @@
           gltf-model="#lantern"
           position="-2 0 -3"
           croquet="name: lantern-2"
+          shadow="receive: false; cast: true"
         ></a-entity>
           </a-entity class="flame" position="0 1 0" gltf-model="#flame" croquet="name: flame2" visible="false">
           </a-entity>
