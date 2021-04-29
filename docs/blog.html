@@ -53,27 +53,93 @@
                             <a href="#!">AR/VR Capstone Team 7</a>
                             on 29 April 2021
                         </span>
-                        <p>This week was spent exploring both meditation and yoga experiences. We expanded on the groundwork that we set up the previous week as well as resolving several bugs. Although this week was a busy and hectic week for everyone, we were still able to make solid progress.</p>
+                        <p>This week was spent exploring both meditation and yoga experiences. We expanded on the groundwork that we set up the previous week as well as resolving several bugs. Also we transfered our development environment from Glitch to local development with VSCode and the Live Server extension. Although this week was a busy and hectic week for everyone, we were still able to make solid progress.</p>
                         <h3>Successes and Accomplishments From This Week</h3>
                         <p>
-                            Matthew started researching and developing feedback for meditation mode. The current implementation tracks the users controllers as they inhale/exhale and provides visual feedback with a ring that dynamically resizes with each breath.
+                            Matthew started researching and developing feedback for meditation mode. Users can use this feature by either lying down or standing and holding or placing the controller on their belly. The current implementation tracks the users controllers as they inhale/exhale and provides visual feedback with a ring that dynamically resizes with each breath. Breath tracking can currently accessed through the meditation menu and pressing the
+                            <strong>x-button</strong>
+                            once it is selected in the menu. It can also be removed using the same button.
                             <br />
                             <img src="assets/img/breath-ring.gif" width="600px" />
                             <br />
                             <i>Current breath capture feedback mechanism</i>
                         </p>
                         <p>
-                            Hristo and Jane worked on designing and improving the menu interface that we started last week. New additions include additional info text for each option as well as a volume slider. Jane made the menu items usable by integrating the meditation audios/scripts that she recorded. So far each meditation option plays a recording when clicked.
+                            Hristo and Jane worked on designing and improving the menu interface that we started last week. New additions include additional info text for each option as well as a volume slider. Jane made the menu items usable by integrating the meditation audios/scripts that she recorded and edited as well as the sounds she compiled. So far each meditation option plays a recording when clicked, but the yoga options are still currently placeholders. Jane also started implementing sound and music selection to give users finer control of the soundscape. Currently the menu can be activated and deactivated by pressing the
+                            <strong>a-button</strong>
+                            and options can be selected using the
+                            <strong>right trigger.</strong>
                             <br />
                             <img src="assets/img/menu-1.gif" width="600px" />
                             <br />
                             <i>Menu with options and sliders</i>
                         </p>
                         <p>
-                            Hristo also tried adjusting the lighting of the scene since the colors seemed a bit dull. He also tried adjusting shadows to improve immersion.
-                            <!-- TODO: add lighting-->
+                            Hristo also tried adjusting the lighting of the scene since the colors seemed a bit dull. He also tried adjusting shadows to improve immersion and the overall aesthetic.
+                            <br />
+                            <img src="assets/img/regular_mode.jpg" width="600px" />
+                            <br />
+                            <i>Previous scene lighting</i>
+                            <br />
+                            <img src="assets/img/improved-light.png" width="600px" />
+                            <br />
+                            <i>Improved scene lighting</i>
                         </p>
-                        <p>Phi</p>
+                        <p>
+                            Phi worked on developing the yoga experience with recorded scripts as well as a display that leads a yoga session. He used some of his prior yoga experience to create slides with instructions as well as drawings with poses. Currently users do not use their controllers during a yoga session.
+                            <br />
+                            <img src="assets/img/YogaDemo2.png" width="600px" />
+                            <br />
+                            <i>Snapshot of yoga routine</i>
+                        </p>
+                        <p>
+                            Matthew also started implementing a home screen for users to select their room but that is still a work in progress. Jane also tried animating the sky, but proved harder than we initially thought it would be. We are currently exploring other methods of adding life to the sky like 3D cloud and star models. Overall, we feel as though we made decent progress this week.
+                            <strong>You can view the live prototype application</strong>
+                            <strong><a href="https://courses.cs.washington.edu/courses/cse481v/21sp/projects/team7/app/">here.</a></strong>
+                        </p>
+                        <h3>Plan for Next Week</h3>
+                        <p>We will connect the experiences together and unify them with the menu to have our Minimum Viable Product (MVP) in time for the midterm presentation on May 4th. Also taking care of bugs that have surfaced.</p>
+                        <ul>
+                            <li>
+                                Phi and Jane:
+                                <ul>
+                                    <li>Record meditation tutorial, add soundtrack to the application</li>
+                                    <li>
+                                        Improve look and feel of meditation tool
+                                        <ul>
+                                            <li>Fine tune scene lighting and sound to improve the tool</li>
+                                        </ul>
+                                    </li>
+                                    <li>
+                                        Add meditation tutorial to walk user through how to meditate
+                                        <ul>
+                                            <li>Initial proof of concept will be text based and plays through without pauses or interaction</li>
+                                        </ul>
+                                    </li>
+                                </ul>
+                            </li>
+                            <li>Phi: Write blog</li>
+                            <li>
+                                Matthew and Hristo:
+                                <ul>
+                                    <li>Continue working on meditation</li>
+                                    <li>
+                                        Integrate exhale/inhale tool into meditation tool
+                                        <ul>
+                                            <li>Very simple feedback to user - user specifies variable inhale/exhale time that they shall attempt to meet, UI provides feedback about if they are meeting their breathing goal</li>
+                                        </ul>
+                                    </li>
+                                    <li>
+                                        Research techniques that may be feasible for classifying yoga poses (whether that be using classical pose estimation approaches or machine learning)
+                                        <ul>
+                                            <li>Start with extracting data from the Oculus's head/hand controls</li>
+                                        </ul>
+                                    </li>
+                                </ul>
+                            </li>
+                        </ul>
+                        <h3>Blocking Issues</h3>
+                        <p>| This past week has been been a slightly slower week because we are 'getting into the thick of the quarter' - Phi. But, most things are coming together and mostly depend on connecting | the different elements together into a cohesive project. There are still some small hurdles that we may encounter in doing this, but we currently do not have any apparent blockers.</p>
                     </div>
                 </div>
             </div>
