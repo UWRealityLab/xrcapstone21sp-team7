@@ -31,6 +31,7 @@
     <script src="./scripts/meditation-emitter.js"></script>
     <script src="./scripts/meditation-mode.js"></script>
     <script src="./scripts/meditation-light-mode.js"></script>
+    <script src="./scripts/meditation/meditation-ring.js"></script>
 
     <script src="./scripts/meditation/breath-capture.js"></script>
     <script src="./scripts/blink-teleportation.js"></script>
@@ -149,6 +150,7 @@
             <audio id="As-the-rain" src="../assets/Music/As-the-rain_AdobeStock_353732184_preview.m4a"></audio>
             <audio id="Breath-of-life" src="../assets/Music/Breath-Of-Life_AdobeStock_331838231_preview.m4a"></audio>
             <audio id="Imaginary-waterfalls" src="../assets/Music/Imaginary-Waterfalls_AdobeStock_356916496_preview.m4a"></audio>
+            <audio id="Meditation-Aquatic" src="../assets/Music/Meditation-Aquatic_AdobeStock_357614213_preview.m4a"></audio>
 
             <!--meditation scripts-->
             <audio id="confidence-meditation" src="../assets/meditation-scripts/Confidence.mp3"></audio>
@@ -265,12 +267,14 @@
 
         <a-entity light="type: ambient; color: #BBB" meditation-light-mode></a-entity>
         <a-entity id="light" light="type: point; color: #f4f68e; intensity: 0.7; castShadow: true" position="15.648 15.903 -17.785" meditation-light-mode></a-entity>
-        <a-sky id="sky" src="#sky-img" color="#FFF"
+        <!-- <a-sky id="sky" src="#sky-img" color="#FFF"
                sound="on: model-loaded; src: #background-music; autoplay: true; loop: true; positional: false; volume: 0.1"
                meditation-mode yoga-mode>
-        </a-sky>
+        </a-sky> -->
 
+        <!-- Generated garden -->
         <a-entity id="garden" base-garden="sceneWidth: 30; sceneDepth: 30"></a-entity>
+        <!-- Items placed by the user will be put in this entity -->
         <a-entity id="new-asset-container" croquet="name: new-asset-container"></a-entity>
 
         <!--         <a-entity id="garden" base-garden="sceneWidth: 10; sceneDepth: 10"></a-entity> -->
@@ -355,8 +359,19 @@
           <a-camera
             id="cam"
             wasd-controls-enabled="true"  
-            look-controls
-          ></a-camera>
+            look-controls>
+            <!-- Glowing ring used for breathing exercises -->
+            <a-torus
+              id="meditation-ring"
+              position="0 0 -1"
+              rotation="0 0 0"
+              radius="0.05"
+              radius-tubular="0.01"
+              color="#ffffff"
+              meditation-ring="breathCaptureId: leftHand"
+              light="castShadow: true; type: point; color: #7eed8b position: 0 1 0"></a-torus>
+            </a-sphere>
+          </a-camera>
         </a-entity>
     </a-scene>
 

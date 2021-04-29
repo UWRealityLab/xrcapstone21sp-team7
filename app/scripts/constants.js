@@ -23,7 +23,8 @@ Q.LOGGING = {
     Selector: false,
     BaseGardenGenerator: false,
 
-    BreathCapture: true,
+    BreathCapture: false,
+    MeditationRing: false,
 };
 
 Q.GARDEN_BUILDER = {
