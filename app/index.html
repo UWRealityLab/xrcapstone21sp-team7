@@ -168,21 +168,31 @@
 
             <!-- yoga images -->
             <!-- note: there's gotta be a better way to load these. -->
-            <img id="yoga-0" src="../assets/img/yoga/yoga-0.png">
-            <img id="yoga-1" src="../assets/img/yoga/yoga-1.png">
-            <img id="yoga-2" src="../assets/img/yoga/yoga-2.png">
-            <img id="yoga-3" src="../assets/img/yoga/yoga-3.png">
-            <img id="yoga-4" src="../assets/img/yoga/yoga-4.png">
-            <img id="yoga-5" src="../assets/img/yoga/yoga-5.png">
-            <img id="yoga-6" src="../assets/img/yoga/yoga-6.png">
-            <img id="yoga-7" src="../assets/img/yoga/yoga-7.png">
-            <img id="yoga-8" src="../assets/img/yoga/yoga-8.png">
-            <img id="yoga-9" src="../assets/img/yoga/yoga-9.png">
-            <img id="yoga-10" src="../assets/img/yoga/yoga-10.png">
-            <img id="yoga-11" src="../assets/img/yoga/yoga-11.png">
-            <img id="yoga-12" src="../assets/img/yoga/yoga-12.png">
-            <img id="yoga-13" src="../assets/img/yoga/yoga-13.png">
-            <img id="yoga-14" src="../assets/img/yoga/yoga-14.png">
+            <img id="yoga-short-0" src="../assets/img/yoga/yoga-short/yoga-0.png">
+            <img id="yoga-short-1" src="../assets/img/yoga/yoga-short/yoga-1.png">
+            <img id="yoga-short-2" src="../assets/img/yoga/yoga-short/yoga-2.png">
+            <img id="yoga-short-3" src="../assets/img/yoga/yoga-short/yoga-3.png">
+            <img id="yoga-short-4" src="../assets/img/yoga/yoga-short/yoga-4.png">
+            <img id="yoga-short-5" src="../assets/img/yoga/yoga-short/yoga-5.png">
+            <img id="yoga-short-6" src="../assets/img/yoga/yoga-short/yoga-6.png">
+            <img id="yoga-short-7" src="../assets/img/yoga/yoga-short/yoga-7.png">
+            <img id="yoga-short-8" src="../assets/img/yoga/yoga-short/yoga-8.png">
+            <img id="yoga-short-9" src="../assets/img/yoga/yoga-short/yoga-9.png">
+            <img id="yoga-short-10" src="../assets/img/yoga/yoga-short/yoga-10.png">
+            <img id="yoga-short-11" src="../assets/img/yoga/yoga-short/yoga-11.png">
+            <!-- yoga audio -->
+            <audio id="yoga-audio-short-0" src="../assets/img/yoga/yoga-short/short-audio/audio-0.mp3"></audio>
+            <audio id="yoga-audio-short-1" src="../assets/img/yoga/yoga-short/short-audio/audio-1.mp3"></audio>
+            <audio id="yoga-audio-short-2" src="../assets/img/yoga/yoga-short/short-audio/audio-2.mp3"></audio>
+            <audio id="yoga-audio-short-3" src="../assets/img/yoga/yoga-short/short-audio/audio-3.mp3"></audio>
+            <audio id="yoga-audio-short-4" src="../assets/img/yoga/yoga-short/short-audio/audio-4.mp3"></audio>
+            <audio id="yoga-audio-short-5" src="../assets/img/yoga/yoga-short/short-audio/audio-5.mp3"></audio>
+            <audio id="yoga-audio-short-6" src="../assets/img/yoga/yoga-short/short-audio/audio-6.mp3"></audio>
+            <audio id="yoga-audio-short-7" src="../assets/img/yoga/yoga-short/short-audio/audio-7.mp3"></audio>
+            <audio id="yoga-audio-short-8" src="../assets/img/yoga/yoga-short/short-audio/audio-8.mp3"></audio>
+            <audio id="yoga-audio-short-9" src="../assets/img/yoga/yoga-short/short-audio/audio-9.mp3"></audio>
+            <audio id="yoga-audio-short-10" src="../assets/img/yoga/yoga-short/short-audio/audio-10.mp3"></audio>
+            <audio id="yoga-audio-short-11" src="../assets/img/yoga/yoga-short/short-audio/audio-11.mp3"></audio>
             
             <!-- menu -->
             <img id="meditation-img" src="../assets/img/menu/meditation.png"/>
@@ -287,9 +297,23 @@
         </a-assets>
       
         <!-- yoga stuff -->
-        <a-cylinder id="yoga-cylinder" class="rightclickable" position="3 0.75 14" radius="0.5" height="1.5" color="#FFC65D" yoga-emitter></a-cylinder>
-        <a-image id="yoga-images" width="1.5" height="1.5" position="0 0.75 14.5" rotation="0 180 0">
+        <a-box position="1.5 0.75 14.55"
+               scale="0.5 0.5 0.1"
+               color="#A9A9A9">
+        </a-box>
+        <a-cylinder id="yoga-cylinder"
+                    position="1.5 0.75 14.5"
+                    radius="0.15"
+                    height="0.1"
+                    rotation="90 0 0"
+                    class="rightclickable"
+                    color="#FFC65D"
+                    yoga-emitter>
+        </a-cylinder>
+        <a-image id="yoga-images" width="1.5" height="1.5" position="0 0.75 14.5" rotation="0 180 0"
+                 sound="on: model-loaded, autoplay: true; positional: false; volume: 0.25">
             <!-- frame -->
+            <a-cylinder radius="0.75" height="0.1" position="0 0.75 -0.25" rotation="90 0 0" color="#696969"></a-cylinder>
             <a-box width="3" height="0.5" position="0 -0.95 0" color="#DDBE91"></a-box>
             <a-box width="1.6" height="0.1" depth="0.5" position="0 0.75 0" color="#DDBE91"></a-box>
             <a-box width="1.6" height="0.1" depth="0.5" position="0 -0.75 0" color="#DDBE91"></a-box>
@@ -297,8 +321,8 @@
             <a-box width="1.6" height="0.1" depth="0.5" position="-0.75 0 0" color="#DDBE91" rotation="0 0 90"></a-box>
         </a-image>
         <a-box id="yoga-mat" height="0.1" width="1" depth="2" position="0 0 11" color="#DB7093"></a-box>
-        <a-entity id="timer" position="2 0.5 14" scale="10 10 10" rotation="0 180 0" visible="false"
-                  text="color: black; align: center; value: TEST TEXT;"></a-entity>
+        <a-entity id="timer" position="0 1.85 14.7" scale="10 10 10" rotation="0 180 0" visible="false"
+                  text="color: black; align: center; value: 0;"></a-entity>
 
         <a-entity light="type: ambient; color: #BBB" meditation-light-mode></a-entity>
         <a-entity id="light" light="type: point; color: #f4f68e; intensity: 0.7; castShadow: true" position="15.648 15.903 -17.785" meditation-light-mode></a-entity>
