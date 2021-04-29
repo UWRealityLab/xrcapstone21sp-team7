@@ -63,14 +63,14 @@ AFRAME.registerComponent('meditation-ring', {
   onBreathIn : function(evt) {
     let el = this.el;
 
-    let colorAnimation = 'property: material.color; type: color; to: #ff0000; dur: 2000';
+    let colorAnimation = 'property: material.color; type: color; to: #00ff00; dur: 2000';
     el.setAttribute('animation__color', colorAnimation);
   },
 
   onBreathOut : function(evt) {
     let el = this.el;
 
-    let colorAnimation = 'property: material.color; type: color; to: #00ff00; dur: 2000';
+    let colorAnimation = 'property: material.color; type: color; to: #ff0000; dur: 2000';
     el.setAttribute('animation__color', colorAnimation);
   },
 
