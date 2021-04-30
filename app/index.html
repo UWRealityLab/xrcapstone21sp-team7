@@ -32,6 +32,7 @@
     <script src="./scripts/meditation-mode.js"></script>
     <script src="./scripts/meditation-light-mode.js"></script>
     <script src="./scripts/meditation/meditation-ring.js"></script>
+    <script src="./scripts/meditation/meditation-ring-automated.js"></script>
 
     <script src="./scripts/meditation/breath-capture.js"></script>
     <script src="./scripts/blink-teleportation.js"></script>
@@ -52,10 +53,10 @@
 </head>
 
 <body>
-    <a-scene renderer="colorManagement: true; physicallyCorrectLights: true" croquet cursor="rayOrigin: mouse" shadow="type: pcfsoft" background="color: #dbf5ff">
+    <a-scene renderer="colorManagement: true; physicallyCorrectLights: true" croquet cursor="rayOrigin: mouse" shadow="type: pcfsoft" background="color: #dbf5ff" fog="type: linear; far: 60; near: 20; color: #89878c">
         <!-- Load in assets -->
         <a-assets>
-            <a-asset-item id="env_arrow" src="../assets/env_arrow.obj"></a-asset-item>
+            <a-asset-item id="mountains" src="../assets/glb/lowpolymountains.glb"></a-asset-item>
 
             <a-asset-item id="corner-wall-asset" src="../assets/glb/corner-wall-simple.glb"></a-asset-item>
             <a-asset-item id="single-wall-asset" src="../assets/glb/single-wall-simple.glb"></a-asset-item>
@@ -161,7 +162,9 @@
             <audio id="meditation-1" src="../assets/meditation-scripts/Meditation 1.mp3"></audio>
             <audio id="rain" src="../assets/meditation-scripts/Rain.mp3"></audio>
             <!-- TODO do this -->
-            <audio id="breath-exercise-meditation" src="../assets/meditation-scripts/TODO.mp3"></audio>
+            <audio id="breath-exercise-meditation-1" src="../assets/meditation-scripts/TODO.mp3"></audio>
+            <audio id="breath-exercise-meditation-2" src="../assets/meditation-scripts/TODO.mp3"></audio>
+            <audio id="breath-exercise-meditation-3" src="../assets/meditation-scripts/TODO.mp3"></audio>
 
             <!--a-asset-item id="meditation-building" src="../assets/glb/meditation-room.glb"></a-asset-item-->
             <a-asset-item id="meditation-building" 
@@ -428,23 +431,38 @@
           rotation="0 90 0" 
           position="0 0.1 -1" 
           croquet="name: med"
+          shadow="receive: true; cast: true"
         ></a-entity>
 
+        <a-entity gltf-model="#mountains" position="0 1 0" scale="1.1 1.3 1"></a-entity>
+
         <a-entity id="camRig">
+          <!-- Glowing ring used for breathing exercises -->
+          <!-- User controlled ring -->
+          <a-torus
+            id="meditation-ring"
+            position="0 1 -1"
+            rotation="0 0 0"
+            radius="0.05"
+            radius-tubular="0.01"
+            meditation-ring="breathCaptureId: leftHand"
+            material="color: #ffffff; shader: flat"
+          ></a-torus>
+          <!-- Automated ring that gives feedback about if you are breathing correctly -->
+          <!-- <a-torus
+            id="meditation-automated-ring"
+            position="0 0 -1"
+            rotation="90 0 0"
+            radius="0.05"
+            radius-tubular="0.01"
+            meditation-ring-automated="breathCaptureId: leftHand"
+            material="color: #ffffff; shader: flat"
+          ></a-torus> -->
+
           <a-camera
             id="cam"
             wasd-controls-enabled="true"  
             look-controls>
-            <!-- Glowing ring used for breathing exercises -->
-            <a-torus
-              id="meditation-ring"
-              position="0 0 -1"
-              rotation="0 0 0"
-              radius="0.05"
-              radius-tubular="0.01"
-              meditation-ring="breathCaptureId: leftHand"
-              material="color: #ffffff; shader: flat"></a-torus>
-            </a-sphere>
           </a-camera>
         </a-entity>
     </a-scene>

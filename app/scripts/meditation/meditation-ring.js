@@ -26,8 +26,6 @@ AFRAME.registerComponent('meditation-ring', {
     let el = this.el;
 
     el.setAttribute('visible', 'true');
-    sound = 'on: model-loaded; src: #Meditation-Aquatic; autoplay: true; loop: false; positional: false; volume: 1';
-    el.setAttribute('sound', sound);
     this.meditating = true;
   },
 
