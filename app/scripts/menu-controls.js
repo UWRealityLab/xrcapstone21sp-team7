@@ -3,6 +3,9 @@ AFRAME.registerComponent("menu-controls", {
     let el = this.el;
 
     this.currentMenu;
+
+    this.currAudio;
+
     // Grab template of menu to display
     this.displayed = false;
     this.ui = document
@@ -16,6 +19,8 @@ AFRAME.registerComponent("menu-controls", {
     this.onVolumeChanged = this.onVolumeChanged.bind(this);
     this.onMeditationButtonClicked = this.onMeditationButtonClicked.bind(this);
     this.onYogaButtonClicked = this.onYogaButtonClicked.bind(this);
+    this.onAudioMenuChanged = this.onAudioMenuChanged.bind(this);
+    this.audioChanged = this.audioChanged.bind(this);
 
     this.onGuidedMeditationClicked = this.onGuidedMeditationClicked.bind(this);
     this.onStoryMeditationClicked = this.onStoryMeditationClicked.bind(this);
@@ -53,6 +58,10 @@ AFRAME.registerComponent("menu-controls", {
     );
     this.el.sceneEl.addEventListener("volume-slider-changed", this.onVolumeChanged);
 
+    this.el.sceneEl.addEventListener("audio-menu-button-changed", this.onAudioMenuChanged);
+
+    this.el.sceneEl.addEventListener("audio-changed", this.audioChanged);
+
     // Helpers
     this.activate = this.activate.bind(this);
     this.deactivate = this.deactivate.bind(this);
@@ -72,9 +81,9 @@ AFRAME.registerComponent("menu-controls", {
       this.el.emit("endMeditation");
       this.ui.setAttribute("visible", "false");
       this.deactivate(this.currentMenu);
-      this.deactivateSliders();
+      this.deactivateSliders(this.currAudio);
 
-      this.deactivateSmallButton();
+      this.deactivateSmallButton(this.currAudio);
     } else {
       this.el.emit("startMeditation");
       this.ui.setAttribute("visible", "true");
@@ -83,7 +92,7 @@ AFRAME.registerComponent("menu-controls", {
       // Turn on sliders
       this.activateSliders();
 
-      this.activateSmallButton();
+      this.activateSmallButton(document.querySelector("#audio-menu"));
     }
 
     this.displayed = !this.displayed;
@@ -167,6 +176,26 @@ AFRAME.registerComponent("menu-controls", {
     sky.setAttribute("sound", attr);
   },
 
+  onAudioMenuChanged: function () {
+    let firstMenu = document.querySelector("#audio-menu");
+    this.deactivateSmallButton(firstMenu);
+
+    // Activate meditation options
+    let audioSubMenu = document.querySelector("#audio-options");
+    this.activateSmallButton(audioSubMenu);
+  },
+
+  audioChanged: function(evt) {
+    let audio_id = evt.detail.audio_id;
+    console.log(audio_id);
+
+    let sky = document.querySelector("#sky");
+    let attr = sky.getAttribute("sound");
+    attr.src = "#" + audio_id;
+
+    sky.setAttribute("sound", attr);
+  },
+
   /*
     Turn on sliders
   */
@@ -193,24 +222,29 @@ AFRAME.registerComponent("menu-controls", {
   /*
     Turn on small-button
   */
- activateSmallButton: function () {
-  this.ui.querySelectorAll(".small-button").forEach((button) => {
-    button.setAttribute("visible", true);
+ activateSmallButton: function (element) {
+  element.querySelectorAll(".small-button").forEach((button) => {
     button
       .querySelector(".container")
       .setAttribute("class", "rightclickable container");
+      console.log(button.getAttribute("id"));
   });
+  element.setAttribute("visible", true);
+
+  this.currAudio = element;
 
 },
 
 /*
   Turn off small-button
 */
-deactivateSmallButton: function () {
-  this.ui.querySelectorAll(".small-button").forEach((button) => {
-    button.setAttribute("visible", false);
+deactivateSmallButton: function (element) {
+  element.querySelectorAll(".small-button").forEach((button) => {
     button.querySelector(".container").setAttribute("class", "container");
   });
+  element.setAttribute("visible", false);
+
+  this.currAudio = null;
 },
 
   /*
@@ -277,5 +311,8 @@ deactivateSmallButton: function () {
       this.onBreathingExerciseButtonClicked
     );
     this.el.sceneEl.removeEventListener("volume-slider-changed", this.onVolumeChanged);
+
+    el.sceneEl.removeEventListener("audio-menu-button-changed", this.onAudioMenuChanged);
+    el.sceneEl.removeEventListener("audio-changed", this.audioChanged);
   },
 });
