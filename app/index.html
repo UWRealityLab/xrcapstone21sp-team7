@@ -51,6 +51,7 @@
     <script src="./scripts/slider.js"></script>
     <script src="./scripts//small-button.js"></script>
     <script src="./scripts/audio-button.js"></script>
+    <!--script src="./scripts/left_arrow.js"></script-->
 </head>
 
 <body>
@@ -157,6 +158,9 @@
             <audio id="Imaginary-waterfalls" src="../assets/Music/Imaginary-Waterfalls_AdobeStock_356916496_preview.m4a"></audio>
             <audio id="Meditation-Aquatic" src="../assets/Music/Meditation-Aquatic_AdobeStock_357614213_preview.m4a"></audio>
             <audio id="Fairy-Forest" src="../assets/Music/Yuriy-Buntov---Fairy-Forest_AdobeStock_353743366_preview (1).m4a"></audio>
+            <audio id="State-of-Zen" src="../assets/Music/State-of-Zen_AdobeStock_331832985_preview.m4a"></audio>
+            <audio id="Wren" src="../assets/Music/Wren_AdobeStock_356531497_preview.m4a"></audio>
+            
 
             <!--meditation scripts-->
             <audio id="confidence-meditation" src="../assets/meditation-scripts/Confidence.mp3"></audio>
@@ -300,8 +304,17 @@
                 </a-entity>
 
                 <a-entity id="audio-options" class="audio" visible="false">
-                  <a-entity id="As-the-rain" class="small-button" audio-button="title: As The Rain; img: #As-the-rain-img" position="-0.4 -1 0"></a-entity>
+                  <a-entity id="As-the-rain" class="small-button" audio-button="title: As The Rain; img: #As-the-rain-img" position="-0.5 -1 0"></a-entity>
                   <a-entity id="Fairy-Forest" class="small-button" audio-button="title: Fairy Forest; img: #Fairy-Forest-img" position="0.05 -1 0"></a-entity>
+                  <a-entity id="Breath-of-life" class="small-button" audio-button="title: Breath of Life" position="0.5 -1 0"></a-entity>
+                  <a-entity id="Imaginary-waterfalls" class="small-button" audio-button="title: Imaginary Waterfalls" position="0.95 -1 0"></a-entity>
+                  <a-entity id="Meditation-Aquatic" class="small-button" audio-button="title: Meditation Aquatic" position="1.4 -1 0"></a-entity>
+                  <a-entity id="State-of-Zen" class="small-button" audio-button="title: State of Zen" position="1.85 -1 0"></a-entity>
+                  <a-entity id="Wren" class="small-button" audio-button="title: Wren" position="2.3 -1 0"></a-entity>
+
+                  <a-entity id="audio-menu-slider" class="small-button" slider="title: Audio Slider" position="-0.5 -1.3 0"></a-entity>
+
+                  <!--a-entity id="audio-left-arrow" class="small-button" left_arrow="title: left" position="-0.5 1.7 0"></a-entity-->
                 </a-entity>
                 <!-- audio -->
 
