@@ -25,6 +25,7 @@ Q.LOGGING = {
 
     BreathCapture: false,
     MeditationRing: false,
+    MeditationRingAutomated: false,
 };
 
 Q.GARDEN_BUILDER = {

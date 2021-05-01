@@ -11,6 +11,8 @@ const CALIBRATION_STATES = {
   CALIBRATION_COMPLETE: 2
 }
 
+const MEDITATION_TIME = 120;
+
 /**
  * Connect this component to a hand with hand-controls component
  */
@@ -54,12 +56,17 @@ AFRAME.registerComponent('breath-capture', {
     el.removeEventListener('controllerdisconnected', this.onControllerDisconnected);
   },
 
-  tick: function () {
+  tick: function (time, timeDelta) {
     if (this.controllerConnected && this.meditating) {
       if (this.calibrationObj.calibrationState != CALIBRATION_STATES.CALIBRATION_COMPLETE) {
         this.runCalibration();
+        this.calibrationObj.startTime = time / 1000
       } else {
-        this.runBreathCapture();
+        if (time - this.calibrationObj.startTime > MEDITATION_TIME) {
+          this.onCaptureBreathInPosition();
+        } else {
+          this.runBreathCapture(timeDelta / 1000);
+        }
       }
     }
   },
@@ -119,7 +126,6 @@ AFRAME.registerComponent('breath-capture', {
 
           // Initialize breath capture variables needed now that calibration is complete
           this.previousPosition = position;
-          this.previousTime = Date.now() / 1000;
         }
         break;
       default:
@@ -140,10 +146,8 @@ AFRAME.registerComponent('breath-capture', {
     return avg / arr.length;
   },
 
-  runBreathCapture: function () {
-    let currTime = Date.now() / 1000;
-    let dt = currTime - this.previousTime;
-    this.previousTime = currTime;
+  runBreathCapture: function (timeDelta) {
+    this.log('timedelta: ', timeDelta);
 
     let position = this.getControllerPosition();
     let deltaPosition = new THREE.Vector3(
@@ -158,9 +162,9 @@ AFRAME.registerComponent('breath-capture', {
     let deltaPositionProjected = this.dot(deltaPosition, this.targetVector);
 
     if (this.displacementArr.length < DELTA_SAMPLES_TO_AVG) {
-      this.displacementArr.push(deltaPositionProjected * dt);
+      this.displacementArr.push(deltaPositionProjected * timeDelta);
     } else {
-      this.displacementArr.push(deltaPositionProjected * dt);
+      this.displacementArr.push(deltaPositionProjected * timeDelta);
       this.displacementArr = this.displacementArr.slice(1);
       let deltaPositionAvg = this.avg(this.displacementArr);
       this.el.setAttribute('breath-capture', 'deltaPositionAvg', deltaPositionAvg);
@@ -197,8 +201,14 @@ AFRAME.registerComponent('breath-capture', {
         this.calibrationObj.breathInPosition = position;
         this.calibrationObj.startTime = Date.now() / 1000;
         this.calibrationObj.calibrationState = CALIBRATION_STATES.FINDING_BREATH_OUT_POSITION;
+
+        let sound = 'on: model-loaded; src: #breath-exercise-meditation-2; autoplay: true; loop: false; positional: false; volume: 1';
+        this.el.setAttribute('sound', sound);
       } else {
+        // Breath capture finished
         this.el.sceneEl.emit('breath-capture-end');
+        let sound = 'on: model-loaded; src: #breath-exercise-meditation-3; autoplay: true; loop: false; positional: false; volume: 1';
+        this.el.setAttribute('sound', sound);
       }
     }
   },
@@ -220,6 +230,9 @@ AFRAME.registerComponent('breath-capture', {
 
     this.displacementArr = [];
     this.breathClassification = 'not breathing';
+
+    let sound = 'on: model-loaded; src: #breath-exercise-meditation-1; autoplay: true; loop: false; positional: false; volume: 1';
+    this.el.setAttribute('sound', sound);
   },
 
   stopBreathCapture: function () {

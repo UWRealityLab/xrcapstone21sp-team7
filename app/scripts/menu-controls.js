@@ -141,9 +141,9 @@ AFRAME.registerComponent("menu-controls", {
    */
   onBreathingExerciseButtonClicked: function () {
     // TODO
-    // let sky = document.querySelector('#sky');
-    // sound = 'on: model-loaded; src: #breath-exercise-meditation; autoplay: true; loop: false; positional: false; volume: 1';
-    // sky.setAttribute('sound', sound);
+    let sky = document.querySelector('#sky');
+    sound = 'on: model-loaded; src: #Meditation-Aquatic; autoplay: true; loop: true; positional: false; volume: 1';
+    sky.setAttribute('sound', sound);
 
     this.el.sceneEl.emit("breath-capture-start");
   },
