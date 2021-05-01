@@ -8,9 +8,6 @@ AFRAME.registerComponent("audio-button", {
       let el = this.el;
       let data = this.data;
   
-      // Dimensions
-      this.barWidth = 1;
-  
       // Text
       this.text = document.createElement("a-entity");
       this.text.setAttribute("position", "0.3 0.15 0");
@@ -55,11 +52,11 @@ AFRAME.registerComponent("audio-button", {
     },
   
     onMouseEnter: function() {
-      
+      // TODO: Add so it pops out a bit
     },
   
     onMouseLeave: function() {
-      
+      // TODO: Add so it goes back to normal after mouse leaves
     },
   });
   

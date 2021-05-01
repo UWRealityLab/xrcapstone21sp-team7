@@ -6,6 +6,12 @@ AFRAME.registerComponent("menu-controls", {
 
     this.currAudio;
 
+    // the x value of the audio options at the start and end
+    // need to change if change the number of audios.
+    this.startAudioOption = -1.35;
+    this.endAudioOption = 1.35;
+    this.prevAudioSlider = 0.5
+
     // Grab template of menu to display
     this.displayed = false;
     this.ui = document
@@ -21,6 +27,7 @@ AFRAME.registerComponent("menu-controls", {
     this.onYogaButtonClicked = this.onYogaButtonClicked.bind(this);
     this.onAudioMenuChanged = this.onAudioMenuChanged.bind(this);
     this.audioChanged = this.audioChanged.bind(this);
+    this.onAudioShift = this.onAudioShift.bind(this);
 
     this.onGuidedMeditationClicked = this.onGuidedMeditationClicked.bind(this);
     this.onStoryMeditationClicked = this.onStoryMeditationClicked.bind(this);
@@ -61,6 +68,8 @@ AFRAME.registerComponent("menu-controls", {
     this.el.sceneEl.addEventListener("audio-menu-button-changed", this.onAudioMenuChanged);
 
     this.el.sceneEl.addEventListener("audio-changed", this.audioChanged);
+
+    this.el.sceneEl.addEventListener("audio-menu-slider-changed", this.onAudioShift);
 
     // Helpers
     this.activate = this.activate.bind(this);
@@ -177,11 +186,25 @@ AFRAME.registerComponent("menu-controls", {
   onVolumeChanged: function (evt) {
     let sky = document.querySelector("#sky");
     let attr = sky.getAttribute("sound");
-    console.log("Volume before:" + attr.volume);
+    //console.log("Volume before:" + attr.volume);
     attr.volume = evt.detail.percent;
-    console.log("Volume after:" + attr.volume);
+    //console.log("Volume after:" + attr.volume);
 
     sky.setAttribute("sound", attr);
+  },
+
+  onAudioShift: function (evt) {
+    let x = evt.detail.percent - this.prevAudioSlider;
+    let m = this.endAudioOption / 0.5;
+
+    let y = m * x;
+
+    this.currAudio.querySelectorAll(".small-button").forEach((button) => {
+      let attr = button.getAttribute("position");
+      attr.x = attr.x - y;
+      button.setAttribute("position", attr);
+    });
+    this.prevAudioSlider = evt.detail.percent;
   },
 
   onAudioMenuChanged: function () {
@@ -195,7 +218,6 @@ AFRAME.registerComponent("menu-controls", {
 
   audioChanged: function(evt) {
     let audio_id = evt.detail.audio_id;
-    console.log(audio_id);
 
     let sky = document.querySelector("#sky");
     let attr = sky.getAttribute("sound");
@@ -235,7 +257,14 @@ AFRAME.registerComponent("menu-controls", {
     button
       .querySelector(".container")
       .setAttribute("class", "rightclickable container");
-      console.log(button.getAttribute("id"));
+      //console.log(button.getAttribute("id"));
+  });
+
+  element.querySelectorAll(".audio-slider").forEach((button) => {
+    button
+      .querySelector(".container")
+      .setAttribute("class", "rightclickable container");
+      //console.log(button.getAttribute("id"));
   });
   element.setAttribute("visible", true);
 
@@ -322,5 +351,6 @@ deactivateSmallButton: function (element) {
 
     el.sceneEl.removeEventListener("audio-menu-button-changed", this.onAudioMenuChanged);
     el.sceneEl.removeEventListener("audio-changed", this.audioChanged);
+    el.sceneEl.removeEventListener("audio-menu-slider-changed", this.onAudioShift);
   },
 });
