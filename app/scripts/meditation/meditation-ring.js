@@ -34,6 +34,10 @@ AFRAME.registerComponent('meditation-ring', {
 
     el.setAttribute('visible', 'false');
     el.removeAttribute('sound');
+    el.setAttribute('radius-tubular', 0.01);
+    el.object3D.scale.x = 1;
+    el.object3D.scale.y = 1;
+
     this.meditating = false;
   },
 
@@ -56,14 +60,14 @@ AFRAME.registerComponent('meditation-ring', {
   onBreathIn : function(evt) {
     let el = this.el;
 
-    let colorAnimation = 'property: material.color; type: color; to: #00ff00; dur: 2000';
+    let colorAnimation = 'property: material.color; type: color; to: #00ff00; dur: 5000';
     el.setAttribute('animation__color', colorAnimation);
   },
 
   onBreathOut : function(evt) {
     let el = this.el;
 
-    let colorAnimation = 'property: material.color; type: color; to: #ff0000; dur: 2000';
+    let colorAnimation = 'property: material.color; type: color; to: #ff0000; dur: 5000';
     el.setAttribute('animation__color', colorAnimation);
   },
 

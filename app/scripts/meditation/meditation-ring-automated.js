@@ -21,7 +21,7 @@ AFRAME.registerComponent('meditation-ring-automated', {
     el.setAttribute('visible', 'false');
   },
 
-  update: function () {
+  tick: function () {
     let el = this.el;
     el.setAttribute('radius-tubular', 0.01 / el.object3D.scale.x);
   },
@@ -50,15 +50,15 @@ AFRAME.registerComponent('meditation-ring-automated', {
     let breathInTime = this.breathOutTime - this.breathInTime;
     if (breathInTime < this.data.meditationBreathPeriod / 2 - this.data.meditationBreathAcceptableThreshold) {
       this.log('too short inward breath');
-    } else if (breathInTime > this.dat.meditationBreathPeriod / 2 + this.data.meditationBreathAcceptableThreshold) {
+    } else if (breathInTime > this.data.meditationBreathPeriod / 2 + this.data.meditationBreathAcceptableThreshold) {
       this.log('too long inward breath');
     }
   },
 
   startAutomatedMeditationRing: function() {
     let el = this.el;
-    let scaleAnimation = 'property: scale; from: 1 1 1; to: 6 6 6; loop: true; dir: alternate; easing: easeInOutCubic; dur: ' + this.data.meditationBreathPeriod;
-    let colorAnimation = 'property: material.color; type: color; loop: true; from: #ff0000; to: #00ff00; dir: alternate; easing: easeInOutCubic; dur: ' + this.data.meditationBreathPeriod;
+    let scaleAnimation = 'property: scale; from: 1 1 1; to: 6 6 6; loop: true; dir: alternate; dur: ' + this.data.meditationBreathPeriod;
+    let colorAnimation = 'property: material.color; type: color; loop: true; from: #ff0000; to: #00ff00; dir: alternate; dur: ' + this.data.meditationBreathPeriod;
     el.setAttribute('visible', 'true');
     el.setAttribute('animation__scale', scaleAnimation);
     el.setAttribute('animation__color', colorAnimation);
