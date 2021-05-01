@@ -344,16 +344,20 @@
           id="sky"
           sun-position="10 70 20"
           fog-color="#89878c"
-          sound="on: model-loaded; src: #background-music; autoplay: false; loop: true; positional: false; volume: 0.1"
+          sound="on: model-loaded; src: #background-music; autoplay: true; loop: true; positional: false; volume: 0.1"
           meditation-mode
           yoga mode
           radius="100"
+          dark-color='#000000'
         ></a-simple-sun-sky>
-        <a-entity light="type: ambient; color: #FFF"></a-entity>
         <a-entity
           id="light"
           light="type: directional; color: #ffffff; intensity: 1; castShadow: true; shadowCameraBottom:-14; shadowCameraTop: 14; shadowCameraLeft: -16; shadowCameraRight: 16"
           position="10 70 20"
+          meditation-light-mode
+        ></a-entity>
+        <a-entity
+          light="type: hemisphere; color: #e0fbff; ground-color: #fffab3; intensity: 1"
           meditation-light-mode
         ></a-entity>
 
@@ -420,7 +424,7 @@
           <a-entity class="flame" position="0 1 0" gltf-model="#flame" 
             croquet="name: flame2" visible="false"></a-entity>
         </a-entity>
-          
+
         <a-plane
           rotation="-90 0 0"
           position="0 0.1 1"
