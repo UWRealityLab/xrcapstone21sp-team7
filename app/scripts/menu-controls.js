@@ -78,12 +78,19 @@ AFRAME.registerComponent("menu-controls", {
   onMenuActivate: function () {
     if (this.displayed) {
       // TODO: change this, still want if user selected a meditation mode
-      this.el.emit("endMeditation");
-      this.ui.setAttribute("visible", "false");
+      const id = this.currentMenu.id;
       this.deactivate(this.currentMenu);
-      this.deactivateSliders(this.currAudio);
-
-      this.deactivateSmallButton(this.currAudio);
+      
+      // Hide first menu or go back to first menu
+      if (id === "first-menu") {
+        this.el.emit("endMeditation");
+        this.deactivateSliders(this.currAudio);
+        this.ui.setAttribute("visible", "false");
+        this.deactivateSmallButton(this.currAudio);
+        this.displayed = false;
+      } else {
+        this.activate(document.querySelector("#first-menu"));
+      }
     } else {
       this.el.emit("startMeditation");
       this.ui.setAttribute("visible", "true");
@@ -93,9 +100,10 @@ AFRAME.registerComponent("menu-controls", {
       this.activateSliders();
 
       this.activateSmallButton(document.querySelector("#audio-menu"));
+      this.displayed = true;
     }
 
-    this.displayed = !this.displayed;
+    // this.displayed = !this.displayed;
   },
 
   /*
