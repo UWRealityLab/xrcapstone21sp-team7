@@ -3,6 +3,8 @@ AFRAME.registerComponent("menu-controls", {
     let el = this.el;
 
     this.currentMenu;
+
+    this.currAudio;
     // Grab template of menu to display
     this.displayed = false;
     this.ui = document
@@ -53,6 +55,8 @@ AFRAME.registerComponent("menu-controls", {
     );
     this.el.sceneEl.addEventListener("volume-slider-changed", this.onVolumeChanged);
 
+    this.el.sceneEl.addEventListener("audio-menu-button-changed", this.onAudioMenuChanged);
+
     // Helpers
     this.activate = this.activate.bind(this);
     this.deactivate = this.deactivate.bind(this);
@@ -72,7 +76,7 @@ AFRAME.registerComponent("menu-controls", {
       this.el.emit("endMeditation");
       this.ui.setAttribute("visible", "false");
       this.deactivate(this.currentMenu);
-      this.deactivateSliders();
+      this.deactivateSliders(this.currAudio);
 
       this.deactivateSmallButton();
     } else {
@@ -83,7 +87,7 @@ AFRAME.registerComponent("menu-controls", {
       // Turn on sliders
       this.activateSliders();
 
-      this.activateSmallButton();
+      this.activateSmallButton(document.querySelector("#audio-menu"));
     }
 
     this.displayed = !this.displayed;
@@ -167,6 +171,15 @@ AFRAME.registerComponent("menu-controls", {
     sky.setAttribute("sound", attr);
   },
 
+  onAudioMenuChanged: function () {
+    let firstMenu = document.querySelector("#audio-menu");
+    this.deactivate(firstMenu);
+
+    // Activate meditation options
+    let audioSubMenu = document.querySelector("#audio-options");
+    this.activate(audioSubMenu);
+  },
+
   /*
     Turn on sliders
   */
@@ -193,20 +206,21 @@ AFRAME.registerComponent("menu-controls", {
   /*
     Turn on small-button
   */
- activateSmallButton: function () {
-  this.ui.querySelectorAll(".small-button").forEach((button) => {
-    button.setAttribute("visible", true);
+ activateSmallButton: function (element) {
+  element.querySelectorAll(".small-button").forEach((button) => {
     button
       .querySelector(".container")
       .setAttribute("class", "rightclickable container");
   });
+  element.setAttribute("visible", true);
+  this.currAudio = element;
 
 },
 
 /*
   Turn off small-button
 */
-deactivateSmallButton: function () {
+deactivateSmallButton: function (element) {
   this.ui.querySelectorAll(".small-button").forEach((button) => {
     button.setAttribute("visible", false);
     button.querySelector(".container").setAttribute("class", "container");

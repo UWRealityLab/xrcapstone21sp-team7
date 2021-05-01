@@ -289,8 +289,16 @@
 
                 <!-- audio -->
                 <!-- TODO: Find Better way to organize multiple audios -->
-                <a-entity id="As-in-rain" class="small-button" small-button="title: As In Rain; img: #As-in-rain-img" position="-0.4 -1 0" visible="false"></a-entity>
-                <a-entity id="Forest-Fairy" class="small-button" small-button="title: Fairy Forest; img: #Fairy-Forest-img" position="0.05 -1 0" visible="false"></a-entity>
+                
+                <!-- audio menu button-->
+                <a-entity id="audio-menu" class="audio" visible="false">
+                  <a-entity id="audio-menu-button" class="small-button" small-button="title: Click for Audio Options" position="-0.4 -1 0"></a-entity>
+                </a-entity>
+
+                <a-entity id="audio-options" class="audio" visible="false">
+                  <a-entity id="As-in-rain" class="small-button" small-button="title: As In Rain; img: #As-in-rain-img" position="-0.4 -1 0" visible="false"></a-entity>
+                  <a-entity id="Forest-Fairy" class="small-button" small-button="title: Fairy Forest; img: #Fairy-Forest-img" position="0.05 -1 0" visible="false"></a-entity>
+                </a-entity>
                 <!-- audio -->
 
               </a-entity>
