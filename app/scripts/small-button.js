@@ -1,4 +1,6 @@
 // Needs to activated by the menu
+// TODO: Either make this a completey different aesthetic or combine this with audio-button.js
+//         -- almost entirely same code, just the events emitted are different.
 AFRAME.registerComponent("small-button", {
     schema: {
       title: { type: "string", default: ""},
