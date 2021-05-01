@@ -1,5 +1,5 @@
-const CALIBRATION_TIME = 3;
-const AUDIO_2_PLAY_TIME = 1; // TODO change this value
+const CALIBRATION_TIME = 5;
+const AUDIO_2_PLAY_TIME = 30;
 const DELTA_SAMPLES_TO_AVG = 6;
 // Any displacement below this amount (in meters) is not considered to be
 // the user breathing in or out
@@ -98,6 +98,7 @@ AFRAME.registerComponent('breath-capture', {
             // Check to see if delay for playing second audio file is complete
             if (Date.now() / 1000 - this.calibrationObj.startTime > AUDIO_2_PLAY_TIME) {
               this.calibrationObj.calibrationState = CALIBRATION_STATES.AUDIO2_COMPLETE_PLAYING;
+              el.sceneEl.emit('breath-capture-calibration-complete');
             }
           } else {
             // Run normal breath capture
@@ -164,8 +165,7 @@ AFRAME.registerComponent('breath-capture', {
           // Initialize breath capture variables needed now that calibration is complete
           this.previousPosition = position;
 
-          el.sceneEl.emit('breath-capture-calibration-complete');
-          let sound = 'on: model-loaded; src: #breath-exercise-meditation-2; autoplay: true; loop: false; positional: false; volume: 1';
+          let sound = 'on: model-loaded; src: #breath-exercise-meditation-2; autoplay: true; loop: false; positional: false; volume: 0.5';
           this.el.setAttribute('sound', sound);
 
           this.calibrationObj.startTime = time
@@ -270,14 +270,14 @@ AFRAME.registerComponent('breath-capture', {
     this.displacementArr = [];
     this.breathClassification = 'not breathing';
 
-    let sound = 'on: model-loaded; src: #breath-exercise-meditation-1; autoplay: true; loop: false; positional: false; volume: 1';
+    let sound = 'on: model-loaded; src: #breath-exercise-meditation-1; autoplay: true; loop: false; positional: false; volume: 0.5';
     this.el.setAttribute('sound', sound);
   },
 
   stopBreathCapture: function () {
     this.meditating = false;
     this.el.setAttribute('breath-capture', 'deltaPositionAvg', 0);
-    let sound = 'on: model-loaded; src: #breath-exercise-meditation-3; autoplay: true; loop: false; positional: false; volume: 1';
+    let sound = 'on: model-loaded; src: #breath-exercise-meditation-3; autoplay: true; loop: false; positional: false; volume: 0.5';
     this.el.setAttribute('sound', sound);
     this.log('stopping breath capture');
   },

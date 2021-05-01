@@ -75,8 +75,10 @@ AFRAME.registerComponent('garden-controls', {
         el.removeEventListener('triggerup', this.stopRotatingItem);
 
         let menuEl = document.getElementById(this.data.menuId);
-        menuEl.removeEventListener('menuChanged', this.onObjectChange);
-        menuEl.removeEventListener('menuSelected', this.onPlaceObject);
+        if (menuEl) {
+          menuEl.removeEventListener('menuChanged', this.onObjectChange);
+          menuEl.removeEventListener('menuSelected', this.onPlaceObject);
+        }
     },
 
     init: function () {

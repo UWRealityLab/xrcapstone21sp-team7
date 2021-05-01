@@ -143,26 +143,25 @@
             ></a-asset-item>
 
             <!-- music -->
-            <audio id="background-music" src="../assets/Music/default.m4a"></audio>
-            <audio id="meditation-music" src="../assets/Music/meditation.m4a"></audio>
+            <audio id="background-music" src="../assets/Music/default.m4a" preload="auto"></audio>
+            <audio id="meditation-music" src="../assets/Music/meditation.m4a" preload="auto"></audio>
 
-            <audio id="As-the-rain" src="../assets/Music/As-the-rain_AdobeStock_353732184_preview.m4a"></audio>
-            <audio id="Breath-of-life" src="../assets/Music/Breath-Of-Life_AdobeStock_331838231_preview.m4a"></audio>
-            <audio id="Imaginary-waterfalls" src="../assets/Music/Imaginary-Waterfalls_AdobeStock_356916496_preview.m4a"></audio>
-            <audio id="Meditation-Aquatic" src="../assets/Music/Meditation-Aquatic_AdobeStock_357614213_preview.m4a"></audio>
-            <audio id="Fairy-Forest" src="../assets/Music/Yuriy-Buntov---Fairy-Forest_AdobeStock_353743366_preview (1).m4a"></audio>
-            <audio id="State-of-Zen" src="../assets/Music/State-of-Zen_AdobeStock_331832985_preview.m4a"></audio>
-            <audio id="Wren" src="../assets/Music/Wren_AdobeStock_356531497_preview.m4a"></audio>
-            
+            <audio id="As-the-rain" src="../assets/Music/As-the-rain_AdobeStock_353732184_preview.m4a" preload="auto"></audio>
+            <audio id="Breath-of-life" src="../assets/Music/Breath-Of-Life_AdobeStock_331838231_preview.m4a" preload="auto"></audio>
+            <audio id="Imaginary-waterfalls" src="../assets/Music/Imaginary-Waterfalls_AdobeStock_356916496_preview.m4a" preload="auto"></audio>
+            <audio id="Meditation-Aquatic" src="../assets/Music/Meditation-Aquatic_AdobeStock_357614213_preview.m4a" preload="auto"></audio>
+            <audio id="Fairy-Forest" src="../assets/Music/Yuriy-Buntov---Fairy-Forest_AdobeStock_353743366_preview (1).m4a" preload="auto"></audio>
+            <audio id="State-of-Zen" src="../assets/Music/State-of-Zen_AdobeStock_331832985_preview.m4a" preload="auto"></audio>
+            <audio id="Wren" src="../assets/Music/Wren_AdobeStock_356531497_preview.m4a" preload="auto"></audio>
 
             <!--meditation scripts-->
-            <audio id="confidence-meditation" src="../assets/meditation-scripts/Confidence.mp3"></audio>
-            <audio id="meditation-1" src="../assets/meditation-scripts/Meditation 1.mp3"></audio>
-            <audio id="rain" src="../assets/meditation-scripts/Rain.mp3"></audio>
+            <audio id="confidence-meditation" src="../assets/meditation-scripts/Confidence.mp3" preload="auto"></audio>
+            <audio id="meditation-1" src="../assets/meditation-scripts/Meditation 1.mp3" preload="auto"></audio>
+            <audio id="rain" src="../assets/meditation-scripts/Rain.mp3" preload="auto"></audio>
             <!-- TODO do this -->
-            <audio id="breath-exercise-meditation-1" src="../assets/meditation-scripts/breath-exercise-meditation-1.m4a"></audio>
-            <audio id="breath-exercise-meditation-2" src="../assets/meditation-scripts/breath-exercise-meditation-2.m4a"></audio>
-            <audio id="breath-exercise-meditation-3" src="../assets/meditation-scripts/breath-exercise-meditation-3.m4a"></audio>
+            <audio id="breath-exercise-meditation-1" src="../assets/meditation-scripts/breath-exercise-meditation-1.m4a" preload="auto"></audio>
+            <audio id="breath-exercise-meditation-2" src="../assets/meditation-scripts/breath-exercise-meditation-2.m4a" preload="auto"></audio>
+            <audio id="breath-exercise-meditation-3" src="../assets/meditation-scripts/breath-exercise-meditation-3.m4a" preload="auto"></audio>
 
             <!--a-asset-item id="meditation-building" src="../assets/glb/meditation-room.glb"></a-asset-item-->
             <a-asset-item id="meditation-building" 
@@ -355,12 +354,12 @@
         <a-simple-sun-sky
           id="sky"
           sun-position="10 70 20"
-          fog-color="#89878c"
+          fog-color="#eeeeee"
           sound="on: model-loaded; src: #background-music; autoplay: true; loop: true; positional: false; volume: 0.1"
           meditation-mode
           yoga mode
           radius="5000"
-          dark-color='#000000'
+          dark-color='#031145'
         ></a-simple-sun-sky>
         <a-entity
           id="light"
@@ -436,13 +435,6 @@
           <a-entity class="flame" position="0 1 0" gltf-model="#flame" 
             croquet="name: flame2" visible="false"></a-entity>
         </a-entity>
-
-        <a-plane
-          rotation="-90 0 0"
-          position="0 0.1 1"
-          scale="1.5 1.5 1.5"
-          color="#FFC65D"
-        ></a-plane>
 
         <a-entity
           name="default" 

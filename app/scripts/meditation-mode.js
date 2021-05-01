@@ -50,9 +50,7 @@ AFRAME.registerComponent("meditation-mode", {
     });
 
     let sunPositionAnimation = 'property: material.sunPosition; to: 0 -70 0; dur: 2000';
-    let lightColorAnimation = 'property: material.lightColor; to: #2f5a74; dur: 2000'
     this.el.setAttribute('animation__sun', sunPositionAnimation);
-    this.el.setAttribute('animation__color', lightColorAnimation);
   },
 
   onMeditationEnd: function () {
@@ -63,8 +61,6 @@ AFRAME.registerComponent("meditation-mode", {
     });
 
     let sunPositionAnimation = 'property: material.sunPosition; to: 10 70 20; dur: 2000';
-    let lightColorAnimation = 'property: material.lightColor; to: #87cefa; dur: 2000'
     this.el.setAttribute('animation__sun', sunPositionAnimation);
-    this.el.setAttribute('animation__color', lightColorAnimation);
   },
 });

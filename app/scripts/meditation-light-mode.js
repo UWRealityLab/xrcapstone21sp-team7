@@ -25,7 +25,7 @@ AFRAME.registerComponent('meditation-light-mode', {
     this.el.setAttribute('animation', light);
   },
   onMeditationEnd: function() {
-    this.changeLighting(1);
+    this.changeLighting(1.5);
   },
   onMeditationStart: function() {
     this.changeLighting(0);
