@@ -13,6 +13,7 @@
     <script src="https://unpkg.com/aframe-layout-component@4.x.x/dist/aframe-layout-component.min.js"></script>
     <script src="https://unpkg.com/aframe-event-set-component@5.x.x/dist/aframe-event-set-component.min.js"></script>
     <script src="https://raw.githubusercontent.com/msj121/aframe-animation-component/master/dist/aframe-animation-component.min.js"></script>
+    <script src="https://unpkg.com/aframe-simple-sun-sky@^1.2.2/simple-sun-sky.js"></script>
 
     <script src="./scripts/constants.js"></script>
     <script src="./scripts/system.js"></script>
@@ -53,16 +54,23 @@
 </head>
 
 <body>
-    <a-scene renderer="colorManagement: true; physicallyCorrectLights: true" croquet cursor="rayOrigin: mouse" shadow="type: pcfsoft" background="color: #dbf5ff" fog="type: linear; far: 60; near: 20; color: #89878c">
+    <a-scene
+      renderer="colorManagement: true; physicallyCorrectLights: true"
+      croquet
+      cursor="rayOrigin: mouse"
+      shadow="type: pcfsoft"
+      background="color: #dbf5ff"
+      fog="type: exponential; density: 0.05; far: 60; near: 20; color: #89878c"
+    >
         <!-- Load in assets -->
         <a-assets>
             <a-asset-item id="mountains" src="../assets/glb/lowpolymountains.glb"></a-asset-item>
+            <a-asset-item id="env_arrow" src="../assets/obj/env_arrow.obj"></a-asset-item>
 
             <a-asset-item id="corner-wall-asset" src="../assets/glb/corner-wall-simple.glb"></a-asset-item>
             <a-asset-item id="single-wall-asset" src="../assets/glb/single-wall-simple.glb"></a-asset-item>
             <a-asset-item id="right-hand-low" src="../assets/glb/rightHandLow.glb"></a-asset-item>
             <a-asset-item id="left-hand-low" src="../assets/glb/leftHandLow.glb"></a-asset-item>
-            <img id="sky-img" crossorigin="anonymous" src="https://cdn.glitch.com/2b4aff49-28a2-40af-847a-d2b291f6c30e%2F47e93852-bc4e-485b-bde3-7923ba2679db.image.png?v=1617686253924">
 
             <template id="user-template">
                 <a-entity class="user">
@@ -109,9 +117,6 @@
                     </a-entity>
                 </a-entity>
 
-<!--                 <a-entity class="right" id="rightHand" super-hands hand-controls="hand: right; handModelStyle: lowPoly; color: #00ff00"
-                          sphere-collider="objects: a-box"
-                          raycaster="showLine: true; objects: .clickable" laser-controls="hand: right; model: false"> -->
                 <a-entity class="right" id="rightHand" super-hands hand-controls="hand: right; handModelStyle: lowPoly; color: #00ff00"
                           raycaster="showLine: true; objects: .rightclickable" laser-controls="hand: right; model: false"
                           blink-controls="cameraRig: #camRig; teleportOrigin: #cam; collisionEntities: #floor"
@@ -126,18 +131,6 @@
                 </a-entity>
             </template>
 
-            <!-- <a-mixin id="poster" geometry="primitive: plane; width: 0.544768; height: 0.786432"
-                material="color: white; shader: flat"></a-mixin> -->
-          
-            <!-- testing drag and drop object functionality - not showing up? -->
-<!--             <a-mixin id="cherry-blossom" src="../assets/glb/cherry-blossom.glb"
-                     hoverable grabbable stretchable draggable droppable shadow
-                     event-set__hoveron="_event: hover-start; material.opacity: 0.7; transparent: true"
-                     event-set__hoveroff="_event: hover-end; material.opacity: 1; transparent: false"
-                     event-set__dragon="_event: dragover-start; material.wireframe: true"
-                     event-set__dragoff="_event: dragover-end; material.wireframe: false"></a-mixin> -->
-            <!-- end of testing drag and drop -->
-          
             <a-asset-item
               id="lantern"
               src="../assets/glb/stone-lantern.glb"
@@ -330,28 +323,30 @@
         <a-entity id="timer" position="0 1.85 14.7" scale="10 10 10" rotation="0 180 0" visible="false"
                   text="color: black; align: center; value: 0;"></a-entity>
 
-        <!-- <a-entity light="type: ambient; color: #BBB" meditation-light-mode></a-entity> -->
-        <a-entity id="light" light="type: directional; color: #ffffff; intensity: 1; castShadow: true; shadowCameraBottom:-14; shadowCameraTop: 14; shadowCameraLeft: -16; shadowCameraRight: 16"
-          position="10 70 20" meditation-light-mode></a-entity>
-        <!-- <a-light type="hemisphere" color="#e0fbff" ground-color="#fffab3" intensity="1" meditation-light-mode></a-light> -->
-        <a-entity light="type: hemisphere; color: #e0fbff; ground-color: #fffab3; intensity: 1" meditation-light-mode></a-entity>
-        <a-sky id="sky" src="#sky-img" color="#FFF"
-               sound="on: model-loaded; src: #background-music; autoplay: true; loop: true; positional: false; volume: 0.1"
-               meditation-mode yoga-mode>
-        </a-sky>
-
         <!-- Generated garden -->
         <a-entity id="garden" base-garden="sceneWidth: 30; sceneDepth: 30"></a-entity>
+        <a-entity id="mountains-layer-1" gltf-model="#mountains" position="0 1 0" scale="1.1 1.3 1"></a-entity>
+        <a-entity id="mountains-layer-2" gltf-model="#mountains" rotation="0 90 0" position="0 5 0" scale="1.8 3 3.3"></a-entity>
         <!-- Items placed by the user will be put in this entity -->
         <a-entity id="new-asset-container" croquet="name: new-asset-container"></a-entity>
 
-        <!--         <a-entity id="garden" base-garden="sceneWidth: 10; sceneDepth: 10"></a-entity> -->
-        <!-- Camera and hands live here for teleportation -->
-
-        <!-- testing teleportation points 
-        <a-sphere class="clickable" blink-teleportation teleportation-checkpoint position="0 0 6"></a-sphere>
-        <a-entity class="clickable" gltf-model="url(../assets/glb/tall-rock.glb)" blink-teleportation teleportation-checkpoint position="5 0 0"></a-entity>
-        -->
+        <!-- Sun and lighting -->
+        <a-simple-sun-sky
+          id="sky"
+          sun-position="10 70 20"
+          fog-color="#89878c"
+          sound="on: model-loaded; src: #background-music; autoplay: false; loop: true; positional: false; volume: 0.1"
+          meditation-mode
+          yoga mode
+          radius="100"
+        ></a-simple-sun-sky>
+        <a-entity light="type: ambient; color: #FFF"></a-entity>
+        <a-entity
+          id="light"
+          light="type: directional; color: #ffffff; intensity: 1; castShadow: true; shadowCameraBottom:-14; shadowCameraTop: 14; shadowCameraLeft: -16; shadowCameraRight: 16"
+          position="10 70 20"
+          meditation-light-mode
+        ></a-entity>
 
         <!-- controls tutorial -->
         <!-- <a-entity gltf-model="#single-wall-asset"
@@ -434,8 +429,6 @@
           shadow="receive: true; cast: true"
         ></a-entity>
 
-        <a-entity gltf-model="#mountains" position="0 1 0" scale="1.1 1.3 1"></a-entity>
-
         <a-entity id="camRig">
           <!-- Glowing ring used for breathing exercises -->
           <!-- User controlled ring -->
@@ -458,7 +451,6 @@
             meditation-ring-automated="breathCaptureId: leftHand"
             material="color: #ffffff; shader: flat"
           ></a-torus> -->
-
           <a-camera
             id="cam"
             wasd-controls-enabled="true"  

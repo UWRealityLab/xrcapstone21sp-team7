@@ -1,4 +1,5 @@
 const CALIBRATION_TIME = 3;
+const AUDIO_2_PLAY_TIME = 30;
 const DELTA_SAMPLES_TO_AVG = 6;
 // Any displacement below this amount (in meters) is not considered to be
 // the user breathing in or out
@@ -8,13 +9,39 @@ const DISPLACEMENT_TOO_LARGE = 0.1;
 const CALIBRATION_STATES = {
   FINDING_BREATH_IN_POSITION: 0,
   FINDING_BREATH_OUT_POSITION: 1,
-  CALIBRATION_COMPLETE: 2
+  CALIBRATION_COMPLETE: 2,
+  AUDIO2_COMPLETE_PLAYING: 3,
 }
 
 const MEDITATION_TIME = 120;
 
 /**
- * Connect this component to a hand with hand-controls component
+ * Connect this component to a hand with hand-controls component.
+ * 
+ * How breath capture works:
+ *
+ * The user triggers the start of breath capture by selecting it from a menu.
+ * The menu will emit the 'breath-capture-start' signal. When captured, the
+ * breath capture component will start the intro audio associated with breath
+ * capture.
+ * 
+ * During this stage, when the user presses 'x' the breath capture state changes
+ * to calibration. During this phase, the breath capture waits 5 seconds for the
+ * user to breath out. When calibration is complete, the second breath exercise
+ * script is started.
+ * 
+ * When calibrated, the use is informed via another prerecorded audio file and
+ * breath capture starts to give feedback about when the user has breathed in
+ * and out.
+ * 
+ * After a short delay to let the audio file play, breath capture starts in earnest.
+ * The breath-capture doesn't emit anything when this starts happening but does update
+ * deltaPositionAvg, which is used to update the size of the ring.
+ * 
+ * The meditation-ring component uses this information for providing
+ * a visual queue for when someone is breathing in and out. The breath capture
+ * will run for 120 seconds or until the user presses 'x' again. When breath capture
+ * is complete, the third breath capture script will start.
  */
 AFRAME.registerComponent('breath-capture', {
   schema: {
@@ -57,21 +84,31 @@ AFRAME.registerComponent('breath-capture', {
   },
 
   tick: function (time, timeDelta) {
+    let timeMinutes = time / 1000;
     if (this.controllerConnected && this.meditating) {
       if (this.calibrationObj.calibrationState != CALIBRATION_STATES.CALIBRATION_COMPLETE) {
-        this.runCalibration();
-        this.calibrationObj.startTime = time / 1000
+        this.runCalibration(timeMinutes)
       } else {
-        if (time - this.calibrationObj.startTime > MEDITATION_TIME) {
-          this.onCaptureBreathInPosition();
+        if (timeMinutes - this.calibrationObj.startTime > MEDITATION_TIME) {
+          // Stop breath capture
+          this.el.sceneEl.emit('breath-capture-end');
+          this.stopBreathCapture();
         } else {
-          this.runBreathCapture(timeDelta / 1000);
+          if (calibrationObj.calibrationState == CALIBRATION_COMPLETE) {
+            // Check to see if delay for playing second audio file is complete
+            if (timeMinutes - this.calibrationObj.startTime > AUDIO_2_PLAY_TIME) {
+              calibrationObj.calibrationState = AUDIO2_COMPLETE_PLAYING;
+            }
+          } else {
+            // Run normal breath capture
+            this.runBreathCapture(timeDelta / 1000);
+          }
         }
       }
     }
   },
 
-  runCalibration: function () {
+  runCalibration: function (time) {
     // The user must place the controller on their belly, breathe in all the way, press the y button
     // and breath all the way. This gives us a bunch of positions that we can do linear regression to
     // find a best fit line. Then when we are computing the displacement during operation, we use the
@@ -108,7 +145,7 @@ AFRAME.registerComponent('breath-capture', {
 
         // After some time for calibration has passed, find the largest
         // displacement and use this to find the target vector.
-        if (Date.now() / 1000 - this.calibrationObj.startTime > CALIBRATION_TIME) {
+        if (time - this.calibrationObj.startTime > CALIBRATION_TIME) {
           this.calibrationObj.breathOutPosition = this.calibrationObj.positionArr[this.calibrationObj.maxDisplacementIndex];
           // Find the target vector using the in and out breath positions
           this.targetVector = new THREE.Vector3();
@@ -126,6 +163,12 @@ AFRAME.registerComponent('breath-capture', {
 
           // Initialize breath capture variables needed now that calibration is complete
           this.previousPosition = position;
+
+          // el.sceneEl.emit('breath-capture-calibration-complete');
+          let sound = 'on: model-loaded; src: #breath-exercise-meditation-2; autoplay: true; loop: false; positional: false; volume: 1';
+          this.el.setAttribute('sound', sound);
+
+          this.calibrationObj.startTime = time
         }
         break;
       default:
@@ -201,14 +244,9 @@ AFRAME.registerComponent('breath-capture', {
         this.calibrationObj.breathInPosition = position;
         this.calibrationObj.startTime = Date.now() / 1000;
         this.calibrationObj.calibrationState = CALIBRATION_STATES.FINDING_BREATH_OUT_POSITION;
-
-        let sound = 'on: model-loaded; src: #breath-exercise-meditation-2; autoplay: true; loop: false; positional: false; volume: 1';
-        this.el.setAttribute('sound', sound);
       } else {
         // Breath capture finished
         this.el.sceneEl.emit('breath-capture-end');
-        let sound = 'on: model-loaded; src: #breath-exercise-meditation-3; autoplay: true; loop: false; positional: false; volume: 1';
-        this.el.setAttribute('sound', sound);
       }
     }
   },
@@ -238,6 +276,8 @@ AFRAME.registerComponent('breath-capture', {
   stopBreathCapture: function () {
     this.meditating = false;
     this.el.setAttribute('breath-capture', 'deltaPositionAvg', 0);
+    let sound = 'on: model-loaded; src: #breath-exercise-meditation-3; autoplay: true; loop: false; positional: false; volume: 1';
+    this.el.setAttribute('sound', sound);
   },
 
   onControllerConnected: function () { this.controllerConnected = true; },
