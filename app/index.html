@@ -62,7 +62,9 @@
       cursor="rayOrigin: mouse"
       shadow="type: pcfsoft"
       color="#dbf5ff"
-      fog="type: linear; density: 0.05; far: 400; near: 80; color: #eeeeee"
+      fog="type: exponential; density: 0.004; far: 1000; near: 10; color: #eeeeee"
+      animation__lighten_fog="property: fog.color; to: #eeeeee; dur: 2000; startEvents: endMeditation"
+      animation__darken_fog="property: fog.color; to: #444444; dur: 2000; startEvents: startMeditation"
     >
         <!-- Load in assets -->
         <a-assets>
@@ -340,7 +342,7 @@
 
         <!-- Generated garden -->
         <a-entity id="garden" base-garden="sceneWidth: 30; sceneDepth: 30"></a-entity>
-        <a-entity id="mountains" gltf-model="#mountains" position="0 -0.1 0" scale="5 5 5"></a-entity>
+        <a-entity id="mountains" gltf-model="#mountains" position="0 -0.1 0" scale="3 4 3"></a-entity>
         <!-- Items placed by the user will be put in this entity -->
         <a-entity id="new-asset-container" croquet="name: new-asset-container"></a-entity>
 
@@ -352,17 +354,18 @@
           sound="on: model-loaded; src: #background-music; autoplay: true; loop: true; positional: false; volume: 0.1"
           meditation-mode
           yoga-mode
-          radius="5000"
-          dark-color='#031145'
+          radius="1000"
+          light-color="#8fdeea"
+          dark-color="#ebf7f5"
         ></a-simple-sun-sky>
         <a-entity
           id="light"
-          light="type: directional; color: #ffffff; castShadow: true; shadowCameraBottom:-14; shadowCameraTop: 14; shadowCameraLeft: -16; shadowCameraRight: 16; intensity: 1.5"
+          light="type: directional; color: #ffffff; castShadow: true; shadowCameraBottom:-14; shadowCameraTop: 14; shadowCameraLeft: -16; shadowCameraRight: 16; intensity: 2.5"
           position="10 70 20"
           meditation-light-mode
         ></a-entity>
         <a-entity
-          light="type: hemisphere; color: #e0fbff; ground-color: #fffab3; intensity: 1.5"
+          light="type: hemisphere; color: #e0fbff; ground-color: #fffab3; intensity: 2.5"
           meditation-light-mode
         ></a-entity>
 
