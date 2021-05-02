@@ -57,10 +57,10 @@ AFRAME.registerComponent("meditation-mode", {
     this.el.setAttribute('animation__dark_color', lightDarkColorAnimation);
   },
 
-  onMeditationEnd: function () {
+  onMeditationEnd: function (evt) {
     this.changeSkyAndMusic({
       color: "#FFF",
-      music: "#background-music",
+      music: "#" + evt.detail.song,
       visibility: false,
     });
 

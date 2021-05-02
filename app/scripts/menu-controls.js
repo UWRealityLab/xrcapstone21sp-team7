@@ -5,7 +5,7 @@ AFRAME.registerComponent("menu-controls", {
     this.currentMenu;
 
     this.currAudio;
-    this.currSong = "Default";
+    this.currSong = "background-music";
 
     // the x value of the audio options at the start and end
     // need to change if change the number of audios.
@@ -102,7 +102,7 @@ AFRAME.registerComponent("menu-controls", {
       
       // Hide first menu or go back to first menu
       if (id === "first-menu") {
-        this.el.emit("endMeditation");
+        this.el.emit("endMeditation", {song: this.currSong});
         this.deactivateSliders(this.currAudio);
         this.ui.setAttribute("visible", "false");
         this.deactivateSmallButton(this.currAudio);
