@@ -1,0 +1,15 @@
+Note of all controls:
+
+Left controller:
+    Grip: show item placement menu
+    Trigger: rotate current item preview
+    Joystick up/down: swap item groups
+    Joystick left/right: swap current item
+    Bottom button: undo placement
+    Top button: place current item
+
+Right controller:
+    Joystick: teleport
+    Bottom button: open and close menu (ending audio)
+    Grip: close menu (not ending audio)
+    
