@@ -1,7 +1,7 @@
 // Needs to activated by the menu
 // TODO: Either make this a completey different aesthetic or combine this with audio-button.js
 //         -- almost entirely same code, just the events emitted are different.
-AFRAME.registerComponent("small-button", {
+AFRAME.registerComponent("horizontal-button", {
     schema: {
       title: { type: "string", default: ""},
       img: { type: "selector", default: "#meditation-img" }
@@ -9,29 +9,48 @@ AFRAME.registerComponent("small-button", {
     init: function () {
       let el = this.el;
       let data = this.data;
-  
-      // Dimensions
-      this.barWidth = 1;
-  
-      // Text
+
+      // Title Text
       this.text = document.createElement("a-entity");
-      this.text.setAttribute("position", "0.3 0.15 0");
+      this.text.setAttribute("position", "0.15 0.2 0");
       this.text.setAttribute("text", {
         value: data.title,
         align: "left",
         shader: "msdf",
+        color: "#B7B4A7",
       });
+
+      // Title of Song playing now
+      this.songTitle = document.createElement("a-entity");
+      this.songTitle.setAttribute("class", "songTitle");
+      this.songTitle.setAttribute("position", "0 0 0");
+      this.songTitle.setAttribute("text", {
+        value: "SONG PLAYING NOW",
+        align: "center",
+        shader: "msdf",
+        color: "#B7B4A7"
+      });
+
+      // Image
+      /*this.soundImage = document.createElement("a-image");
+      this.soundImage.setAttribute("position", "0 0 0");
+      this.soundImage.setAttribute("src", "#sound-wave");*/
+
+      // Figure out the image
+      this.soundImage = document.createElement("a-entity");
+      this.soundImage.setAttribute("class", "image");
+      this.soundImage.setAttribute("material", "src", "#sound-wave");
   
       // Container
-      //this.container = document.createElement("a-image");
-      //this.container.setAttribute("src", data.img);
-
       this.container = document.createElement("a-entity");
       this.container.setAttribute("class", "container");
-      this.container.setAttribute("material", "src", data.img);
-      this.container.setAttribute("mixin", "thumbnail");
+      this.container.setAttribute("material", "color", "black");
+      this.container.setAttribute("mixin", "horizontal-menu");
   
-      el.appendChild(this.text);
+      //el.appendChild(this.text);
+      this.container.appendChild(this.text);
+      this.container.appendChild(this.songTitle);
+      //this.container.appendChild(this.soundImage);
       el.appendChild(this.container);
   
       // Handlers

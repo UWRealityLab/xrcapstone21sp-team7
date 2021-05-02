@@ -5,11 +5,12 @@ AFRAME.registerComponent("menu-controls", {
     this.currentMenu;
 
     this.currAudio;
+    this.currSong = "Default";
 
     // the x value of the audio options at the start and end
     // need to change if change the number of audios.
-    this.startAudioOption = -1.35;
-    this.endAudioOption = 1.35;
+    this.topAudioOption = 0;
+    this.bottomAudioOption = -0.9;
     this.prevAudioSlider = 0.5
 
     // Grab template of menu to display
@@ -226,13 +227,13 @@ AFRAME.registerComponent("menu-controls", {
 
   onAudioShift: function (evt) {
     let x = evt.detail.percent - this.prevAudioSlider;
-    let m = this.endAudioOption / 0.5;
+    let m = this.bottomAudioOption / 0.5;
 
     let y = m * x;
 
     this.currAudio.querySelectorAll(".small-button").forEach((button) => {
       let attr = button.getAttribute("position");
-      attr.x = attr.x - y;
+      attr.y = attr.y - y;
       button.setAttribute("position", attr);
     });
     this.prevAudioSlider = evt.detail.percent;
@@ -250,11 +251,20 @@ AFRAME.registerComponent("menu-controls", {
   audioChanged: function(evt) {
     let audio_id = evt.detail.audio_id;
 
-    let sky = document.querySelector("#sky");
-    let attr = sky.getAttribute("sound");
-    attr.src = "#" + audio_id;
+    if (audio_id == "audio-exit") {
 
-    sky.setAttribute("sound", attr);
+      this.deactivateSmallButton(this.currAudio);
+      this.activateSmallButton(document.querySelector("#audio-menu")); 
+
+    } else {
+
+      let sky = document.querySelector("#sky");
+      let attr = sky.getAttribute("sound");
+      attr.src = "#" + audio_id;
+
+      sky.setAttribute("sound", attr);
+      this.currSong = audio_id;
+    }
   },
 
   /*
@@ -289,9 +299,22 @@ AFRAME.registerComponent("menu-controls", {
       .querySelector(".container")
       .setAttribute("class", "rightclickable container");
       //console.log(button.getAttribute("id"));
+      
+      if (button.getAttribute("id") == "audio-menu-button") {
+        let attr = button.querySelector(".container").querySelector(".songTitle").getAttribute("text");
+        attr.value = this.currSong;
+        button.querySelector(".container").querySelector(".songTitle").setAttribute("text", attr);
+      }
   });
 
   element.querySelectorAll(".audio-slider").forEach((button) => {
+    button
+      .querySelector(".container")
+      .setAttribute("class", "rightclickable container");
+      //console.log(button.getAttribute("id"));
+  });
+
+  element.querySelectorAll(".back-button").forEach((button) => {
     button
       .querySelector(".container")
       .setAttribute("class", "rightclickable container");
