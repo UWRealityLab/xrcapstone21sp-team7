@@ -67,12 +67,21 @@ AFRAME.registerComponent('breath-capture', {
     this.getControllerPosition = this.getControllerPosition.bind(this);
     this.onCaptureBreathInPosition = this.onCaptureBreathInPosition.bind(this);
     this.classifyBreathing = this.classifyBreathing.bind(this);
+    this.onItemDeselected = this.onItemDeselected.bind(this);
 
     el.sceneEl.addEventListener('breath-capture-start', this.startBreathCapture);
     el.sceneEl.addEventListener('breath-capture-end', this.stopBreathCapture);
+    el.sceneEl.addEventListener('menu-item-deselected', this.onItemDeselected);
     el.addEventListener('controllerconnected', this.onControllerConnected);
     el.addEventListener('controllerdisconnected', this.onControllerDisconnected);
     el.addEventListener('xbuttondown', this.onCaptureBreathInPosition);
+  },
+
+  onItemDeselected: function() {
+    if (this.meditating) {
+      this.el.sceneEl.emit('breath-capture-end');
+      this.stopBreathCapture();
+    }
   },
 
   remove: function () {
@@ -272,6 +281,7 @@ AFRAME.registerComponent('breath-capture', {
 
     let sound = 'on: model-loaded; src: #breath-exercise-meditation-1; autoplay: true; loop: false; positional: false; volume: 0.5';
     this.el.setAttribute('sound', sound);
+    this.el.components.sound.playSound();
   },
 
   stopBreathCapture: function () {

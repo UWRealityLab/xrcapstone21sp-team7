@@ -22,6 +22,7 @@ AFRAME.registerComponent("menu-controls", {
 
     // Event handlers
     this.onMenuActivate = this.onMenuActivate.bind(this);
+    this.onToggleMenuVisibility = this.onToggleMenuVisibility.bind(this);
     this.onVolumeChanged = this.onVolumeChanged.bind(this);
     this.onMeditationButtonClicked = this.onMeditationButtonClicked.bind(this);
     this.onYogaButtonClicked = this.onYogaButtonClicked.bind(this);
@@ -33,12 +34,14 @@ AFRAME.registerComponent("menu-controls", {
     this.onStoryMeditationClicked = this.onStoryMeditationClicked.bind(this);
     this.onConfidenceBoosterClicked = this.onConfidenceBoosterClicked.bind(this);
     this.onBreathingExerciseButtonClicked = this.onBreathingExerciseButtonClicked.bind(this);
+    this.onGuidedYogaButtonClicked = this.onGuidedYogaButtonClicked.bind(this);
 
     this.removeEventListeners = this.removeEventListeners.bind(this);
 
     // Button event listeners
     // TODO: change trigger button
     this.el.addEventListener("abuttondown", this.onMenuActivate);
+    this.el.addEventListener('gripup', this.onToggleMenuVisibility);
     this.el.sceneEl.addEventListener(
       "meditation-button-clicked",
       this.onMeditationButtonClicked
@@ -62,6 +65,10 @@ AFRAME.registerComponent("menu-controls", {
     this.el.sceneEl.addEventListener(
       "breathing-exercise-button-clicked",
       this.onBreathingExerciseButtonClicked
+    );
+    this.el.sceneEl.addEventListener(
+      'guided-yoga-button-clicked',
+      this.onGuidedYogaButtonClicked
     );
     this.el.sceneEl.addEventListener("volume-slider-changed", this.onVolumeChanged);
 
@@ -89,6 +96,8 @@ AFRAME.registerComponent("menu-controls", {
       // TODO: change this, still want if user selected a meditation mode
       const id = this.currentMenu.id;
       this.deactivate(this.currentMenu);
+
+      this.el.sceneEl.emit('menu-item-deselected');
       
       // Hide first menu or go back to first menu
       if (id === "first-menu") {
@@ -97,6 +106,8 @@ AFRAME.registerComponent("menu-controls", {
         this.ui.setAttribute("visible", "false");
         this.deactivateSmallButton(this.currAudio);
         this.displayed = false;
+        this.el.setAttribute('raycaster', 'enabled', false);
+        this.el.setAttribute('raycaster', 'lineOpacity', 0);
       } else {
         this.activate(document.querySelector("#first-menu"));
       }
@@ -110,9 +121,25 @@ AFRAME.registerComponent("menu-controls", {
 
       this.activateSmallButton(document.querySelector("#audio-menu"));
       this.displayed = true;
+      this.el.setAttribute('raycaster', 'enabled', true);
+      this.el.setAttribute('raycaster', 'lineOpacity', 1);
     }
 
     // this.displayed = !this.displayed;
+  },
+
+  /**
+   * Toggles the visibility of the menu when in meditation mode (the user will still be
+   * in meditation mode, just the actual menu won't be visible). Also hides the raycaster
+   * when the menu is not visible.
+   */
+  onToggleMenuVisibility: function() {
+    if (this.displayed) {
+      let visible = this.ui.getAttribute('visible');
+      this.ui.setAttribute('visible', !visible);
+      this.el.setAttribute('raycaster', 'enabled', !visible);
+      this.el.setAttribute('raycaster', 'lineOpacity', !visible ? 1 : 0);
+    }
   },
 
   /*
@@ -181,6 +208,10 @@ AFRAME.registerComponent("menu-controls", {
     // Activate meditation options
     let yogaMenu = document.querySelector("#yoga-menu");
     this.activate(yogaMenu);
+  },
+
+  onGuidedYogaButtonClicked: function () {
+    this.el.sceneEl.emit("yogaStart");
   },
 
   onVolumeChanged: function (evt) {
@@ -322,6 +353,7 @@ deactivateSmallButton: function (element) {
     let el = this.el;
 
     el.removeEventListener("abuttondown", this.onMenuActivate); // maybe change trigger button?
+    el.removeEventListener('gripup', this.onToggleMenuVisibility);
     el.sceneEl.removeEventListener(
       "meditation-button-clicked",
       this.onMeditationButtonClicked

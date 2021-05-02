@@ -119,8 +119,9 @@
                     </a-entity>
                 </a-entity>
 
-                <a-entity class="right" id="rightHand" super-hands hand-controls="hand: right; handModelStyle: lowPoly; color: #00ff00"
-                          raycaster="showLine: true; objects: .rightclickable" laser-controls="hand: right; model: false"
+                <a-entity class="right" id="rightHand" hand-controls="hand: right; handModelStyle: lowPoly; color: #00ff00"
+                          raycaster="lineOpacity: 0; enabled: false; objects: .rightclickable" 
+                          laser-controls="hand: right; model: false"
                           blink-controls="cameraRig: #camRig; teleportOrigin: #cam; collisionEntities: #floor"
                           menu-controls>
                 </a-entity>
@@ -262,8 +263,8 @@
                 <!-- yoga submenu -->
                 <a-entity id="yoga-menu" class="submenu" visible="false">
                   <!-- samples -->
-                  <a-entity id="yoga-button-1" class="option" mixin="frame" position="-0.7 0 0.1" rotation="0 20 0"
-                    menu-button="title: Yoga 1; info: Yoga 1 Info; img: #yoga-img; width: 1.2">
+                  <a-entity id="guided-yoga-button" class="option" mixin="frame" position="-0.7 0 0.1" rotation="0 20 0"
+                    menu-button="title: Guided Yoga Routine; info: Walk through a\n5 minute yoga\nroutine; img: #yoga-img; width: 1.2">
                   </a-entity>
                   <a-entity id="yoga-button-2" class="option" mixin="frame" position="0 0 0" rotation="0 0 0"
                     menu-button="title: Yoga 2; info: Yoga 2 Info; img: #yoga-img; width: 1.2">
@@ -309,7 +310,7 @@
         </a-assets>
       
         <!-- yoga stuff -->
-        <a-box position="1.5 0.75 14.55"
+        <!-- <a-box position="1.5 0.75 14.55"
                scale="0.5 0.5 0.1"
                color="#A9A9A9">
         </a-box>
@@ -321,7 +322,7 @@
                     class="rightclickable"
                     color="#FFC65D"
                     yoga-emitter>
-        </a-cylinder>
+        </a-cylinder> -->
         <a-image id="yoga-images" width="1.5" height="1.5" position="0 0.75 14" rotation="0 180 0"
                  sound="on: model-loaded, autoplay: true; positional: false; volume: 0.25">
             <!-- frame -->
@@ -334,8 +335,8 @@
         </a-image>
         <a-box id="yoga-mat" height="0.1" width="1" depth="2" position="0 0 11" color="#DB7093"></a-box>
 
-        <a-entity id="timer" position="0 1.85 14.7" scale="10 10 10" rotation="0 180 0" visible="false"
-                  text="color: black; align: center; value: 0;"></a-entity>
+        <a-entity id="timer" position="0 1.85 14" scale="10 10 10" rotation="0 180 0" visible="false"
+                  text="color: white; align: center; value: 0;"></a-entity>
 
         <!-- Generated garden -->
         <a-entity id="garden" base-garden="sceneWidth: 30; sceneDepth: 30"></a-entity>
@@ -350,7 +351,7 @@
           fog-color="#eeeeee"
           sound="on: model-loaded; src: #background-music; autoplay: true; loop: true; positional: false; volume: 0.1"
           meditation-mode
-          yoga mode
+          yoga-mode
           radius="5000"
           dark-color='#031145'
         ></a-simple-sun-sky>
