@@ -1,4 +1,4 @@
-const SCALE_CHANGE_MAGNITUDE = 1000;
+const SCALE_CHANGE_MAGNITUDE = 1200;
 const LIGHT_CHANGE_MAGNITUDE = 300;
 
 AFRAME.registerComponent('meditation-ring', {

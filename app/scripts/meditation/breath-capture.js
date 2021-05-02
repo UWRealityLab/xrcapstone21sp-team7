@@ -107,7 +107,7 @@ AFRAME.registerComponent('breath-capture', {
             // Check to see if delay for playing second audio file is complete
             if (Date.now() / 1000 - this.calibrationObj.startTime > AUDIO_2_PLAY_TIME) {
               this.calibrationObj.calibrationState = CALIBRATION_STATES.AUDIO2_COMPLETE_PLAYING;
-              el.sceneEl.emit('breath-capture-calibration-complete');
+              this.el.sceneEl.emit('breath-capture-calibration-complete');
             }
           } else {
             // Run normal breath capture
