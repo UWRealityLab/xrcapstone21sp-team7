@@ -113,7 +113,7 @@ AFRAME.registerComponent("menu-controls", {
         this.activate(document.querySelector("#first-menu"));
       }
     } else {
-      this.el.emit("startMeditation");
+      //this.el.emit("startMeditation");
       this.ui.setAttribute("visible", "true");
       this.activate(document.querySelector("#first-menu"));
 
@@ -154,6 +154,8 @@ AFRAME.registerComponent("menu-controls", {
     // Activate meditation options
     let medMenu = document.querySelector("#meditation-menu");
     this.activate(medMenu);
+
+    this.el.emit("startMeditation");
   },
 
   // Start the meditation script
