@@ -102,7 +102,7 @@ AFRAME.registerComponent("menu-controls", {
       
       // Hide first menu or go back to first menu
       if (id === "first-menu") {
-        this.el.emit("endMeditation", {song: this.currSong});
+        
         this.deactivateSliders(this.currAudio);
         this.ui.setAttribute("visible", "false");
         this.deactivateSmallButton(this.currAudio);
@@ -111,6 +111,7 @@ AFRAME.registerComponent("menu-controls", {
         this.el.setAttribute('raycaster', 'lineOpacity', 0);
       } else {
         this.activate(document.querySelector("#first-menu"));
+        this.el.emit("endMeditation", {song: this.currSong});
       }
     } else {
       //this.el.emit("startMeditation");
