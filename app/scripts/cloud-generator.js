@@ -1,29 +1,28 @@
-const X_DIM = 600;
+const X_DIM = 200;
 
 AFRAME.registerComponent("cloud-generator", {
   init: function() {
     let el = this.el;
 
-    function createCloud(attr) {
+    function createCloud(model, scale, position) {
       let cloud = document.createElement("a-entity");
-      cloud.setAttribute("gltf-model", `#cloud_${attr.model}`);
-      cloud.setAttribute("scale", attr.scale);
-      cloud.setAttribute("position", attr.position);
-      cloud.setAttribute("rotation", attr.rotation);
+      cloud.setAttribute("gltf-model", `#cloud${model}`);
+      cloud.setAttribute("scale", scale);
+      cloud.setAttribute("position", position);
+      cloud.setAttribute(
+        "animation__sway",
+        `property: position; to: ${position.x + X_DIM} ${position.y} ${position.z}; dur: 80000; loop: true; dir: alternate; easing: linear`  
+      );
       el.appendChild(cloud);
     }
 
-    let vals = {
-      model: 3,
-      scale: { x: 10, y: 10, z: 10 },
-      position: { x: -100, y: 120, z: -150 },
-      rotation: { x: 0, y: 0, z: 0 }
-    };
-
-    for (let i = 0; i < 4; i++) {
-      vals.position.x = X_DIM * (Math.random() - 0.5);
-      createCloud(vals);
-      vals.position.z += 100;
+    let position = { x: -100, y: 100, z: -150 };
+    let scale = { x: 20, y: 20, z: 15 };
+    // Create starter clouds
+    for (let i = 0; i < 3; i++) {
+      createCloud(1, scale, position);
+      position.z += 150;
+      position.x = X_DIM * (2 * Math.random() - 1);
     }
   }
 });
