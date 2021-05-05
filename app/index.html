@@ -42,6 +42,9 @@
     <!-- new teleportation -->
     <script src="https://cdn.jsdelivr.net/npm/aframe-blink-controls/dist/aframe-blink-controls.min.js"></script>
 
+    <!-- clouds -->
+    <script src="scripts/cloud-generator.js"></script>
+
     <!-- yoga -->
     <script src="./scripts/yoga/yoga-emitter.js"></script>
     <script src="./scripts/yoga/yoga-mode.js"></script>
@@ -78,6 +81,9 @@
 
             <a-asset-item id="corner-wall-asset" src="../assets/glb/corner-wall-simple.glb"></a-asset-item>
             <a-asset-item id="single-wall-asset" src="../assets/glb/single-wall-simple.glb"></a-asset-item>
+            <!-- cloud-meditation -->
+            <a-asset-item id="cloud_3" src="../assets/glb/cloud_3.glb"></a-asset-item>
+            
             <a-asset-item id="right-hand-low" src="../assets/glb/rightHandLow.glb"></a-asset-item>
             <a-asset-item id="left-hand-low" src="../assets/glb/leftHandLow.glb"></a-asset-item>
 
@@ -412,6 +418,9 @@
           light="type: hemisphere; color: #e0fbff; ground-color: #fffab3; intensity: 2.5"
           meditation-light-mode
         ></a-entity>
+
+        <!-- Clouds -->
+        <a-entity id="clouds" cloud-generator></a-entity>
 
         <!-- controls tutorial -->
         <!-- <a-entity gltf-model="#single-wall-asset"
