@@ -7,8 +7,8 @@ const CORNER_WALL_SEG_WIDTH = 2;
 
 AFRAME.registerComponent("base-garden", {
   schema: {
-    sceneWidth: { default: 10, type: "int" },
-    sceneDepth: { default: 10, type: "int" },
+    sceneWidth: { default: 1, type: "int" },
+    sceneDepth: { default: 1, type: "int" },
     intersectedPoint: { default: null, type: "vec3" },
   },
 
@@ -16,12 +16,8 @@ AFRAME.registerComponent("base-garden", {
     const { THREE } = AFRAME;
 
     let el = this.el;
-    // let sceneWidth =
-    //   Math.round(this.data.sceneWidth / WALL_SEG_WIDTH) * WALL_SEG_WIDTH;
-    // let sceneDepth =
-    //   Math.round(this.data.sceneDepth / WALL_SEG_WIDTH) * WALL_SEG_WIDTH;
-    let sceneWidth = this.data.sceneWidth;
-    let sceneDepth = this.data.sceneDepth;
+    let sceneWidth = this.data.sceneWidth * WALL_SEG_WIDTH + 2 * CORNER_WALL_SEG_WIDTH;
+    let sceneDepth = this.data.sceneDepth * WALL_SEG_WIDTH + 2 * CORNER_WALL_SEG_WIDTH;
     console.log("sceneWidth: ", sceneWidth);
     console.log("sceneDepth: ", sceneDepth);
 
