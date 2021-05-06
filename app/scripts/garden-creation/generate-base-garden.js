@@ -1,9 +1,9 @@
 /* global AFRAME, Q, THREE */
 
 // Width of wall segment in meters
-const WALL_SEG_WIDTH = 8.7;
+const WALL_SEG_WIDTH = 16;
 // Width (and depth) of corner wall segment in meters
-const CORNER_WALL_SEG_WIDTH = 2.95;
+const CORNER_WALL_SEG_WIDTH = 2;
 
 AFRAME.registerComponent("base-garden", {
   schema: {
@@ -16,12 +16,14 @@ AFRAME.registerComponent("base-garden", {
     const { THREE } = AFRAME;
 
     let el = this.el;
-    let sceneWidth =
-      Math.round(this.data.sceneWidth / WALL_SEG_WIDTH) * WALL_SEG_WIDTH;
-    let sceneDepth =
-      Math.round(this.data.sceneDepth / WALL_SEG_WIDTH) * WALL_SEG_WIDTH;
+    // let sceneWidth =
+    //   Math.round(this.data.sceneWidth / WALL_SEG_WIDTH) * WALL_SEG_WIDTH;
+    // let sceneDepth =
+    //   Math.round(this.data.sceneDepth / WALL_SEG_WIDTH) * WALL_SEG_WIDTH;
+    let sceneWidth = this.data.sceneWidth;
+    let sceneDepth = this.data.sceneDepth;
     console.log("sceneWidth: ", sceneWidth);
-    console.log("sceneDepth: ".sceneDepth);
+    console.log("sceneDepth: ", sceneDepth);
 
     let cornerPositions = [
       new THREE.Vector3(-sceneWidth / 2, 0, -sceneDepth / 2),
@@ -44,17 +46,21 @@ AFRAME.registerComponent("base-garden", {
       wall.setAttribute("rotation", el.object3D.worldToLocal(rotation));
       // wall.setAttribute('croquet', 'name: ' + name);
       wall.setAttribute("shadow", "receive: true; cast: true");
+      wall.setAttribute("scale", "1.1 1 1");
       wall.setAttribute("id", name);
       el.appendChild(wall);
     }
 
     // Add straight walls, 1 less to account for corners
-    for (let i = 0; i < sceneWidth / WALL_SEG_WIDTH - 1; i++) {
+    const widthGap = sceneWidth - 2 * CORNER_WALL_SEG_WIDTH;
+    const depthGap = sceneDepth - 2 * CORNER_WALL_SEG_WIDTH;
+    const wallOffset = CORNER_WALL_SEG_WIDTH + WALL_SEG_WIDTH / 2;
+    for (let i = 0; i < widthGap / WALL_SEG_WIDTH; i++) {
       // left wall
       let wall = document.createElement("a-entity");
       createWall(
         new THREE.Vector3(
-          cornerPositions[0].x + i * WALL_SEG_WIDTH + WALL_SEG_WIDTH,
+          cornerPositions[0].x + i * WALL_SEG_WIDTH + wallOffset,
           0,
           cornerPositions[0].z
         ),
@@ -65,7 +71,7 @@ AFRAME.registerComponent("base-garden", {
       // right wall
       createWall(
         new THREE.Vector3(
-          cornerPositions[3].x + i * WALL_SEG_WIDTH + WALL_SEG_WIDTH,
+          cornerPositions[3].x + i * WALL_SEG_WIDTH + wallOffset,
           0,
           cornerPositions[3].z
         ),
@@ -74,14 +80,14 @@ AFRAME.registerComponent("base-garden", {
       );
     }
 
-    for (let i = 0; i < sceneDepth / WALL_SEG_WIDTH - 1; i++) {
+    for (let i = 0; i < depthGap / WALL_SEG_WIDTH; i++) {
       // back
       let wall = document.createElement("a-entity");
       createWall(
         new THREE.Vector3(
           cornerPositions[0].x,
           0,
-          cornerPositions[0].z + i * WALL_SEG_WIDTH + WALL_SEG_WIDTH
+          cornerPositions[0].z + i * WALL_SEG_WIDTH + wallOffset,
         ),
         new THREE.Vector3(0, 270, 0),
         "wall" + i.toString() + "back"
@@ -92,7 +98,7 @@ AFRAME.registerComponent("base-garden", {
         new THREE.Vector3(
           cornerPositions[2].x,
           0,
-          cornerPositions[2].z - i * WALL_SEG_WIDTH - WALL_SEG_WIDTH
+          cornerPositions[2].z - i * WALL_SEG_WIDTH - wallOffset,
         ),
         new THREE.Vector3(0, 90, 0),
         "wall" + i.toString() + "front"
