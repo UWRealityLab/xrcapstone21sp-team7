@@ -35,6 +35,7 @@
     <script src="./scripts/meditation/meditation-ring.js"></script>
     <script src="./scripts/meditation/meditation-ring-automated.js"></script>
     <script src="./scripts/meditation/breath-capture.js"></script>
+    <script src="./scripts/meditation/cloud-meditation.js"></script>
 
     <!-- teleportation-->
     <script src="./scripts/blink-teleportation.js"></script>
@@ -64,7 +65,6 @@
     <a-scene
       renderer="colorManagement: true; physicallyCorrectLights: true"
       croquet
-      cursor="rayOrigin: mouse"
       shadow="type: pcfsoft"
       color="#dbf5ff"
       fog="type: exponential; density: 0.004; far: 1000; near: 10; color: #eeeeee"
@@ -78,6 +78,10 @@
 
             <a-asset-item id="corner-wall-asset" src="../assets/glb/corner-wall-simple.glb"></a-asset-item>
             <a-asset-item id="single-wall-asset" src="../assets/glb/single-wall-simple.glb"></a-asset-item>
+            <!-- cloud-meditation -->
+            <a-asset-item id="walkable-cloud" src="../assets/glb/walkable-cloud.glb"></a-asset-item>
+            <a-asset-item id="cloud1" src="../assets/glb/cloud1.glb"></a-asset-item>
+            
             <a-asset-item id="right-hand-low" src="../assets/glb/rightHandLow.glb"></a-asset-item>
             <a-asset-item id="left-hand-low" src="../assets/glb/leftHandLow.glb"></a-asset-item>
 
@@ -129,7 +133,7 @@
                 <a-entity class="right" id="rightHand" hand-controls="hand: right; handModelStyle: lowPoly; color: #00ff00"
                           raycaster="lineOpacity: 0; enabled: false; objects: .rightclickable" 
                           laser-controls="hand: right; model: false"
-                          blink-controls="cameraRig: #camRig; teleportOrigin: #cam; collisionEntities: #floor"
+                          blink-controls="cameraRig: #camRig; teleportOrigin: #cam; collisionEntities: #floor, .cloud-surface; curveShootingSpeed: 12"
                           menu-controls>
                 </a-entity>
             </template>
@@ -212,6 +216,7 @@
             <!-- menu -->
             <img id="meditation-img" src="../assets/img/menu/meditation.png"/>
             <img id="yoga-img" src="../assets/img/menu/yoga.png"/>
+            <img id="clouds-img" src="../assets/img/menu/clouds.png"/>
             <img id="volume-img" src="../assets/img/menu/Volume_icon.png">
             <img id="sound-wave" src="../assets/img/sound_wave.png">
             <img id="back-arrow" src="../assets/img/Back_Arrow.png">
@@ -297,6 +302,9 @@
                   </a-entity>
                   <a-entity id="breathing-exercise-button" class="option" mixin="frame" position="1.05 0 0.2" rotation="0 -20 0"
                     menu-button="title: Breathing Exercises; info: Improve meditation\nbreathing techniques; img: #meditation-img; width: 1.2">
+                  </a-entity>
+                  <a-entity id="cloud-meditation-button" class="option" mixin="frame" position="0 0.9 0.3" rotation="20 0 0"
+                    menu-button="title: Head in the Clouds; info: Climb up the clouds\nand relax; img: #clouds-img; width: 1.2">
                   </a-entity>
                 </a-entity> <!-- meditation submenu -->
                 <!-- yoga submenu -->
@@ -412,6 +420,9 @@
           light="type: hemisphere; color: #e0fbff; ground-color: #fffab3; intensity: 2.5"
           meditation-light-mode
         ></a-entity>
+
+        <!-- Clouds -->
+        <a-entity id="clouds" cloud-meditation></a-entity>
 
         <!-- controls tutorial -->
         <!-- <a-entity gltf-model="#single-wall-asset"
