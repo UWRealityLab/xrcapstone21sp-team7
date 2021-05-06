@@ -16,7 +16,7 @@ AFRAME.registerComponent("cloud-generator", {
       el.appendChild(cloud);
     }
 
-    let position = { x: -100, y: 100, z: -150 };
+    let position = { x: -100, y: 110, z: -150 };
     let scale = { x: 20, y: 20, z: 15 };
     // Create starter clouds
     for (let i = 0; i < 3; i++) {

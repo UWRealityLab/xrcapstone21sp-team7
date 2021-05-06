@@ -40,7 +40,7 @@ AFRAME.registerComponent("menu-button", {
       shader: "msdf",
       width: 1,
       opacity: 0,
-      zOffset: 0.005
+      zOffset: 0.009
     });
 
     // add
