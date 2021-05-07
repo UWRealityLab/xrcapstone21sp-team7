@@ -55,6 +55,7 @@
     <script src="./scripts/menu/horizontal-button.js"></script>
     <script src="./scripts/menu/audio-button.js"></script>
     <script src="./scripts/menu/vertical-slider.js"></script>
+    <script src="./scripts/menu/small-button.js"></script>
     <!--script src="./scripts/left_arrow.js"></script-->
 
     <script src="./scripts/joystick.js"></script>
@@ -217,6 +218,9 @@
             <img id="volume-img" src="../assets/img/menu/Volume_icon.png">
             <img id="sound-wave" src="../assets/img/sound_wave.png">
             <img id="back-arrow" src="../assets/img/Back_Arrow.png">
+            <img id="play-button" src="../assets/img/menu/Play_Button.png">
+            <img id="pause-button" src="../assets/img/menu/Pause_Button.png">
+            <img id="replay-button" src="../assets/img/menu/Replay_Button.png">
 
             <!-- breath menu -->
             <img id="hourglass-img" src="../assets/img/hourglass.png">
@@ -259,6 +263,12 @@
             <a-mixin
               id="horizontal-menu"
               geometry="primitive: plane; width: 0.8; height: 0.5"
+              material="color: white; shader: flat"
+              position="0 0 0.008"
+            ></a-mixin>
+            <a-mixin
+              id="small-square"
+              geometry="primitive: plane; width: 0.2; height: 0.2"
               material="color: white; shader: flat"
               position="0 0 0.008"
             ></a-mixin>
@@ -334,6 +344,9 @@
                 <!-- audio menu button-->
                 <a-entity id="audio-menu" class="audio" visible="false" position="1.4 0 1.45" rotation="0 -70 0">
                   <a-entity id="audio-menu-button" class="small-button" horizontal-button="title: NOW PLAYING" mixin="horizontal-frame"></a-entity>
+                  <a-entity id="play-button" class="small-button" small-button="img: #play-button" position="-0.3 -0.45 0"></a-entity>
+                  <a-entity id="pause-button" class="small-button" small-button="img: #pause-button" position="0 -0.45 0"></a-entity>
+                  <a-entity id="replay-button" class="small-button" small-button="img: #replay-button" position="0.3 -0.45 0"></a-entity>
                 </a-entity>
 
 
@@ -409,7 +422,17 @@
           radius="1000"
           light-color="#8fdeea"
           dark-color="#ebf7f5"
-        ></a-simple-sun-sky>
+        >
+        
+            <a-entity id="meditation" class="audio" sound="src: #meditation-music; loop: true; autoplay: false; positional: false; volume: 0.1"></a-entity>
+            <!--scripts-->
+            <a-entity id="meditation-1" class="audio" sound="src: #meditation-1; positional: false; volume: 0.1"></a-entity>
+            <a-entity id="rain" class="audio" sound="src: #rain; positional: false; volume: 0.1"></a-entity>
+            <a-entity id="confidence-meditation" class="audio" sound="src: #confidence-meditation; positional: false; volume: 0.1"></a-entity>
+            <!--scripts-->
+   
+          
+        </a-simple-sun-sky>
         <a-entity
           id="light"
           light="type: directional; color: #ffffff; castShadow: true; shadowCameraBottom:-14; shadowCameraTop: 14; shadowCameraLeft: -16; shadowCameraRight: 16; intensity: 2.5"

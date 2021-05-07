@@ -46,13 +46,14 @@ AFRAME.registerComponent("slider", {
     this.marker = document.createElement("a-entity");
     this.marker.setAttribute(
       "geometry",
-      "primitive: cylinder; radius: 0.02; height: 0.01"
+      "primitive: cylinder; radius: 0.02; height: 0.01",
     );
     this.marker.setAttribute("rotation", "90 0 0");
     this.marker.setAttribute(
       "material",
       "shader: flat; opacity: 1; side: double; color: white"
     );
+    this.marker.setAttribute("position", "-0.4 0 0")
     
     el.appendChild(this.text);
     el.appendChild(this.line);
