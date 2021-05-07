@@ -31,7 +31,7 @@ AFRAME.registerComponent("meditation-mode", {
     };
 
     sound = this.el.getAttribute("sound");
-    sound.src = values.music;
+    //sound.src = values.music;
 
     document.querySelectorAll(".flame").forEach((flame) => {
       flame.setAttribute("visible", values.visibility);
@@ -39,7 +39,7 @@ AFRAME.registerComponent("meditation-mode", {
 
     //el.setAttribute('src', source);
     this.el.setAttribute("animation", params);
-    this.el.setAttribute("sound", sound);
+    //this.el.setAttribute("sound", sound);
   },
 
   onMeditationStart: function () {

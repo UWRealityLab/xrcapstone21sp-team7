@@ -4,7 +4,10 @@ AFRAME.registerComponent("menu-controls", {
 
     this.currentMenu;
 
-    this.currAudio;
+    this.currMeditationScript;
+    this.meditationSong = document.querySelector("#sky").querySelector("#meditation");
+
+    this.currAudioMenu;
     this.currSong = "background-music";
 
     // the x value of the audio options at the start and end
@@ -30,6 +33,10 @@ AFRAME.registerComponent("menu-controls", {
     this.onAudioMenuChanged = this.onAudioMenuChanged.bind(this);
     this.audioChanged = this.audioChanged.bind(this);
     this.onAudioShift = this.onAudioShift.bind(this);
+
+    this.onPlayButton = this.onPlayButton.bind(this);
+    this.onPauseButton = this.onPauseButton.bind(this);
+    this.onReplayButton = this.onReplayButton.bind(this);
 
     this.onGuidedMeditationClicked = this.onGuidedMeditationClicked.bind(this);
     this.onStoryMeditationClicked = this.onStoryMeditationClicked.bind(this);
@@ -99,6 +106,21 @@ AFRAME.registerComponent("menu-controls", {
       this.onAudioShift
     );
 
+    this.el.sceneEl.addEventListener(
+      "play-button-changed",
+      this.onPlayButton
+    );
+
+    this.el.sceneEl.addEventListener(
+      "pause-button-changed",
+      this.onPauseButton
+    );
+
+    this.el.sceneEl.addEventListener(
+      "replay-button-changed",
+      this.onReplayButton
+    );
+
     // Helpers
     this.activate = this.activate.bind(this);
     this.deactivate = this.deactivate.bind(this);
@@ -122,15 +144,20 @@ AFRAME.registerComponent("menu-controls", {
 
       // Hide first menu or go back to first menu
       if (id === "first-menu") {
-        this.deactivateSliders(this.currAudio);
+        this.deactivateSliders(this.currAudioMenu);
         this.ui.setAttribute("visible", "false");
-        this.deactivateSmallButton(this.currAudio);
+        this.deactivateSmallButton(this.currAudioMenu);
         this.displayed = false;
         this.el.setAttribute("raycaster", "enabled", false);
         this.el.setAttribute("raycaster", "lineOpacity", 0);
       } else {
         this.activate(document.querySelector("#first-menu"));
         this.el.emit("endMeditation", { song: this.currSong });
+        this.meditationSong.components.sound.stopSound();
+        if (this.currMeditationScript != undefined) {
+          this.currMeditationScript.components.sound.stopSound();
+        }
+        document.querySelector("#sky").components.sound.playSound();
       }
     } else {
       //this.el.emit("startMeditation");
@@ -175,37 +202,83 @@ AFRAME.registerComponent("menu-controls", {
     let medMenu = document.querySelector("#meditation-menu");
     this.activate(medMenu);
 
+    let sky = document.querySelector("#sky");
+    let attr = sky.getAttribute("sound");
+    console.log("sky before:" + attr.src);
+
     this.el.emit("startMeditation");
+    
+    sky.components.sound.stopSound();
+    attr = sky.getAttribute("sound");
+    console.log("sky after meditation:" + attr.src);
+
+    this.meditationSong.components.sound.playSound();
   },
 
   // Start the meditation script
   onGuidedMeditationClicked: function () {
     let sky = document.querySelector("#sky");
     // sound="on: model-loaded; src: #meditation-1; autoplay: true; loop: false; positional: false; volume: 1";
-    let attr = sky.getAttribute("sound");
-    attr.src = "#meditation-1";
+    //let attr = sky.getAttribute("sound");
+    //attr.src = "#meditation-1";
+    
+    // stop background music
+    this.meditationSong.components.sound.stopSound();
+    // stop if another script is playing
+    if (this.currMeditationScript != undefined) {
+      this.currMeditationScript.components.sound.stopSound();
+    }
 
-    sky.setAttribute("sound", attr);
+    // play and set the new script
+    let script = sky.querySelector("#meditation-1");
+    script.components.sound.playSound();
+    this.currMeditationScript = script;
+
+    // sky.setAttribute("sound", attr);
   },
 
   // Start the rain story script
   onStoryMeditationClicked: function () {
     let sky = document.querySelector("#sky");
     // sound="on: model-loaded; src: #rain; autoplay: true; loop: false; positional: false; volume: 1";
-    let attr = sky.getAttribute("sound");
-    attr.src = "#rain";
+    // let attr = sky.getAttribute("sound");
+    // attr.src = "#rain";
 
-    sky.setAttribute("sound", attr);
+    // stop background music
+    this.meditationSong.components.sound.stopSound();
+    // stop if another script is playing
+    if (this.currMeditationScript != undefined) {
+      this.currMeditationScript.components.sound.stopSound();
+    }
+
+    // play and set the new script
+    let script = sky.querySelector("#rain");
+    script.components.sound.playSound();
+    this.currMeditationScript = script;
+
+    // sky.setAttribute("sound", attr);
   },
 
   // Start confidence booster script
   onConfidenceBoosterClicked: function () {
     let sky = document.querySelector("#sky");
     // sound="on: model-loaded; src: #confidence-meditation; autoplay: true; loop: false; positional: false; volume: 1";
-    let attr = sky.getAttribute("sound");
-    attr.src = "#confidence-meditation";
+    // let attr = sky.getAttribute("sound");
+    // attr.src = "#confidence-meditation";
 
-    sky.setAttribute("sound", attr);
+    // stop background music
+    this.meditationSong.components.sound.stopSound();
+    // stop if another script is playing
+    if (this.currMeditationScript != undefined) {
+      this.currMeditationScript.components.sound.stopSound();
+    }
+
+    // play and set the new script
+    let script = sky.querySelector("#confidence-meditation");
+    script.components.sound.playSound();
+    this.currMeditationScript = script;
+
+    // sky.setAttribute("sound", attr);
   },
 
   /**
@@ -251,9 +324,42 @@ AFRAME.registerComponent("menu-controls", {
     let attr = sky.getAttribute("sound");
     //console.log("Volume before:" + attr.volume);
     attr.volume = evt.detail.percent;
+    console.log("src:" + attr.src);
     //console.log("Volume after:" + attr.volume);
 
     sky.setAttribute("sound", attr);
+
+    sky.querySelectorAll(".audio").forEach((audio) => {
+      
+      let sound = audio.getAttribute("sound");
+      sound.volume = evt.detail.percent;
+      console.log(sound.volume);
+      
+      audio.setAttribute("sound", sound);
+      
+    });
+  },
+
+  onPlayButton: function () {
+    if (this.currMeditationScript != undefined) {
+      this.currMeditationScript.components.sound.playSound();
+    }
+
+  },
+
+  onPauseButton: function () {
+    if (this.currMeditationScript != undefined) {
+      this.currMeditationScript.components.sound.pauseSound();
+    }
+
+  },
+
+  onReplayButton: function () {
+    if (this.currMeditationScript != undefined) {
+      this.currMeditationScript.components.sound.stopSound();
+      this.currMeditationScript.components.sound.playSound();
+    }
+
   },
 
   onAudioShift: function (evt) {
@@ -262,7 +368,7 @@ AFRAME.registerComponent("menu-controls", {
 
     let y = m * x;
 
-    this.currAudio.querySelectorAll(".small-button").forEach((button) => {
+    this.currAudioMenu.querySelectorAll(".small-button").forEach((button) => {
       let attr = button.getAttribute("position");
       attr.y = attr.y - y;
       button.setAttribute("position", attr);
@@ -283,7 +389,7 @@ AFRAME.registerComponent("menu-controls", {
     let audio_id = evt.detail.audio_id;
 
     if (audio_id == "audio-exit") {
-      this.deactivateSmallButton(this.currAudio);
+      this.deactivateSmallButton(this.currAudioMenu);
       this.activateSmallButton(document.querySelector("#audio-menu"));
     } else {
       let sky = document.querySelector("#sky");
@@ -355,7 +461,7 @@ AFRAME.registerComponent("menu-controls", {
     });
     element.setAttribute("visible", true);
 
-    this.currAudio = element;
+    this.currAudioMenu = element;
   },
 
   /*
@@ -367,7 +473,7 @@ AFRAME.registerComponent("menu-controls", {
     });
     element.setAttribute("visible", false);
 
-    this.currAudio = null;
+    this.currAudioMenu = null;
   },
 
   /*
@@ -447,6 +553,21 @@ AFRAME.registerComponent("menu-controls", {
     el.sceneEl.removeEventListener(
       "audio-menu-slider-changed",
       this.onAudioShift
+    );
+
+    this.el.sceneEl.removeEventListener(
+      "play-button-changed",
+      this.onPlayButton
+    );
+
+    this.el.sceneEl.removeEventListener(
+      "pause-button-changed",
+      this.onPauseButton
+    );
+
+    this.el.sceneEl.removeEventListener(
+      "replay-button-changed",
+      this.onReplayButton
     );
   },
 });
