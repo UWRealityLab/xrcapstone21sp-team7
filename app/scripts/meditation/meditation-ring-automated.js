@@ -11,8 +11,8 @@ AFRAME.registerComponent('meditation-ring-automated', {
     this.onBreathOut = this.onBreathOut.bind(this);
     this.startAutomatedMeditationRing = this.startAutomatedMeditationRing.bind(this);
     this.endAutomatedMeditationRing = this.endAutomatedMeditationRing.bind(this);
-    this.meditationRingLoop = this.meditationRingLoop.bind(this);
     this.onLoopTimeout = this.onLoopTimeout.bind(this);
+    this.onTimeLeftTimeout = this.onTimeLeftTimeout.bind(this);
 
     el.sceneEl.addEventListener('breathing-in', this.onBreathIn);
     el.sceneEl.addEventListener('breathing-out', this.onBreathOut);
@@ -59,9 +59,13 @@ AFRAME.registerComponent('meditation-ring-automated', {
   startAutomatedMeditationRing: function() {
     let el = this.el;
     el.setAttribute('visible', 'true');
+
+    let menu = document.getElementById('breath-meditation-menu');
+    menu.setAttribute('visible', 'true');
+
     let text = document.getElementById('breath-meditation-text');
     text.setAttribute('text', 'value', 'Breath In');
-    text.setAttribute('visible', 'true');
+
     let scaleAnimation = 'property: scale; from: 1 1 1; to: 6 6 6; dur: 4999';
     let colorAnimation = 'property: material.color; type: color; from: #ff0000; to: #00ff00; dur: 4999';
     el.setAttribute('animation__scale', scaleAnimation);
@@ -69,10 +73,17 @@ AFRAME.registerComponent('meditation-ring-automated', {
 
     this.loopCount = 0;
     this.loopTimer = setInterval(this.onLoopTimeout, 5000);
+
+    this.timeLeft = MEDITATION_TIME;
+    this.timeLeftTimer = setInterval(this.onTimeLeftTimeout, 1000);
   },
 
-  meditationRingLoop: function() {
-    this.loopTimeout = setTimeout(this.onLoopTimeout, this.meditationTimeArr[this.loopCount]);
+  onTimeLeftTimeout: function() {
+    this.timeLeft--;
+    let timeLeftStr = `${Math.floor(this.timeLeft / 60)}:${this.timeLeft % 60 < 10 ? '0' : ''}${this.timeLeft % 60}`;
+    console.log(timeLeftStr);
+    let timer = document.getElementById('breath-meditation-timer');
+    timer.setAttribute('text', 'value', timeLeftStr);
   },
 
   onLoopTimeout: function() {
@@ -102,8 +113,13 @@ AFRAME.registerComponent('meditation-ring-automated', {
     el.removeAttribute('animation__scale');
     el.removeAttribute('animation__color');
     clearInterval(this.loopTimer);
-    let text = document.getElementById('breath-meditation-text');
-    text.setAttribute('visible', 'false');
+    clearInterval(this.timeLeftTimer);
+
+    let menu = document.getElementById('breath-meditation-menu');
+    menu.setAttribute('visible', 'false');
+
+    let timer = document.getElementById('breath-meditation-timer');
+    timer.setAttribute('text', 'value', '2:00');
   },
 
   log(string, ...etc) {

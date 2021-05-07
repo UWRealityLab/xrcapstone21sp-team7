@@ -218,6 +218,9 @@
             <img id="sound-wave" src="../assets/img/sound_wave.png">
             <img id="back-arrow" src="../assets/img/Back_Arrow.png">
 
+            <!-- breath menu -->
+            <img id="hourglass-img" src="../assets/img/hourglass.png">
+
             <!-- thumbnails for audio -->
             <img id="As-the-rain-img" src="../assets/img/rain_img.png">
             <img id="Fairy-Forest-img" src="../assets/img/forest.png">
@@ -518,14 +521,29 @@
             meditation-ring-automated="breathCaptureId: leftHand"
             >
           </a-torus>
-          <a-entity
-            id="breath-meditation-text"
+          <a-box
+            id="breath-meditation-menu"
+            position="0.7 1.2 -1"
+            rotation="0 -20 0"
             visible="false"
-            rotation="0 0 0"
-            position="0.5 1.2 -1"
-            scale="2 2 2"
-            text="value: hi; align: center; shader: flat; color: #ffffff"
-          ></a-entity>
+            width="0.8"
+            height="0.4"
+            depth="0.05"
+            material="opacity: 0.3; color: yellow"
+          >
+            <a-entity
+              id="breath-meditation-text"
+              scale="2 2 2"
+              text="value: breathing in; align: center; shader: flat; color: #ffffff"
+            ></a-entity>
+            <a-image src="#hourglass-img" position="-0.15 -0.1 0" scale="0.12 0.12 0"></a-image>
+            <a-entity
+              id="breath-meditation-timer"
+              position="0 -0.1 0"
+              scale="2 2 2"
+              text="value: 2:00; align: center; shader: flat; color: #ffffff"
+            ></a-entity>
+          </a-box>
           <a-camera
             id="cam"
             wasd-controls-enabled="true"  
