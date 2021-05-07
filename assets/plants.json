@@ -40,5 +40,11 @@
         "actualScale": "0.7 0.7 0.7",
         "replicaScale": "0.1 0.1 0.1",
         "replicaPosition": "0 .14 -.16"
+    },
+    {
+        "file": "bamboo",
+        "actualScale": "1 1 1",
+        "replicaScale": "0.1 0.1 0.1",
+        "replicaPosition": "0 .14 -.16"
     }
 ]

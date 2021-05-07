@@ -115,17 +115,14 @@
                     <a-entity select-bar="controllerID: leftHand" id="menuItems" scale="0.7 0.7 0.7"
                         position="0 0.14 -0.03" rotation="-85 0 0">
                         <optgroup label="Plants" value="plants">
-                            <option value="cherry-blossom" src="url(../assets/img/cherry-blossom.png)" selected>Cherry
-                                Blossom</option>
-                            <option value="evergreen-tree-1" src="url(../assets/img/evergreen-tree-1.png)">Evergreen
-                                Tree 1</option>
-                            <option value="evergreen-tree-2" src="url(../assets/img/evergreen-tree-2.png)">Evergreen
-                                Tree 2</option>
+                            <option value="cherry-blossom" src="url(../assets/img/cherry-blossom.png)" selected>Cherry Blossom</option>
+                            <option value="evergreen-tree-1" src="url(../assets/img/evergreen-tree-1.png)">Evergreen Tree 1</option>
+                            <option value="evergreen-tree-2" src="url(../assets/img/evergreen-tree-2.png)">Evergreen Tree 2</option>
                             <option value="tall-tree" src="url(../assets/img/tall-tree.png)">Tall Tree</option>
                             <option value="round-tree-1" src="url(../assets/img/round-tree-1.png)">Round Tree 1</option>
                             <option value="short-grass" src="url(../assets/img/short-grass.png)">Short Grass</option>
-                            <option value="potted_plant_small" src="url(../assets/img/potted_plant_small.png)">Potted
-                                Plant</option>
+                            <option value="potted_plant_small" src="url(../assets/img/potted_plant_small.png)">Potted Plant</option>
+                            <option value="bamboo" src="url(../assets/img/bamboo.png)">Bamboo</option>
                         </optgroup>
                     </a-entity>
                 </a-entity>
@@ -403,7 +400,7 @@
           id="sky"
           sun-position="10 70 20"
           fog-color="#eeeeee"
-          sound="on: model-loaded; src: #background-music; autoplay: true; loop: true; positional: false; volume: 0.1"
+          sound="on: model-loaded; src: #background-music; autoplay: false; loop: true; positional: false; volume: 0.1"
           meditation-mode
           yoga-mode
           radius="1000"
@@ -517,9 +514,18 @@
             rotation="90 0 0"
             radius="0.05"
             radius-tubular="0.01"
-            meditation-ring-automated="breathCaptureId: leftHand"
             material="color: #ffffff; shader: flat"
-            ></a-torus>
+            meditation-ring-automated="breathCaptureId: leftHand"
+            >
+          </a-torus>
+          <a-entity
+            id="breath-meditation-text"
+            visible="false"
+            rotation="0 0 0"
+            position="0.5 1.2 -1"
+            scale="2 2 2"
+            text="value: hi; align: center; shader: flat; color: #ffffff"
+          ></a-entity>
           <a-camera
             id="cam"
             wasd-controls-enabled="true"  

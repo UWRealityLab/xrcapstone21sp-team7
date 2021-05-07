@@ -212,7 +212,6 @@ AFRAME.registerComponent("menu-controls", {
    * Start breathing exercise.
    */
   onBreathingExerciseButtonClicked: function () {
-    // TODO
     let sky = document.querySelector("#sky");
     sound =
       "on: model-loaded; src: #Meditation-Aquatic; autoplay: true; loop: true; positional: false; volume: 0.1";

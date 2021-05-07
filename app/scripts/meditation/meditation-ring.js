@@ -1,6 +1,3 @@
-const SCALE_CHANGE_MAGNITUDE = 1200;
-const LIGHT_CHANGE_MAGNITUDE = 300;
-
 AFRAME.registerComponent('meditation-ring', {
   schema: {
     breathCaptureId: { type: 'string' }
@@ -13,11 +10,13 @@ AFRAME.registerComponent('meditation-ring', {
     this.onBreathOut = this.onBreathOut.bind(this);
     this.onMeditationStart = this.onMeditationStart.bind(this);
     this.onMeditationEnd = this.onMeditationEnd.bind(this);
+    this.onBreathCaptureCalibrationComplete = this.onBreathCaptureCalibrationComplete.bind(this);
 
     el.sceneEl.addEventListener('breathing-in', this.onBreathIn);
     el.sceneEl.addEventListener('breathing-out', this.onBreathOut);
     el.sceneEl.addEventListener('breath-capture-start', this.onMeditationStart);
     el.sceneEl.addEventListener('breath-capture-end', this.onMeditationEnd);
+    el.sceneEl.addEventListener('breath-capture-calibration-complete', this.onBreathCaptureCalibrationComplete);
 
     el.setAttribute('visible', 'false');
   },
@@ -25,8 +24,17 @@ AFRAME.registerComponent('meditation-ring', {
   onMeditationStart: function() {
     let el = this.el;
 
+    el.setAttribute('color', '#ff0000');
     el.setAttribute('visible', 'true');
+    this.scaleChangeMagnitude = 1;
     this.meditating = true;
+  },
+
+  onBreathCaptureCalibrationComplete: function(evt) {
+    let displacement = evt.detail;
+    console.log('displacement...', displacement);
+    // scale change magnitude is inversely proportional to displacement
+    this.scaleChangeMagnitude = 200 / displacement;
   },
 
   onMeditationEnd: function() {
@@ -51,8 +59,8 @@ AFRAME.registerComponent('meditation-ring', {
 
       let scaleChange = this.breathCaptureEl.getAttribute('breath-capture', 'deltaPositionAvg').deltaPositionAvg;
       this.log('scaleChange', scaleChange);
-      el.object3D.scale.x = Math.min(6, Math.max(1, el.object3D.scale.x + scaleChange * SCALE_CHANGE_MAGNITUDE));
-      el.object3D.scale.y = Math.min(6, Math.max(1, el.object3D.scale.y + scaleChange * SCALE_CHANGE_MAGNITUDE));
+      el.object3D.scale.x = Math.min(6, Math.max(1, el.object3D.scale.x + scaleChange * this.scaleChangeMagnitude));
+      el.object3D.scale.y = Math.min(6, Math.max(1, el.object3D.scale.y + scaleChange * this.scaleChangeMagnitude));
       el.setAttribute('radius-tubular', 0.01 / el.object3D.scale.x);
     }
   },
@@ -78,6 +86,7 @@ AFRAME.registerComponent('meditation-ring', {
     el.sceneEl.removeEventListener('breathing-out', this.onBreathOut);
     el.sceneEl.removeEventListener('breath-capture-start', onMeditationStart);
     el.sceneEl.removeEventListener('breath-capture-end', onMeditationEnd);
+    el.sceneEl.removeEventListener('breath-capture-calibration-complete', this.onBreathCaptureCalibrationComplete);
   },
 
   log(string, ...etc) {

@@ -1,7 +1,6 @@
 AFRAME.registerComponent('meditation-ring-automated', {
   schema: {
     breathCaptureId: { type: 'string' },
-    meditationBreathPeriod: { type: 'number', default: 9000 },
     meditationBreathAcceptableThreshold: { type: 'number', default: 1000 }
   },
 
@@ -12,6 +11,8 @@ AFRAME.registerComponent('meditation-ring-automated', {
     this.onBreathOut = this.onBreathOut.bind(this);
     this.startAutomatedMeditationRing = this.startAutomatedMeditationRing.bind(this);
     this.endAutomatedMeditationRing = this.endAutomatedMeditationRing.bind(this);
+    this.meditationRingLoop = this.meditationRingLoop.bind(this);
+    this.onLoopTimeout = this.onLoopTimeout.bind(this);
 
     el.sceneEl.addEventListener('breathing-in', this.onBreathIn);
     el.sceneEl.addEventListener('breathing-out', this.onBreathOut);
@@ -57,11 +58,42 @@ AFRAME.registerComponent('meditation-ring-automated', {
 
   startAutomatedMeditationRing: function() {
     let el = this.el;
-    let scaleAnimation = 'property: scale; from: 1 1 1; to: 6 6 6; loop: true; dir: alternate; dur: ' + this.data.meditationBreathPeriod;
-    let colorAnimation = 'property: material.color; type: color; loop: true; from: #ff0000; to: #00ff00; dir: alternate; dur: ' + this.data.meditationBreathPeriod;
     el.setAttribute('visible', 'true');
+    let text = document.getElementById('breath-meditation-text');
+    text.setAttribute('text', 'value', 'Breath In');
+    text.setAttribute('visible', 'true');
+    let scaleAnimation = 'property: scale; from: 1 1 1; to: 6 6 6; dur: 4999';
+    let colorAnimation = 'property: material.color; type: color; from: #ff0000; to: #00ff00; dur: 4999';
     el.setAttribute('animation__scale', scaleAnimation);
     el.setAttribute('animation__color', colorAnimation);
+
+    this.loopCount = 0;
+    this.loopTimer = setInterval(this.onLoopTimeout, 5000);
+  },
+
+  meditationRingLoop: function() {
+    this.loopTimeout = setTimeout(this.onLoopTimeout, this.meditationTimeArr[this.loopCount]);
+  },
+
+  onLoopTimeout: function() {
+    let el = this.el;
+    this.loopCount++;
+    this.loopCount %= 3;
+    if (this.loopCount == 0) {
+      document.getElementById('breath-meditation-text').setAttribute('text', 'value', 'Breath In');
+      let scaleAnimation = 'property: scale; from: 1 1 1; to: 6 6 6; dur: 4999';
+      let colorAnimation = 'property: material.color; type: color; from: #ff0000; to: #00ff00; dur: 4999';
+      el.setAttribute('animation__scale', scaleAnimation);
+      el.setAttribute('animation__color', colorAnimation);
+    } else if (this.loopCount == 1) {
+      document.getElementById('breath-meditation-text').setAttribute('text', 'value', 'Hold Breath');
+    } else {
+      document.getElementById('breath-meditation-text').setAttribute('text', 'value', 'Breath Out');
+      let scaleAnimation = 'property: scale; from: 6 6 6; to: 1 1 1; dur: 4999';
+      let colorAnimation = 'property: material.color; type: color; from: #00ff00; to: #ff0000; dur: 4999';
+      el.setAttribute('animation__scale', scaleAnimation);
+      el.setAttribute('animation__color', colorAnimation);
+    }
   },
 
   endAutomatedMeditationRing: function() {
@@ -69,6 +101,9 @@ AFRAME.registerComponent('meditation-ring-automated', {
     el.setAttribute('visible', 'false');
     el.removeAttribute('animation__scale');
     el.removeAttribute('animation__color');
+    clearInterval(this.loopTimer);
+    let text = document.getElementById('breath-meditation-text');
+    text.setAttribute('visible', 'false');
   },
 
   log(string, ...etc) {

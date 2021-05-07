@@ -1,16 +1,26 @@
-const CALIBRATION_TIME = 5;
-const AUDIO_2_PLAY_TIME = 30;
+const CALIBRATION_TIME = 2;
+const AUDIO_2_PLAY_TIME = 1;
 const DELTA_SAMPLES_TO_AVG = 6;
 // Any displacement below this amount (in meters) is not considered to be
 // the user breathing in or out
-const DISPLACEMENT_DEADZONE = 0.000001;
+const DISPLACEMENT_DEADZONE = 0.00001;
 const DISPLACEMENT_TOO_LARGE = 0.1;
+const HOLDING_BREATH_DISPLACEMENT_DEADZONE = 0.005;
+const FALSE_POSITIVE_TIME_DIFF = 500;
 
 const CALIBRATION_STATES = {
   FINDING_BREATH_IN_POSITION: 0,
   FINDING_BREATH_OUT_POSITION: 1,
   CALIBRATION_COMPLETE: 2,
   AUDIO2_COMPLETE_PLAYING: 3,
+}
+
+const BREATH_STATES = {
+  HOLDING_BREATH_IN: 0,
+  HOLDING_BREATH_OUT: 1,
+  BREATHING_IN: 2,
+  BREATHING_OUT: 3,
+  ERROR: 4,
 }
 
 const MEDITATION_TIME = 120;
@@ -68,6 +78,7 @@ AFRAME.registerComponent('breath-capture', {
     this.onCaptureBreathInPosition = this.onCaptureBreathInPosition.bind(this);
     this.classifyBreathing = this.classifyBreathing.bind(this);
     this.onItemDeselected = this.onItemDeselected.bind(this);
+    this.updateBreathingAverageTimes = this.updateBreathingAverageTimes.bind(this);
 
     el.sceneEl.addEventListener('breath-capture-start', this.startBreathCapture);
     el.sceneEl.addEventListener('breath-capture-end', this.stopBreathCapture);
@@ -77,7 +88,7 @@ AFRAME.registerComponent('breath-capture', {
     el.addEventListener('xbuttondown', this.onCaptureBreathInPosition);
   },
 
-  onItemDeselected: function() {
+  onItemDeselected: function () {
     if (this.meditating) {
       this.el.sceneEl.emit('breath-capture-end');
       this.stopBreathCapture();
@@ -95,7 +106,7 @@ AFRAME.registerComponent('breath-capture', {
   tick: function (time, timeDelta) {
     if (this.controllerConnected && this.meditating) {
       if (this.calibrationObj.calibrationState == CALIBRATION_STATES.FINDING_BREATH_IN_POSITION ||
-          this.calibrationObj.calibrationState == CALIBRATION_STATES.FINDING_BREATH_OUT_POSITION) {
+        this.calibrationObj.calibrationState == CALIBRATION_STATES.FINDING_BREATH_OUT_POSITION) {
         this.runCalibration(Date.now() / 1000)
       } else {
         if (Date.now() / 1000 - this.calibrationObj.startTime > MEDITATION_TIME) {
@@ -107,15 +118,21 @@ AFRAME.registerComponent('breath-capture', {
             // Check to see if delay for playing second audio file is complete
             if (Date.now() / 1000 - this.calibrationObj.startTime > AUDIO_2_PLAY_TIME) {
               this.calibrationObj.calibrationState = CALIBRATION_STATES.AUDIO2_COMPLETE_PLAYING;
-              this.el.sceneEl.emit('breath-capture-calibration-complete');
+              this.el.sceneEl.emit(
+                'breath-capture-calibration-complete',
+                this.calibrationObj.displacementArr[this.calibrationObj.maxDisplacementIndex]);
             }
           } else {
             // Run normal breath capture
-            this.runBreathCapture(timeDelta / 1000);
+            this.runBreathCapture(timeDelta);
           }
         }
       }
     }
+  },
+
+  displacement: function (v1, v2) {
+    return Math.sqrt(Math.pow(v1.x - v2.x, 2) + Math.pow(v1.y - v2.y, 2) + Math.pow(v1.z - v2.z, 2));
   },
 
   runCalibration: function (time) {
@@ -126,23 +143,13 @@ AFRAME.registerComponent('breath-capture', {
     // 
     // Note that direction is important to us because we need to know when they are breathing in vs. 
     // when they are breathing out.
-    let el = this.el;
-
-    let position = new THREE.Vector3();
-    let rotation = new THREE.Quaternion();
-    let scale = new THREE.Vector3();
-    el.object3D.matrixWorld.decompose(position, rotation, scale);
-
     switch (this.calibrationObj.calibrationState) {
       case CALIBRATION_STATES.FINDING_BREATH_IN_POSITION:
         break;
       case CALIBRATION_STATES.FINDING_BREATH_OUT_POSITION:
         // Each time we get a new position compute its displacement from the breathInPosition.
         let position = this.getControllerPosition();
-        let dx = this.calibrationObj.breathInPosition.x - position.x;
-        let dy = this.calibrationObj.breathInPosition.y - position.y;
-        let dz = this.calibrationObj.breathInPosition.z - position.z;
-        let displacement = Math.sqrt(dx * dx + dy * dy + dz * dz);
+        let displacement = this.displacement(this.calibrationObj.breathInPosition, position);
 
         // Store the displacement and position
         this.calibrationObj.displacementArr.push(displacement);
@@ -177,7 +184,9 @@ AFRAME.registerComponent('breath-capture', {
           let sound = 'on: model-loaded; src: #breath-exercise-meditation-2; autoplay: true; loop: false; positional: false; volume: 0.5';
           this.el.setAttribute('sound', sound);
 
-          this.calibrationObj.startTime = time
+          this.calibrationObj.startTime = time;
+
+          this.prevClassificationChangeTime = Date.now();
         }
         break;
       default:
@@ -199,8 +208,6 @@ AFRAME.registerComponent('breath-capture', {
   },
 
   runBreathCapture: function (timeDelta) {
-    this.log('timedelta: ', timeDelta);
-
     let position = this.getControllerPosition();
     let deltaPosition = new THREE.Vector3(
       position.x - this.previousPosition.x,
@@ -212,38 +219,85 @@ AFRAME.registerComponent('breath-capture', {
     // Projection of a on b is a dot b / length(b).
     // In this case length(b) == 1
     let deltaPositionProjected = this.dot(deltaPosition, this.targetVector);
-
-    if (this.displacementArr.length < DELTA_SAMPLES_TO_AVG) {
-      this.displacementArr.push(deltaPositionProjected * timeDelta);
-    } else {
-      this.displacementArr.push(deltaPositionProjected * timeDelta);
+    this.displacementArr.push(deltaPositionProjected / timeDelta);
+    if (this.displacementArr.length >= DELTA_SAMPLES_TO_AVG) {
       this.displacementArr = this.displacementArr.slice(1);
       let deltaPositionAvg = this.avg(this.displacementArr);
-      this.el.setAttribute('breath-capture', 'deltaPositionAvg', deltaPositionAvg);
-      this.classifyBreathing(deltaPositionAvg);
+      this.classifyBreathing(deltaPositionAvg, position);
+    }
+  },
+
+  updateBreathingAverageTimes: function(newBreathClassification) {
+    if (this.breathClassification != newBreathClassification) {
+      this.log(newBreathClassification);
+      let falsePositive = (Date.now() - this.prevClassificationChangeTime) < FALSE_POSITIVE_TIME_DIFF;
+      if (falsePositive) {
+        console.log('false positive');
+        return;
+      }
+      switch(this.breathClassification) {
+        case BREATH_STATES.BREATHING_IN:
+          this.breathInTime = Date.now() - this.prevClassificationChangeTime;
+          this.log('breathInTime', this.breathInTime);
+          break;
+        case BREATH_STATES.BREATHING_OUT:
+          this.breathOutTime = Date.now() - this.prevClassificationChangeTime;
+          this.log('breathOutTime', this.breathOutTime);
+          break;
+        case BREATH_STATES.HOLDING_BREATH_IN:
+          this.holdingBreathInTime = Date.now() - this.prevClassificationChangeTime;
+          break;
+        case BREATH_STATES.HOLDING_BREATH_OUT:
+          this.holdingBreathOutTime = Date.now() - this.prevClassificationChangeTime;
+          break;
+      }
+      this.prevClassificationChangeTime = Date.now();
+      this.breathClassification = newBreathClassification;
     }
   },
 
   // todo do more filtering to reduce false transitions
-  classifyBreathing: function (deltaPositionAvg) {
-    if (Math.abs(deltaPositionAvg) > DISPLACEMENT_DEADZONE) {
-      if (Math.abs(deltaPositionAvg) > DISPLACEMENT_TOO_LARGE) {
-        this.breathClassification = 'error: controller moving too much';
-      } else if (deltaPositionAvg > 0) {
-        if (this.breathClassification != 'breathing in') {
-          this.breathClassification = 'breathing in';
-          this.el.sceneEl.emit('breathing-in');
-        }
-      } else {
-        if (this.breathClassification != 'breathing out') {
-          this.breathClassification = 'breathing out';
-          this.el.sceneEl.emit('breathing-out');
-        }
+  classifyBreathing: function (deltaPositionAvg, position) {
+    // Project positions onto the target vector and then find the current
+    // controller displacement from breath in and out positions, if the displacement is
+    // very small, this probably means that the person is holding their breath.
+
+    let breathInDisplacementVector = new THREE.Vector3(this.calibrationObj.breathInPosition.x - position.x,
+                                                       this.calibrationObj.breathInPosition.y - position.y,
+                                                       this.calibrationObj.breathInPosition.z - position.z);
+    let breathOutDisplacementVector = new THREE.Vector3(this.calibrationObj.breathOutPosition.x - position.x,
+                                                        this.calibrationObj.breathOutPosition.y - position.y,
+                                                        this.calibrationObj.breathOutPosition.z - position.z);
+
+    let breathInProjectedDisplacement = Math.abs(this.dot(this.targetVector, breathInDisplacementVector));
+    let breathOutProjectedDisplacement = Math.abs(this.dot(this.targetVector, breathOutDisplacementVector));
+
+    // This is terrible but it works
+    if (Math.abs(breathInProjectedDisplacement) < HOLDING_BREATH_DISPLACEMENT_DEADZONE) {
+      this.updateBreathingAverageTimes(BREATH_STATES.HOLDING_BREATH_IN);
+      deltaPositionAvg = 0;
+    } else if (Math.abs(breathOutProjectedDisplacement) < HOLDING_BREATH_DISPLACEMENT_DEADZONE) {
+      this.updateBreathingAverageTimes(BREATH_STATES.HOLDING_BREATH_OUT);
+      deltaPositionAvg = 0;
+    } else if (Math.abs(deltaPositionAvg) > DISPLACEMENT_TOO_LARGE) {
+      this.updateBreathingAverageTimes(BREATH_STATES.ERROR);
+      deltaPositionAvg = 0;
+    } else if (deltaPositionAvg > 0) {
+      if (this.breathClassification != BREATH_STATES.BREATHING_OUT ||
+          Math.abs(deltaPositionAvg) >= DISPLACEMENT_DEADZONE) {
+        this.updateBreathingAverageTimes(BREATH_STATES.BREATHING_IN);
+        this.el.sceneEl.emit('breathing-in');
       }
-    } else {
-      this.breathClassification = 'holding breath';
+    } else if (deltaPositionAvg < 0) {
+      if (this.breathClassification != BREATH_STATES.BREATHING_IN ||
+          Math.abs(deltaPositionAvg) >= DISPLACEMENT_DEADZONE) {
+        this.updateBreathingAverageTimes(BREATH_STATES.BREATHING_OUT);
+        this.el.sceneEl.emit('breathing-out');
+      }
     }
-    this.log(this.breathClassification, deltaPositionAvg);
+
+    this.el.setAttribute('breath-capture', 'deltaPositionAvg', deltaPositionAvg);
+    // this.log(this.breathClassification, deltaPositionAvg, breathInProjectedDisplacement, breathOutProjectedDisplacement);
   },
 
   onCaptureBreathInPosition: function () {
@@ -277,7 +331,7 @@ AFRAME.registerComponent('breath-capture', {
     };
 
     this.displacementArr = [];
-    this.breathClassification = 'not breathing';
+    this.breathClassification = BREATH_STATES.HOLDING_BREATH_IN;
 
     let sound = 'on: model-loaded; src: #breath-exercise-meditation-1; autoplay: true; loop: false; positional: false; volume: 0.5';
     this.el.setAttribute('sound', sound);
