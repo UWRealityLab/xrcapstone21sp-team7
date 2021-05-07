@@ -11,7 +11,7 @@ AFRAME.registerComponent("menu-controls", {
     // need to change if change the number of audios.
     this.topAudioOption = 0;
     this.bottomAudioOption = -0.9;
-    this.prevAudioSlider = 0.5
+    this.prevAudioSlider = 0.5;
 
     // Grab template of menu to display
     this.displayed = false;
@@ -33,8 +33,15 @@ AFRAME.registerComponent("menu-controls", {
 
     this.onGuidedMeditationClicked = this.onGuidedMeditationClicked.bind(this);
     this.onStoryMeditationClicked = this.onStoryMeditationClicked.bind(this);
-    this.onConfidenceBoosterClicked = this.onConfidenceBoosterClicked.bind(this);
-    this.onBreathingExerciseButtonClicked = this.onBreathingExerciseButtonClicked.bind(this);
+    this.onConfidenceBoosterClicked = this.onConfidenceBoosterClicked.bind(
+      this
+    );
+    this.onBreathingExerciseButtonClicked = this.onBreathingExerciseButtonClicked.bind(
+      this
+    );
+    this.onCloudMeditationButtonClicked = this.onCloudMeditationButtonClicked.bind(
+      this
+    );
     this.onGuidedYogaButtonClicked = this.onGuidedYogaButtonClicked.bind(this);
 
     this.removeEventListeners = this.removeEventListeners.bind(this);
@@ -42,7 +49,7 @@ AFRAME.registerComponent("menu-controls", {
     // Button event listeners
     // TODO: change trigger button
     this.el.addEventListener("abuttondown", this.onMenuActivate);
-    this.el.addEventListener('gripup', this.onToggleMenuVisibility);
+    this.el.addEventListener("gripup", this.onToggleMenuVisibility);
     this.el.sceneEl.addEventListener(
       "meditation-button-clicked",
       this.onMeditationButtonClicked
@@ -68,16 +75,29 @@ AFRAME.registerComponent("menu-controls", {
       this.onBreathingExerciseButtonClicked
     );
     this.el.sceneEl.addEventListener(
-      'guided-yoga-button-clicked',
+      "cloud-meditation-button-clicked",
+      this.onCloudMeditationButtonClicked
+    );
+    this.el.sceneEl.addEventListener(
+      "guided-yoga-button-clicked",
       this.onGuidedYogaButtonClicked
     );
-    this.el.sceneEl.addEventListener("volume-slider-changed", this.onVolumeChanged);
+    this.el.sceneEl.addEventListener(
+      "volume-slider-changed",
+      this.onVolumeChanged
+    );
 
-    this.el.sceneEl.addEventListener("audio-menu-button-changed", this.onAudioMenuChanged);
+    this.el.sceneEl.addEventListener(
+      "audio-menu-button-changed",
+      this.onAudioMenuChanged
+    );
 
     this.el.sceneEl.addEventListener("audio-changed", this.audioChanged);
 
-    this.el.sceneEl.addEventListener("audio-menu-slider-changed", this.onAudioShift);
+    this.el.sceneEl.addEventListener(
+      "audio-menu-slider-changed",
+      this.onAudioShift
+    );
 
     // Helpers
     this.activate = this.activate.bind(this);
@@ -98,20 +118,19 @@ AFRAME.registerComponent("menu-controls", {
       const id = this.currentMenu.id;
       this.deactivate(this.currentMenu);
 
-      this.el.sceneEl.emit('menu-item-deselected');
-      
+      this.el.sceneEl.emit("menu-item-deselected");
+
       // Hide first menu or go back to first menu
       if (id === "first-menu") {
-        
         this.deactivateSliders(this.currAudio);
         this.ui.setAttribute("visible", "false");
         this.deactivateSmallButton(this.currAudio);
         this.displayed = false;
-        this.el.setAttribute('raycaster', 'enabled', false);
-        this.el.setAttribute('raycaster', 'lineOpacity', 0);
+        this.el.setAttribute("raycaster", "enabled", false);
+        this.el.setAttribute("raycaster", "lineOpacity", 0);
       } else {
         this.activate(document.querySelector("#first-menu"));
-        this.el.emit("endMeditation", {song: this.currSong});
+        this.el.emit("endMeditation", { song: this.currSong });
       }
     } else {
       //this.el.emit("startMeditation");
@@ -123,8 +142,8 @@ AFRAME.registerComponent("menu-controls", {
 
       this.activateSmallButton(document.querySelector("#audio-menu"));
       this.displayed = true;
-      this.el.setAttribute('raycaster', 'enabled', true);
-      this.el.setAttribute('raycaster', 'lineOpacity', 1);
+      this.el.setAttribute("raycaster", "enabled", true);
+      this.el.setAttribute("raycaster", "lineOpacity", 1);
     }
 
     // this.displayed = !this.displayed;
@@ -135,12 +154,12 @@ AFRAME.registerComponent("menu-controls", {
    * in meditation mode, just the actual menu won't be visible). Also hides the raycaster
    * when the menu is not visible.
    */
-  onToggleMenuVisibility: function() {
+  onToggleMenuVisibility: function () {
     if (this.displayed) {
-      let visible = this.ui.getAttribute('visible');
-      this.ui.setAttribute('visible', !visible);
-      this.el.setAttribute('raycaster', 'enabled', !visible);
-      this.el.setAttribute('raycaster', 'lineOpacity', !visible ? 1 : 0);
+      let visible = this.ui.getAttribute("visible");
+      this.ui.setAttribute("visible", !visible);
+      this.el.setAttribute("raycaster", "enabled", !visible);
+      this.el.setAttribute("raycaster", "lineOpacity", !visible ? 1 : 0);
     }
   },
 
@@ -194,11 +213,20 @@ AFRAME.registerComponent("menu-controls", {
    */
   onBreathingExerciseButtonClicked: function () {
     // TODO
-    let sky = document.querySelector('#sky');
-    sound = 'on: model-loaded; src: #Meditation-Aquatic; autoplay: true; loop: true; positional: false; volume: 0.1';
-    sky.setAttribute('sound', sound);
+    let sky = document.querySelector("#sky");
+    sound =
+      "on: model-loaded; src: #Meditation-Aquatic; autoplay: true; loop: true; positional: false; volume: 0.1";
+    sky.setAttribute("sound", sound);
 
     this.el.sceneEl.emit("breath-capture-start");
+  },
+
+  /*
+    Starts cloud meditation
+  */
+  onCloudMeditationButtonClicked: function () {
+    // TODO: maybe change scene a bit
+    this.el.sceneEl.emit("cloud-meditation-start");
   },
 
   /*
@@ -251,16 +279,13 @@ AFRAME.registerComponent("menu-controls", {
     this.activateSmallButton(audioSubMenu);
   },
 
-  audioChanged: function(evt) {
+  audioChanged: function (evt) {
     let audio_id = evt.detail.audio_id;
 
     if (audio_id == "audio-exit") {
-
       this.deactivateSmallButton(this.currAudio);
-      this.activateSmallButton(document.querySelector("#audio-menu")); 
-
+      this.activateSmallButton(document.querySelector("#audio-menu"));
     } else {
-
       let sky = document.querySelector("#sky");
       let attr = sky.getAttribute("sound");
       attr.src = "#" + audio_id;
@@ -280,7 +305,6 @@ AFRAME.registerComponent("menu-controls", {
         .querySelector(".container")
         .setAttribute("class", "rightclickable container");
     });
-
   },
 
   /*
@@ -296,50 +320,55 @@ AFRAME.registerComponent("menu-controls", {
   /*
     Turn on small-button
   */
- activateSmallButton: function (element) {
-  element.querySelectorAll(".small-button").forEach((button) => {
-    button
-      .querySelector(".container")
-      .setAttribute("class", "rightclickable container");
+  activateSmallButton: function (element) {
+    element.querySelectorAll(".small-button").forEach((button) => {
+      button
+        .querySelector(".container")
+        .setAttribute("class", "rightclickable container");
       //console.log(button.getAttribute("id"));
-      
+
       if (button.getAttribute("id") == "audio-menu-button") {
-        let attr = button.querySelector(".container").querySelector(".songTitle").getAttribute("text");
+        let attr = button
+          .querySelector(".container")
+          .querySelector(".songTitle")
+          .getAttribute("text");
         attr.value = this.currSong;
-        button.querySelector(".container").querySelector(".songTitle").setAttribute("text", attr);
+        button
+          .querySelector(".container")
+          .querySelector(".songTitle")
+          .setAttribute("text", attr);
       }
-  });
+    });
 
-  element.querySelectorAll(".audio-slider").forEach((button) => {
-    button
-      .querySelector(".container")
-      .setAttribute("class", "rightclickable container");
+    element.querySelectorAll(".audio-slider").forEach((button) => {
+      button
+        .querySelector(".container")
+        .setAttribute("class", "rightclickable container");
       //console.log(button.getAttribute("id"));
-  });
+    });
 
-  element.querySelectorAll(".back-button").forEach((button) => {
-    button
-      .querySelector(".container")
-      .setAttribute("class", "rightclickable container");
+    element.querySelectorAll(".back-button").forEach((button) => {
+      button
+        .querySelector(".container")
+        .setAttribute("class", "rightclickable container");
       //console.log(button.getAttribute("id"));
-  });
-  element.setAttribute("visible", true);
+    });
+    element.setAttribute("visible", true);
 
-  this.currAudio = element;
+    this.currAudio = element;
+  },
 
-},
-
-/*
+  /*
   Turn off small-button
 */
-deactivateSmallButton: function (element) {
-  element.querySelectorAll(".small-button").forEach((button) => {
-    button.querySelector(".container").setAttribute("class", "container");
-  });
-  element.setAttribute("visible", false);
+  deactivateSmallButton: function (element) {
+    element.querySelectorAll(".small-button").forEach((button) => {
+      button.querySelector(".container").setAttribute("class", "container");
+    });
+    element.setAttribute("visible", false);
 
-  this.currAudio = null;
-},
+    this.currAudio = null;
+  },
 
   /*
     Activates menu options so they can be detected by raycasting
@@ -379,7 +408,7 @@ deactivateSmallButton: function (element) {
     let el = this.el;
 
     el.removeEventListener("abuttondown", this.onMenuActivate); // maybe change trigger button?
-    el.removeEventListener('gripup', this.onToggleMenuVisibility);
+    el.removeEventListener("gripup", this.onToggleMenuVisibility);
     el.sceneEl.removeEventListener(
       "meditation-button-clicked",
       this.onMeditationButtonClicked
@@ -405,10 +434,19 @@ deactivateSmallButton: function (element) {
       "breathing-exercise-button-clicked",
       this.onBreathingExerciseButtonClicked
     );
-    this.el.sceneEl.removeEventListener("volume-slider-changed", this.onVolumeChanged);
+    this.el.sceneEl.removeEventListener(
+      "volume-slider-changed",
+      this.onVolumeChanged
+    );
 
-    el.sceneEl.removeEventListener("audio-menu-button-changed", this.onAudioMenuChanged);
+    el.sceneEl.removeEventListener(
+      "audio-menu-button-changed",
+      this.onAudioMenuChanged
+    );
     el.sceneEl.removeEventListener("audio-changed", this.audioChanged);
-    el.sceneEl.removeEventListener("audio-menu-slider-changed", this.onAudioShift);
+    el.sceneEl.removeEventListener(
+      "audio-menu-slider-changed",
+      this.onAudioShift
+    );
   },
 });
