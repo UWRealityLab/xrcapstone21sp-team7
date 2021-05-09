@@ -1,5 +1,5 @@
-const CALIBRATION_TIME = 2;
-const AUDIO_2_PLAY_TIME = 1;
+const CALIBRATION_TIME = 4;
+const AUDIO_2_PLAY_TIME = 30;
 const DELTA_SAMPLES_TO_AVG = 6;
 // Any displacement below this amount (in meters) is not considered to be
 // the user breathing in or out
@@ -23,7 +23,7 @@ const BREATH_STATES = {
   ERROR: 4,
 }
 
-const MEDITATION_TIME = 120;
+const MEDITATION_TIME = 120000;
 
 /**
  * Connect this component to a hand with hand-controls component.
@@ -81,6 +81,14 @@ AFRAME.registerComponent('breath-capture', {
     this.updateBreathingAverageTimes = this.updateBreathingAverageTimes.bind(this);
     this.onMeditationCompleteTimeout = this.onMeditationCompleteTimeout.bind(this);
 
+    this.breathOutEmitters = [
+      'holding-breath-in-complete',
+      'holding-breath-out-complete',
+      'breath-in-complete',
+      'breath-out-complete',
+      'breath-error'
+    ];
+
     el.sceneEl.addEventListener('breath-capture-start', this.startBreathCapture);
     el.sceneEl.addEventListener('breath-capture-end', this.stopBreathCapture);
     el.sceneEl.addEventListener('menu-item-deselected', this.onItemDeselected);
@@ -116,7 +124,7 @@ AFRAME.registerComponent('breath-capture', {
           this.el.sceneEl.emit(
             'breath-capture-calibration-complete',
             this.calibrationObj.displacementArr[this.calibrationObj.maxDisplacementIndex]);
-          this.meditationCompleteTimeout = setTimeout(this.onMeditationCompleteTimeout, MEDITATION_TIME * 1000);
+          this.meditationCompleteTimeout = setTimeout(this.onMeditationCompleteTimeout, MEDITATION_TIME);
         }
       } else {
         // Run normal breath capture
@@ -235,20 +243,25 @@ AFRAME.registerComponent('breath-capture', {
         console.log('false positive');
         return;
       }
+
       switch(this.breathClassification) {
         case BREATH_STATES.BREATHING_IN:
           this.breathInTime = Date.now() - this.prevClassificationChangeTime;
           this.log('breathInTime', this.breathInTime);
+          this.el.sceneEl.emit(this.breathOutEmitters[this.breathClassification], this.breathInTime);
           break;
         case BREATH_STATES.BREATHING_OUT:
           this.breathOutTime = Date.now() - this.prevClassificationChangeTime;
           this.log('breathOutTime', this.breathOutTime);
+          this.el.sceneEl.emit(this.breathOutEmitters[this.breathClassification], this.breathOutTime);
           break;
         case BREATH_STATES.HOLDING_BREATH_IN:
           this.holdingBreathInTime = Date.now() - this.prevClassificationChangeTime;
+          this.el.sceneEl.emit(this.breathOutEmitters[this.breathClassification], this.holdingBreathInTime);
           break;
         case BREATH_STATES.HOLDING_BREATH_OUT:
           this.holdingBreathOutTime = Date.now() - this.prevClassificationChangeTime;
+          this.el.sceneEl.emit(this.breathOutEmitters[this.breathClassification], this.holdingBreathOutTime);
           break;
       }
       this.prevClassificationChangeTime = Date.now();
@@ -285,13 +298,11 @@ AFRAME.registerComponent('breath-capture', {
       if (this.breathClassification != BREATH_STATES.BREATHING_OUT ||
           Math.abs(deltaPositionAvg) >= DISPLACEMENT_DEADZONE) {
         this.updateBreathingAverageTimes(BREATH_STATES.BREATHING_IN);
-        this.el.sceneEl.emit('breathing-in');
       }
     } else if (deltaPositionAvg < 0) {
       if (this.breathClassification != BREATH_STATES.BREATHING_IN ||
           Math.abs(deltaPositionAvg) >= DISPLACEMENT_DEADZONE) {
         this.updateBreathingAverageTimes(BREATH_STATES.BREATHING_OUT);
-        this.el.sceneEl.emit('breathing-out');
       }
     }
 
