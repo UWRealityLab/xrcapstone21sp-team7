@@ -7,6 +7,8 @@ AFRAME.registerComponent("menu-controls", {
     this.currMeditationScript;
     this.meditationSong = document.querySelector("#sky").querySelector("#meditation");
 
+    this.breathingOn = false;
+
     this.currAudioMenu;
     this.currSong = "background-music";
 
@@ -46,6 +48,7 @@ AFRAME.registerComponent("menu-controls", {
     this.onBreathingExerciseButtonClicked = this.onBreathingExerciseButtonClicked.bind(
       this
     );
+
     this.onCloudMeditationButtonClicked = this.onCloudMeditationButtonClicked.bind(
       this
     );
@@ -120,6 +123,12 @@ AFRAME.registerComponent("menu-controls", {
       "replay-button-changed",
       this.onReplayButton
     );
+
+    this.el.sceneEl.addEventListener(
+      "replay-button-changed",
+      this.onReplayButton
+    );
+
 
     // Helpers
     this.activate = this.activate.bind(this);
@@ -204,13 +213,11 @@ AFRAME.registerComponent("menu-controls", {
 
     let sky = document.querySelector("#sky");
     let attr = sky.getAttribute("sound");
-    console.log("sky before:" + attr.src);
 
     this.el.emit("startMeditation");
     
     sky.components.sound.stopSound();
     attr = sky.getAttribute("sound");
-    console.log("sky after meditation:" + attr.src);
 
     this.meditationSong.components.sound.playSound();
   },
@@ -221,9 +228,20 @@ AFRAME.registerComponent("menu-controls", {
     // sound="on: model-loaded; src: #meditation-1; autoplay: true; loop: false; positional: false; volume: 1";
     //let attr = sky.getAttribute("sound");
     //attr.src = "#meditation-1";
+
+    if (this.breathingOn) {
+      this.el.emit("breath-capture-end");
+      let hand = document.querySelector("#leftHand");
+      let attr = hand.getAttribute("sound");
+      attr.autoplay = false;
+      
+      hand.setAttribute("sound", attr);
+      //hand.components.sound.stopSound();
+    }
     
     // stop background music
     this.meditationSong.components.sound.stopSound();
+    sky.components.sound.stopSound();
     // stop if another script is playing
     if (this.currMeditationScript != undefined) {
       this.currMeditationScript.components.sound.stopSound();
@@ -233,6 +251,8 @@ AFRAME.registerComponent("menu-controls", {
     let script = sky.querySelector("#meditation-1");
     script.components.sound.playSound();
     this.currMeditationScript = script;
+
+    this.breathingOn = false;
 
     // sky.setAttribute("sound", attr);
   },
@@ -244,8 +264,19 @@ AFRAME.registerComponent("menu-controls", {
     // let attr = sky.getAttribute("sound");
     // attr.src = "#rain";
 
+    if (this.breathingOn) {
+      this.el.emit("breath-capture-end");
+      let hand = document.querySelector("#leftHand");
+      let attr = hand.getAttribute("sound");
+      attr.autoplay = false;
+      
+      hand.setAttribute("sound", attr);
+      //hand.components.sound.stopSound();
+    }
+
     // stop background music
     this.meditationSong.components.sound.stopSound();
+    sky.components.sound.stopSound();
     // stop if another script is playing
     if (this.currMeditationScript != undefined) {
       this.currMeditationScript.components.sound.stopSound();
@@ -255,6 +286,8 @@ AFRAME.registerComponent("menu-controls", {
     let script = sky.querySelector("#rain");
     script.components.sound.playSound();
     this.currMeditationScript = script;
+
+    this.breathingOn = false;
 
     // sky.setAttribute("sound", attr);
   },
@@ -266,10 +299,22 @@ AFRAME.registerComponent("menu-controls", {
     // let attr = sky.getAttribute("sound");
     // attr.src = "#confidence-meditation";
 
+    if (this.breathingOn) {
+      this.el.emit("breath-capture-end");
+      let hand = document.querySelector("#leftHand");
+      let attr = hand.getAttribute("sound");
+      attr.autoplay = false;
+      
+      hand.setAttribute("sound", attr);
+      //hand.components.sound.stopSound();
+    }
+
     // stop background music
     this.meditationSong.components.sound.stopSound();
+    sky.components.sound.stopSound();
     // stop if another script is playing
     if (this.currMeditationScript != undefined) {
+      console.log("MEDIATOIN SCRIPT " + this.currMeditationScript.getAttribute("#sound"));
       this.currMeditationScript.components.sound.stopSound();
     }
 
@@ -278,6 +323,8 @@ AFRAME.registerComponent("menu-controls", {
     script.components.sound.playSound();
     this.currMeditationScript = script;
 
+    this.breathingOn = false;
+
     // sky.setAttribute("sound", attr);
   },
 
@@ -285,12 +332,28 @@ AFRAME.registerComponent("menu-controls", {
    * Start breathing exercise.
    */
   onBreathingExerciseButtonClicked: function () {
+    this.breathingOn = true;
+
     let sky = document.querySelector("#sky");
-    sound =
-      "on: model-loaded; src: #Meditation-Aquatic; autoplay: true; loop: true; positional: false; volume: 0.1";
-    sky.setAttribute("sound", sound);
+    //sound =
+      //"on: model-loaded; src: #Meditation-Aquatic; autoplay: true; loop: true; positional: false; volume: 0.1";
+    //sky.setAttribute("sound", sound);
+    let attr = sky.getAttribute("sound");
+    attr.src = "#Imaginary-waterfalls";
+    sky.setAttribute("sound", attr);
+
+    // Stop the meditation background song
+    this.meditationSong.components.sound.stopSound();
+    // stop if another script is playing
+    if (this.currMeditationScript != undefined) {
+      this.currMeditationScript.components.sound.stopSound();
+    }
 
     this.el.sceneEl.emit("breath-capture-start");
+
+    // set the new script (in this case this is the audio of the left controller)
+    let script = document.querySelector("#leftHand");
+    this.currMeditationScript = script;
   },
 
   /*
@@ -394,6 +457,7 @@ AFRAME.registerComponent("menu-controls", {
       let sky = document.querySelector("#sky");
       let attr = sky.getAttribute("sound");
       attr.src = "#" + audio_id;
+      console.log("audio id: " + audio_id);
 
       sky.setAttribute("sound", attr);
       this.currSong = audio_id;
