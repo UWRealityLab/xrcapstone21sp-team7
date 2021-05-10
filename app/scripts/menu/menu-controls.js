@@ -7,6 +7,8 @@ AFRAME.registerComponent("menu-controls", {
     this.currMeditationScript;
     this.meditationSong = document.querySelector("#sky").querySelector("#meditation");
 
+    this.breathingOn = false;
+
     this.currAudioMenu;
     this.currSong = "background-music";
 
@@ -16,16 +18,32 @@ AFRAME.registerComponent("menu-controls", {
     this.bottomAudioOption = -0.9;
     this.prevAudioSlider = 0.5;
 
+    // An entity with the same x/z position as the user's head such that when recentering the ui the ui is rotated around the user's head
+    this.uiHousing = document.createElement('a-entity');
+    document.querySelector('#camRig').appendChild(this.uiHousing);
+
     // Grab template of menu to display
     this.displayed = false;
     this.ui = document
       .querySelector("#activity-menu-template")
       .content.cloneNode(true)
       .querySelector("#ui");
-    document.querySelector("#camRig").appendChild(this.ui);
+    this.uiHousing.appendChild(this.ui);
+
+    // Add breath capture template to the uiHousing entity
+    let breathMeditationTemplate = document
+      .querySelector('#breath-meditation-template')
+      .content.cloneNode(true);
+    let meditationRing = breathMeditationTemplate.querySelector('#meditation-ring');
+    let automatedMeditationRing = breathMeditationTemplate.querySelector('#meditation-automated-ring');
+    let meditationMenu = breathMeditationTemplate.querySelector('#breath-meditation-menu');
+    this.uiHousing.appendChild(meditationRing);
+    this.uiHousing.appendChild(automatedMeditationRing);
+    this.uiHousing.appendChild(meditationMenu);
 
     // Event handlers
     this.onMenuActivate = this.onMenuActivate.bind(this);
+    this.onMenuRecenter = this.onMenuRecenter.bind(this);
     this.onToggleMenuVisibility = this.onToggleMenuVisibility.bind(this);
     this.onVolumeChanged = this.onVolumeChanged.bind(this);
     this.onMeditationButtonClicked = this.onMeditationButtonClicked.bind(this);
@@ -46,6 +64,7 @@ AFRAME.registerComponent("menu-controls", {
     this.onBreathingExerciseButtonClicked = this.onBreathingExerciseButtonClicked.bind(
       this
     );
+
     this.onCloudMeditationButtonClicked = this.onCloudMeditationButtonClicked.bind(
       this
     );
@@ -56,6 +75,7 @@ AFRAME.registerComponent("menu-controls", {
     // Button event listeners
     // TODO: change trigger button
     this.el.addEventListener("abuttondown", this.onMenuActivate);
+    this.el.sceneEl.addEventListener('bbuttondown', this.onMenuRecenter);
     this.el.addEventListener("gripup", this.onToggleMenuVisibility);
     this.el.sceneEl.addEventListener(
       "meditation-button-clicked",
@@ -121,6 +141,12 @@ AFRAME.registerComponent("menu-controls", {
       this.onReplayButton
     );
 
+    this.el.sceneEl.addEventListener(
+      "replay-button-changed",
+      this.onReplayButton
+    );
+
+
     // Helpers
     this.activate = this.activate.bind(this);
     this.deactivate = this.deactivate.bind(this);
@@ -177,6 +203,30 @@ AFRAME.registerComponent("menu-controls", {
   },
 
   /**
+   * re-centers the menu in the user's center field of vision
+   */
+  onMenuRecenter: function() {
+    if (this.displayed) {
+      const camera = document.getElementById('cam');
+
+      const p = camera.object3D.position;
+      let positionAnimation = {
+        property: 'position',
+        to: `${p.x} 0 ${p.z}`
+      };
+
+      const yRotation = 180 * camera.object3D.rotation.y / Math.PI;
+      let rotationAnimation = {
+        property: 'rotation',
+        to: `0 ${yRotation} 0`
+      };
+
+      this.uiHousing.setAttribute('animation__rotation', rotationAnimation);
+      this.uiHousing.setAttribute('animation__position', positionAnimation);
+    }
+  },
+
+  /**
    * Toggles the visibility of the menu when in meditation mode (the user will still be
    * in meditation mode, just the actual menu won't be visible). Also hides the raycaster
    * when the menu is not visible.
@@ -204,13 +254,13 @@ AFRAME.registerComponent("menu-controls", {
 
     let sky = document.querySelector("#sky");
     let attr = sky.getAttribute("sound");
-    console.log("sky before:" + attr.src);
+    this.log("sky before:" + attr.src);
 
     this.el.emit("startMeditation");
     
     sky.components.sound.stopSound();
     attr = sky.getAttribute("sound");
-    console.log("sky after meditation:" + attr.src);
+    this.log("sky after meditation:" + attr.src);
 
     this.meditationSong.components.sound.playSound();
   },
@@ -221,9 +271,20 @@ AFRAME.registerComponent("menu-controls", {
     // sound="on: model-loaded; src: #meditation-1; autoplay: true; loop: false; positional: false; volume: 1";
     //let attr = sky.getAttribute("sound");
     //attr.src = "#meditation-1";
+
+    if (this.breathingOn) {
+      this.el.emit("breath-capture-end");
+      let hand = document.querySelector("#leftHand");
+      let attr = hand.getAttribute("sound");
+      attr.autoplay = false;
+      
+      hand.setAttribute("sound", attr);
+      //hand.components.sound.stopSound();
+    }
     
     // stop background music
     this.meditationSong.components.sound.stopSound();
+    sky.components.sound.stopSound();
     // stop if another script is playing
     if (this.currMeditationScript != undefined) {
       this.currMeditationScript.components.sound.stopSound();
@@ -233,6 +294,8 @@ AFRAME.registerComponent("menu-controls", {
     let script = sky.querySelector("#meditation-1");
     script.components.sound.playSound();
     this.currMeditationScript = script;
+
+    this.breathingOn = false;
 
     // sky.setAttribute("sound", attr);
   },
@@ -244,8 +307,19 @@ AFRAME.registerComponent("menu-controls", {
     // let attr = sky.getAttribute("sound");
     // attr.src = "#rain";
 
+    if (this.breathingOn) {
+      this.el.emit("breath-capture-end");
+      let hand = document.querySelector("#leftHand");
+      let attr = hand.getAttribute("sound");
+      attr.autoplay = false;
+      
+      hand.setAttribute("sound", attr);
+      //hand.components.sound.stopSound();
+    }
+
     // stop background music
     this.meditationSong.components.sound.stopSound();
+    sky.components.sound.stopSound();
     // stop if another script is playing
     if (this.currMeditationScript != undefined) {
       this.currMeditationScript.components.sound.stopSound();
@@ -255,6 +329,8 @@ AFRAME.registerComponent("menu-controls", {
     let script = sky.querySelector("#rain");
     script.components.sound.playSound();
     this.currMeditationScript = script;
+
+    this.breathingOn = false;
 
     // sky.setAttribute("sound", attr);
   },
@@ -266,10 +342,22 @@ AFRAME.registerComponent("menu-controls", {
     // let attr = sky.getAttribute("sound");
     // attr.src = "#confidence-meditation";
 
+    if (this.breathingOn) {
+      this.el.emit("breath-capture-end");
+      let hand = document.querySelector("#leftHand");
+      let attr = hand.getAttribute("sound");
+      attr.autoplay = false;
+      
+      hand.setAttribute("sound", attr);
+      //hand.components.sound.stopSound();
+    }
+
     // stop background music
     this.meditationSong.components.sound.stopSound();
+    sky.components.sound.stopSound();
     // stop if another script is playing
     if (this.currMeditationScript != undefined) {
+      console.log("MEDIATOIN SCRIPT " + this.currMeditationScript.getAttribute("#sound"));
       this.currMeditationScript.components.sound.stopSound();
     }
 
@@ -278,6 +366,8 @@ AFRAME.registerComponent("menu-controls", {
     script.components.sound.playSound();
     this.currMeditationScript = script;
 
+    this.breathingOn = false;
+
     // sky.setAttribute("sound", attr);
   },
 
@@ -285,12 +375,28 @@ AFRAME.registerComponent("menu-controls", {
    * Start breathing exercise.
    */
   onBreathingExerciseButtonClicked: function () {
+    this.breathingOn = true;
+
     let sky = document.querySelector("#sky");
-    sound =
-      "on: model-loaded; src: #Meditation-Aquatic; autoplay: true; loop: true; positional: false; volume: 0.1";
-    sky.setAttribute("sound", sound);
+    //sound =
+      //"on: model-loaded; src: #Meditation-Aquatic; autoplay: true; loop: true; positional: false; volume: 0.1";
+    //sky.setAttribute("sound", sound);
+    let attr = sky.getAttribute("sound");
+    attr.src = "#Imaginary-waterfalls";
+    sky.setAttribute("sound", attr);
+
+    // Stop the meditation background song
+    this.meditationSong.components.sound.stopSound();
+    // stop if another script is playing
+    if (this.currMeditationScript != undefined) {
+      this.currMeditationScript.components.sound.stopSound();
+    }
 
     this.el.sceneEl.emit("breath-capture-start");
+
+    // set the new script (in this case this is the audio of the left controller)
+    let script = document.querySelector("#leftHand");
+    this.currMeditationScript = script;
   },
 
   /*
@@ -321,10 +427,10 @@ AFRAME.registerComponent("menu-controls", {
   onVolumeChanged: function (evt) {
     let sky = document.querySelector("#sky");
     let attr = sky.getAttribute("sound");
-    //console.log("Volume before:" + attr.volume);
+    //this.log("Volume before:" + attr.volume);
     attr.volume = evt.detail.percent;
-    console.log("src:" + attr.src);
-    //console.log("Volume after:" + attr.volume);
+    this.log("src:" + attr.src);
+    //this.log("Volume after:" + attr.volume);
 
     sky.setAttribute("sound", attr);
 
@@ -332,7 +438,7 @@ AFRAME.registerComponent("menu-controls", {
       
       let sound = audio.getAttribute("sound");
       sound.volume = evt.detail.percent;
-      console.log(sound.volume);
+      this.log(sound.volume);
       
       audio.setAttribute("sound", sound);
       
@@ -394,6 +500,7 @@ AFRAME.registerComponent("menu-controls", {
       let sky = document.querySelector("#sky");
       let attr = sky.getAttribute("sound");
       attr.src = "#" + audio_id;
+      console.log("audio id: " + audio_id);
 
       sky.setAttribute("sound", attr);
       this.currSong = audio_id;
@@ -430,7 +537,7 @@ AFRAME.registerComponent("menu-controls", {
       button
         .querySelector(".container")
         .setAttribute("class", "rightclickable container");
-      //console.log(button.getAttribute("id"));
+      //this.log(button.getAttribute("id"));
 
       if (button.getAttribute("id") == "audio-menu-button") {
         let attr = button
@@ -449,14 +556,14 @@ AFRAME.registerComponent("menu-controls", {
       button
         .querySelector(".container")
         .setAttribute("class", "rightclickable container");
-      //console.log(button.getAttribute("id"));
+      //this.log(button.getAttribute("id"));
     });
 
     element.querySelectorAll(".back-button").forEach((button) => {
       button
         .querySelector(".container")
         .setAttribute("class", "rightclickable container");
-      //console.log(button.getAttribute("id"));
+      //this.log(button.getAttribute("id"));
     });
     element.setAttribute("visible", true);
 
@@ -513,6 +620,7 @@ AFRAME.registerComponent("menu-controls", {
     let el = this.el;
 
     el.removeEventListener("abuttondown", this.onMenuActivate); // maybe change trigger button?
+    el.removeEventListener('bbuttondown', this.onMenuRecenter);
     el.removeEventListener("gripup", this.onToggleMenuVisibility);
     el.sceneEl.removeEventListener(
       "meditation-button-clicked",
@@ -569,4 +677,15 @@ AFRAME.registerComponent("menu-controls", {
       this.onReplayButton
     );
   },
+
+  log(string, ...etc) {
+    if (!Q.LOGGING.MenuControls) return;
+
+    console.groupCollapsed(
+      `[UserView-${this.userViewId}${this.isMyUser ? " (YOU)" : ""}] ${string}`,
+      ...etc
+    );
+    console.trace(); // hidden in collapsed group
+    console.groupEnd();
+  }
 });
