@@ -1,9 +1,9 @@
 /* global AFRAME, Q, THREE */
 
 // Width of wall segment in meters
-const WALL_SEG_WIDTH = 16;
+const WALL_SEG_WIDTH = 10;
 // Width (and depth) of corner wall segment in meters
-const CORNER_WALL_SEG_WIDTH = 2;
+const CORNER_WALL_SEG_WIDTH = 1.8;
 
 AFRAME.registerComponent("base-garden", {
   schema: {
@@ -42,7 +42,7 @@ AFRAME.registerComponent("base-garden", {
       wall.setAttribute("rotation", el.object3D.worldToLocal(rotation));
       // wall.setAttribute('croquet', 'name: ' + name);
       wall.setAttribute("shadow", "receive: true; cast: true");
-      wall.setAttribute("scale", "1.1 1 1");
+      wall.setAttribute("scale", "1.0006 0.6 1");
       wall.setAttribute("id", name);
       el.appendChild(wall);
     }
@@ -105,7 +105,7 @@ AFRAME.registerComponent("base-garden", {
     for (let i = 0; i < 4; i++) {
       let corner = document.createElement("a-entity");
       corner.setAttribute("gltf-model", "#corner-wall-asset");
-      corner.setAttribute("scale", "1.05 1.05 1.05");
+      corner.setAttribute("scale", "1 0.6 1.1");
       corner.setAttribute(
         "position",
         el.object3D.worldToLocal(cornerPositions[i])
