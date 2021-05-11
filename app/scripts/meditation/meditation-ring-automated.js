@@ -7,15 +7,20 @@ AFRAME.registerComponent('meditation-ring-automated', {
   init: function () {
     let el = this.el;
 
-    this.onBreathIn = this.onBreathIn.bind(this);
-    this.onBreathOut = this.onBreathOut.bind(this);
+    this.onBreathInComplete = this.onBreathInComplete.bind(this);
+    this.onBreathOutComplete = this.onBreathOutComplete.bind(this);
+    this.onHoldingBreathInComplete = this.onHoldingBreathInComplete.bind(this);
+    this.onHoldingBreathOutComplete = this.onHoldingBreathOutComplete.bind(this);
     this.startAutomatedMeditationRing = this.startAutomatedMeditationRing.bind(this);
     this.endAutomatedMeditationRing = this.endAutomatedMeditationRing.bind(this);
     this.onLoopTimeout = this.onLoopTimeout.bind(this);
     this.onTimeLeftTimeout = this.onTimeLeftTimeout.bind(this);
+    this.onBreathChangeHelper = this.onBreathChangeHelper.bind(this);
 
-    el.sceneEl.addEventListener('breathing-in', this.onBreathIn);
-    el.sceneEl.addEventListener('breathing-out', this.onBreathOut);
+    el.sceneEl.addEventListener('holding-breath-in-complete', this.onHoldingBreathInComplete);
+    el.sceneEl.addEventListener('holding-breath-out-complete', this.onHoldingBreathOutComplete);
+    el.sceneEl.addEventListener('breath-in-complete', this.onBreathInComplete);
+    el.sceneEl.addEventListener('breath-out-complete', this.onBreathOutComplete);
     el.sceneEl.addEventListener('breath-capture-calibration-complete', this.startAutomatedMeditationRing);
     el.sceneEl.addEventListener('breath-capture-end', this.endAutomatedMeditationRing);
 
@@ -30,30 +35,68 @@ AFRAME.registerComponent('meditation-ring-automated', {
   remove: function () {
     let el = this.el;
 
-    el.sceneEl.removeEventListener('breathing-in', this.onBreathIn);
-    el.sceneEl.removeEventListener('breathing-out', this.onBreathOut);
+    el.sceneEl.removeEventListener('holding-breath-in-complete', this.onHoldingBreathInComplete);
+    el.sceneEl.removeEventListener('holding-breath-out-complete', this.onHoldingBreathOutComplete);
+    el.sceneEl.removeEventListener('breath-in-complete', this.onBreathInComplete);
+    el.sceneEl.removeEventListener('breath-out-complete', this.onBreathOutComplete);
     el.sceneEl.removeEventListener('breath-capture-calibration-complete', this.startAutomatedMeditationRing);
     el.sceneEl.removeEventListener('breath-capture-end', this.endAutomatedMeditationRing);
   },
 
-  onBreathIn : function(evt) {
-    this.breathInTime = Date.now();
-    let breathOutTime = this.breathInTime - this.breathOutTime;
-    if (breathOutTime < this.data.meditationBreathPeriod / 2 - this.data.meditationBreathAcceptableThreshold) {
-      this.log('too short outwards breath');
-    } else if (breathOutTime > this.data.meditationBreathPeriod / 2 + this.data.meditationBreathAcceptableThreshold) {
-      this.log('too long outwards breath');
-    }
+  onHoldingBreathInComplete: function(evt) {
+    this.log('holding breath in time ', evt.detail);
   },
 
-  onBreathOut : function(evt) {
-    this.breathOutTime = Date.now();
-    let breathInTime = this.breathOutTime - this.breathInTime;
-    if (breathInTime < this.data.meditationBreathPeriod / 2 - this.data.meditationBreathAcceptableThreshold) {
-      this.log('too short inward breath');
-    } else if (breathInTime > this.data.meditationBreathPeriod / 2 + this.data.meditationBreathAcceptableThreshold) {
-      this.log('too long inward breath');
+  onHoldingBreathOutComplete: function(evt) {
+    this.log('holding breath out time ', evt.detail);
+  },
+
+  onBreathOutComplete : function(evt) {
+    this.log('breath out time ', evt.detail);
+    this.onBreathChangeHelper(evt);
+  },
+
+  onBreathInComplete : function(evt) {
+    this.log('breath in time ', evt.detail);
+    this.onBreathChangeHelper(evt);
+  },
+
+  onBreathChangeHelper: function(evt) {
+    let params = {
+      value: '',
+      color: ''
     }
+
+    if (evt.detail < 5000 - this.data.meditationBreathAcceptableThreshold) {
+      this.log('too short outwards breath');
+      params.value = 'Too Shallow!';
+      params.color = '#ff0000';
+    } else if (evt.detail > 5000 + this.data.meditationBreathAcceptableThreshold) {
+      this.log('too long outwards breath');
+      params.value = 'Too Deep!';
+      params.color = '#ff0000';
+    } else {
+      params.value = 'Great!';
+      params.color = '#00ff00';
+    }
+
+    let notification = document.getElementById('breath-meditation-text-feedback');
+    this.setTextAnimation(notification, params);
+  },
+
+  setTextAnimation: function(notification, params) {
+    let animationScale = {
+      property: 'scale',
+      from: '2.5 2.5 2.5',
+      to: '2 2 2',
+      dur: '200'
+    };
+
+    notification.setAttribute('text', 'value', params.value);
+    notification.setAttribute('text', 'color', params.color);
+    notification.setAttribute('visible', 'true');
+    notification.removeAttribute('animation__scale');
+    notification.setAttribute('animation__scale', animationScale);
   },
 
   startAutomatedMeditationRing: function() {
@@ -74,14 +117,13 @@ AFRAME.registerComponent('meditation-ring-automated', {
     this.loopCount = 0;
     this.loopTimer = setInterval(this.onLoopTimeout, 5000);
 
-    this.timeLeft = MEDITATION_TIME;
+    this.timeLeft = MEDITATION_TIME / 1000;
     this.timeLeftTimer = setInterval(this.onTimeLeftTimeout, 1000);
   },
 
   onTimeLeftTimeout: function() {
     this.timeLeft--;
     let timeLeftStr = `${Math.floor(this.timeLeft / 60)}:${this.timeLeft % 60 < 10 ? '0' : ''}${this.timeLeft % 60}`;
-    console.log(timeLeftStr);
     let timer = document.getElementById('breath-meditation-timer');
     timer.setAttribute('text', 'value', timeLeftStr);
   },
@@ -120,6 +162,9 @@ AFRAME.registerComponent('meditation-ring-automated', {
 
     let timer = document.getElementById('breath-meditation-timer');
     timer.setAttribute('text', 'value', '2:00');
+
+    let notification = document.getElementById('breath-meditation-text-feedback');
+    notification.setAttribute('visible', 'false');
   },
 
   log(string, ...etc) {
