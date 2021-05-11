@@ -234,6 +234,7 @@ AFRAME.registerComponent('select-bar', {
             return;
         }
         this.el.setAttribute('visible', 'true');
+        this.el.sceneEl.emit('garden-asset-menu-visible');
     },
 
     onMenuHidden: function (evt) {
@@ -241,6 +242,7 @@ AFRAME.registerComponent('select-bar', {
             return;
         }
         this.el.setAttribute('visible', 'false');
+        this.el.sceneEl.emit('garden-asset-menu-hidden');
     },
 
     addEventListeners: function () {

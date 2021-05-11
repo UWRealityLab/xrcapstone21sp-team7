@@ -51,16 +51,55 @@ AFRAME.registerComponent('garden-controls', {
     addEventListeners: function () {
         // The main hand-controls interactions are handled by this component
         let el = this.el;
-        el.addEventListener('gripup', this.handReleased.bind(this));
-        el.addEventListener('gripdown', this.handSqueezed.bind(this));
+        el.sceneEl.addEventListener('garden-asset-menu-hidden', this.onGardenMenuHidden.bind(this));
+        el.sceneEl.addEventListener('garden-asset-menu-visible', this.onGardenMenuVisible.bind(this));
         el.addEventListener('xbuttondown', this.onUndo.bind(this));
         el.addEventListener('triggerdown', this.rotateItem.bind(this));
         el.addEventListener('triggerup', this.stopRotatingItem.bind(this));
+        el.addEventListener('gripdown', this.onSelectItem.bind(this));
+        el.addEventListener('gripup', this.onPlaceItem.bind(this));
+        el.addEventListener('raycaster-intersection', this.onRaycasterIntersection.bind(this));
+        el.addEventListener('raycaster-intersection-cleared', this.onRaycasterIntersectionCleared.bind(this));
+
 
         // The rest of the controls are handled by the menu element
         let menuEl = document.getElementById(this.data.menuId);
-        menuEl.addEventListener('menuChanged', this.onObjectChange.bind(this));
+        // menuEl.addEventListener('menuChanged', this.onObjectChange.bind(this));
         menuEl.addEventListener('menuSelected', this.onPlaceObject.bind(this));
+    },
+
+    onRaycasterIntersection: function(evt) {
+      this.intersectedEl = evt.detail.els[0];
+    },
+
+    onRaycasterIntersectionCleared: function(evt) {
+      if (this.intersectedEl == evt.detail.clearedEls[0]) {
+        this.intersectedEl = null;
+      }
+    },
+
+    onSelectItem: function() {
+        // Check to see if builder preview item is visible (if it is we can place items)
+        let thisItemEl = document.getElementById(this.data.previewItemId);
+        if (thisItemEl.getAttribute('visible') == false) {
+            return;
+        }
+
+        let menuEl = document.getElementById(this.data.menuId);
+        let objectGroup = menuEl.components['select-bar'].selectedOptgroupValue;
+        let objectArray = this.groupJSONArray[objectGroup];
+        let newObjectId = parseInt(menuEl.components['select-bar'].selectedOptionIndex);//TODO replace this with intersected el index
+
+        this.previewEl.setAttribute('gltf-model', `${Q.GARDEN_BUILDER.GardenAssetLocation}${objectArray[newObjectId].file}.glb`);
+        this.previewEl.setAttribute('scale', objectArray[newObjectId].actualScale);
+
+        // Make the preview item visible
+        this.previewItemSelected = true;
+    },
+
+    onPlaceItem: function() {
+      this.previewEl.setAttribute('visible', 'false');
+      this.previewItemSelected = false;
     },
 
     /**
@@ -68,8 +107,8 @@ AFRAME.registerComponent('garden-controls', {
      */
     removeEventListeners: function () {
         let el = this.el;
-        el.removeEventListener('gripup', this.handReleased);
-        el.removeEventListener('gripdown', this.handSqueezed);
+        el.sceneEl.removeEventListener('garden-asset-menu-visible', this.onGardenMenuHidden);
+        el.sceneEl.removeEventListener('garden-asset-menu-hidden', this.onGardenMenuVisible);
         el.removeEventListener('xbuttondown', this.onUndo);
         el.removeEventListener('triggerdown', this.rotateItem);
         el.removeEventListener('triggerup', this.stopRotatingItem);
@@ -169,6 +208,8 @@ AFRAME.registerComponent('garden-controls', {
                 let gardenEl = document.getElementById(this.data.gardenBaseId);
                 let intersectionPoint = gardenEl.components['base-garden'].data.intersectedPoint;
                 if (intersectionPoint) {
+                    if (!this.previewItemSelected) return;
+
                     // Update position of model based on intersection point with ground
                     this.previewEl.object3D.position.x = intersectionPoint.x;
                     this.previewEl.object3D.position.z = intersectionPoint.z;
@@ -318,12 +359,7 @@ AFRAME.registerComponent('garden-controls', {
     /**
      * Squeezing hand indicates the preview asset should be visible.
      */
-    handSqueezed: function (evt) {
-        // Ignore hand events from different controller
-        if (evt.target.id != this.el.id) {
-            return;
-        }
-
+    onGardenMenuVisible: function () {
         let thisItemEl = document.getElementById(this.data.previewItemId);
         thisItemEl.setAttribute('visible', 'true');
 
@@ -343,12 +379,7 @@ AFRAME.registerComponent('garden-controls', {
     /**
      * Releasing hand indicates the preview asset should be hidden.
      */
-    handReleased: function (evt) {
-        // Ignore hand events from different controller
-        if (evt.target.id != this.el.id) {
-            return;
-        }
-
+    onGardenMenuHidden: function () {
         let thisItemEl = document.getElementById(this.data.previewItemId);
         thisItemEl.setAttribute('visible', 'false');
 
@@ -385,8 +416,8 @@ AFRAME.registerComponent('garden-controls', {
         thisItemEl.setAttribute('objectGroup', objectGroup);
         thisItemEl.flushToDOM();
       
-        this.previewEl.setAttribute('gltf-model', `${Q.GARDEN_BUILDER.GardenAssetLocation}${objectArray[newObjectId].file}.glb`);
-        this.previewEl.setAttribute('scale', objectArray[newObjectId].actualScale);
+        // this.previewEl.setAttribute('gltf-model', `${Q.GARDEN_BUILDER.GardenAssetLocation}${objectArray[newObjectId].file}.glb`);
+        // this.previewEl.setAttribute('scale', objectArray[newObjectId].actualScale);
     },
 
     /**
