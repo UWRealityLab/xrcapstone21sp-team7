@@ -40,7 +40,6 @@ AFRAME.registerComponent("base-garden", {
       wall.setAttribute("gltf-model", "#single-wall-asset");
       wall.setAttribute("position", el.object3D.worldToLocal(position));
       wall.setAttribute("rotation", el.object3D.worldToLocal(rotation));
-      // wall.setAttribute('croquet', 'name: ' + name);
       wall.setAttribute("shadow", "receive: true; cast: true");
       wall.setAttribute("scale", "1.0006 0.6 1");
       wall.setAttribute("id", name);
@@ -114,7 +113,6 @@ AFRAME.registerComponent("base-garden", {
         "rotation",
         el.object3D.worldToLocal(cornerRotations[i])
       );
-      // corner.setAttribute('croquet', 'name: corner' + i.toString());
       corner.setAttribute("shadow", "receive: true; cast: true");
       el.appendChild(corner);
     }
@@ -141,23 +139,6 @@ AFRAME.registerComponent("base-garden", {
       "raycaster-intersected-cleared",
       this.raycasterIntersectedCleared.bind(this)
     );
-
-    // Add teleportation cubes
-    // let halfWidth = sceneWidth / 2;
-    // let halfDepth = sceneDepth / 2;
-    // let teleportIncrement = 10;
-    // for (let width = -halfWidth + 5; width < halfWidth; width += teleportIncrement) {
-    //   for (let depth = -halfDepth + 5; depth < halfDepth; depth += teleportIncrement) {
-    //     let teleport = document.createElement('a-box')
-    //     teleport.setAttribute('class', 'clickable');
-    //     teleport.setAttribute('blink-teleportation', {});
-    //     teleport.setAttribute('teleportation-checkpoint', {});
-    //     teleport.setAttribute('position', {x: width, y: -0.35, z: depth});
-    //     // Not sure if necessary but saw the corners had these, so just in case
-    //     teleport.setAttribute('croquet', 'name: teleport-' + width.toString() + '-' + depth.toString());
-    //     el.appendChild(teleport);
-    //   }
-    // }
   },
 
   remove: function () {
@@ -172,10 +153,12 @@ AFRAME.registerComponent("base-garden", {
   },
 
   raycasterIntersected: function (evt) {
+    console.log('raycasterIntersected');
     this.raycaster = evt.detail.el;
   },
 
   raycasterIntersectedCleared: function () {
+    console.log('raycasterIntersectedCleared');
     this.raycaster = null;
   },
 
