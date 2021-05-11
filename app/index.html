@@ -56,6 +56,7 @@
     <script src="./scripts/menu/audio-button.js"></script>
     <script src="./scripts/menu/vertical-slider.js"></script>
     <script src="./scripts/menu/small-button.js"></script>
+    <script src="./scripts/menu/env-button.js"></script>
     <!--script src="./scripts/left_arrow.js"></script-->
 
     <script src="./scripts/joystick.js"></script>
@@ -372,9 +373,10 @@
                 <!-- audio -->
 
                 <!-- environment settings menu -->
-                </a-entity id="environment-settings" visible="false" position="-1.4 0 1.45" rotation="0 70 0">
-                  <a-entity id="default-env" class="small-button" position="0 0 0"/>
+                </a-entity id="env-settings" visible="false" position="-1.4 0 1.45" rotation="0 70 0">
+                  <a-entity id="default-env" class="small-button" env-button="title: Default Garden; img: #As-the-rain-img" position="0 0 0"/>
               
+                  <a-entity id="env-menu-slider" class="env-slider" slider="title: Lighting Intensity" position="0 -0.7 0"></a-entity>
                 </a-entity>
 
               </a-entity>

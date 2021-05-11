@@ -42,11 +42,15 @@ AFRAME.registerComponent("menu-controls", {
     this.uiHousing.appendChild(automatedMeditationRing);
     this.uiHousing.appendChild(meditationMenu);
 
+    // Grab env menu to display
+    this.envMenu = document.querySelector("#env-settings");
+
     // Event handlers
     this.onMenuActivate = this.onMenuActivate.bind(this);
     this.onMenuRecenter = this.onMenuRecenter.bind(this);
     this.onToggleMenuVisibility = this.onToggleMenuVisibility.bind(this);
     this.onVolumeChanged = this.onVolumeChanged.bind(this);
+    this.onEnvSliderChanged = this.onEnvSliderChanged.bind(this);
     this.onMeditationButtonClicked = this.onMeditationButtonClicked.bind(this);
     this.onYogaButtonClicked = this.onYogaButtonClicked.bind(this);
     this.onAudioMenuChanged = this.onAudioMenuChanged.bind(this);
@@ -166,6 +170,11 @@ AFRAME.registerComponent("menu-controls", {
       this.onBreathAudio3
     );
 
+    // env menu listeners
+    this.el.sceneEl.addEventListener(
+      "env-menu-slider-changed",
+      this.onEnvSliderChanged
+    );
 
     // Helpers
     this.activate = this.activate.bind(this);
@@ -192,6 +201,7 @@ AFRAME.registerComponent("menu-controls", {
       if (id === "first-menu") {
         this.deactivateSliders(this.currAudioMenu);
         this.ui.setAttribute("visible", "false");
+        this.envMenu.setAttribute("visible", "false");
         this.deactivateSmallButton(this.currAudioMenu);
         this.displayed = false;
         this.el.setAttribute("raycaster", "enabled", false);
@@ -216,6 +226,10 @@ AFRAME.registerComponent("menu-controls", {
       this.activateSliders();
 
       this.activateSmallButton(document.querySelector("#audio-menu"));
+
+      // Turn on env menu
+      this.envMenu.setAttribute("visible", true);
+
       this.displayed = true;
       this.el.setAttribute("raycaster", "enabled", true);
       this.el.setAttribute("raycaster", "lineOpacity", 1);
@@ -470,6 +484,18 @@ AFRAME.registerComponent("menu-controls", {
     });
 
     // We have to fetch the sound from the breathing exercise leftHand audio since the audio is not in the sky
+  },
+
+  onEnvSliderChanged: function (evt) {
+    let sky = document.querySelector("#sky");
+
+    let light = {
+      property: 'light.intensity',
+      to: evt.detail.percent,
+      dur: 2000,
+      easing: 'linear'
+    };
+    sky.setAttribute('animation', light);
   },
 
   onPlayButton: function () {
