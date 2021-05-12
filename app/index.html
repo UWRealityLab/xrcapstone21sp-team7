@@ -22,6 +22,10 @@
     <!-- fake hands for croquet -->
     <script src="./scripts/fake-hands.js"></script>
 
+    <!-- timer helpers -->
+    <script src="./scripts/timer/interval.js"></script>
+    <script src="./scripts/timer/timeout.js"></script>
+
     <!-- garden generation/creation -->
     <script src="./scripts/garden-creation/simple-sun-sky.js"></script>
     <script src="./scripts/garden-creation/generate-base-garden.js"></script>
@@ -56,8 +60,12 @@
     <script src="./scripts/menu/audio-button.js"></script>
     <script src="./scripts/menu/vertical-slider.js"></script>
     <script src="./scripts/menu/small-button.js"></script>
+<<<<<<< HEAD
     <script src="./scripts/menu/env-button.js"></script>
     <!--script src="./scripts/left_arrow.js"></script-->
+=======
+    <script src="./scripts/menu/title.js"></script>
+>>>>>>> e2262a54052c480fed7d4cf4aa719db8cd7cc331
 
     <script src="./scripts/joystick.js"></script>
     <script src="./scripts/randomizeLocation.js"></script>
@@ -112,19 +120,22 @@
                     garden-controls="menuId: menuItems; previewItemId: leftItem; gardenBaseId: garden; newAssetContainerId: new-asset-container"
                     breath-capture>
                     <a-entity id="leftItem" file="kfarr_bases_valencia" objectGroup="plants" objectId="0"
-                        gltf-model="url(../assets/glb/cherry-blossom.glb)" rotation="-5 0 0" scale="0.05 .05 .05"
-                        position="0 -0.04 -0.4"></a-entity>
+                        gltf-model="url(../assets/glb/short-grass.glb)" rotation="-5 0 0" scale="0.1 0.1 0.1"
+                        position="0 0.13 -0.17"></a-entity>
                     <a-entity select-bar="controllerID: leftHand" id="menuItems" scale="0.7 0.7 0.7"
                         position="0 0.14 -0.03" rotation="-85 0 0">
                         <optgroup label="Plants" value="plants">
-                            <option value="cherry-blossom" src="url(../assets/img/cherry-blossom.png)" selected>Cherry Blossom</option>
-                            <option value="evergreen-tree-1" src="url(../assets/img/evergreen-tree-1.png)">Evergreen Tree 1</option>
-                            <option value="evergreen-tree-2" src="url(../assets/img/evergreen-tree-2.png)">Evergreen Tree 2</option>
-                            <option value="tall-tree" src="url(../assets/img/tall-tree.png)">Tall Tree</option>
-                            <option value="round-tree-1" src="url(../assets/img/round-tree-1.png)">Round Tree 1</option>
-                            <option value="short-grass" src="url(../assets/img/short-grass.png)">Short Grass</option>
+                            <option value="short-grass" src="url(../assets/img/short-grass.png)" selected>Short Grass</option>
                             <option value="potted_plant_small" src="url(../assets/img/potted_plant_small.png)">Potted Plant</option>
                             <option value="bamboo" src="url(../assets/img/bamboo.png)">Bamboo</option>
+                            <option value="flower-01" src="url(../assets/img/flower-01.png)">Flower 01</option>
+                            <option value="flower-02" src="url(../assets/img/flower-02.png)">Flower 02</option>
+                            <option value="flower-03" src="url(../assets/img/flower-03.png)">Flower 03</option>
+                            <option value="flower-04" src="url(../assets/img/flower-04.png)">Flower 04</option>
+                            <option value="flower-05" src="url(../assets/img/flower-05.png)">Flower 05</option>
+                            <option value="flower-06" src="url(../assets/img/flower-06.png)">Flower 06</option>
+                            <option value="grass-flower" src="url(../assets/img/grass-flower.png)">Grass Flower</option>
+                            <option value="tall-grass" src="url(../assets/img/tall-grass.png)">Tall Grass</option>
                         </optgroup>
                     </a-entity>
                 </a-entity>
@@ -334,8 +345,13 @@
 
                  <!-- volume -->
                 
+<<<<<<< HEAD
                 <a-entity id="volume-slider" class="slider" slider="title: Music" position="0 -0.7 0" visible="false">
 
+=======
+                <a-entity id="volume-slider" class="slider" slider="title: Audio Volume" position="0 -0.7 0" visible="false">
+                  
+>>>>>>> e2262a54052c480fed7d4cf4aa719db8cd7cc331
                 </a-entity>
                 <!-- volume -->
 
@@ -343,24 +359,26 @@
                 <!-- TODO: Find Better way to organize multiple audios -->
                 
                 <!-- audio menu button-->
-                <a-entity id="audio-menu" class="audio" visible="false" position="1.4 0 1.45" rotation="0 -70 0">
-                  <a-entity id="audio-menu-button" class="small-button" horizontal-button="title: NOW PLAYING" mixin="horizontal-frame"></a-entity>
-                  <a-entity id="play-button" class="small-button" small-button="img: #play-button" position="-0.3 -0.45 0"></a-entity>
-                  <a-entity id="pause-button" class="small-button" small-button="img: #pause-button" position="0 -0.45 0"></a-entity>
-                  <a-entity id="replay-button" class="small-button" small-button="img: #replay-button" position="0.3 -0.45 0"></a-entity>
+                <a-entity id="audio-menu" class="audio" visible="false" position="-0.7 -0.8 0">  <!--position="1.4 0 1.45" rotation="0 -70 0"-->
+                  <a-entity id="audio-menu-button" class="small-button" small-button="color: black; title: AUDIO" scale="2 1 1"></a-entity>
+                </a-entity>
+
+                <a-entity id="function-buttons" class="audio" visible="false" position="0 -0.9 0">
+                  <a-entity id="play-button" class="small-button" small-button="img: #play-button" position="-0.3 0 0"></a-entity>
+                  <a-entity id="pause-button" class="small-button" small-button="img: #pause-button" position="0 0 0"></a-entity>
+                  <a-entity id="replay-button" class="small-button" small-button="img: #replay-button" position="0.3 0 0"></a-entity>
                 </a-entity>
 
 
-                <a-entity id="audio-options" class="audio" visible="false" position="1.4 0 1.45" rotation="0 -70 0">
+                <a-entity id="audio-options" class="audio" visible="false">
                   <!-- back to audio menu button -->
 
                   <a-entity id="As-the-rain" class="small-button" audio-button="title: As The Rain; img: #As-the-rain-img" position="-0.45 0 0" mixin="thumbnail-frame"></a-entity>
                   <a-entity id="Fairy-Forest" class="small-button" audio-button="title: Fairy Forest; img: #Fairy-Forest-img" position="0 0 0" mixin="thumbnail-frame"></a-entity>
                   <a-entity id="Breath-of-life" class="small-button" audio-button="title: Breath of Life; img: #Breath-of-life-img" position="0.45 0 0" mixin="thumbnail-frame"></a-entity>
                   <a-entity id="Imaginary-waterfalls" class="small-button" audio-button="title: Imaginary Waterfalls; img: #Imaginary-waterfalls-img" position="-0.45 -0.45 0" mixin="thumbnail-frame"></a-entity>
-                  <a-entity id="Meditation-Aquatic" class="small-button" audio-button="title: Meditation Aquatic; img: #Meditation-Aquatic-img" position="0 -0.45 0" mixin="thumbnail-frame"></a-entity>
-                  <a-entity id="State-of-Zen" class="small-button" audio-button="title: State of Zen; img: #State-of-Zen-img" position="0.45 -0.45 0" mixin="thumbnail-frame"></a-entity>
-                  <a-entity id="Wren" class="small-button" audio-button="title: Wren; img: #Wren-img" position="-0.45 -0.9 0" mixin="thumbnail-frame"></a-entity>
+                  <a-entity id="State-of-Zen" class="small-button" audio-button="title: State of Zen; img: #State-of-Zen-img" position="0 -0.45 0" mixin="thumbnail-frame"></a-entity>
+                  <a-entity id="Wren" class="small-button" audio-button="title: Wren; img: #Wren-img" position="0.45 -0.45 0" mixin="thumbnail-frame"></a-entity>
 
                   <a-entity id="Frogs-ambience" class="small-button" audio-button="title: Evening Frogs" position="0.9 0 0" mixin="thumbnail-frame"></a-entity>
                   <a-entity id="City_Rain_Birds" class="small-button" audio-button="title: City Rain Birds" position="1.35 0 0" mixin="thumbnail-frame"></a-entity>
@@ -561,22 +579,20 @@
           class="lantern"
           gltf-model="#lantern"
           position="2 0 -3"
-          croquet="name: lantern-1"
           shadow="receive: false; cast: true"
         >
           <a-entity class="flame" position="0 1 0" gltf-model="#flame" 
-          croquet="name: flame1" visible="false"></a-entity>
+          visible="false"></a-entity>
         </a-entity>
 
         <a-entity
           class="lantern"
           gltf-model="#lantern"
           position="-2 0 -3"
-          croquet="name: lantern-2"
           shadow="receive: false; cast: true"
         >
           <a-entity class="flame" position="0 1 0" gltf-model="#flame" 
-            croquet="name: flame2" visible="false"></a-entity>
+            visible="false"></a-entity>
         </a-entity>
 
         <a-entity
@@ -585,7 +601,6 @@
           scale="0.5 0.5 0.5" 
           rotation="0 90 0" 
           position="0 0.1 -1" 
-          croquet="name: med"
           shadow="receive: true; cast: true"
         ></a-entity>
 

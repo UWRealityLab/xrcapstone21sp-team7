@@ -2,21 +2,33 @@
 AFRAME.registerComponent("small-button", {
     schema: {
       //title: { type: "string", default: ""},
-      img: { type: "selector", default: "#meditation-img" }
+      img: { type: "selector", default: "" },
+      color: { type: "string", default: "white"},
+      title: { type: "string", default: ""}
     },
     init: function () {
       let el = this.el;
       let data = this.data;
   
-      // Container
-      //this.container = document.createElement("a-image");
-      //this.container.setAttribute("src", data.img);
 
+      // Title
+      // Title Text
+      this.text = document.createElement("a-entity");
+      this.text.setAttribute("position", "0 0 0");
+      this.text.setAttribute("text", {
+        value: data.title,
+        align: "center",
+        shader: "msdf",
+      });
+
+      // Container
       this.container = document.createElement("a-entity");
       this.container.setAttribute("class", "container");
       this.container.setAttribute("material", "src", data.img);
+      this.container.setAttribute("material", "color", data.color);
       this.container.setAttribute("mixin", "small-square");
   
+      this.container.appendChild(this.text);
       el.appendChild(this.container);
   
       // Handlers

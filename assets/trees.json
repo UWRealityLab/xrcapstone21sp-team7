@@ -1,0 +1,104 @@
+[
+  {
+    "file": "cherry-blossom",
+    "actualScale": "1 1 1",
+    "replicaScale": "0.05 0.05 0.05",
+    "replicaPosition": "0 -0.04 -0.4"
+  },
+  {
+    "file": "evergreen-tree-1",
+    "actualScale": "1 1 1",
+    "replicaScale": "0.08 0.08 0.08",
+    "replicaPosition": "0 -0.08 -0.21"
+  },
+  {
+    "file": "evergreen-tree-2",
+    "actualScale": "1 1 1",
+    "replicaScale": "0.1 0.1 0.1",
+    "replicaPosition": "0 0.05 -0.2"
+  },
+  {
+    "file": "tall-tree",
+    "actualScale": "1 1 1",
+    "replicaScale": "0.03 0.03 0.03",
+    "replicaPosition": "0 0 -0.22"
+  },
+  {
+    "file": "round-tree-1",
+    "actualScale": "1 1 1",
+    "replicaScale": "0.05 0.05 0.05",
+    "replicaPosition": "0 0.05 -0.2"
+  },
+  {
+    "file": "tree-01",
+    "actualScale": ".8 .8 .8",
+    "replicaScale": "0.02 0.02 0.02",
+    "replicaPosition": "0 .05 -.3"
+  },
+  {
+    "file": "tree-02",
+    "actualScale": ".8 .8 .8",
+    "replicaScale": "0.05 0.05 0.05",
+    "replicaPosition": "0 .05 -.3"
+  },
+  {
+    "file": "tree-03",
+    "actualScale": ".8 .8 .8",
+    "replicaScale": "0.05 0.05 0.05",
+    "replicaPosition": "0 .05 -.3"
+  },
+  {
+    "file": "tree-04",
+    "actualScale": ".8 .8 .8",
+    "replicaScale": "0.05 0.05 0.05",
+    "replicaPosition": "0 .05 -.3"
+  },
+  {
+    "file": "tree-05",
+    "actualScale": ".8 .8 .8",
+    "replicaScale": "0.05 0.05 0.05",
+    "replicaPosition": "0 .05 -.3"
+  },
+  {
+    "file": "tree-06",
+    "actualScale": ".8 .8 .8",
+    "replicaScale": "0.02 0.02 0.02",
+    "replicaPosition": "0 .05 -.3"
+  },
+  {
+    "file": "tree-07",
+    "actualScale": ".8 .8 .8",
+    "replicaScale": "0.05 0.05 0.05",
+    "replicaPosition": "0 .05 -.3"
+  },
+  {
+    "file": "tree-08",
+    "actualScale": ".8 .8 .8",
+    "replicaScale": "0.05 0.05 0.05",
+    "replicaPosition": "0 .05 -.3"
+  },
+  {
+    "file": "tree-09",
+    "actualScale": ".8 .8 .8",
+    "replicaScale": "0.05 0.05 0.05",
+    "replicaPosition": "0 .05 -.3"
+  },
+  {
+    "file": "tree-10",
+    "actualScale": ".8 .8 .8",
+    "replicaScale": "0.05 0.05 0.05",
+    "replicaPosition": "0 .05 -.3"
+  },
+  {
+    "file": "tree-11",
+    "actualScale": ".8 .8 .8",
+    "replicaScale": "0.05 0.05 0.05",
+    "replicaPosition": "0 .05 -.3"
+  },
+  {
+    "file": "tree-12",
+    "actualScale": ".8 .8 .8",
+    "replicaScale": "0.05 0.05 0.05",
+    "replicaPosition": "0 .05 -.3"
+  }
+]
