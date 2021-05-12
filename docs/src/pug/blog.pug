@@ -59,11 +59,40 @@ html(lang='en')
                             a(href='#!') AR/VR Capstone Team 7
                             | on May 13, 2021
                         p
-                            | This week we focused on improving various features that were detracting from our base
-                            | product and started looking into various   pause-breathing, play-breathing
+                            | This week we focused on improving various features that we felt needed
+                            | improvement after our MVP and started looking into various improvements to our
+                            | product that we would like to continue to work on in the future.
                         h3 Successes and Accomplishments From This Week
                         p 
-                            | Hristo: added introduction scene. The user now starts outside the garden in a building that has instructions for how to use 
+                            | After realizing that there are many controls that players must know to fully take
+                            | advantage of the application, Hristo added an introduction scene that the player
+                            | is loaded into on startup. The player now comes in outside the garden in a shrine
+                            | with instructions for how to use the controllers.
+                        p
+                            | For our MVP, some of the audio was not properly being played or was delayed in loading
+                            | and playing after the user selected some music. Jane worked on fixing these audio related
+                            | issues so now audio handling is much improved. Furthermore, Jane added pause/play
+                            | functionality to the audio menu. This was integrated into the yoga and meditation scripts
+                            | so now the user may pause them when needed. Jane is currently working on improving the main menu U/I
+                            | so the user may select from tabs to change music and other scene elements such as lighting.
+                        p
+                            | After feedback from the MVP presentation, Matthew experimented with a drag and drop
+                            | asset placement mechanism meant to improve the feel of placing items. Now, the user places an 
+                            | item by opening up the asset placement menu and using their other hand to drag and drop the
+                            | item into the scene. Furthermore, to fill out the asset placement menu, Matthew also increased
+                            | the number of placable assets in the asset menu from ~16 to 60.
+                        p
+                            | As a group, we tried to diagnose some of the multiplayer issues that arose in previous weeks.
+                            | In particular, the asset placement menu was bugging out when multiple people attempted to
+                            | place assets but changes to the menu seems to have resolved whatever issues there have been related
+                            | to this. Also, after people gave feedback that it would be better for each person to control their own
+                            | lighting and music, we now do not mirror any of this information between user browsers. We are still looking
+                            | into an effective way to introduce synchronized meditation or yoga that would also allow the user
+                            | to have a personal meditation session if they want. Finally, we had some fun stress testing the garden to see
+                            | how many high poly items we could place before FPS dropped off on the Oculus Quest 2.
+                        h3 Plan for Next Week
+                        p
+                            | 
 
         article
             .container
