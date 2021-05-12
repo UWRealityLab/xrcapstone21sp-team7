@@ -1,50 +1,74 @@
 [
-    {
-        "file": "cherry-blossom",
-        "actualScale": "1 1 1",
-        "replicaScale": "0.05 0.05 0.05",
-        "replicaPosition": "0 -0.04 -0.4"
-    },
-    {
-        "file": "evergreen-tree-1",
-        "actualScale": "1 1 1",
-        "replicaScale": "0.08 0.08 0.08",
-        "replicaPosition": "0 -0.08 -0.21"
-    },
-    {
-        "file": "evergreen-tree-2",
-        "actualScale": "1 1 1",
-        "replicaScale": "0.1 0.1 0.1",
-        "replicaPosition": "0 0.05 -0.2"
-    },
-    {
-        "file": "tall-tree",
-        "actualScale": "1 1 1",
-        "replicaScale": "0.03 0.03 0.03",
-        "replicaPosition": "0 0 -0.22"
-    },
-    {
-        "file": "round-tree-1",
-        "actualScale": "1 1 1",
-        "replicaScale": "0.05 0.05 0.05",
-        "replicaPosition": "0 0.05 -0.2"
-    },
-    {
-        "file": "short-grass",
-        "actualScale": "1 1 1",
-        "replicaScale": "0.1 0.1 0.1",
-        "replicaPosition": "0 0.13 -0.17"
-    },
-    {
-        "file": "potted_plant_small",
-        "actualScale": "0.7 0.7 0.7",
-        "replicaScale": "0.1 0.1 0.1",
-        "replicaPosition": "0 .14 -.16"
-    },
-    {
-        "file": "bamboo",
-        "actualScale": "1 1 1",
-        "replicaScale": "0.1 0.1 0.1",
-        "replicaPosition": "0 .14 -.16"
-    }
+  {
+    "file": "short-grass",
+    "actualScale": "1 1 1",
+    "replicaScale": "0.1 0.1 0.1",
+    "replicaPosition": "0 0.13 -0.17"
+  },
+  {
+    "file": "potted_plant_small",
+    "actualScale": "0.7 0.7 0.7",
+    "replicaScale": "0.1 0.1 0.1",
+    "replicaPosition": "0 .14 -.16"
+  },
+  {
+    "file": "bamboo",
+    "actualScale": "1 1 1",
+    "replicaScale": "0.1 0.1 0.1",
+    "replicaPosition": "0 .14 -.16"
+  },
+  {
+    "file": "flower-01",
+    "actualScale": "1 1 1",
+    "replicaScale": "0.1 0.1 0.1",
+    "replicaPosition": "0 .14 -.16"
+  },
+  {
+    "file": "flower-02",
+    "actualScale": "1 1 1",
+    "replicaScale": "0.1 0.1 0.1",
+    "replicaPosition": "0 .14 -.16"
+  },
+  {
+    "file": "flower-03",
+    "actualScale": "1 1 1",
+    "replicaScale": "0.1 0.1 0.1",
+    "replicaPosition": "0 .14 -.16"
+  },
+  {
+    "file": "flower-04",
+    "actualScale": "1 1 1",
+    "replicaScale": "0.1 0.1 0.1",
+    "replicaPosition": "0 .14 -.16"
+  },
+  {
+    "file": "flower-05",
+    "actualScale": "1 1 1",
+    "replicaScale": "0.1 0.1 0.1",
+    "replicaPosition": "0 .14 -.16"
+  },
+  {
+    "file": "flower-06",
+    "actualScale": "1 1 1",
+    "replicaScale": "0.1 0.1 0.1",
+    "replicaPosition": "0 .14 -.16"
+  },
+  {
+    "file": "grass-flower",
+    "actualScale": "1 1 1",
+    "replicaScale": "0.1 0.1 0.1",
+    "replicaPosition": "0 .14 -.16"
+  },
+  {
+    "file": "short-grass",
+    "actualScale": "1 1 1",
+    "replicaScale": "0.1 0.1 0.1",
+    "replicaPosition": "0 0.13 -0.17"
+  },
+  {
+    "file": "tall-grass",
+    "actualScale": "1 1 1",
+    "replicaScale": "0.1 0.1 0.1",
+    "replicaPosition": "0 0.13 -0.17"
+  }
 ]

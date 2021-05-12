@@ -1,0 +1,44 @@
+[
+  {
+    "file": "stone-lantern",
+    "actualScale": "1 1 1",
+    "replicaScale": "0.1 0.1 0.1",
+    "replicaPosition": "0 0.12 -0.16"
+  },
+  {
+    "file": "campfire",
+    "actualScale": "1 1 1",
+    "replicaScale": "0.1 0.1 0.1",
+    "replicaPosition": "0 0.12 -0.16"
+  },
+  {
+    "file": "fence",
+    "actualScale": "1 1 1",
+    "replicaScale": "0.1 0.1 0.1",
+    "replicaPosition": "0 0.12 -0.16"
+  },
+  {
+    "file": "torii-gate-red",
+    "actualScale": "1 1 1",
+    "replicaScale": "0.1 0.1 0.1",
+    "replicaPosition": "0 0.12 -0.16"
+  },
+  {
+    "file": "brown-short-lantern",
+    "actualScale": "1 1 1",
+    "replicaScale": "0.1 0.1 0.1",
+    "replicaPosition": "0 0.12 -0.16"
+  },
+  {
+    "file": "brown-skinny-lantern",
+    "actualScale": "1 1 1",
+    "replicaScale": "0.1 0.1 0.1",
+    "replicaPosition": "0 0.12 -0.16"
+  },
+  {
+    "file": "sign",
+    "actualScale": "1 1 1",
+    "replicaScale": "0.1 0.1 0.1",
+    "replicaPosition": "0 0.12 -0.16"
+  }
+]

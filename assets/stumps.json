@@ -1,0 +1,50 @@
+[
+  {
+    "file": "stump-01",
+    "actualScale": ".8 .8 .8",
+    "replicaScale": "0.05 0.05 0.05",
+    "replicaPosition": "0 .05 -.3"
+  },
+  {
+    "file": "stump-02",
+    "actualScale": ".8 .8 .8",
+    "replicaScale": "0.05 0.05 0.05",
+    "replicaPosition": "0 .05 -.3"
+  },
+  {
+    "file": "stump-03",
+    "actualScale": ".8 .8 .8",
+    "replicaScale": "0.05 0.05 0.05",
+    "replicaPosition": "0 .05 -.3"
+  },
+  {
+    "file": "stump-04",
+    "actualScale": ".8 .8 .8",
+    "replicaScale": "0.05 0.05 0.05",
+    "replicaPosition": "0 .05 -.3"
+  },
+  {
+    "file": "stump-05",
+    "actualScale": ".8 .8 .8",
+    "replicaScale": "0.05 0.05 0.05",
+    "replicaPosition": "0 .05 -.3"
+  },
+  {
+    "file": "stump-06",
+    "actualScale": ".8 .8 .8",
+    "replicaScale": "0.05 0.05 0.05",
+    "replicaPosition": "0 .05 -.3"
+  },
+  {
+    "file": "stump-07",
+    "actualScale": ".8 .8 .8",
+    "replicaScale": "0.05 0.05 0.05",
+    "replicaPosition": "0 .05 -.3"
+  },
+  {
+    "file": "stump-08",
+    "actualScale": ".8 .8 .8",
+    "replicaScale": "0.05 0.05 0.05",
+    "replicaPosition": "0 .05 -.3"
+  }
+]
