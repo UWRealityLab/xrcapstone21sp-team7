@@ -1,0 +1,50 @@
+[
+  {
+    "file": "mushroom-01",
+    "actualScale": "1 1 1",
+    "replicaScale": "0.1 0.1 0.1",
+    "replicaPosition": "0 0.16 -0.2"
+  },
+  {
+    "file": "mushroom-02",
+    "actualScale": "1 1 1",
+    "replicaScale": "0.1 0.1 0.1",
+    "replicaPosition": "0 0.16 -0.2"
+  },
+  {
+    "file": "mushroom-03",
+    "actualScale": "1 1 1",
+    "replicaScale": "0.1 0.1 0.1",
+    "replicaPosition": "0 0.16 -0.2"
+  },
+  {
+    "file": "mushroom-04",
+    "actualScale": "1 1 1",
+    "replicaScale": "0.1 0.1 0.1",
+    "replicaPosition": "0 0.16 -0.2"
+  },
+  {
+    "file": "mushroom-05",
+    "actualScale": "1 1 1",
+    "replicaScale": "0.1 0.1 0.1",
+    "replicaPosition": "0 0.16 -0.2"
+  },
+  {
+    "file": "mushroom-06",
+    "actualScale": "1 1 1",
+    "replicaScale": "0.1 0.1 0.1",
+    "replicaPosition": "0 0.16 -0.2"
+  },
+  {
+    "file": "mushroom-07",
+    "actualScale": "1 1 1",
+    "replicaScale": "0.1 0.1 0.1",
+    "replicaPosition": "0 0.16 -0.2"
+  },
+  {
+    "file": "mushroom-08",
+    "actualScale": "1 1 1",
+    "replicaScale": "0.1 0.1 0.1",
+    "replicaPosition": "0 0.16 -0.2"
+  }
+]
