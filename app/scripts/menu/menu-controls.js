@@ -206,6 +206,15 @@ AFRAME.registerComponent("menu-controls", {
           this.breathingOn = false;
         }
         document.querySelector("#sky").components.sound.playSound();
+
+        // play pause replay buttons
+        this.deactivateSmallButton(document.querySelector("#function-buttons"));
+
+        // activate audio option
+        this.activateSmallButton(document.querySelector("#audio-menu"));
+
+        // deactive volume slider
+        this.deactivateSliders();
       }
     } else {
       //this.el.emit("startMeditation");
@@ -213,7 +222,7 @@ AFRAME.registerComponent("menu-controls", {
       this.activate(document.querySelector("#first-menu"));
 
       // Turn on sliders
-      this.activateSliders();
+      //this.activateSliders();
 
       this.activateSmallButton(document.querySelector("#audio-menu"));
       this.displayed = true;
@@ -273,6 +282,15 @@ AFRAME.registerComponent("menu-controls", {
     // Activate meditation options
     let medMenu = document.querySelector("#meditation-menu");
     this.activate(medMenu);
+
+    // play pause replay buttons
+    this.activateSmallButton(document.querySelector("#function-buttons"));
+
+    // deactivate audio option
+    this.deactivateSmallButton(document.querySelector("#audio-menu"));
+
+    // activate volume
+    this.activateSliders();
 
     let sky = document.querySelector("#sky");
     let attr = sky.getAttribute("sound");
@@ -443,6 +461,15 @@ AFRAME.registerComponent("menu-controls", {
     // Activate meditation options
     let yogaMenu = document.querySelector("#yoga-menu");
     this.activate(yogaMenu);
+
+    // play pause replay buttons
+    this.activateSmallButton(document.querySelector("#function-buttons"));
+
+    // deactivate audio option
+    this.deactivateSmallButton(document.querySelector("#audio-menu"));
+
+    // activate volume
+    this.activateSliders();
   },
 
   onGuidedYogaButtonClicked: function () {
@@ -475,6 +502,11 @@ AFRAME.registerComponent("menu-controls", {
   onPlayButton: function () {
     if (this.currMeditationScript != undefined) {
       this.currMeditationScript.components.sound.playSound();
+      if (this.breathingOn) {
+        this.el.emit("play-breathing");
+      }
+      // do same for yoga
+      //this.el.emit("play-yoga");
     }
 
   },
@@ -482,6 +514,11 @@ AFRAME.registerComponent("menu-controls", {
   onPauseButton: function () {
     if (this.currMeditationScript != undefined) {
       this.currMeditationScript.components.sound.pauseSound();
+      if (this.breathingOn) {
+        this.el.emit("pause-breathing");
+      }
+      // do same for yoga
+      //this.el.emit("pause-yoga");
     }
 
   },
@@ -490,6 +527,12 @@ AFRAME.registerComponent("menu-controls", {
     if (this.currMeditationScript != undefined) {
       this.currMeditationScript.components.sound.stopSound();
       this.currMeditationScript.components.sound.playSound();
+
+      if (this.breathingOn) {
+        this.el.emit("replay-breathing");
+      }
+      // do same for yoga
+      //this.el.emit("replay-yoga");
     }
 
   },
@@ -512,6 +555,12 @@ AFRAME.registerComponent("menu-controls", {
     let firstMenu = document.querySelector("#audio-menu");
     this.deactivateSmallButton(firstMenu);
 
+    // also deactivate the firstMenu
+    this.deactivate(document.querySelector("#first-menu"));
+
+    // activate the volume bar
+    this.activateSliders();
+
     // Activate meditation options
     let audioSubMenu = document.querySelector("#audio-options");
     this.activateSmallButton(audioSubMenu);
@@ -523,6 +572,9 @@ AFRAME.registerComponent("menu-controls", {
     if (audio_id == "audio-exit") {
       this.deactivateSmallButton(this.currAudioMenu);
       this.activateSmallButton(document.querySelector("#audio-menu"));
+
+      this.activate(document.querySelector("#first-menu"));
+      this.deactivateSliders();
     } else {
       let sky = document.querySelector("#sky");
       let attr = sky.getAttribute("sound");
@@ -566,7 +618,7 @@ AFRAME.registerComponent("menu-controls", {
         .setAttribute("class", "rightclickable container");
       //this.log(button.getAttribute("id"));
 
-      if (button.getAttribute("id") == "audio-menu-button") {
+      /*if (button.getAttribute("id") == "audio-menu-button") {
         let attr = button
           .querySelector(".container")
           .querySelector(".songTitle")
@@ -576,7 +628,7 @@ AFRAME.registerComponent("menu-controls", {
           .querySelector(".container")
           .querySelector(".songTitle")
           .setAttribute("text", attr);
-      }
+      }*/
     });
 
     element.querySelectorAll(".audio-slider").forEach((button) => {
@@ -615,6 +667,9 @@ AFRAME.registerComponent("menu-controls", {
   activate: function (element) {
     element.querySelectorAll(".option").forEach((option) => {
       option.setAttribute("class", "rightclickable option");
+
+      let attr = option.getAttribute("class");
+      console.log("ATTR: " + attr);
     });
     element.setAttribute("visible", "true");
 
