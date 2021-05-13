@@ -50,7 +50,7 @@ AFRAME.registerComponent("menu-controls", {
     this.onMenuRecenter = this.onMenuRecenter.bind(this);
     this.onToggleMenuVisibility = this.onToggleMenuVisibility.bind(this);
     this.onVolumeChanged = this.onVolumeChanged.bind(this);
-    this.onEnvSliderChanged = this.onEnvSliderChanged.bind(this);
+    // this.onEnvSliderChanged = this.onEnvSliderChanged.bind(this);
     this.onMeditationButtonClicked = this.onMeditationButtonClicked.bind(this);
     this.onYogaButtonClicked = this.onYogaButtonClicked.bind(this);
     this.onAudioMenuChanged = this.onAudioMenuChanged.bind(this);
@@ -201,10 +201,9 @@ AFRAME.registerComponent("menu-controls", {
       if (id === "first-menu") {
         this.deactivateSliders(this.currAudioMenu);
         this.ui.setAttribute("visible", "false");
-        this.envMenu.setAttribute("visible", "false");
         this.deactivateSmallButton(this.currAudioMenu);
         this.displayed = false;
-        this.el.setAttribute("raycaster", "enabled", false);
+        // this.el.setAttribute("raycaster", "enabled", false);
         this.el.setAttribute("raycaster", "lineOpacity", 0);
       } else {
         this.activate(document.querySelector("#first-menu"));
@@ -235,9 +234,6 @@ AFRAME.registerComponent("menu-controls", {
       //this.activateSliders();
 
       this.activateSmallButton(document.querySelector("#audio-menu"));
-
-      // Turn on env menu
-      this.envMenu.setAttribute("visible", true);
 
       this.displayed = true;
       this.el.setAttribute("raycaster", "enabled", true);
@@ -280,7 +276,7 @@ AFRAME.registerComponent("menu-controls", {
     if (this.displayed) {
       let visible = this.ui.getAttribute("visible");
       this.ui.setAttribute("visible", !visible);
-      this.el.setAttribute("raycaster", "enabled", !visible);
+      // this.el.setAttribute("raycaster", "enabled", !visible);
       this.el.setAttribute("raycaster", "lineOpacity", !visible ? 1 : 0);
     }
   },
@@ -513,6 +509,7 @@ AFRAME.registerComponent("menu-controls", {
     // We have to fetch the sound from the breathing exercise leftHand audio since the audio is not in the sky
   },
 
+  /*
   onEnvSliderChanged: function (evt) {
     let sky = document.querySelector("#sky");
 
@@ -524,6 +521,7 @@ AFRAME.registerComponent("menu-controls", {
     };
     sky.setAttribute('animation', light);
   },
+  */
 
   onPlayButton: function () {
     if (this.currMeditationScript != undefined) {

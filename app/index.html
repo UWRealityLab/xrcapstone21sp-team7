@@ -48,7 +48,7 @@
     <script src="https://cdn.jsdelivr.net/npm/aframe-blink-controls/dist/aframe-blink-controls.min.js"></script>
 
     <!-- yoga -->
-    <script src="./scripts/yoga/yoga-emitter.js"></script>
+    <script src="./scripts/yoga/yoga-button.js"></script>
     <script src="./scripts/yoga/yoga-mode.js"></script>
 
     <!-- menu -->
@@ -60,12 +60,7 @@
     <script src="./scripts/menu/audio-button.js"></script>
     <script src="./scripts/menu/vertical-slider.js"></script>
     <script src="./scripts/menu/small-button.js"></script>
-<<<<<<< HEAD
-    <script src="./scripts/menu/env-button.js"></script>
-    <!--script src="./scripts/left_arrow.js"></script-->
-=======
     <script src="./scripts/menu/title.js"></script>
->>>>>>> e2262a54052c480fed7d4cf4aa719db8cd7cc331
 
     <script src="./scripts/joystick.js"></script>
     <script src="./scripts/randomizeLocation.js"></script>
@@ -141,7 +136,7 @@
                 </a-entity>
 
                 <a-entity class="right" id="rightHand" hand-controls="hand: right; handModelStyle: lowPoly; color: #00ff00"
-                          raycaster="lineOpacity: 0; enabled: false; objects: .rightclickable" 
+                          raycaster="lineOpacity: 0; enabled: true; objects: .rightclickable" 
                           laser-controls="hand: right; model: false"
                           blink-controls="cameraRig: #camRig; teleportOrigin: #cam; collisionEntities: #floor, .cloud-surface; curveShootingSpeed: 12"
                           menu-controls>
@@ -222,6 +217,10 @@
             <audio id="yoga-audio-short-9" src="../assets/img/yoga/yoga-short/short-audio/audio-9.mp3"></audio>
             <audio id="yoga-audio-short-10" src="../assets/img/yoga/yoga-short/short-audio/audio-10.mp3"></audio>
             <audio id="yoga-audio-short-11" src="../assets/img/yoga/yoga-short/short-audio/audio-11.mp3"></audio>
+            <!-- yoga buttons -->
+            <img id="yoga-back" src="../assets/img/yoga/menu/yoga_back.png"/>
+            <img id="yoga-next" src="../assets/img/yoga/menu/yoga_next.png"/>
+            <img id="yoga-pause" src="../assets/img/yoga/menu/yoga_pause.png"/>
             
             <!-- menu -->
             <img id="meditation-img" src="../assets/img/menu/meditation.png"/>
@@ -345,13 +344,8 @@
 
                  <!-- volume -->
                 
-<<<<<<< HEAD
-                <a-entity id="volume-slider" class="slider" slider="title: Music" position="0 -0.7 0" visible="false">
-
-=======
                 <a-entity id="volume-slider" class="slider" slider="title: Audio Volume" position="0 -0.7 0" visible="false">
                   
->>>>>>> e2262a54052c480fed7d4cf4aa719db8cd7cc331
                 </a-entity>
                 <!-- volume -->
 
@@ -458,20 +452,7 @@
         </a-assets>
       
         <!-- yoga stuff -->
-        <!-- <a-box position="1.5 0.75 14.55"
-               scale="0.5 0.5 0.1"
-               color="#A9A9A9">
-        </a-box>
-        <a-cylinder id="yoga-cylinder"
-                    position="1.5 0.75 14.5"
-                    radius="0.15"
-                    height="0.1"
-                    rotation="90 0 0"
-                    class="rightclickable"
-                    color="#FFC65D"
-                    yoga-emitter>
-        </a-cylinder> -->
-        <a-image id="yoga-images" width="1.5" height="1.5" position="0 0.75 14" rotation="0 180 0"
+        <a-image id="yoga-images" width="1.5" height="1.5" position="0 0.75 21" rotation="0 180 0"
                  sound="on: model-loaded, autoplay: true; positional: false; volume: 0.25">
             <!-- frame -->
             <a-cylinder radius="0.75" height="0.1" position="0 0.75 -0.25" rotation="90 0 0" color="#696969"></a-cylinder>
@@ -481,10 +462,21 @@
             <a-box width="1.6" height="0.1" depth="0.5" position="0.75 0 0" color="#DDBE91" rotation="0 0 90"></a-box>
             <a-box width="1.6" height="0.1" depth="0.5" position="-0.75 0 0" color="#DDBE91" rotation="0 0 90"></a-box>
         </a-image>
-        <a-box id="yoga-mat" height="0.1" width="1" depth="2" position="0 0 11" color="#DB7093"></a-box>
+        <a-box id="yoga-mat" height="0.1" width="1" depth="2" position="0 0 18" color="#DB7093"></a-box>
 
         <a-entity id="timer" position="0 1.85 14" scale="10 10 10" rotation="0 180 0" visible="false"
                   text="color: white; align: center; value: 0;"></a-entity>
+
+        <!-- yoga menu -->
+        <a-entity id="yoga-buttons" visible="true" position="0 2.5 20.5" rotation="-15 0 0">
+          <a-box id ="yoga-back" class="rightclickable" scale="0.6 0.6 0.2" position="-1 0 0.125" color="white" yoga-button></a-box>
+          <a-image src="#yoga-back" width="0.5" height="0.5" position="-1 0 0"></a-image>
+          <a-box id ="yoga-pause" class="rightclickable" scale="0.6 0.6 0.2" position="0 0 0.125" color="white" yoga-button></a-box>
+          <a-image src="#yoga-pause" width="0.5" height="0.5" position="0 0 0"></a-image>
+          <a-box id ="yoga-next"  class="rightclickable" scale="0.6 0.6 0.2" position="1 0 0.125" color="white" yoga-button></a-box>
+          <a-image src="#yoga-next" width="0.5" height="0.5" position="1 0 0"></a-image>
+        </a-entity>
+
 
         <!-- Generated garden -->
         <a-entity id="garden" base-garden="sceneWidth: 4; sceneDepth: 4"></a-entity>

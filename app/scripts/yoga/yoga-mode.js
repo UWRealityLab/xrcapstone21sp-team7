@@ -36,12 +36,6 @@ const TIME_ARRAY = [10000,  // welcome screen (0)
 /* This code will go through the linked images in the image array, and
  * switch to the next one after the amount of time in the corresponding
  * array.
- * TODO: draw up yoga images
- *       plan out future yoga functionality
- *       idea: skip to next slide button for yoga?
- *       play audio script so user doesn't have to look up at instructions
- *       integrate yoga into menu
- *       choose between yoga routines
  */
 AFRAME.registerComponent("yoga-mode", {
   init: function() {
@@ -78,7 +72,7 @@ AFRAME.registerComponent("yoga-mode", {
     this.el.components.sound.playSound();
     document.querySelector("#yoga-images").setAttribute("sound", "src: #As-the-rain; autoplay: true; loop: true; volume: 0.05");
 
-    console.log(this.timer);
+    // console.log(this.timer);
 
     this.imageLoop();
   },
