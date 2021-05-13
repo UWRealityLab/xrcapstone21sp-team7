@@ -57,12 +57,12 @@
     "file": "grass-flower",
     "actualScale": "1 1 1",
     "replicaScale": "0.1 0.1 0.1",
-    "replicaPosition": "0 .14 -.16"
+    "replicaPosition": "0 .14 -.2"
   },
   {
     "file": "tall-grass",
     "actualScale": "1 1 1",
     "replicaScale": "0.1 0.1 0.1",
-    "replicaPosition": "0 0.13 -0.17"
+    "replicaPosition": "0 0.13 -0.25"
   }
 ]

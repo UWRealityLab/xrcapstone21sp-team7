@@ -60,7 +60,7 @@
     <script src="./scripts/menu/audio-button.js"></script>
     <script src="./scripts/menu/vertical-slider.js"></script>
     <script src="./scripts/menu/small-button.js"></script>
-    <script src="./scripts/menu/title.js"></script>
+    <!-- <script src="./scripts/menu/title.js"></script> -->
 
     <script src="./scripts/joystick.js"></script>
     <script src="./scripts/randomizeLocation.js"></script>
@@ -112,14 +112,36 @@
                     class="left"
                     id="leftHand"
                     hand-controls="hand: left; handModelStyle: lowPoly"
-                    raycaster="showLine: false; enabled: false; objects: .leftclickable;"
+                    raycaster="showLine: false; enabled: false; objects: .ground, .previewFrame;" 
                     garden-controls="menuId: menuItems; previewItemId: leftItem; gardenBaseId: garden; newAssetContainerId: new-asset-container"
-                    breath-capture>
-                    <a-entity id="leftItem" file="kfarr_bases_valencia" objectGroup="plants" objectId="0"
-                        gltf-model="url(../assets/glb/short-grass.glb)" rotation="-5 0 0" scale="0.1 0.1 0.1"
-                        position="0 0.13 -0.17"></a-entity>
-                    <a-entity select-bar="controllerID: leftHand" id="menuItems" scale="0.7 0.7 0.7"
-                        position="0 0.14 -0.03" rotation="-85 0 0">
+                    blink-controls="cameraRig: #camRig; teleportOrigin: #cam; collisionEntities: #floor, .cloud-surface; curveShootingSpeed: 12"
+                    breath-capture
+                ></a-entity>
+                <a-entity
+                    class="right"
+                    id="rightHand"
+                    hand-controls="hand: right; handModelStyle: lowPoly"
+                    raycaster="lineOpacity: 0.0; enabled: false; objects: .rightclickable;"
+                    laser-controls="hand: right; model: false"
+                    menu-controls
+                >
+                    <a-entity
+                        id="leftItem"
+                        file="kfarr_bases_valencia"
+                        objectGroup="plants"
+                        objectId="0"
+                        gltf-model="url(../assets/glb/cherry-blossom.glb)"
+                        rotation="-5 0 0"
+                        scale="0.05 .05 .05"
+                        position="0 -0.04 -0.4"
+                    ></a-entity>
+                    <a-entity
+                        select-bar="controllerID: rightHand"
+                        id="menuItems"
+                        scale="0.7 0.7 0.7"
+                        position="0 0.14 -0.03"
+                        rotation="-85 0 0"
+                    >
                         <optgroup label="Plants" value="plants">
                             <option value="short-grass" src="url(../assets/img/short-grass.png)" selected>Short Grass</option>
                             <option value="potted_plant_small" src="url(../assets/img/potted_plant_small.png)">Potted Plant</option>
@@ -134,13 +156,6 @@
                             <option value="tall-grass" src="url(../assets/img/tall-grass.png)">Tall Grass</option>
                         </optgroup>
                     </a-entity>
-                </a-entity>
-
-                <a-entity class="right" id="rightHand" hand-controls="hand: right; handModelStyle: lowPoly; color: #00ff00"
-                          raycaster="lineOpacity: 0; enabled: false; objects: .rightclickable" 
-                          laser-controls="hand: right; model: false"
-                          blink-controls="cameraRig: #camRig; teleportOrigin: #cam; collisionEntities: #floor, .cloud-surface; curveShootingSpeed: 12"
-                          menu-controls>
                 </a-entity>
             </template>
 
@@ -339,22 +354,29 @@
                   </a-entity>
                 </a-entity> <!-- meditation submenu -->
 
+                <!-- bar -->
+                <a-plane color="black" rotation="0 0 0" position="0 -0.57 0" scale="2 0.03 0.05"></a-plane>
+
                  <!-- volume -->
                 
-                <a-entity id="volume-slider" class="slider" slider="title: Audio Volume" position="0 -0.7 0" visible="false">
+                <a-entity id="volume-slider" class="slider" slider="title: Audio Volume" position="-0.4 -0.7 0" visible="false">
                   
                 </a-entity>
                 <!-- volume -->
+
+                <!-- display square-->
+                <a-entity id="display-box" horizontal-button="" position="0.5 -1 0"></a-entity>
 
                 <!-- audio -->
                 <!-- TODO: Find Better way to organize multiple audios -->
                 
                 <!-- audio menu button-->
-                <a-entity id="audio-menu" class="audio" visible="false" position="-0.7 -0.8 0">  <!--position="1.4 0 1.45" rotation="0 -70 0"-->
+                <a-entity id="audio-menu" class="audio" visible="false" position="-0.7 -0.9 0">  <!--position="1.4 0 1.45" rotation="0 -70 0"-->
                   <a-entity id="audio-menu-button" class="small-button" small-button="color: black; title: AUDIO" scale="2 1 1"></a-entity>
+                  <a-entity id="light-menu-button" class="small-button" small-button="color: black; title: LIGHTING" scale="2 1 1" position="0.5 0 0"></a-entity>
                 </a-entity>
 
-                <a-entity id="function-buttons" class="audio" visible="false" position="0 -0.9 0">
+                <a-entity id="function-buttons" class="audio" visible="false" position="-0.4 -0.9 0">
                   <a-entity id="play-button" class="small-button" small-button="img: #play-button" position="-0.3 0 0"></a-entity>
                   <a-entity id="pause-button" class="small-button" small-button="img: #pause-button" position="0 0 0"></a-entity>
                   <a-entity id="replay-button" class="small-button" small-button="img: #replay-button" position="0.3 0 0"></a-entity>
@@ -499,6 +521,8 @@
             <a-entity id="breathing-meditation-1" class="audio" sound="src: #breath-exercise-meditation-1; positional: false; volume: 0.1"></a-entity>
             <a-entity id="breathing-meditation-2" class="audio" sound="src: #breath-exercise-meditation-2; positional: false; volume: 0.1"></a-entity>
             <a-entity id="breathing-meditation-3" class="audio" sound="src: #breath-exercise-meditation-3; positional: false; volume: 0.1"></a-entity>
+
+            <a-entity id="yoga-script" class="audio" sound="src: #yoga-audio-short-0; autoplay: false; loop: false; positional: false; volume: 0.1"></a-entity>
             <!--scripts-->
    
           
