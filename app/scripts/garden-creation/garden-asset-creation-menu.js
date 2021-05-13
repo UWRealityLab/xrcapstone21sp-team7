@@ -251,6 +251,7 @@ AFRAME.registerComponent('select-bar', {
         // If controls = true and a controllerID has been provided, then add controller event listeners
         if (this.data.controls && this.data.controllerID) {
             let controllerEl = document.getElementById(this.data.controllerID);
+            if (!controllerEl) return;
             controllerEl.addEventListener('thumbstickmoved', this.logThumbstick.bind(this));
             controllerEl.addEventListener('gripup', this.onMenuHidden.bind(this));
             controllerEl.addEventListener('gripdown', this.onMenuVisible.bind(this));
@@ -264,6 +265,7 @@ AFRAME.registerComponent('select-bar', {
     removeEventListeners: function () {
         if (this.data.controls && this.data.controllerID) {
             let controllerEl = document.getElementById(this.data.controllerID);
+            if (!controllerEl) return;
             controllerEl.removeEventListener('thumbstickmoved', this.logThumbstick);
             controllerEl.removeEventListener('gripup', this.onMenuHidden);
             controllerEl.removeEventListener('gripdown', this.onMenuVisible);
