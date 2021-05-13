@@ -22,6 +22,10 @@
     <!-- fake hands for croquet -->
     <script src="./scripts/fake-hands.js"></script>
 
+    <!-- timer helpers -->
+    <script src="./scripts/timer/interval.js"></script>
+    <script src="./scripts/timer/timeout.js"></script>
+
     <!-- garden generation/creation -->
     <script src="./scripts/garden-creation/simple-sun-sky.js"></script>
     <script src="./scripts/garden-creation/generate-base-garden.js"></script>
@@ -138,14 +142,17 @@
                         rotation="-85 0 0"
                     >
                         <optgroup label="Plants" value="plants">
-                            <option value="cherry-blossom" src="url(../assets/img/cherry-blossom.png)" selected>Cherry Blossom</option>
-                            <option value="evergreen-tree-1" src="url(../assets/img/evergreen-tree-1.png)">Evergreen Tree 1</option>
-                            <option value="evergreen-tree-2" src="url(../assets/img/evergreen-tree-2.png)">Evergreen Tree 2</option>
-                            <option value="tall-tree" src="url(../assets/img/tall-tree.png)">Tall Tree</option>
-                            <option value="round-tree-1" src="url(../assets/img/round-tree-1.png)">Round Tree 1</option>
-                            <option value="short-grass" src="url(../assets/img/short-grass.png)">Short Grass</option>
+                            <option value="short-grass" src="url(../assets/img/short-grass.png)" selected>Short Grass</option>
                             <option value="potted_plant_small" src="url(../assets/img/potted_plant_small.png)">Potted Plant</option>
                             <option value="bamboo" src="url(../assets/img/bamboo.png)">Bamboo</option>
+                            <option value="flower-01" src="url(../assets/img/flower-01.png)">Flower 01</option>
+                            <option value="flower-02" src="url(../assets/img/flower-02.png)">Flower 02</option>
+                            <option value="flower-03" src="url(../assets/img/flower-03.png)">Flower 03</option>
+                            <option value="flower-04" src="url(../assets/img/flower-04.png)">Flower 04</option>
+                            <option value="flower-05" src="url(../assets/img/flower-05.png)">Flower 05</option>
+                            <option value="flower-06" src="url(../assets/img/flower-06.png)">Flower 06</option>
+                            <option value="grass-flower" src="url(../assets/img/grass-flower.png)">Grass Flower</option>
+                            <option value="tall-grass" src="url(../assets/img/tall-grass.png)">Tall Grass</option>
                         </optgroup>
                     </a-entity>
                 </a-entity>
@@ -567,22 +574,20 @@
           class="lantern"
           gltf-model="#lantern"
           position="2 0 -3"
-          croquet="name: lantern-1"
           shadow="receive: false; cast: true"
         >
           <a-entity class="flame" position="0 1 0" gltf-model="#flame" 
-          croquet="name: flame1" visible="false"></a-entity>
+          visible="false"></a-entity>
         </a-entity>
 
         <a-entity
           class="lantern"
           gltf-model="#lantern"
           position="-2 0 -3"
-          croquet="name: lantern-2"
           shadow="receive: false; cast: true"
         >
           <a-entity class="flame" position="0 1 0" gltf-model="#flame" 
-            croquet="name: flame2" visible="false"></a-entity>
+            visible="false"></a-entity>
         </a-entity>
 
         <a-entity
@@ -591,7 +596,6 @@
           scale="0.5 0.5 0.5" 
           rotation="0 90 0" 
           position="0 0.1 -1" 
-          croquet="name: med"
           shadow="receive: true; cast: true"
         ></a-entity>
 

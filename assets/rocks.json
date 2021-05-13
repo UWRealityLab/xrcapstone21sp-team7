@@ -1,44 +1,80 @@
 [
-    {
-        "file": "flat-rock",
-        "actualScale": "1 1 1",
-        "replicaScale": "0.1 0.1 0.1",
-        "replicaPosition": "0 0.13 -0.17"
-    },
-    {
-        "file": "round-rock-patch",
-        "actualScale": "0.8 0.8 0.8",
-        "replicaScale": "0.08 0.08 0.08",
-        "replicaPosition": "0 .12 -.3"
-    },
-    {
-        "file": "scattered-rocks",
-        "actualScale": "1 1 1",
-        "replicaScale": "0.1 0.1 0.1",
-        "replicaPosition": "0 .12 -.3"
-    },
-    {
-        "file": "large-rock",
-        "actualScale": "0.6 0.6 0.6",
-        "replicaScale": "0.05 .05 .05",
-        "replicaPosition": "0 .09 -.3"
-    },
-    {
-        "file": "medium-rock",
-        "actualScale": "1 1 1",
-        "replicaScale": "0.1 0.1 0.1",
-        "replicaPosition": "0 0.14 -0.18"
-    },
-    {
-        "file": "tall-rock",
-        "actualScale": "1 1 1",
-        "replicaScale": "0.1 0.1 0.1",
-        "replicaPosition": "0 0.12 -0.16"
-    },
-    {
-        "file": "stone-lantern",
-        "actualScale": "1 1 1",
-        "replicaScale": "0.1 0.1 0.1",
-        "replicaPosition": "0 0.12 -0.16"
-    }
+  {
+    "file": "flat-rock",
+    "actualScale": "1 1 1",
+    "replicaScale": "0.1 0.1 0.1",
+    "replicaPosition": "0 0.13 -0.17"
+  },
+  {
+    "file": "round-rock-patch",
+    "actualScale": "0.8 0.8 0.8",
+    "replicaScale": "0.08 0.08 0.08",
+    "replicaPosition": "0 .12 -.3"
+  },
+  {
+    "file": "scattered-rocks",
+    "actualScale": "1 1 1",
+    "replicaScale": "0.1 0.1 0.1",
+    "replicaPosition": "0 .12 -.3"
+  },
+  {
+    "file": "large-rock",
+    "actualScale": "0.6 0.6 0.6",
+    "replicaScale": "0.05 .05 .05",
+    "replicaPosition": "0 .09 -.3"
+  },
+  {
+    "file": "medium-rock",
+    "actualScale": "1 1 1",
+    "replicaScale": "0.1 0.1 0.1",
+    "replicaPosition": "0 0.14 -0.18"
+  },
+  {
+    "file": "tall-rock",
+    "actualScale": "1 1 1",
+    "replicaScale": "0.1 0.1 0.1",
+    "replicaPosition": "0 0.12 -0.24"
+  },
+  {
+    "file": "rock-01",
+    "actualScale": "1 1 1",
+    "replicaScale": "0.1 0.1 0.1",
+    "replicaPosition": "0 0.12 -0.24"
+  },
+  {
+    "file": "rock-03",
+    "actualScale": "1 1 1",
+    "replicaScale": "0.1 0.1 0.1",
+    "replicaPosition": "0 0.12 -0.24"
+  },
+  {
+    "file": "rock-04",
+    "actualScale": "1 1 1",
+    "replicaScale": "0.1 0.1 0.1",
+    "replicaPosition": "0 0.12 -0.24"
+  },
+  {
+    "file": "rock-05",
+    "actualScale": "1 1 1",
+    "replicaScale": "0.1 0.1 0.1",
+    "replicaPosition": "0 0.12 -0.24"
+  },
+  {
+    "file": "rock-06",
+    "actualScale": "1 1 1",
+    "replicaScale": "0.1 0.1 0.1",
+    "replicaPosition": "0 0.12 -0.24"
+  },
+  {
+    "file": "rock-07",
+    "actualScale": "1 1 1",
+    "replicaScale": "0.1 0.1 0.1",
+    "replicaPosition": "0 0.12 -0.24"
+  },
+  {
+    "file": "stone-pathway",
+    "actualScale": "1 1 1",
+    "replicaScale": "0.1 0.1 0.1",
+    "replicaPosition": "0 0.12 -0.24"
+  }
 ]

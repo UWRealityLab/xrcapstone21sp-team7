@@ -141,7 +141,7 @@ AFRAME.registerComponent('garden-controls', {
 
         // get the list of object group json directories - which json files should we read?
         // for each group, fetch the json file and populate the optgroup and option elements as children of the appropriate menu element
-        let list = ['plants', 'rocks'];
+        let list = ['plants', 'rocks', 'trees', 'stumps', 'decorations', 'mushrooms'];
 
         let groupJSONArray = [];
         const menuId = this.data.menuId;

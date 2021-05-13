@@ -1,11 +1,14 @@
 AFRAME.registerComponent('meditation-ring-automated', {
   schema: {
     breathCaptureId: { type: 'string' },
-    meditationBreathAcceptableThreshold: { type: 'number', default: 1000 }
+    meditationBreathAcceptableThreshold: { type: 'number', default: 1000 },
+    meditationBreathInOutHoldTime: { type: 'number', default: 5000 }
   },
 
   init: function () {
     let el = this.el;
+
+    this.paused = false;
 
     this.onBreathInComplete = this.onBreathInComplete.bind(this);
     this.onBreathOutComplete = this.onBreathOutComplete.bind(this);
@@ -16,6 +19,7 @@ AFRAME.registerComponent('meditation-ring-automated', {
     this.onLoopTimeout = this.onLoopTimeout.bind(this);
     this.onTimeLeftTimeout = this.onTimeLeftTimeout.bind(this);
     this.onBreathChangeHelper = this.onBreathChangeHelper.bind(this);
+    this.onPauseBreathing = this.onPauseBreathing.bind(this);
 
     el.sceneEl.addEventListener('holding-breath-in-complete', this.onHoldingBreathInComplete);
     el.sceneEl.addEventListener('holding-breath-out-complete', this.onHoldingBreathOutComplete);
@@ -23,13 +27,27 @@ AFRAME.registerComponent('meditation-ring-automated', {
     el.sceneEl.addEventListener('breath-out-complete', this.onBreathOutComplete);
     el.sceneEl.addEventListener('breath-capture-calibration-complete', this.startAutomatedMeditationRing);
     el.sceneEl.addEventListener('breath-capture-end', this.endAutomatedMeditationRing);
+    el.sceneEl.addEventListener('pause-breathing', this.onPauseBreathing);
 
     el.setAttribute('visible', 'false');
   },
 
+  onPauseBreathing: function(evt) {
+    this.paused = evt.detail;
+    if (this.paused) {
+      this.loopTimer.pause();
+      this.timeLeftTimer.pause();
+    } else {
+      this.loopTimer.resume();
+      this.timeLeftTimer.resume();
+    }
+  },
+
   tick: function () {
-    let el = this.el;
-    el.setAttribute('radius-tubular', 0.01 / el.object3D.scale.x);
+    if (!this.paused) {
+      let el = this.el;
+      el.setAttribute('radius-tubular', 0.01 / el.object3D.scale.x);
+    }
   },
 
   remove: function () {
@@ -67,11 +85,11 @@ AFRAME.registerComponent('meditation-ring-automated', {
       color: ''
     }
 
-    if (evt.detail < 5000 - this.data.meditationBreathAcceptableThreshold) {
+    if (evt.detail < this.data.meditationBreathInOutHoldTime - this.data.meditationBreathAcceptableThreshold) {
       this.log('too short outwards breath');
       params.value = 'Too Shallow!';
       params.color = '#ff0000';
-    } else if (evt.detail > 5000 + this.data.meditationBreathAcceptableThreshold) {
+    } else if (evt.detail > this.data.meditationBreathInOutHoldTime + this.data.meditationBreathAcceptableThreshold) {
       this.log('too long outwards breath');
       params.value = 'Too Deep!';
       params.color = '#ff0000';
@@ -115,10 +133,12 @@ AFRAME.registerComponent('meditation-ring-automated', {
     el.setAttribute('animation__color', colorAnimation);
 
     this.loopCount = 0;
-    this.loopTimer = setInterval(this.onLoopTimeout, 5000);
+    this.loopTimer = RecurringTimer(this.onLoopTimeout, this.data.meditationBreathInOutHoldTime);
 
     this.timeLeft = MEDITATION_TIME / 1000;
-    this.timeLeftTimer = setInterval(this.onTimeLeftTimeout, 1000);
+    this.timeLeftTimer = RecurringTimer(this.onTimeLeftTimeout, 1000);
+
+    this.paused = false;
   },
 
   onTimeLeftTimeout: function() {
@@ -154,8 +174,8 @@ AFRAME.registerComponent('meditation-ring-automated', {
     el.setAttribute('visible', 'false');
     el.removeAttribute('animation__scale');
     el.removeAttribute('animation__color');
-    clearInterval(this.loopTimer);
-    clearInterval(this.timeLeftTimer);
+    this.loopTimer.pause();
+    this.timeLeftTimer.pause();
 
     let menu = document.getElementById('breath-meditation-menu');
     menu.setAttribute('visible', 'false');
