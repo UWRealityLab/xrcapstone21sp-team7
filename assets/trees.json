@@ -3,13 +3,13 @@
     "file": "cherry-blossom",
     "actualScale": "1 1 1",
     "replicaScale": "0.05 0.05 0.05",
-    "replicaPosition": "0 -0.04 -0.4"
+    "replicaPosition": "0 0.05 -0.35"
   },
   {
     "file": "evergreen-tree-1",
     "actualScale": "1 1 1",
     "replicaScale": "0.08 0.08 0.08",
-    "replicaPosition": "0 -0.08 -0.21"
+    "replicaPosition": "0 0.05 -0.24"
   },
   {
     "file": "evergreen-tree-2",

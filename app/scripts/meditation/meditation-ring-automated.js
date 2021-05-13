@@ -133,16 +133,17 @@ AFRAME.registerComponent('meditation-ring-automated', {
     el.setAttribute('animation__color', colorAnimation);
 
     this.loopCount = 0;
-    this.loopTimer = RecurringTimer(this.onLoopTimeout, this.data.meditationBreathInOutHoldTime);
+    this.loopTimer = new RecurringTimer(this.onLoopTimeout, this.data.meditationBreathInOutHoldTime);
 
     this.timeLeft = MEDITATION_TIME / 1000;
-    this.timeLeftTimer = RecurringTimer(this.onTimeLeftTimeout, 1000);
+    this.timeLeftTimer = new RecurringTimer(this.onTimeLeftTimeout, 1000);
 
     this.paused = false;
   },
 
   onTimeLeftTimeout: function() {
     this.timeLeft--;
+    if (this.timeLeft < 0) return;
     let timeLeftStr = `${Math.floor(this.timeLeft / 60)}:${this.timeLeft % 60 < 10 ? '0' : ''}${this.timeLeft % 60}`;
     let timer = document.getElementById('breath-meditation-timer');
     timer.setAttribute('text', 'value', timeLeftStr);
@@ -170,12 +171,13 @@ AFRAME.registerComponent('meditation-ring-automated', {
   },
 
   endAutomatedMeditationRing: function() {
+    console.log('endAutomatedMeditationRing');
     let el = this.el;
     el.setAttribute('visible', 'false');
     el.removeAttribute('animation__scale');
     el.removeAttribute('animation__color');
-    this.loopTimer.pause();
-    this.timeLeftTimer.pause();
+    if (this.loopTimer) this.loopTimer.pause();
+    if (this.timeLeftTimer) this.timeLeftTimer.pause();
 
     let menu = document.getElementById('breath-meditation-menu');
     menu.setAttribute('visible', 'false');

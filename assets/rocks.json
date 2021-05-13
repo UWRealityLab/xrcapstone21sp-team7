@@ -45,7 +45,7 @@
     "file": "rock-03",
     "actualScale": "1 1 1",
     "replicaScale": "0.1 0.1 0.1",
-    "replicaPosition": "0 0.12 -0.24"
+    "replicaPosition": "0 0.12 -0.3"
   },
   {
     "file": "rock-04",
@@ -74,7 +74,7 @@
   {
     "file": "stone-pathway",
     "actualScale": "1 1 1",
-    "replicaScale": "0.1 0.1 0.1",
-    "replicaPosition": "0 0.12 -0.24"
+    "replicaScale": "0.05 0.05 0.05",
+    "replicaPosition": "0 0.12 -0.3"
   }
 ]
