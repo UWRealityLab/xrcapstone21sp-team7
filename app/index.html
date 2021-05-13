@@ -107,14 +107,36 @@
                     class="left"
                     id="leftHand"
                     hand-controls="hand: left; handModelStyle: lowPoly"
-                    raycaster="showLine: false; enabled: false; objects: .leftclickable;"
+                    raycaster="showLine: false; enabled: false; objects: .ground, .previewFrame;" 
                     garden-controls="menuId: menuItems; previewItemId: leftItem; gardenBaseId: garden; newAssetContainerId: new-asset-container"
-                    breath-capture>
-                    <a-entity id="leftItem" file="kfarr_bases_valencia" objectGroup="plants" objectId="0"
-                        gltf-model="url(../assets/glb/cherry-blossom.glb)" rotation="-5 0 0" scale="0.05 .05 .05"
-                        position="0 -0.04 -0.4"></a-entity>
-                    <a-entity select-bar="controllerID: leftHand" id="menuItems" scale="0.7 0.7 0.7"
-                        position="0 0.14 -0.03" rotation="-85 0 0">
+                    blink-controls="cameraRig: #camRig; teleportOrigin: #cam; collisionEntities: #floor, .cloud-surface; curveShootingSpeed: 12"
+                    breath-capture
+                ></a-entity>
+                <a-entity
+                    class="right"
+                    id="rightHand"
+                    hand-controls="hand: right; handModelStyle: lowPoly"
+                    raycaster="lineOpacity: 0.0; enabled: false; objects: .rightclickable;"
+                    laser-controls="hand: right; model: false"
+                    menu-controls
+                >
+                    <a-entity
+                        id="leftItem"
+                        file="kfarr_bases_valencia"
+                        objectGroup="plants"
+                        objectId="0"
+                        gltf-model="url(../assets/glb/cherry-blossom.glb)"
+                        rotation="-5 0 0"
+                        scale="0.05 .05 .05"
+                        position="0 -0.04 -0.4"
+                    ></a-entity>
+                    <a-entity
+                        select-bar="controllerID: rightHand"
+                        id="menuItems"
+                        scale="0.7 0.7 0.7"
+                        position="0 0.14 -0.03"
+                        rotation="-85 0 0"
+                    >
                         <optgroup label="Plants" value="plants">
                             <option value="cherry-blossom" src="url(../assets/img/cherry-blossom.png)" selected>Cherry Blossom</option>
                             <option value="evergreen-tree-1" src="url(../assets/img/evergreen-tree-1.png)">Evergreen Tree 1</option>
@@ -126,13 +148,6 @@
                             <option value="bamboo" src="url(../assets/img/bamboo.png)">Bamboo</option>
                         </optgroup>
                     </a-entity>
-                </a-entity>
-
-                <a-entity class="right" id="rightHand" hand-controls="hand: right; handModelStyle: lowPoly; color: #00ff00"
-                          raycaster="lineOpacity: 0; enabled: false; objects: .rightclickable" 
-                          laser-controls="hand: right; model: false"
-                          blink-controls="cameraRig: #camRig; teleportOrigin: #cam; collisionEntities: #floor, .cloud-surface; curveShootingSpeed: 12"
-                          menu-controls>
                 </a-entity>
             </template>
 
