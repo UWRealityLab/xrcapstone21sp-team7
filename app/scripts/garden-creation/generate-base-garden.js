@@ -2,6 +2,8 @@
 
 // Width of wall segment in meters
 const WALL_SEG_WIDTH = 10;
+// Width of entry building in meters
+const ENTRY_WIDTH = 10;
 // Width (and depth) of corner wall segment in meters
 const CORNER_WALL_SEG_WIDTH = 1.8;
 
@@ -16,8 +18,10 @@ AFRAME.registerComponent("base-garden", {
     const { THREE } = AFRAME;
 
     let el = this.el;
-    let sceneWidth = this.data.sceneWidth * WALL_SEG_WIDTH + 2 * CORNER_WALL_SEG_WIDTH;
-    let sceneDepth = this.data.sceneDepth * WALL_SEG_WIDTH + 2 * CORNER_WALL_SEG_WIDTH;
+    let sceneWidth =
+      this.data.sceneWidth * WALL_SEG_WIDTH + 2 * CORNER_WALL_SEG_WIDTH;
+    let sceneDepth =
+      this.data.sceneDepth * WALL_SEG_WIDTH + 2 * CORNER_WALL_SEG_WIDTH;
     console.log("sceneWidth: ", sceneWidth);
     console.log("sceneDepth: ", sceneDepth);
 
@@ -29,10 +33,10 @@ AFRAME.registerComponent("base-garden", {
     ];
 
     let cornerRotations = [
-        new THREE.Vector3(0, 180, 0),
-        new THREE.Vector3(0, 90, 0),
-        new THREE.Vector3(0, 0, 0),
-        new THREE.Vector3(0, 270, 0),
+      new THREE.Vector3(0, 180, 0),
+      new THREE.Vector3(0, 90, 0),
+      new THREE.Vector3(0, 0, 0),
+      new THREE.Vector3(0, 270, 0),
     ];
 
     function createWall(position, rotation, name) {
@@ -53,7 +57,6 @@ AFRAME.registerComponent("base-garden", {
     const wallOffset = CORNER_WALL_SEG_WIDTH + WALL_SEG_WIDTH / 2;
     for (let i = 0; i < widthGap / WALL_SEG_WIDTH; i++) {
       // left wall
-      let wall = document.createElement("a-entity");
       createWall(
         new THREE.Vector3(
           cornerPositions[0].x + i * WALL_SEG_WIDTH + wallOffset,
@@ -76,29 +79,52 @@ AFRAME.registerComponent("base-garden", {
       );
     }
 
+    const middle = Math.floor(depthGap / WALL_SEG_WIDTH / 2);
     for (let i = 0; i < depthGap / WALL_SEG_WIDTH; i++) {
+      console.log("i: ", i);
       // back
-      let wall = document.createElement("a-entity");
       createWall(
         new THREE.Vector3(
           cornerPositions[0].x,
           0,
-          cornerPositions[0].z + i * WALL_SEG_WIDTH + wallOffset,
+          cornerPositions[0].z + i * WALL_SEG_WIDTH + wallOffset
         ),
         new THREE.Vector3(0, 270, 0),
         "wall" + i.toString() + "back"
       );
 
-      // right wall
-      createWall(
-        new THREE.Vector3(
-          cornerPositions[2].x,
-          0,
-          cornerPositions[2].z - i * WALL_SEG_WIDTH - wallOffset,
-        ),
-        new THREE.Vector3(0, 90, 0),
-        "wall" + i.toString() + "front"
-      );
+      // front and entry building
+      if (i != middle) {
+        createWall(
+          new THREE.Vector3(
+            cornerPositions[2].x,
+            0,
+            cornerPositions[2].z - i * WALL_SEG_WIDTH - wallOffset
+          ),
+          new THREE.Vector3(0, 90, 0),
+          "wall" + i.toString() + "front"
+        );
+      } else {
+        let building = document.createElement("a-entity");
+        building.setAttribute("gltf-model", "#entry-building");
+        building.setAttribute(
+          "position",
+          el.object3D.worldToLocal(
+            new THREE.Vector3(
+              cornerPositions[2].x,
+              0,
+              cornerPositions[2].z -
+                i * WALL_SEG_WIDTH - wallOffset
+            )
+          )
+        );
+        building.setAttribute(
+          "rotation",
+          el.object3D.worldToLocal(new THREE.Vector3(0, 270, 0))
+        );
+        building.setAttribute("scale", "1.1 1 1");
+        el.appendChild(building);
+      }
     }
 
     // Add corner walls
