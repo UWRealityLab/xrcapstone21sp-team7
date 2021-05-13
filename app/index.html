@@ -60,7 +60,7 @@
     <script src="./scripts/menu/audio-button.js"></script>
     <script src="./scripts/menu/vertical-slider.js"></script>
     <script src="./scripts/menu/small-button.js"></script>
-    <!--script src="./scripts/left_arrow.js"></script-->
+    <script src="./scripts/menu/title.js"></script>
 
     <script src="./scripts/joystick.js"></script>
     <script src="./scripts/randomizeLocation.js"></script>
@@ -355,7 +355,7 @@
 
                  <!-- volume -->
                 
-                <a-entity id="volume-slider" class="slider" slider="title: Music" position="0 -0.7 0" visible="false">
+                <a-entity id="volume-slider" class="slider" slider="title: Audio Volume" position="0 -0.7 0" visible="false">
                   
                 </a-entity>
                 <!-- volume -->
@@ -364,15 +364,18 @@
                 <!-- TODO: Find Better way to organize multiple audios -->
                 
                 <!-- audio menu button-->
-                <a-entity id="audio-menu" class="audio" visible="false" position="1.4 0 1.45" rotation="0 -70 0">
-                  <a-entity id="audio-menu-button" class="small-button" horizontal-button="title: NOW PLAYING" mixin="horizontal-frame"></a-entity>
-                  <a-entity id="play-button" class="small-button" small-button="img: #play-button" position="-0.3 -0.45 0"></a-entity>
-                  <a-entity id="pause-button" class="small-button" small-button="img: #pause-button" position="0 -0.45 0"></a-entity>
-                  <a-entity id="replay-button" class="small-button" small-button="img: #replay-button" position="0.3 -0.45 0"></a-entity>
+                <a-entity id="audio-menu" class="audio" visible="false" position="-0.7 -0.8 0">  <!--position="1.4 0 1.45" rotation="0 -70 0"-->
+                  <a-entity id="audio-menu-button" class="small-button" small-button="color: black; title: AUDIO" scale="2 1 1"></a-entity>
+                </a-entity>
+
+                <a-entity id="function-buttons" class="audio" visible="false" position="0 -0.9 0">
+                  <a-entity id="play-button" class="small-button" small-button="img: #play-button" position="-0.3 0 0"></a-entity>
+                  <a-entity id="pause-button" class="small-button" small-button="img: #pause-button" position="0 0 0"></a-entity>
+                  <a-entity id="replay-button" class="small-button" small-button="img: #replay-button" position="0.3 0 0"></a-entity>
                 </a-entity>
 
 
-                <a-entity id="audio-options" class="audio" visible="false" position="1.4 0 1.45" rotation="0 -70 0">
+                <a-entity id="audio-options" class="audio" visible="false">
                   <!-- back to audio menu button -->
 
                   <a-entity id="As-the-rain" class="small-button" audio-button="title: As The Rain; img: #As-the-rain-img" position="-0.45 0 0" mixin="thumbnail-frame"></a-entity>
@@ -510,6 +513,8 @@
             <a-entity id="breathing-meditation-1" class="audio" sound="src: #breath-exercise-meditation-1; positional: false; volume: 0.1"></a-entity>
             <a-entity id="breathing-meditation-2" class="audio" sound="src: #breath-exercise-meditation-2; positional: false; volume: 0.1"></a-entity>
             <a-entity id="breathing-meditation-3" class="audio" sound="src: #breath-exercise-meditation-3; positional: false; volume: 0.1"></a-entity>
+
+            <a-entity id="yoga-script" class="audio" sound="src: #yoga-audio-short-0; autoplay: false; loop: false; positional: false; volume: 0.1"></a-entity>
             <!--scripts-->
    
           
