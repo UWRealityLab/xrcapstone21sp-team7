@@ -221,6 +221,7 @@
             <img id="yoga-back" src="../assets/img/yoga/menu/yoga_back.png"/>
             <img id="yoga-next" src="../assets/img/yoga/menu/yoga_next.png"/>
             <img id="yoga-pause" src="../assets/img/yoga/menu/yoga_pause.png"/>
+            <img id="yoga-play" src="../assets/img/yoga/menu/yoga_play.png"/>
             
             <!-- menu -->
             <img id="meditation-img" src="../assets/img/menu/meditation.png"/>
@@ -464,19 +465,18 @@
         </a-image>
         <a-box id="yoga-mat" height="0.1" width="1" depth="2" position="0 0 18" color="#DB7093"></a-box>
 
-        <a-entity id="timer" position="0 1.85 14" scale="10 10 10" rotation="0 180 0" visible="false"
+        <a-entity id="yoga-timer" position="0 1.85 21" scale="10 10 10" rotation="0 180 0" visible="false"
                   text="color: white; align: center; value: 0;"></a-entity>
 
         <!-- yoga menu -->
-        <a-entity id="yoga-buttons" visible="true" position="0 2.5 20.5" rotation="-15 0 0">
-          <a-box id ="yoga-back" class="rightclickable" scale="0.6 0.6 0.2" position="-1 0 0.125" color="white" yoga-button></a-box>
+        <a-entity id="yoga-buttons" visible="false" position="0 2.5 20.5" rotation="-15 0 180">
+          <a-box id="yoga-back" class="rightclickable" scale="0.6 0.6 0.2" position="-1 0 0.125" color="white" yoga-button></a-box>
           <a-image src="#yoga-back" width="0.5" height="0.5" position="-1 0 0"></a-image>
-          <a-box id ="yoga-pause" class="rightclickable" scale="0.6 0.6 0.2" position="0 0 0.125" color="white" yoga-button></a-box>
-          <a-image src="#yoga-pause" width="0.5" height="0.5" position="0 0 0"></a-image>
-          <a-box id ="yoga-next"  class="rightclickable" scale="0.6 0.6 0.2" position="1 0 0.125" color="white" yoga-button></a-box>
+          <a-box id="yoga-pause" class="rightclickable" scale="0.6 0.6 0.2" position="0 0 0.125" color="white" yoga-button></a-box>
+          <a-image id="yoga-pause-img" src="#yoga-pause" width="0.5" height="0.5" position="0 0 0"></a-image>
+          <a-box id="yoga-next"  class="rightclickable" scale="0.6 0.6 0.2" position="1 0 0.125" color="white" yoga-button></a-box>
           <a-image src="#yoga-next" width="0.5" height="0.5" position="1 0 0"></a-image>
         </a-entity>
-
 
         <!-- Generated garden -->
         <a-entity id="garden" base-garden="sceneWidth: 4; sceneDepth: 4"></a-entity>

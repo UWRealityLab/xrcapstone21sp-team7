@@ -21,22 +21,11 @@ AFRAME.registerComponent("yoga-button", {
 
   yogaToggle: function() {
     this.el.setAttribute("color", "gray");
-    let buttonId = this.el.getAttribute("id");
-
-    /*
-    switch(buttonId) {
-      case "yoga-back":
-        break;
-      case "yoga-pause":
-        break;
-      case "yoga-next":
-        break;
-    }
-    */
+    this.el.emit(`${this.el.id}-triggered`);
   },
 
   onMouseEnter: function() {
-    let hand = document.getElementById('rightHand');
+    let hand = document.getElementById("rightHand");
     this.el.setAttribute("color", "#C0C0C0");
     hand.setAttribute("raycaster", "lineOpacity", 1);
   },
