@@ -215,7 +215,7 @@ AFRAME.registerComponent("menu-controls", {
         this.activateSmallButton(document.querySelector("#audio-menu"));
 
         // deactive volume slider
-        this.deactivateSliders();
+        //this.deactivateSliders();
       }
     } else {
       //this.el.emit("startMeditation");
@@ -223,7 +223,7 @@ AFRAME.registerComponent("menu-controls", {
       this.activate(document.querySelector("#first-menu"));
 
       // Turn on sliders
-      //this.activateSliders();
+      this.activateSliders();
 
       this.activateSmallButton(document.querySelector("#audio-menu"));
       this.displayed = true;
@@ -291,7 +291,7 @@ AFRAME.registerComponent("menu-controls", {
     this.deactivateSmallButton(document.querySelector("#audio-menu"));
 
     // activate volume
-    this.activateSliders();
+    //this.activateSliders();
 
     let sky = document.querySelector("#sky");
     let attr = sky.getAttribute("sound");
@@ -474,7 +474,7 @@ AFRAME.registerComponent("menu-controls", {
     this.deactivateSmallButton(document.querySelector("#audio-menu"));
 
     // activate volume
-    this.activateSliders();
+    //this.activateSliders();
   },
 
   onGuidedYogaButtonClicked: function () {
@@ -586,7 +586,7 @@ AFRAME.registerComponent("menu-controls", {
       this.activateSmallButton(document.querySelector("#audio-menu"));
 
       this.activate(document.querySelector("#first-menu"));
-      this.deactivateSliders();
+      //this.deactivateSliders();
     } else {
       let sky = document.querySelector("#sky");
       let attr = sky.getAttribute("sound");

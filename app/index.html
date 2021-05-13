@@ -353,23 +353,29 @@
                   </a-entity>
                 </a-entity> <!-- meditation submenu -->
 
+                <!-- bar -->
+                <a-plane color="black" rotation="0 0 0" position="0 -0.57 0" scale="2 0.03 0.05"></a-plane>
+
                  <!-- volume -->
                 
-                <a-entity id="volume-slider" class="slider" slider="title: Audio Volume" position="0 -0.7 0" visible="false">
+                <a-entity id="volume-slider" class="slider" slider="title: Audio Volume" position="-0.4 -0.7 0" visible="false">
                   
                 </a-entity>
                 <!-- volume -->
+
+                <!-- display square-->
+                <a-entity id="display-box" horizontal-button="" position="0.5 -1 0"></a-entity>
 
                 <!-- audio -->
                 <!-- TODO: Find Better way to organize multiple audios -->
                 
                 <!-- audio menu button-->
-                <a-entity id="audio-menu" class="audio" visible="false" position="-0.7 -0.8 0">  <!--position="1.4 0 1.45" rotation="0 -70 0"-->
+                <a-entity id="audio-menu" class="audio" visible="false" position="-0.7 -0.9 0">  <!--position="1.4 0 1.45" rotation="0 -70 0"-->
                   <a-entity id="audio-menu-button" class="small-button" small-button="color: black; title: AUDIO" scale="2 1 1"></a-entity>
                   <a-entity id="light-menu-button" class="small-button" small-button="color: black; title: LIGHTING" scale="2 1 1" position="0.5 0 0"></a-entity>
                 </a-entity>
 
-                <a-entity id="function-buttons" class="audio" visible="false" position="0 -0.9 0">
+                <a-entity id="function-buttons" class="audio" visible="false" position="-0.4 -0.9 0">
                   <a-entity id="play-button" class="small-button" small-button="img: #play-button" position="-0.3 0 0"></a-entity>
                   <a-entity id="pause-button" class="small-button" small-button="img: #pause-button" position="0 0 0"></a-entity>
                   <a-entity id="replay-button" class="small-button" small-button="img: #replay-button" position="0.3 0 0"></a-entity>
