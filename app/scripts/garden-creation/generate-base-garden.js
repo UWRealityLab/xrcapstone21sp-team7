@@ -127,7 +127,7 @@ AFRAME.registerComponent("base-garden", {
     this.floorPlane.setAttribute("rotation", "-90 0 0");
     this.floorPlane.setAttribute("id", "floor");
     this.floorPlane.setAttribute("color", "green");
-    this.floorPlane.setAttribute("class", "leftclickable");
+    this.floorPlane.setAttribute("class", "ground");
     this.floorPlane.setAttribute("roughness", "0.9");
     this.floorPlane.setAttribute("shadow", "receive: true; cast: false");
 
