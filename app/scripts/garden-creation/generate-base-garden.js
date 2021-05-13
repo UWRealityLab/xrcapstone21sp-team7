@@ -106,6 +106,7 @@ AFRAME.registerComponent("base-garden", {
         );
       } else {
         let building = document.createElement("a-entity");
+        building.setAttribute("class", "walkable");
         building.setAttribute("gltf-model", "#entry-building");
         building.setAttribute(
           "position",

@@ -42,7 +42,7 @@ AFRAME.registerComponent("cloud-meditation", {
     cloud.setAttribute("position", position);
     // Need this surface to teleport to
     let surface = document.createElement("a-plane");
-    surface.setAttribute("class", "cloud-surface");
+    surface.setAttribute("class", "walkable");
     surface.setAttribute("visible", "false");
     surface.setAttribute("rotation", "-90 0 0");
     surface.setAttribute("position", "0.05 0 -0.26");
