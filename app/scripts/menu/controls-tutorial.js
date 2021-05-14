@@ -1,12 +1,49 @@
+// Text Dimensions
 const HEADER_TEXT_WIDTH = 14;
-const TITLE_TEXT_WIDTH = 8;
-const INFO_TEXT_WIDTH = 4;
+const TITLE_TEXT_WIDTH = 7;
+const INFO_TEXT_WIDTH = 3;
+
+// Positions & Offsets
+const CENTER_X = 3.48;
+const CENTER_Y = 3.5;
+const CENTER_Z = -1;
 
 AFRAME.registerComponent("controls-tutorial", {
-  init: function() {
+  init: function () {
     let el = this.el;
 
-    // grab building to place all instructinos relative to the building
+    /* Helpers */
+    const createGif = (src) => {
+      const gif = document.createElement("a-entity");
+      gif.setAttribute("geometry", "primitive: plane");
+      gif.setAttribute("material", {
+        shader: "gif",
+        src: src,
+      });
+      gif.setAttribute("scale", "2 2 2");
+
+      return gif;
+    };
+
+    const createText = (text, size) => {
+      const textEl = document.createElement("a-entity");
+      textEl.setAttribute("text", {
+        value: text,
+        align: "center",
+        shader: "msdf",
+        width: size,
+      });
+      textEl.setAttribute("position", {
+        x: 0,
+        y: size === TITLE_TEXT_WIDTH ? 1.4 : -1.4, // probably enum instead
+        z: 0,
+      });
+
+      return textEl;
+    };
+    /* */
+
+    // grab building to place all instructions relative to the building
     const building = document.querySelector("#entrance-building");
 
     // welcome message
@@ -26,51 +63,29 @@ AFRAME.registerComponent("controls-tutorial", {
 
     // menu
     const menuContainer = document.createElement("a-entity");
-    menuContainer.setAttribute("position", "0 3.5 1.6");
+    menuContainer.setAttribute("position", `0 ${CENTER_Y} 1.6`);
     menuContainer.setAttribute("rotation", "0 180 0");
 
-    const menuInstructions = "TODO: menu instructions";
-    const menu = document.createElement("a-entity");
-    menu.setAttribute("text", {
-      value: menuInstructions,
-      align: "center",
-      shader: "msdf",
-      width: TITLE_TEXT_WIDTH
-    });
+    const menu = createText("TODO: menu instructions", INFO_TEXT_WIDTH);
 
     menuContainer.append(menu);
     //
 
     // locomotion
     const locomotionContainer = document.createElement("a-entity");
-    locomotionContainer.setAttribute("position", "3.48 3.5 -0.8");
+    locomotionContainer.setAttribute("position", {
+      x: CENTER_X,
+      y: CENTER_Y,
+      z: CENTER_Z,
+    });
     locomotionContainer.setAttribute("rotation", "0 -90 0");
 
-    const gettingAround = document.createElement("a-entity");
-    gettingAround.setAttribute("text", {
-      value: "Getting Around",
-      align: "center",
-      shader: "msdf",
-      width: TITLE_TEXT_WIDTH
-    });
-    gettingAround.setAttribute("position", "0 1.4 0");
-
-    const teleportGif = document.createElement("a-entity");
-    teleportGif.setAttribute("geometry", "primitive: plane");
-    teleportGif.setAttribute("material", {
-      shader: "gif",
-      src: "#teleport-gif"
-    });
-    teleportGif.setAttribute("scale", "2 2 2");
-
-    const teleportInsructions = document.createElement("a-entity");
-    teleportInsructions.setAttribute("text", {
-      value: "Flick and hold the joystick\nforward to select your destination",
-      align: "center",
-      shader: "msdf",
-      width: INFO_TEXT_WIDTH
-    });
-    teleportInsructions.setAttribute("position", "0 -1.4 0");
+    const gettingAround = createText("Getting Around", TITLE_TEXT_WIDTH);
+    const teleportGif = createGif("#teleport-gif");
+    const teleportInsructions = createText(
+      "Flick and hold the joystick\nforward to select your destination",
+      INFO_TEXT_WIDTH
+    );
 
     locomotionContainer.appendChild(gettingAround);
     locomotionContainer.appendChild(teleportGif);
@@ -79,19 +94,26 @@ AFRAME.registerComponent("controls-tutorial", {
 
     // asset placement
     const placementContainer = document.createElement("a-entity");
-    placementContainer.setAttribute("position", "-3.8 3.5 -0.5");
+    placementContainer.setAttribute("position", {
+      x: -CENTER_X,
+      y: CENTER_Y,
+      z: CENTER_Z,
+    });
     placementContainer.setAttribute("rotation", "0 90 0");
 
-    const placementInstructions = "TODO: placement instructions";
-    const placement = document.createElement("a-entity");
-    placement.setAttribute("text", {
-      value: placementInstructions,
-      align: "center",
-      shader: "msdf",
-      width: TITLE_TEXT_WIDTH
-    });
+    const customizeYourGarden = createText(
+      "Customize Your Garden",
+      TITLE_TEXT_WIDTH
+    );
+    const placementGif = createGif("#placement-gif");
+    const placmentInstructions = createText(
+      "Hold the right grip to bring\nup the placement menu. Click and\nhold the left trigger to drag\nand drop the item",
+      INFO_TEXT_WIDTH
+    );
 
-    placementContainer.appendChild(placement);
+    placementContainer.appendChild(customizeYourGarden);
+    placementContainer.appendChild(placementGif);
+    placementContainer.appendChild(placmentInstructions);
     //
 
     // Add to building
@@ -100,5 +122,5 @@ AFRAME.registerComponent("controls-tutorial", {
     building.appendChild(locomotionContainer);
     building.appendChild(placementContainer);
   },
-  remove: function() {},
-})
+  remove: function () {},
+});

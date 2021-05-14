@@ -22,8 +22,8 @@ AFRAME.registerComponent("base-garden", {
       this.data.sceneWidth * WALL_SEG_WIDTH + 2 * CORNER_WALL_SEG_WIDTH;
     let sceneDepth =
       this.data.sceneDepth * WALL_SEG_WIDTH + 2 * CORNER_WALL_SEG_WIDTH;
-    console.log("sceneWidth: ", sceneWidth);
-    console.log("sceneDepth: ", sceneDepth);
+    // console.log("sceneWidth: ", sceneWidth);
+    // console.log("sceneDepth: ", sceneDepth);
 
     let cornerPositions = [
       new THREE.Vector3(-sceneWidth / 2, 0, -sceneDepth / 2),
@@ -81,7 +81,6 @@ AFRAME.registerComponent("base-garden", {
 
     const middle = Math.floor(depthGap / WALL_SEG_WIDTH / 2);
     for (let i = 0; i < depthGap / WALL_SEG_WIDTH; i++) {
-      console.log("i: ", i);
       // back
       createWall(
         new THREE.Vector3(
@@ -148,7 +147,7 @@ AFRAME.registerComponent("base-garden", {
     }
 
     // Add floor
-    console.log("width: " + sceneWidth + " depth: " + sceneDepth);
+    // console.log("width: " + sceneWidth + " depth: " + sceneDepth);
     this.floorPlane = document.createElement("a-plane");
     this.floorPlane.setAttribute("width", sceneWidth);
     this.floorPlane.setAttribute("height", sceneDepth);
