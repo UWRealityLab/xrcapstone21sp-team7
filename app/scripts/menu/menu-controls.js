@@ -16,9 +16,9 @@ AFRAME.registerComponent("menu-controls", {
 
     // the x value of the audio options at the start and end
     // need to change if change the number of audios.
-    this.topAudioOption = 0;
-    this.bottomAudioOption = -0.9;
-    this.prevAudioSlider = 0.5;
+    this.topAudioOption = -0.45;
+    this.bottomAudioOption = 1.8;
+    this.prevAudioSlider = 0.1;
 
     // An entity with the same x/z position as the user's head such that when recentering the ui the ui is rotated around the user's head
     this.uiHousing = document.createElement('a-entity');
@@ -551,13 +551,13 @@ AFRAME.registerComponent("menu-controls", {
 
   onAudioShift: function (evt) {
     let x = evt.detail.percent - this.prevAudioSlider;
-    let m = this.bottomAudioOption / 0.5;
+    let m = this.bottomAudioOption / 0.9;
 
     let y = m * x;
 
     this.currAudioMenu.querySelectorAll(".small-button").forEach((button) => {
       let attr = button.getAttribute("position");
-      attr.y = attr.y - y;
+      attr.x = attr.x - y;
       button.setAttribute("position", attr);
     });
     this.prevAudioSlider = evt.detail.percent;
