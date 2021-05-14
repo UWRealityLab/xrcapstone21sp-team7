@@ -13,7 +13,7 @@ AFRAME.registerComponent("cloud-meditation", {
 
     // Create Clouds
     let position = {
-      x: -25,
+      x: -30,
       y: DY,
       z: 0,
     };
@@ -56,7 +56,7 @@ AFRAME.registerComponent("cloud-meditation", {
     this.el.querySelectorAll(".cloud").forEach((cloud) => {
       cloud.setAttribute(
         "animation",
-        "property: scale; to: 3.1 2.9 3.1; dur: 5000; loop: true; dir: alternate;"
+        "property: scale; to: 3.2 3 3.2; dur: 6000; loop: true; dir: alternate;"
       );
       cloud.setAttribute("visible", true);
     });
