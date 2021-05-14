@@ -13,6 +13,7 @@ AFRAME.registerComponent("menu-controls", {
 
     this.currAudioMenu;
     this.currSong = "background-music";
+    this.currScript = "";
 
     // the x value of the audio options at the start and end
     // need to change if change the number of audios.
@@ -176,6 +177,8 @@ AFRAME.registerComponent("menu-controls", {
 
     this.activateSmallButton = this.activateSmallButton.bind(this);
     this.deactivateSmallButton = this.deactivateSmallButton.bind(this);
+
+    this.changeDisplayMenu = this.changeDisplayMenu.bind(this);
   },
 
   /*
@@ -219,7 +222,6 @@ AFRAME.registerComponent("menu-controls", {
         
         // TODO JANE: something's happening here, find bug so no need for this if else statement
         if (id != "audio-options" && id != "yoga-menu") {
-          console.log("ID: " + id);
           document.querySelector("#sky").components.sound.playSound();
         }
 
@@ -229,8 +231,13 @@ AFRAME.registerComponent("menu-controls", {
         // activate audio option
         this.activateSmallButton(document.querySelector("#audio-menu"));
 
+        this.currMeditationScript = null;
+
         // deactive volume slider
         //this.deactivateSliders();
+
+        this.currScript = "";
+        this.changeDisplayMenu();
       }
     } else {
       //this.el.emit("startMeditation");
@@ -345,6 +352,9 @@ AFRAME.registerComponent("menu-controls", {
 
     this.breathingOn = false;
     this.yogaOn = false;
+
+    this.currScript = "Guided Meditation";
+    this.changeDisplayMenu();
   },
 
   // Start the rain story script
@@ -372,6 +382,9 @@ AFRAME.registerComponent("menu-controls", {
     this.breathingOn = false;
     this.yogaOn = false;
 
+    this.currScript = "Story Meditation";
+    this.changeDisplayMenu();
+
   },
 
   // Start confidence booster script
@@ -398,6 +411,9 @@ AFRAME.registerComponent("menu-controls", {
 
     this.breathingOn = false;
     this.yogaOn = false;
+
+    this.currScript = "Confidence Booster Meditation";
+    this.changeDisplayMenu();
   },
 
   /**
@@ -427,6 +443,9 @@ AFRAME.registerComponent("menu-controls", {
     this.el.sceneEl.emit("breath-capture-start");
 
     this.yogaOn = false;
+
+    this.currScript = "Breathing Exercise";
+    this.changeDisplayMenu();
   },
 
   onBreathAudio1: function () {
@@ -468,6 +487,9 @@ AFRAME.registerComponent("menu-controls", {
   onCloudMeditationButtonClicked: function () {
     // TODO: maybe change scene a bit
     this.el.sceneEl.emit("cloud-meditation-start");
+
+    this.currScript = "Cloud Meditation";
+    this.changeDisplayMenu();
   },
 
   /*
@@ -599,6 +621,8 @@ AFRAME.registerComponent("menu-controls", {
 
     sky.setAttribute("sound", attr);
     this.currSong = audio_id;
+
+    this.changeDisplayMenu();
     
   },
 
@@ -700,6 +724,20 @@ AFRAME.registerComponent("menu-controls", {
     });
 
     this.currentMenu = null;
+  },
+
+  changeDisplayMenu: function () {
+    let display = document.querySelector("#display-box");
+    let title_1 = display.querySelector(".title-1");
+    let title_2 = display.querySelector(".title-2");
+
+    let text_1 = title_1.getAttribute("text");
+    text_1.value = this.currSong;
+    title_1.setAttribute("text", text_1);
+
+    let text_2 = title_2.getAttribute("text");
+    text_2.value = this.currScript;
+    title_2.setAttribute("text", text_2);
   },
 
   remove: function () {
