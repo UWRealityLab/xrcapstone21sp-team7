@@ -221,7 +221,7 @@ AFRAME.registerComponent("menu-controls", {
         }
         
         // TODO JANE: something's happening here, find bug so no need for this if else statement
-        if (id != "audio-options" && id != "yoga-menu") {
+        if (id != "audio-options") { // && id != "yoga-menu") {
           document.querySelector("#sky").components.sound.playSound();
         }
 
@@ -251,6 +251,8 @@ AFRAME.registerComponent("menu-controls", {
       this.displayed = true;
       this.el.setAttribute("raycaster", "enabled", true);
       this.el.setAttribute("raycaster", "lineOpacity", 1);
+
+      this.changeDisplayMenu();
     }
 
     // this.displayed = !this.displayed;
@@ -520,6 +522,9 @@ AFRAME.registerComponent("menu-controls", {
     
     // stop the background music
     document.querySelector("#sky").components.sound.stopSound();
+
+    this.currScript = "Guided Yoga";
+    this.changeDisplayMenu();
   },
 
   onVolumeChanged: function (evt) {
