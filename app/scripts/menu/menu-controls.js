@@ -184,8 +184,18 @@ AFRAME.registerComponent("menu-controls", {
   onMenuActivate: function () {
     if (this.displayed) {
       // TODO: change this, still want if user selected a meditation mode
-      const id = this.currentMenu.id;
-      this.deactivate(this.currentMenu);
+      let id;
+      if (this.currentMenu == null && this.currAudioMenu != null) {
+        // then it must be audio menu
+        id = this.currAudioMenu.id;
+        this.deactivateSmallButton(this.currAudioMenu);
+        //this.activateSmallButton(document.querySelector("#audio-menu"));
+      } else {
+        id = this.currentMenu.id;
+        this.deactivate(this.currentMenu);
+      }
+      //const id = this.currentMenu.id;
+      //this.deactivate(this.currentMenu);
 
       this.el.sceneEl.emit("menu-item-deselected");
 
@@ -206,7 +216,12 @@ AFRAME.registerComponent("menu-controls", {
           this.currMeditationScript.components.sound.stopSound();
           //this.breathingOn = false;
         }
-        document.querySelector("#sky").components.sound.playSound();
+        
+        // TODO JANE: something's happening here, find bug so no need for this if else statement
+        if (id != "audio-options" && id != "yoga-menu") {
+          console.log("ID: " + id);
+          document.querySelector("#sky").components.sound.playSound();
+        }
 
         // play pause replay buttons
         this.deactivateSmallButton(document.querySelector("#function-buttons"));
@@ -467,9 +482,6 @@ AFRAME.registerComponent("menu-controls", {
     let yogaMenu = document.querySelector("#yoga-menu");
     this.activate(yogaMenu);
 
-    // play pause replay buttons
-    this.activateSmallButton(document.querySelector("#function-buttons"));
-
     // deactivate audio option
     this.deactivateSmallButton(document.querySelector("#audio-menu"));
 
@@ -580,22 +592,14 @@ AFRAME.registerComponent("menu-controls", {
 
   audioChanged: function (evt) {
     let audio_id = evt.detail.audio_id;
+    let sky = document.querySelector("#sky");
+    let attr = sky.getAttribute("sound");
+    attr.src = "#" + audio_id;
+    console.log("audio id: " + audio_id);
 
-    if (audio_id == "audio-exit") {
-      this.deactivateSmallButton(this.currAudioMenu);
-      this.activateSmallButton(document.querySelector("#audio-menu"));
-
-      this.activate(document.querySelector("#first-menu"));
-      //this.deactivateSliders();
-    } else {
-      let sky = document.querySelector("#sky");
-      let attr = sky.getAttribute("sound");
-      attr.src = "#" + audio_id;
-      console.log("audio id: " + audio_id);
-
-      sky.setAttribute("sound", attr);
-      this.currSong = audio_id;
-    }
+    sky.setAttribute("sound", attr);
+    this.currSong = audio_id;
+    
   },
 
   /*
@@ -679,9 +683,6 @@ AFRAME.registerComponent("menu-controls", {
   activate: function (element) {
     element.querySelectorAll(".option").forEach((option) => {
       option.setAttribute("class", "rightclickable option");
-
-      let attr = option.getAttribute("class");
-      console.log("ATTR: " + attr);
     });
     element.setAttribute("visible", "true");
 
