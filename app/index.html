@@ -481,7 +481,7 @@
       
         <!-- yoga stuff -->
         <a-image id="yoga-images" width="1.5" height="1.5" position="0 0.75 21" rotation="0 180 0"
-                 sound="on: model-loaded, autoplay: true; positional: false; volume: 0.25">
+                 sound="on: model-loaded, autoplay: false; positional: false; volume: 0.25">
             <!-- frame -->
             <a-cylinder radius="0.75" height="0.1" position="0 0.75 -0.25" rotation="90 0 0" color="#696969"></a-cylinder>
             <a-box width="3" height="0.5" position="0 -0.95 0" color="#DDBE91"></a-box>
@@ -496,13 +496,13 @@
                   text="color: white; align: center; value: 0;"></a-entity>
 
         <!-- yoga menu -->
-        <a-entity id="yoga-buttons" visible="false" position="0 2.5 20.5" rotation="-15 0 180">
-          <a-box id="yoga-back" class="rightclickable" scale="0.6 0.6 0.2" position="-1 0 0.125" color="white" yoga-button></a-box>
-          <a-image src="#yoga-back" width="0.5" height="0.5" position="-1 0 0"></a-image>
-          <a-box id="yoga-pause" class="rightclickable" scale="0.6 0.6 0.2" position="0 0 0.125" color="white" yoga-button></a-box>
-          <a-image id="yoga-pause-img" src="#yoga-pause" width="0.5" height="0.5" position="0 0 0"></a-image>
-          <a-box id="yoga-next"  class="rightclickable" scale="0.6 0.6 0.2" position="1 0 0.125" color="white" yoga-button></a-box>
-          <a-image src="#yoga-next" width="0.5" height="0.5" position="1 0 0"></a-image>
+        <a-entity id="yoga-buttons" position="0 2.5 20.5" rotation="-15 0 180">
+          <a-box id="yoga-control-back" class="rightclickable" visible="false" scale="0.6 0.6 0.2" position="-1 0 0.125" color="white" yoga-button></a-box>
+          <a-image id="yoga-control-back-img" src="#yoga-back" visible="false" width="0.5" height="0.5" position="-1 0 0"></a-image>
+          <a-box id="yoga-control-pause" class="rightclickable" visible="false" scale="0.6 0.6 0.2" position="0 0 0.125" color="white" yoga-button></a-box>
+          <a-image id="yoga-control-pause-img" src="#yoga-pause" visible="false" width="0.5" height="0.5" position="0 0 0"></a-image>
+          <a-box id="yoga-control-next"  class="rightclickable" visible="false" scale="0.6 0.6 0.2" position="1 0 0.125" color="white" yoga-button></a-box>
+          <a-image id="yoga-control-next-img" src="#yoga-next" visible="false" width="0.5" height="0.5" position="1 0 0"></a-image>
         </a-entity>
 
         <!-- Generated garden -->
@@ -535,7 +535,7 @@
             <a-entity id="breathing-meditation-2" class="audio" sound="src: #breath-exercise-meditation-2; positional: false; volume: 0.1"></a-entity>
             <a-entity id="breathing-meditation-3" class="audio" sound="src: #breath-exercise-meditation-3; positional: false; volume: 0.1"></a-entity>
 
-            <a-entity id="yoga-script" class="audio" sound="src: #yoga-audio-short-0; autoplay: false; loop: false; positional: false; volume: 0.1"></a-entity>
+            <a-entity id="yoga-script" class="audio" sound="src: #yoga-audio-short-0; autoplay: false; loop: false; positional: false; volume: 0.25"></a-entity>
             <!--scripts-->
    
           
