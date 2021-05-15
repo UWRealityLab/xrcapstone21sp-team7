@@ -82,8 +82,14 @@ AFRAME.registerComponent("yoga-mode", {
     // imagesEl.setAttribute("visible", "true");
     imagesEl.setAttribute("src", "#yoga-short-" + this.loopCount);
     timerEl.setAttribute("visible", "true");
-    this.el.setAttribute("sound", "src: #yoga-audio-short-0; autoplay: true; loop: false; positional: false; volume: 0.25");
-    this.el.components.sound.playSound();
+    //this.el.setAttribute("sound", "src: #yoga-audio-short-0; autoplay: true; loop: false; positional: false; volume: 0.25");
+    //this.el.components.sound.playSound();
+    let y = this.el.querySelector("#yoga-script");
+    let attr = y.getAttribute("sound");
+    attr.src = "#yoga-audio-short-0";
+    y.setAttribute("sound", attr);
+    y.components.sound.playSound();
+
     document.querySelector("#yoga-images").setAttribute("sound", "src: #As-the-rain; autoplay: true; loop: true; volume: 0.05");
     document.querySelector("#yoga-buttons").setAttribute("visible", "true");
 
@@ -95,7 +101,9 @@ AFRAME.registerComponent("yoga-mode", {
   stopYogaMode: function() {
     if (this.inYogaMode) {
       this.inYogaMode = false;
-      this.el.components.sound.stopSound();
+      //this.el.components.sound.stopSound();
+      let y = this.el.querySelector("#yoga-script");
+      y.components.sound.stopSound();
       document.querySelector("#yoga-images").removeAttribute('sound');
       document.querySelector("#yoga-images").setAttribute('src', '#yoga-short-0');
       document.querySelector("#yoga-timer").setAttribute('visible', 'false');
@@ -122,7 +130,13 @@ AFRAME.registerComponent("yoga-mode", {
 
     if (this.loopCount < TIME_ARRAY.length) {
       imagesEl.setAttribute("src", "#yoga-short-" + this.loopCount);
-      this.el.setAttribute("sound", "src: #yoga-audio-short-" + this.loopCount + "; autoplay: true; loop: false; positional: false; volume: 0.25");
+      //this.el.setAttribute("sound", "src: #yoga-audio-short-" + this.loopCount + "; autoplay: true; loop: false; positional: false; volume: 0.25");
+      let y = this.el.querySelector("#yoga-script");
+      let attr = y.getAttribute("sound");
+      attr.src = "#yoga-audio-short-" + this.loopCount;
+      y.setAttribute("sound", attr);
+      y.components.sound.playSound();
+
       this.timer = TIME_ARRAY[this.loopCount];
       this.imageLoop();
     } else { // Clear when done looping

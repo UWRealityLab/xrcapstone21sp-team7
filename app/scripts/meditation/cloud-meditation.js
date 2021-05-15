@@ -13,7 +13,7 @@ AFRAME.registerComponent("cloud-meditation", {
 
     // Create Clouds
     let position = {
-      x: -25,
+      x: -30,
       y: DY,
       z: 0,
     };
@@ -42,7 +42,7 @@ AFRAME.registerComponent("cloud-meditation", {
     cloud.setAttribute("position", position);
     // Need this surface to teleport to
     let surface = document.createElement("a-plane");
-    surface.setAttribute("class", "cloud-surface");
+    surface.setAttribute("class", "walkable");
     surface.setAttribute("visible", "false");
     surface.setAttribute("rotation", "-90 0 0");
     surface.setAttribute("position", "0.05 0 -0.26");
@@ -56,7 +56,7 @@ AFRAME.registerComponent("cloud-meditation", {
     this.el.querySelectorAll(".cloud").forEach((cloud) => {
       cloud.setAttribute(
         "animation",
-        "property: scale; to: 3.1 2.9 3.1; dur: 5000; loop: true; dir: alternate;"
+        "property: scale; to: 3.2 3 3.2; dur: 6000; loop: true; dir: alternate;"
       );
       cloud.setAttribute("visible", true);
     });

@@ -1,5 +1,7 @@
-const CALIBRATION_TIME = 4;
-const AUDIO_2_PLAY_TIME = 30;
+const CALIBRATION_TIME = 4000;
+const AUDIO_2_PLAY_TIME = 30000;
+const MEDITATION_TIME = 120000;
+
 const DELTA_SAMPLES_TO_AVG = 6;
 // Any displacement below this amount (in meters) is not considered to be
 // the user breathing in or out
@@ -22,8 +24,6 @@ const BREATH_STATES = {
   BREATHING_OUT: 3,
   ERROR: 4,
 }
-
-const MEDITATION_TIME = 120000;
 
 /**
  * Connect this component to a hand with hand-controls component.
@@ -68,82 +68,75 @@ AFRAME.registerComponent('breath-capture', {
     this.controllerConnected = false;
 
     // Bound functions
-    this.startBreathCapture = this.startBreathCapture.bind(this);
-    this.stopBreathCapture = this.stopBreathCapture.bind(this);
+    this.onBreathCaptureStart = this.onBreathCaptureStart.bind(this);
+    this.onBreathCaptureEnd = this.onBreathCaptureEnd.bind(this);
     this.onControllerConnected = this.onControllerConnected.bind(this);
     this.onControllerDisconnected = this.onControllerDisconnected.bind(this);
     this.runCalibration = this.runCalibration.bind(this);
     this.runBreathCapture = this.runBreathCapture.bind(this);
     this.getControllerPosition = this.getControllerPosition.bind(this);
-    this.onCaptureBreathInPosition = this.onCaptureBreathInPosition.bind(this);
+    this.onToggleBreathCalibrationStart = this.onToggleBreathCalibrationStart.bind(this);
     this.classifyBreathing = this.classifyBreathing.bind(this);
-    this.onItemDeselected = this.onItemDeselected.bind(this);
+    this.onMenuItemDeselected = this.onMenuItemDeselected.bind(this);
     this.updateBreathingAverageTimes = this.updateBreathingAverageTimes.bind(this);
     this.onMeditationCompleteTimeout = this.onMeditationCompleteTimeout.bind(this);
+    this.onPauseBreathing = this.onPauseBreathing.bind(this);
+    this.onBreathAudio2Timeout = this.onBreathAudio2Timeout.bind(this);
+    this.onMeditationCalibrationComplete = this.onMeditationCalibrationComplete.bind(this);
 
     this.breathOutEmitters = [
-      'holding-breath-in-complete',
-      'holding-breath-out-complete',
-      'breath-in-complete',
-      'breath-out-complete',
-      'breath-error'
+      { emitString: 'holding-breath-in-complete', breathTime: 0 },
+      { emitString: 'holding-breath-out-complete', breathTime: 0 },
+      { emitString: 'breath-in-complete', breathTime: 0 },
+      { emitString: 'breath-out-complete', breathTime: 0 },
+      { emitString: 'breath-error', breathTime: -1 }
     ];
 
-    el.sceneEl.addEventListener('breath-capture-start', this.startBreathCapture);
-    el.sceneEl.addEventListener('breath-capture-end', this.stopBreathCapture);
-    el.sceneEl.addEventListener('menu-item-deselected', this.onItemDeselected);
+    el.sceneEl.addEventListener('breath-capture-start', this.onBreathCaptureStart);
+    el.sceneEl.addEventListener('breath-capture-end', this.onBreathCaptureEnd);
+    el.sceneEl.addEventListener('menu-item-deselected', this.onMenuItemDeselected);
+    el.sceneEl.addEventListener('pause-breathing', this.onPauseBreathing);
     el.addEventListener('controllerconnected', this.onControllerConnected);
     el.addEventListener('controllerdisconnected', this.onControllerDisconnected);
-    el.addEventListener('xbuttondown', this.onCaptureBreathInPosition);
-  },
-
-  onItemDeselected: function () {
-    if (this.meditating) {
-      this.el.sceneEl.emit('breath-capture-end');
-      this.stopBreathCapture();
-    }
+    el.addEventListener('xbuttondown', this.onToggleBreathCalibrationStart);
   },
 
   remove: function () {
     let el = this.el;
-    el.sceneEl.removeEventListener('breath-capture-start', this.startBreathCapture);
-    el.sceneEl.removeEventListener('breath-capture-end', this.stopBreathCapture);
+    el.sceneEl.removeEventListener('breath-capture-start', this.onBreathCaptureStart);
+    el.sceneEl.removeEventListener('breath-capture-end', this.onBreathCaptureEnd);
+    el.sceneEl.removeEventListener('menu-item-deselected', this.onMenuItemDeselected);
+    el.sceneEl.removeEventListener('pause-breathing', this.onPauseBreathing);
     el.removeEventListener('controllerconnected', this.onControllerConnected);
     el.removeEventListener('controllerdisconnected', this.onControllerDisconnected);
+    el.removeEventListener('xbuttondown', this.onToggleBreathCalibrationStart);
   },
 
-  tick: function (time, timeDelta) {
-    if (this.controllerConnected && this.meditating) {
-      if (this.calibrationObj.calibrationState == CALIBRATION_STATES.FINDING_BREATH_IN_POSITION ||
-        this.calibrationObj.calibrationState == CALIBRATION_STATES.FINDING_BREATH_OUT_POSITION) {
-        this.runCalibration(Date.now() / 1000)
-      } else if (this.calibrationObj.calibrationState == CALIBRATION_STATES.CALIBRATION_COMPLETE) {
-        // Check to see if delay for playing second audio file is complete
-        if (Date.now() / 1000 - this.calibrationObj.startTime > AUDIO_2_PLAY_TIME) {
-          this.calibrationObj.calibrationState = CALIBRATION_STATES.AUDIO2_COMPLETE_PLAYING;
-          this.el.sceneEl.emit(
-            'breath-capture-calibration-complete',
-            this.calibrationObj.displacementArr[this.calibrationObj.maxDisplacementIndex]);
-          this.meditationCompleteTimeout = setTimeout(this.onMeditationCompleteTimeout, MEDITATION_TIME);
-        }
-      } else {
-        // Run normal breath capture
+  tick: function (_, timeDelta) {
+    if (!this.controllerConnected || !this.meditating || this.paused) {
+      return;
+    }
+
+    switch (this.calibrationObj.calibrationState) {
+      case CALIBRATION_STATES.FINDING_BREATH_IN_POSITION:
+        // State transition out of here via user button press
+        break;
+      case CALIBRATION_STATES.FINDING_BREATH_OUT_POSITION:
+        this.runCalibration();
+        break;
+      case CALIBRATION_STATES.CALIBRATION_COMPLETE:
+        // State transition out of here via timer
+        break;
+      case CALIBRATION_STATES.AUDIO2_COMPLETE_PLAYING:
         this.runBreathCapture(timeDelta);
-      }
+        break;
     }
   },
 
-  onMeditationCompleteTimeout: function() {
-    // Stop breath capture
-    this.el.sceneEl.emit('breath-capture-end');
-    this.stopBreathCapture();
-  },
-
-  displacement: function (v1, v2) {
-    return Math.sqrt(Math.pow(v1.x - v2.x, 2) + Math.pow(v1.y - v2.y, 2) + Math.pow(v1.z - v2.z, 2));
-  },
-
-  runCalibration: function (time) {
+  /**
+   * Captures controller displacement necessary for calibration
+   */
+  runCalibration: function () {
     // The user must place the controller on their belly, breathe in all the way, press the y button
     // and breath all the way. This gives us a bunch of positions that we can do linear regression to
     // find a best fit line. Then when we are computing the displacement during operation, we use the
@@ -151,71 +144,78 @@ AFRAME.registerComponent('breath-capture', {
     // 
     // Note that direction is important to us because we need to know when they are breathing in vs. 
     // when they are breathing out.
-    switch (this.calibrationObj.calibrationState) {
-      case CALIBRATION_STATES.FINDING_BREATH_IN_POSITION:
-        break;
-      case CALIBRATION_STATES.FINDING_BREATH_OUT_POSITION:
-        // Each time we get a new position compute its displacement from the breathInPosition.
-        let position = this.getControllerPosition();
-        let displacement = this.displacement(this.calibrationObj.breathInPosition, position);
 
-        // Store the displacement and position
-        this.calibrationObj.displacementArr.push(displacement);
-        this.calibrationObj.positionArr.push(position);
+    // Each time we get a new position compute its displacement from the breathInPosition.
+    let position = this.getControllerPosition();
+    let displacement = this.displacement(this.calibrationObj.breathInPosition, position);
 
-        // Keep track of the max displacement measured
-        if (this.calibrationObj.displacementArr[this.calibrationObj.maxDisplacementIndex] < displacement) {
-          this.calibrationObj.maxDisplacementIndex = this.calibrationObj.displacementArr.length - 1;
-        }
+    // Store the displacement and position
+    this.calibrationObj.displacementArr.push(displacement);
+    this.calibrationObj.positionArr.push(position);
 
-        // After some time for calibration has passed, find the largest
-        // displacement and use this to find the target vector.
-        if (time - this.calibrationObj.startTime > CALIBRATION_TIME) {
-          this.calibrationObj.breathOutPosition = this.calibrationObj.positionArr[this.calibrationObj.maxDisplacementIndex];
-          // Find the target vector using the in and out breath positions
-          this.targetVector = new THREE.Vector3();
-          this.targetVector.subVectors(this.calibrationObj.breathInPosition, this.calibrationObj.breathOutPosition).normalize();
-
-          this.log(
-            'breathing calibrated, breathInPosition',
-            this.calibrationObj.breathInPosition,
-            'breath out position',
-            this.calibrationObj.breathOutPosition,
-            'targetVector:',
-            this.targetVector);
-
-          this.calibrationObj.calibrationState = CALIBRATION_STATES.CALIBRATION_COMPLETE;
-
-          // Initialize breath capture variables needed now that calibration is complete
-          this.previousPosition = position;
-
-          //let sound = 'on: model-loaded; src: #breath-exercise-meditation-2; autoplay: true; loop: false; positional: false; volume: 0.1';
-          //this.el.setAttribute('sound', sound);
-          this.el.emit("change-breathing-exercise-2");
-          console.log("change-breathing-exercise-2");
-
-          this.calibrationObj.startTime = time;
-
-          this.prevClassificationChangeTime = Date.now();
-        }
-        break;
-      default:
-        this.log('Invalid state during calibration');
-        break;
+    // Keep track of the max displacement measured
+    if (this.calibrationObj.displacementArr[this.calibrationObj.maxDisplacementIndex] < displacement) {
+      this.calibrationObj.maxDisplacementIndex = this.calibrationObj.displacementArr.length - 1;
     }
   },
 
-  dot: function (v1, v2) {
-    return v1.x * v2.x + v1.y * v2.y + v1.z * v2.z;
+  // Timeout callbacks
+
+  /**
+   * Timeout indicating that calibration is complete
+   */
+  onMeditationCalibrationComplete: function() {
+    this.calibrationObj.breathOutPosition = this.calibrationObj.positionArr[this.calibrationObj.maxDisplacementIndex];
+    // Find the target vector using the in and out breath positions
+    this.targetVector = new THREE.Vector3();
+    this.targetVector.subVectors(this.calibrationObj.breathInPosition, this.calibrationObj.breathOutPosition).normalize();
+
+    this.log(
+      'onMeditationCalibrationComplete called, breathInPosition',
+      this.calibrationObj.breathInPosition,
+      'breath out position',
+      this.calibrationObj.breathOutPosition,
+      'targetVector:',
+      this.targetVector);
+
+    this.calibrationObj.calibrationState = CALIBRATION_STATES.CALIBRATION_COMPLETE;
+
+    // Initialize breath capture variables needed now that calibration is complete
+    let position = this.getControllerPosition();
+    this.previousPosition = position;
+
+    // Start breathing exercise audio 2 and timer that will expire when audio is done
+    this.el.emit("change-breathing-exercise-2");
+    console.log("change-breathing-exercise-2");
+    this.waitBreathExercise2Audio = new Timer(this.onBreathAudio2Timeout, AUDIO_2_PLAY_TIME);
+
+    this.calibrationObj.startTime = Date.now();
   },
 
-  avg: function (arr) {
-    let avg = 0;
-    for (let i = 0; i < arr.length; i++) {
-      avg += arr[i];
-    }
-    return avg / arr.length;
+  /**
+   * Timeout indicating that the second breath audio is complete
+   */
+  onBreathAudio2Timeout: function () {
+    this.log('onBreathAudio2Timeout called');
+
+    this.calibrationObj.calibrationState = CALIBRATION_STATES.AUDIO2_COMPLETE_PLAYING;
+    this.el.sceneEl.emit(
+      'breath-capture-calibration-complete',
+      this.calibrationObj.displacementArr[this.calibrationObj.maxDisplacementIndex]);
+    this.meditationCompleteTimeout = new Timer(this.onMeditationCompleteTimeout, MEDITATION_TIME);
+    this.prevClassificationChangeTime = Date.now();
   },
+
+  /**
+   * Timeout indicating that meditation is complete.
+   */
+  onMeditationCompleteTimeout: function () {
+    // Stop breath capture
+    this.el.sceneEl.emit('breath-capture-end');
+    this.onBreathCaptureEnd();
+  },
+
+  // Breath capture and classification functions
 
   runBreathCapture: function (timeDelta) {
     let position = this.getControllerPosition();
@@ -237,37 +237,16 @@ AFRAME.registerComponent('breath-capture', {
     }
   },
 
-  updateBreathingAverageTimes: function(newBreathClassification) {
+  updateBreathingAverageTimes: function (newBreathClassification) {
     if (this.breathClassification != newBreathClassification) {
-      this.log(newBreathClassification);
-      let falsePositive = (Date.now() - this.prevClassificationChangeTime) < FALSE_POSITIVE_TIME_DIFF;
-      if (falsePositive) {
+      if ((Date.now() - this.prevClassificationChangeTime) < FALSE_POSITIVE_TIME_DIFF) {
         console.log('false positive');
-        return;
+      } else {
+        this.breathOutEmitters[this.breathClassification].breathTime = Date.now() - this.prevClassificationChangeTime;
+        this.el.sceneEl.emit(this.breathOutEmitters[this.breathClassification].emitString, this.breathOutEmitters[this.breathClassification].breathTime);
+        this.prevClassificationChangeTime = Date.now();
+        this.breathClassification = newBreathClassification;
       }
-
-      switch(this.breathClassification) {
-        case BREATH_STATES.BREATHING_IN:
-          this.breathInTime = Date.now() - this.prevClassificationChangeTime;
-          this.log('breathInTime', this.breathInTime);
-          this.el.sceneEl.emit(this.breathOutEmitters[this.breathClassification], this.breathInTime);
-          break;
-        case BREATH_STATES.BREATHING_OUT:
-          this.breathOutTime = Date.now() - this.prevClassificationChangeTime;
-          this.log('breathOutTime', this.breathOutTime);
-          this.el.sceneEl.emit(this.breathOutEmitters[this.breathClassification], this.breathOutTime);
-          break;
-        case BREATH_STATES.HOLDING_BREATH_IN:
-          this.holdingBreathInTime = Date.now() - this.prevClassificationChangeTime;
-          this.el.sceneEl.emit(this.breathOutEmitters[this.breathClassification], this.holdingBreathInTime);
-          break;
-        case BREATH_STATES.HOLDING_BREATH_OUT:
-          this.holdingBreathOutTime = Date.now() - this.prevClassificationChangeTime;
-          this.el.sceneEl.emit(this.breathOutEmitters[this.breathClassification], this.holdingBreathOutTime);
-          break;
-      }
-      this.prevClassificationChangeTime = Date.now();
-      this.breathClassification = newBreathClassification;
     }
   },
 
@@ -276,12 +255,14 @@ AFRAME.registerComponent('breath-capture', {
     // controller displacement from breath in and out positions, if the displacement is
     // very small, this probably means that the person is holding their breath.
 
-    let breathInDisplacementVector = new THREE.Vector3(this.calibrationObj.breathInPosition.x - position.x,
-                                                       this.calibrationObj.breathInPosition.y - position.y,
-                                                       this.calibrationObj.breathInPosition.z - position.z);
-    let breathOutDisplacementVector = new THREE.Vector3(this.calibrationObj.breathOutPosition.x - position.x,
-                                                        this.calibrationObj.breathOutPosition.y - position.y,
-                                                        this.calibrationObj.breathOutPosition.z - position.z);
+    let breathInDisplacementVector = new THREE.Vector3(
+      this.calibrationObj.breathInPosition.x - position.x,
+      this.calibrationObj.breathInPosition.y - position.y,
+      this.calibrationObj.breathInPosition.z - position.z);
+    let breathOutDisplacementVector = new THREE.Vector3(
+      this.calibrationObj.breathOutPosition.x - position.x,
+      this.calibrationObj.breathOutPosition.y - position.y,
+      this.calibrationObj.breathOutPosition.z - position.z);
 
     let breathInProjectedDisplacement = Math.abs(this.dot(this.targetVector, breathInDisplacementVector));
     let breathOutProjectedDisplacement = Math.abs(this.dot(this.targetVector, breathOutDisplacementVector));
@@ -298,12 +279,12 @@ AFRAME.registerComponent('breath-capture', {
       deltaPositionAvg = 0;
     } else if (deltaPositionAvg > 0) {
       if (this.breathClassification != BREATH_STATES.BREATHING_OUT ||
-          Math.abs(deltaPositionAvg) >= DISPLACEMENT_DEADZONE) {
+        Math.abs(deltaPositionAvg) >= DISPLACEMENT_DEADZONE) {
         this.updateBreathingAverageTimes(BREATH_STATES.BREATHING_IN);
       }
     } else if (deltaPositionAvg < 0) {
       if (this.breathClassification != BREATH_STATES.BREATHING_IN ||
-          Math.abs(deltaPositionAvg) >= DISPLACEMENT_DEADZONE) {
+        Math.abs(deltaPositionAvg) >= DISPLACEMENT_DEADZONE) {
         this.updateBreathingAverageTimes(BREATH_STATES.BREATHING_OUT);
       }
     }
@@ -312,22 +293,26 @@ AFRAME.registerComponent('breath-capture', {
     // this.log(this.breathClassification, deltaPositionAvg, breathInProjectedDisplacement, breathOutProjectedDisplacement);
   },
 
-  onCaptureBreathInPosition: function () {
+  // Functions for starting/stopping breath classification
+
+  onToggleBreathCalibrationStart: function () {
     if (this.meditating) {
       if (this.calibrationObj.calibrationState == CALIBRATION_STATES.FINDING_BREATH_IN_POSITION) {
+        this.log('starting calibration, capturing breath in position');
+
         let position = this.getControllerPosition();
         this.calibrationObj.breathInPosition = position;
-        this.calibrationObj.startTime = Date.now() / 1000;
+        this.calibrationTimeout = new Timer(this.onMeditationCalibrationComplete, CALIBRATION_TIME);
         this.calibrationObj.calibrationState = CALIBRATION_STATES.FINDING_BREATH_OUT_POSITION;
-        this.log('found breath in position');
       } else {
-        // Breath capture finished
+        this.log('stopping breath capture via calibration start toggle');
+
         this.el.sceneEl.emit('breath-capture-end');
       }
     }
   },
 
-  startBreathCapture: function () {
+  onBreathCaptureStart: function () {
     this.log('starting breath capture');
 
     this.meditating = true;
@@ -338,30 +323,94 @@ AFRAME.registerComponent('breath-capture', {
       maxDisplacementIndex: 0,
       positionArr: [],
       displacementArr: [],
-      startTime: 0,
       calibrationState: CALIBRATION_STATES.FINDING_BREATH_IN_POSITION
     };
 
     this.displacementArr = [];
     this.breathClassification = BREATH_STATES.HOLDING_BREATH_IN;
 
-    //let sound = 'on: model-loaded; src: #breath-exercise-meditation-1; autoplay: true; loop: false; positional: false; volume: 0.1';
-    //this.el.setAttribute('sound', sound);
-    //this.el.components.sound.playSound();
+    this.paused = false;
   },
 
-  stopBreathCapture: function () {
+  onBreathCaptureEnd: function () {
+    this.log('stopping breath capture');
+
     this.meditating = false;
     this.el.setAttribute('breath-capture', 'deltaPositionAvg', 0);
-    //let sound = 'on: model-loaded; src: #breath-exercise-meditation-3; autoplay: true; loop: false; positional: false; volume: 0.1';
-    //this.el.setAttribute('sound', sound);
-    this.log('stopping breath capture');
-    clearTimeout(this.onMeditationCompleteTimeout);
+    this.waitBreathExercise2Audio.pause();
+    this.meditationCompleteTimeout.pause();
+    this.calibrationTimeout.pause();
+  },
+
+  onPauseBreathing: function (evt) {
+    if (!this.meditating) {
+      return;
+    }
+
+    this.paused = evt.detail;
+
+    if (this.paused) {
+      // Stop calibration and reset calibration state to beginning since pausing in the middle of calibration
+      // is bad or pause timer
+      switch (this.calibrationObj.calibrationState) {
+        case CALIBRATION_STATES.FINDING_BREATH_IN_POSITION:
+          break;
+        case CALIBRATION_STATES.FINDING_BREATH_OUT_POSITION:
+          this.calibrationTimeout.pause();
+          break;
+        case CALIBRATION_STATES.CALIBRATION_COMPLETE:
+          this.waitBreathExercise2Audio.pause();
+          break;
+        case CALIBRATION_STATES.AUDIO2_COMPLETE_PLAYING:
+          this.meditationCompleteTimeout.pause();
+          break;
+      }
+    } else {
+      switch (this.calibrationObj.calibrationState) {
+        case CALIBRATION_STATES.FINDING_BREATH_IN_POSITION:
+          this.onToggleBreathCalibrationStart();
+          break;
+        case CALIBRATION_STATES.FINDING_BREATH_OUT_POSITION:
+          this.calibrationTimeout.resume();
+          break;
+        case CALIBRATION_STATES.CALIBRATION_COMPLETE:
+          this.waitBreathExercise2Audio.resume();
+          break;
+        case CALIBRATION_STATES.AUDIO2_COMPLETE_PLAYING:
+          this.meditationCompleteTimeout.resume();
+          break;
+      }
+    }
+  },
+
+  onMenuItemDeselected: function () {
+    if (this.meditating) {
+      this.el.sceneEl.emit('breath-capture-end');
+      this.onBreathCaptureEnd();
+    }
   },
 
   onControllerConnected: function () { this.controllerConnected = true; },
 
   onControllerDisconnected: function () { this.controllerConnected = false; },
+
+  // Helper functions
+
+  dot: function (v1, v2) {
+    return v1.x * v2.x + v1.y * v2.y + v1.z * v2.z;
+  },
+
+  avg: function (arr) {
+    let avg = 0;
+    for (let i = 0; i < arr.length; i++) {
+      avg += arr[i];
+    }
+    return avg / arr.length;
+  },
+
+  displacement: function (v1, v2) {
+    return Math.sqrt(Math.pow(v1.x - v2.x, 2) + Math.pow(v1.y - v2.y, 2) + Math.pow(v1.z - v2.z, 2));
+  },
 
   getControllerPosition: function () {
     let position = new THREE.Vector3();

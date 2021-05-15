@@ -47,6 +47,82 @@
             <div class="container">
                 <div class="row">
                     <div class="col-lg-8 col-md-10 mx-auto">
+                        <h2 id="blog6">Week 7 Blog: Various Garden Improvements</h2>
+                        <span class="meta">
+                            Posted by
+                            <a href="#!">AR/VR Capstone Team 7</a>
+                            on May 13, 2021
+                        </span>
+                        <p>
+                            This week we worked on various features that we felt needed improvement after our MVP and started looking into and designing various stretch goals that we would like to add to our product in the coming weeks. As like last week, our current project may be viewed
+                            <a href="">here.</a>
+                        </p>
+                        <h3>Successes and Accomplishments From This Week</h3>
+                        <p>
+                            After realizing that there are many controls that players must know to fully take advantage of the application, Hristo added an introduction scene that the player is loaded into on startup. The player now comes in outside the garden in a shrine with instructions for how to use the controllers. Hristo also added in new wall assets that greatly improved our application's performance and fixed some issues with jitter in the new walls he added.
+                            <br />
+                            <img src="assets/img/tutorial-wip-1.gif" width="400px" />
+                            <br />
+                            <i>Tutorial room work in progress</i>
+                        </p>
+                        <p>
+                            For our MVP, some of the audio was not properly being played or was delayed in loading and playing after the user selected some music. Jane worked on fixing these audio related issues so now audio handling is much improved. Furthermore, Jane added pause/play functionality to the audio menu. This was integrated into the yoga and meditation scripts so now the user may pause them when needed. Jane is currently working on improving the main menu U/I so the user may select from tabs to change music and other scene elements such as lighting.
+                            <br />
+                            <img src="assets/img/new_menu.gif" width="600px" />
+                            <br />
+                            <i>New menu design that can house more tools</i>
+                        </p>
+                        <p>
+                            After feedback from the MVP presentation, Matthew experimented with a drag and drop asset placement mechanism meant to improve the feel of placing items. Now, the user places an item by opening up the asset placement menu and using their other hand to drag and drop the item into the scene. Furthermore, to fill out the asset placement menu, Matthew also increased the number of placable assets in the asset menu from ~16 to 60. Matthew also continued to improve the breath meditation feedback mechanism and now we have a working solution.
+                            <br />
+                            <img src="assets/img/new-assets.PNG" width="1000px" />
+                            <br />
+                            <i>Some of the new assets we now have integrated into the asset menu</i>
+                            <br />
+                            <iframe src="https://www.youtube.com/embed/ygGmowWtc9s" width="600px" height="400px"></iframe>
+                            <iframe src="https://www.youtube.com/embed/Nw9-g6lSnnE" width="600px" height="400px"></iframe>
+                            <br />
+                            <i>Meditation ring demo and new asset placement demo</i>
+                            <br />
+                        </p>
+                        <p>
+                            Phi continued work on improving the yoga tools. He has added the ability to play and pause a yoga routine and also move on to the next yoga routine. He also procured the 3D yoga assets and is starting to work with these assets to get animations working properly.
+                            <br />
+                            <iframe src="https://youtube.com/embed/yTXp8q2P37c" width="600px" height="400px"></iframe>
+                            <br />
+                            <i></i>
+                            <br />
+                        </p>
+                        <p>
+                            As a group, we tried to diagnose some of the multiplayer issues that arose in previous weeks. In particular, the asset placement menu was bugging out when multiple people attempted to place assets but changes to the menu seems to have resolved whatever issues there have been related to this. Also, after people gave feedback that it would be better for each person to control their own lighting and music, we now do not mirror any of this information between user browsers. We are still looking into an effective way to introduce synchronized meditation or yoga that would also allow the user to have a personal meditation session if they want. Finally, we had some fun stress testing the garden to see how many high poly items we could place before FPS dropped off on the Oculus Quest 2, and got up to ~200 items.
+                            <br />
+                            <img src="assets/img/garden-stress-test.PNG" width="600px" />
+                            <br />
+                            <i>Lots of assets in the scene before major latency!</i>
+                        </p>
+                        <h3>Plan for Next Week</h3>
+                        <p>
+                            We will focus on fleshing out the yoga features without the feedback portion of this project yet implemented. We will also finish some of the menu improvements that were being made this week and add another scene location to the garden that users may meditate at in the mountains that surround the garden. This will build upon the cloud meditation mode that allows you to climb to the clouds to get a better view of the surroundings and garden (see video below). There are also some weird bugs related to using the meditation menu in multiplayer that we are still trying to pinpoint, so we will all be working on fixing this as well.
+                            <br />
+                            <iframe src="https://www.youtube.com/embed/Bu1CJvhR2cg" width="600px" height="400px"></iframe>
+                            <br />
+                            <i>Quick demo of cloud meditation for reference</i>
+                        </p>
+                        <ul>
+                            <li>Jane: Write blog, finish changes to menu UI</li>
+                            <li>Phi and Matthew: Add yoga model animations to the yoga scene. Fill out the preexisting yoga routines so there are 3 yoga routines. Add ability for user to create a custom yoga routine by appending yoga routines on to each other.</li>
+                            <li>Hristo: Add mountain meditation scene to the application.</li>
+                        </ul>
+                        <h3>Blocking Issues</h3>
+                        <p>Currently we are on track to meet our goals established in the PRD except for yoga post estimation. We believe this is not something that we can realistically integrate into our existing application in 2.5 weeks since it would require an external camera and GPU server, not to mention all the front end related work that would be needed once we finish getting the infrastructure set up and finish training a model to classify yoga poses. This is something that we are interested in doing but it might have to wait until after week 10.</p>
+                    </div>
+                </div>
+            </div>
+        </article>
+        <article>
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-8 col-md-10 mx-auto">
                         <h2 id="blog5">Week 6 Blog: Minimum Viable Garden</h2>
                         <span class="meta">
                             Posted by

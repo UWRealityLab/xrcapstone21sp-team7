@@ -3,7 +3,8 @@
 //         -- almost entirely same code, just the events emitted are different.
 AFRAME.registerComponent("horizontal-button", {
     schema: {
-      title: { type: "string", default: ""},
+      title_1: { type: "string", default: ""},
+      title_2: { type: "string", default: ""},
       img: { type: "selector", default: "#meditation-img" }
     },
     init: function () {
@@ -14,21 +15,42 @@ AFRAME.registerComponent("horizontal-button", {
       this.text = document.createElement("a-entity");
       this.text.setAttribute("position", "0.15 0.2 0");
       this.text.setAttribute("text", {
-        value: data.title,
+        value: data.title_1,
         align: "left",
         shader: "msdf",
         color: "#B7B4A7",
       });
 
-      // Title of Song playing now
-      this.songTitle = document.createElement("a-entity");
-      this.songTitle.setAttribute("class", "songTitle");
-      this.songTitle.setAttribute("position", "0 0 0");
-      this.songTitle.setAttribute("text", {
-        value: "SONG PLAYING NOW",
+      // Custom Text
+      this.custom_1 = document.createElement("a-entity");
+      this.custom_1.setAttribute("class", "title-1");
+      this.custom_1.setAttribute("position", "0.3 0.2 0");
+      this.custom_1.setAttribute("text", {
+        value: "TEST",
         align: "center",
         shader: "msdf",
-        color: "#B7B4A7"
+        color: "#B7B4A7",
+      });
+
+      // Second Title
+      this.text_2 = document.createElement("a-entity");
+      this.text_2.setAttribute("position", "0.15, 0, 0");
+      this.text_2.setAttribute("text", {
+        value: data.title_2,
+        align: "left",
+        shader: "msdf",
+        color: "#B7B4A7",
+      });
+
+      // Custom Text
+      this.custom_2 = document.createElement("a-entity");
+      this.custom_2.setAttribute("class", "title-2");
+      this.custom_2.setAttribute("position", "0.3 0 0");
+      this.custom_2.setAttribute("text", {
+        value: "TEST_2",
+        align: "center",
+        shader: "msdf",
+        color: "#B7B4A7",
       });
 
       // Image
@@ -49,7 +71,9 @@ AFRAME.registerComponent("horizontal-button", {
   
       //el.appendChild(this.text);
       this.container.appendChild(this.text);
-      this.container.appendChild(this.songTitle);
+      this.container.appendChild(this.custom_1);
+      this.container.appendChild(this.text_2);
+      this.container.appendChild(this.custom_2);
       //this.container.appendChild(this.soundImage);
       el.appendChild(this.container);
   

@@ -82,7 +82,7 @@ AFRAME.registerComponent('select-bar', {
         optgroupLabelEl.setAttribute('position', `0.07 ${0.045 + offsetY} -0.003`);
         optgroupLabelEl.setAttribute('scale', '0.5 0.5 0.5');
         optgroupLabelEl.setAttribute('text', 'value', selectedOptgroupEl.getAttribute('label'));
-        optgroupLabelEl.setAttribute('text', 'color', '#747474');
+        optgroupLabelEl.setAttribute('text', 'color', 'yellow');
         parentEl.appendChild(optgroupLabelEl);
 
         // get the options available for this optgroup row
@@ -111,12 +111,11 @@ AFRAME.registerComponent('select-bar', {
             let selected = (menuArrayIndex === 3);
             // index of the optionsElementsArray where optionsElementsArray.element.getattribute('value') = element.getattribute('value')
             let originalOptionsArrayIndex = findWithAttr(optionsElementsArray, 'value', element.getAttribute('value'));
-            let color = selected ? "yellow" : "#747474";
             selectOptionsHTML += `
   <a-entity id="${idPrefix}${originalOptionsArrayIndex}" visible="${visible}" class="preview${(selected) ? " selected" : ""}" optionid="${originalOptionsArrayIndex}" value="${element.getAttribute("value")}" optgroup="${selectedOptgroupEl.getAttribute("value")}" position="${startPositionX} ${offsetY} 0">
-    <a-box class="previewFrame" position="0 0 -0.003" scale="0.06 0.06 0.005" material="color: ${color}"></a-box>
+    <a-box class="previewFrame" position="0 0 -0.003" scale="0.06 0.06 0.005" material="color: #747474"></a-box>
     <a-image class="previewImage" scale="0.05 0.05 0.05" src="${element.getAttribute("src")}" ></a-image>
-    <a-entity class="objectName" position="0.065 -0.04 -0.003" scale="0.18 0.18 0.18" text="value: ${element.text}; color: ${color}"></a-entity>
+    <a-entity class="objectName" position="0.065 -0.04 -0.003" scale="0.18 0.18 0.18" text="value: ${element.text}; color: yellow"></a-entity>
   </a-entity>`
             startPositionX += deltaX;
         });
@@ -232,8 +231,12 @@ AFRAME.registerComponent('select-bar', {
     onMenuVisible: function (evt) {
         if (evt.target.id != this.data.controllerID) {
             return;
+        } else if (document.getElementById('ui').getAttribute('visible')) {
+            // Can't place assets with ui menu open
+            return;
         }
         this.el.setAttribute('visible', 'true');
+        this.el.sceneEl.emit('garden-asset-menu-visible');
     },
 
     onMenuHidden: function (evt) {
@@ -241,12 +244,14 @@ AFRAME.registerComponent('select-bar', {
             return;
         }
         this.el.setAttribute('visible', 'false');
+        this.el.sceneEl.emit('garden-asset-menu-hidden');
     },
 
     addEventListeners: function () {
         // If controls = true and a controllerID has been provided, then add controller event listeners
         if (this.data.controls && this.data.controllerID) {
             let controllerEl = document.getElementById(this.data.controllerID);
+            if (!controllerEl) return;
             controllerEl.addEventListener('thumbstickmoved', this.logThumbstick.bind(this));
             controllerEl.addEventListener('gripup', this.onMenuHidden.bind(this));
             controllerEl.addEventListener('gripdown', this.onMenuVisible.bind(this));
@@ -260,6 +265,7 @@ AFRAME.registerComponent('select-bar', {
     removeEventListeners: function () {
         if (this.data.controls && this.data.controllerID) {
             let controllerEl = document.getElementById(this.data.controllerID);
+            if (!controllerEl) return;
             controllerEl.removeEventListener('thumbstickmoved', this.logThumbstick);
             controllerEl.removeEventListener('gripup', this.onMenuHidden);
             controllerEl.removeEventListener('gripdown', this.onMenuVisible);
@@ -390,13 +396,6 @@ AFRAME.registerComponent('select-bar', {
 
         this.el.flushToDOM();
         this.el.emit('menuChanged');
-
-        oldMenuEl.getElementsByClassName('objectName')[0].setAttribute('text', 'color', 'gray');
-        oldMenuEl.getElementsByClassName('previewFrame')[0].setAttribute('material', 'color', '#747474');
-
-        newMenuEl.getElementsByClassName('objectName')[0].setAttribute('text', 'color', 'yellow');
-        newMenuEl.getElementsByClassName('previewFrame')[0].setAttribute('material', 'color', 'yellow');
-        this.log('oldMenuEl.getElementsByClassName', oldMenuEl.getElementsByClassName('objectName'));
     },
 
     updateRowAnimation: function (selectOptionsRowEl, deltaX) {
@@ -500,7 +499,7 @@ AFRAME.registerComponent('select-bar', {
         appendedNewlyCreatedOptionEl.getElementsByClassName('previewImage')[0].setAttribute('src', sourceOptionEl.getAttribute('src'))
         appendedNewlyCreatedOptionEl.getElementsByClassName('previewFrame')[0].setAttribute('material', 'color', '#747474');
         appendedNewlyCreatedOptionEl.getElementsByClassName('objectName')[0].setAttribute('text', 'value', sourceOptionEl.text);
-        appendedNewlyCreatedOptionEl.getElementsByClassName('objectName')[0].setAttribute('text', 'color', '#747474');
+        appendedNewlyCreatedOptionEl.getElementsByClassName('objectName')[0].setAttribute('text', 'color', 'yellow');
         appendedNewlyCreatedOptionEl.flushToDOM();
 
         this.log('created new option el', appendedNewlyCreatedOptionEl);
