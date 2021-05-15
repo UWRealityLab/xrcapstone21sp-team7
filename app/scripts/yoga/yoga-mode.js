@@ -179,6 +179,7 @@ AFRAME.registerComponent("yoga-mode", {
   yogaPause: function() {
     if (this.paused) {
       this.timerId = setInterval(this.countdown, 1000);
+      clearInterval(this.imageLoopTimeout);
       setTimeout(this.onImageLoopTimeout, this.timer);
       this.el.querySelector("#yoga-script").components.sound.playSound();
       document.getElementById("yoga-control-pause-img")
