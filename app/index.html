@@ -40,6 +40,8 @@
     <script src="./scripts/meditation/meditation-ring-automated.js"></script>
     <script src="./scripts/meditation/breath-capture.js"></script>
     <script src="./scripts/meditation/cloud-meditation.js"></script>
+    
+    <script src="./scripts/a-ocean.js"></script>
 
     <!-- teleportation-->
     <script src="./scripts/blink-teleportation.js"></script>
@@ -74,7 +76,7 @@
       croquet
       shadow="type: pcfsoft"
       color="#dbf5ff"
-      fog="type: exponential; density: 0.004; far: 1000; near: 10; color: #eeeeee"
+      fog="type: exponential; density: 0.008; far: 100; near: 10; color: #eeeeee"
       animation__lighten_fog="property: fog.color; to: #eeeeee; dur: 2000; startEvents: endMeditation"
       animation__darken_fog="property: fog.color; to: #444444; dur: 2000; startEvents: startMeditation"
     >
@@ -479,9 +481,8 @@
             <img id="placement-gif" src="../assets/gif/placement.gif">
         </a-assets>
       
-        <!-- yoga stuff -->
-        <a-image id="yoga-images" width="1.5" height="1.5" position="0 0.75 21" rotation="0 180 0"
-                 sound="on: model-loaded, autoplay: false; positional: false; volume: 0.25">
+        <a-image id="yoga-images" width="1.5" height="1.5" position="0 0.75 14" rotation="0 180 0"
+                 sound="on: model-loaded, autoplay: true; positional: false; volume: 0.25">
             <!-- frame -->
             <a-cylinder radius="0.75" height="0.1" position="0 0.75 -0.25" rotation="90 0 0" color="#696969"></a-cylinder>
             <a-box width="3" height="0.5" position="0 -0.95 0" color="#DDBE91"></a-box>
@@ -507,7 +508,7 @@
 
         <!-- Generated garden -->
         <a-entity id="garden" base-garden="sceneWidth: 4; sceneDepth: 5" controls-tutorial></a-entity>
-        <a-entity id="mountains" gltf-model="#mountains" position="0 -0.2 0" scale="3 4 3"></a-entity>
+        <a-entity id="mountain-range" class="walkable" gltf-model="#mountains" position="0 -0.2 0" scale="2 2 2"></a-entity>
         <!-- Items placed by the user will be put in this entity -->
         <a-entity id="new-asset-container" croquet="name: new-asset-container"></a-entity>
 
@@ -554,47 +555,6 @@
         <!-- Clouds -->
         <a-entity id="clouds" cloud-meditation></a-entity>
 
-        <!-- controls tutorial -->
-        <!-- <a-entity gltf-model="#single-wall-asset"
-                  position="-2 0 -3.55"
-                  rotation="0 180 0">
-        </a-entity>
-        <a-entity position="-2 1.5 -3.5"
-                  scale="2.5 2.5 2.5"
-                  text="color: black; align: center; font: exo2bold;
-                        value: Left Hand: \ngrip to enable menu, \njoystick to navigate menu, \ny to place, \nx to undo;">
-        </a-entity>
-        <a-entity gltf-model="#single-wall-asset"
-                  position="0 0 -3.55"
-                  rotation="0 180 0">
-        </a-entity>
-        <a-entity position="0 1.5 -3.5"
-                  scale="2.5 2.5 2.5"
-                  text="color: black; align: center; font: exo2bold;
-                        value: Meditation Mode\n|\nV;">
-        </a-entity>
-        <a-box position="0 1 -3.45"
-               scale="0.5 0.5 0.1"
-               color="#A9A9A9">
-        </a-box>
-        <a-cylinder position="0 1 -3.4"
-                    radius="0.15"
-                    height="0.1"
-                    rotation="90 0 0"
-                    class="clickable"
-                    color="#FFC65D"
-                    meditation-emitter>
-        </a-cylinder>
-        <a-entity gltf-model="#single-wall-asset"
-                  position="2 0 -3.55"
-                  rotation="0 180 0">
-        </a-entity>
-        <a-entity position="2 1.5 -3.5"
-                  scale="2.5 2.5 2.5"
-                  text="color: black; align: center; font: exo2bold;
-                        value: Right Hand: \nclick to on teleport points \non the floor to move!\nclick on buttons to trigger them!;">
-        </a-entity> -->
-
         <!-- testing out meditation start -->
         <a-entity
           class="lantern"
@@ -624,6 +584,20 @@
           position="0 0.1 -1" 
           shadow="receive: true; cast: true"
         ></a-entity>
+
+        <!-- position="102 29.4 51.8" -->
+        <a-ocean
+          id="ocean"
+          position="103.11 29.24 51.83"
+          color="#48788c"
+          density="7"
+          width="12"
+          depth="14.5"
+          amplitude="0.00000000001"
+          amplitudeVariance="0"
+          speed="0.000001"
+          speedVariance="0">
+        </a-ocean>
 
         <a-entity id="camRig" position="25 2 0" rotation="0 90 0">
           <a-camera
