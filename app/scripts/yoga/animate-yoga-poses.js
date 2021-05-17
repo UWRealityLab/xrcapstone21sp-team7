@@ -27,6 +27,8 @@ var YOGA_ANIMATIONS = {
 AFRAME.registerComponent('animate-yoga-poses', {
   init: function () {
     this.alwaysDisplay = AFRAME.utils.throttle((delta) => {
+      if (this.el.getAttribute('visible') == false) return;
+
       this.el.object3D.traverse((object) => {
         if (object.isMesh) object.frustumCulled = false;
 
@@ -38,6 +40,23 @@ AFRAME.registerComponent('animate-yoga-poses', {
 
     this.loader = new THREE.GLTFLoader();
     this.loader.setCrossOrigin('anonymous');
+
+    this.el.setAttribute('visible', 'false');
+    this.el.sceneEl.addEventListener('yogaStart', this.onYogaStart.bind(this));
+    this.el.sceneEl.addEventListener('yogaStop', this.onYogaStop.bind(this));
+  },
+
+  remove: function() {
+    this.el.sceneEl.removeEventListener('yogaStart', this.onYogaStart);
+    this.el.sceneEl.removeEventListener('yogaStop', this.onYogaStop);
+  },
+
+  onYogaStart: function() {
+    this.el.setAttribute('visible', 'true');
+  },
+
+  onYogaStop: function() {
+    this.el.setAttribute('visible', 'false');
   },
 
   update: function() {
@@ -62,7 +81,7 @@ AFRAME.registerComponent('animate-yoga-poses', {
    * @param {string} pose - Which pose to animate to. If absent, animate to standing position
    * @param {string} lastPose - Previous gesture to reverse back to if needed
    */
-  animateGesture(pose, lastPose) {
+  animatePose(pose, lastPose) {
     if (pose != null) {
       this.playAnimation(pose, lastPose, false);
     } else {
