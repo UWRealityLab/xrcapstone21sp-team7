@@ -1,18 +1,19 @@
+// Modified from https://github.com/n5ro/aframe-extras/blob/master/src/primitives/a-ocean.js
 AFRAME.registerPrimitive('zendin-ocean', {
   defaultComponents: {
     ocean: {},
     rotation: { x: -90, y: 0, z: 0 }
   },
   mappings: {
-    width: 'ocean.width',
-    depth: 'ocean.depth',
-    density: 'ocean.density',
-    amplitude: 'ocean.amplitude',
-    amplitudeVariance: 'ocean.amplitudeVariance',
-    speed: 'ocean.speed',
-    speedVariance: 'ocean.speedVariance',
-    color: 'ocean.color',
-    opacity: 'ocean.opacity'
+    width: 'ocean-component.width',
+    depth: 'ocean-component.depth',
+    density: 'ocean-component.density',
+    amplitude: 'ocean-component.amplitude',
+    amplitudeVariance: 'ocean-component.amplitudeVariance',
+    speed: 'ocean-component.speed',
+    speedVariance: 'ocean-component.speedVariance',
+    color: 'ocean-component.color',
+    opacity: 'ocean-component.opacity'
   }
 });
 
@@ -48,15 +49,11 @@ AFRAME.registerComponent('ocean-component', {
     let material = el.components.material;
 
     let geometry = new THREE.PlaneGeometry(data.width, data.depth, data.density, data.density);
-    // geometry.mergeVertices(); #OLD
     geometry = THREE.BufferGeometryUtils.mergeVertices(geometry);
     this.waves = [];
-    // for (let v, i = 0, l = geometry.vertices.length; i < l; i++) { #OLD
     for (let v, i = 0, l = geometry.attributes.position.count; i < l; i++) {
-      // v = geometry.vertices[i]; #OLD
       v = geometry.attributes.position;
       this.waves.push({
-        // z: v.z, #OLD
         z: v.getZ(i),
         ang: Math.random() * Math.PI,
         amp: data.amplitude + Math.random() * data.amplitudeVariance,
@@ -85,16 +82,12 @@ AFRAME.registerComponent('ocean-component', {
   tick: function (t, dt) {
     if (!dt) return;
 
-    // const verts = this.mesh.geometry.vertices; #OLD
     const verts = this.mesh.geometry.attributes.position.array;
-    // for (let v, vprops, i = 0; (v = verts[i]); i++) { #OLD
     for (let i = 0, j = 2; i < this.waves.length; i++, j = j + 3) {
       const vprops = this.waves[i];
-      // v.z = vprops.z + Math.sin(vprops.ang) * vprops.amp; #OLD
       verts[j] = vprops.z + Math.sin(vprops.ang) * vprops.amp;
       vprops.ang += vprops.speed * dt;
     }
-    // this.mesh.geometry.verticesNeedUpdate = true; #OLD
     this.mesh.geometry.attributes.position.needsUpdate = true;
   }
 });
