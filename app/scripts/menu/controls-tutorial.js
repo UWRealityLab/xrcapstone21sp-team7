@@ -32,6 +32,7 @@ AFRAME.registerComponent("controls-tutorial", {
         align: "center",
         shader: "msdf",
         width: size,
+        color: "#000000"
       });
       textEl.setAttribute("position", {
         x: 0,
@@ -53,6 +54,7 @@ AFRAME.registerComponent("controls-tutorial", {
       align: "center",
       width: HEADER_TEXT_WIDTH,
       shader: "msdf",
+      color: "#000000"
     });
     welcome.setAttribute("position", "0 7 1.75");
     welcome.setAttribute("rotation", "25 180 0");
