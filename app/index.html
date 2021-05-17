@@ -319,6 +319,20 @@
               animation__scale="property: scale; to: 1.2 1.2 1.2; dur: 500; easing: easeOutExpo; startEvents: mouseenter"
               animation__scale_reverse="property: scale; to: 1 1 1; dur: 500; easing: easeOutExpo; startEvents: mouseleave"
             ></a-mixin>
+            <a-mixin
+              id="small-button-frame"
+              geometry="primitive: plane; width: 0.23; height: 0.23"
+              material="color: white; shader: flat"
+              animation__scale="property: scale; to: 1.2 1.2 1.2; dur: 500; easing: easeOutExpo; startEvents: mouseenter"
+              animation__scale_reverse="property: scale; to: 1 1 1; dur: 500; easing: easeOutExpo; startEvents: mouseleave"
+            ></a-mixin>
+            <a-mixin
+              id="small-button-scale-frame"
+              geometry="primitive: plane; width: 0.23; height: 0.23"
+              material="color: white; shader: flat"
+              animation__scale="property: scale; to: 2.2 1.2 1.2; dur: 500; easing: easeOutExpo; startEvents: mouseenter"
+              animation__scale_reverse="property: scale; to: 2 1 1; dur: 500; easing: easeOutExpo; startEvents: mouseleave"
+            ></a-mixin>
 
             <template id="activity-menu-template">
               <a-entity id="ui" position="0 1.5 -2.5" visible="false">
@@ -374,21 +388,21 @@
                 <!-- volume -->
 
                 <!-- display square-->
-                <a-entity id="display-box" horizontal-button="title_1: GARDEN AUDIO:; title_2: ACTIVITY:" position="0.5 -1 0"></a-entity>
+                <a-entity id="display-box" horizontal-button="title_1: GARDEN AUDIO:; title_2: ACTIVITY:; title_3: VOLUME:" position="0.5 -1 0"></a-entity>
 
                 <!-- audio -->
                 <!-- TODO: Find Better way to organize multiple audios -->
                 
                 <!-- audio menu button-->
                 <a-entity id="audio-menu" class="audio" visible="false" position="-0.7 -0.9 0">  <!--position="1.4 0 1.45" rotation="0 -70 0"-->
-                  <a-entity id="audio-menu-button" class="small-button" small-button="color: black; title: AUDIO" scale="2 1 1"></a-entity>
-                  <a-entity id="light-menu-button" class="small-button" small-button="color: black; title: LIGHTING" scale="2 1 1" position="0.5 0 0"></a-entity>
+                  <a-entity id="audio-menu-button" class="small-button" small-button="color: black; title: AUDIO" scale="2 1 1" mixin="small-button-scale-frame"></a-entity>
+                  <a-entity id="light-menu-button" class="small-button" small-button="color: black; title: LIGHTING" scale="2 1 1" position="0.5 0 0" mixin="small-button-scale-frame"></a-entity>
                 </a-entity>
 
                 <a-entity id="function-buttons" class="audio" visible="false" position="-0.4 -0.9 0">
-                  <a-entity id="play-button" class="small-button" small-button="img: #play-button" position="-0.3 0 0"></a-entity>
-                  <a-entity id="pause-button" class="small-button" small-button="img: #pause-button" position="0 0 0"></a-entity>
-                  <a-entity id="replay-button" class="small-button" small-button="img: #replay-button" position="0.3 0 0"></a-entity>
+                  <a-entity id="play-button" class="small-button" small-button="img: #play-button" position="-0.3 0 0" mixin="small-button-frame"></a-entity>
+                  <a-entity id="pause-button" class="small-button" small-button="img: #pause-button" position="0 0 0" mixin="small-button-frame"></a-entity>
+                  <a-entity id="replay-button" class="small-button" small-button="img: #replay-button" position="0.3 0 0" mixin="small-button-frame"></a-entity>
                 </a-entity>
 
 
