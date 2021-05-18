@@ -12,7 +12,7 @@
     <script src="https://unpkg.com/aframe-template-component@3.x.x/dist/aframe-template-component.min.js"></script>
     <script src="https://unpkg.com/aframe-layout-component@4.x.x/dist/aframe-layout-component.min.js"></script>
     <script src="https://unpkg.com/aframe-event-set-component@5.x.x/dist/aframe-event-set-component.min.js"></script>
-    <!--script src="https://cdn.jsdelivr.net/gh/donmccurdy/aframe-extras@v6.1.1/dist/aframe-extras.min.js"></script-->
+    <!-- <script src="https://cdn.jsdelivr.net/gh/donmccurdy/aframe-extras@v6.1.1/dist/aframe-extras.min.js"></script> -->
 
     <script src="./scripts/constants.js"></script>
     <script src="./scripts/system.js"></script>
@@ -43,7 +43,7 @@
     <script src="./scripts/meditation/breath-capture.js"></script>
     <script src="./scripts/meditation/cloud-meditation.js"></script>
     
-    <script src="./scripts/zendin-ocean.js"></script>
+    <script src="./scripts/a-lake.js"></script>
 
     <!-- teleportation-->
     <script src="./scripts/blink-teleportation.js"></script>
@@ -128,11 +128,12 @@
                     blink-controls="cameraRig: #camRig; teleportOrigin: #cam; collisionEntities: #floor, .walkable; curveShootingSpeed: 12"
                     breath-capture
                 ></a-entity>
+                <!-- raycaster needs to be enabled for yoga buttons to work -->
                 <a-entity
                     class="right"
                     id="rightHand"
                     hand-controls="hand: right; handModelStyle: lowPoly"
-                    raycaster="lineOpacity: 0.0; enabled: false; objects: .rightclickable;"
+                    raycaster="lineOpacity: 0.0; enabled: true; objects: .rightclickable;"
                     laser-controls="hand: right; model: false"
                     menu-controls
                 >
@@ -185,6 +186,7 @@
               id="flame"
               src="../assets/glb/lantern-flame.glb"
             ></a-asset-item>
+            <a-asset-itme id="flame-blue" src="../assets/glb/lantern-flame-blue.glb"></a-asset-itme>
 
             <!-- music -->
             <audio id="background-music" src="../assets/Music/default.m4a" preload="auto"></audio>
@@ -512,6 +514,9 @@
             <!-- controls tutorial gifs -->
             <img id="teleport-gif" src="../assets/gif/teleport.gif">
             <img id="placement-gif" src="../assets/gif/placement.gif">
+            <!-- tutorial images -->
+            <img id="controls-img" src="../assets/img/menu/tutorial/zendin-controls.png">
+            <img id="controls-next-img" src="../assets/img/menu/tutorial/controls_next.png">
         </a-assets>
       
         <!-- yoga stuff -->
@@ -619,21 +624,31 @@
           shadow="receive: true; cast: true"
         ></a-entity>
 
-        <!-- position="102 29.4 51.8" -->
-        <zendin-ocean
-          id="ocean"
-          position="103.11 29.24 51.83"
-          color="#48788c"
-          density="7"
-          width="12"
-          depth="14.5"
-          amplitude="0.00000000001"
-          amplitudeVariance="0"
-          speed="0.000001"
-          speedVariance="0">
-      </zendin-ocean>
+        <!-- Mountain Meditation -->
+        <a-lake
+            id="ocean"
+            position="103.11 29.24 51.83"
+            color="#48788c"
+            density="7"
+            width="12"
+            depth="14.5"
+            amplitude="0.00000000001"
+            amplitudeVariance="0"
+            speed="0.000001"
+            speedVariance="0">
+        </a-lake>
+        <a-entity
+          class="lantern"
+          gltf-model="#lantern"
+          position="108 29.8 60"
+          shadow="receive: false; cast: true"
+        >
+          <a-entity class="flame" position="0 1 0" gltf-model="#flame-blue" 
+            visible="false"></a-entity>
+        </a-entity>
 
-        <a-entity id="camRig" position="25 2 0" rotation="0 90 0"><!-- position="0 0.1 10"-->
+
+        <a-entity id="camRig" position="25 2 0" rotation="0 90 0">
           <a-camera
             id="cam"
             wasd-controls-enabled="true"  
