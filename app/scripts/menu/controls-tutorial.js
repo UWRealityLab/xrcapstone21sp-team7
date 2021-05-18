@@ -88,6 +88,33 @@ AFRAME.registerComponent("controls-tutorial", {
     welcome.setAttribute("position", "0 6 1.75");
     welcome.setAttribute("rotation", "20 180 0");
 
+    // Controls image and remove buttonw
+    const controls = document.createElement("a-image");
+    controls.setAttribute("id", "controls-tutorial-img");
+    controls.setAttribute("src", "#controls-img");
+    controls.setAttribute("position", "0 3 8");
+    controls.setAttribute("rotation", "-10 180 0");
+    controls.setAttribute("width", "4");
+    controls.setAttribute("height", "1.75");
+
+    const controlsButton = document.createElement("a-box");
+    controlsButton.setAttribute("id", "controls-tutorial-dismiss");
+    controlsButton.setAttribute("class", "rightclickable");
+    controlsButton.setAttribute("position", "0 1.75 7.625");
+    controlsButton.setAttribute("scale", "0.6 0.6 0.2");
+    controlsButton.setAttribute("rotation", "5 0 0");
+    controlsButton.setAttribute("color", "white");
+    controlsButton.setAttribute("yoga-button", "");
+
+    const controlsButtonImg = document.createElement("a-image");
+    controlsButtonImg.setAttribute("id", "controls-tutorial-dismiss-img");
+    controlsButtonImg.setAttribute("src", "#controls-next-img");
+    controlsButtonImg.setAttribute("position", "0 1.75 7.5");
+    controlsButtonImg.setAttribute("rotation", "-5 180 0");
+    controlsButtonImg.setAttribute("width", "0.5");
+    controlsButtonImg.setAttribute("height", "0.5");
+
+
     /* Instructions 
       TODO: probably use images of some sort to avoid using text
     */
@@ -154,11 +181,25 @@ AFRAME.registerComponent("controls-tutorial", {
     placementContainer.setAttribute("class", "control-container");
 
     this.building.appendChild(welcome);
+
+    this.building.appendChild(controls);
+    this.building.appendChild(controlsButton);
+    this.building.appendChild(controlsButtonImg);
+
     this.building.appendChild(menuContainer);
     this.building.appendChild(locomotionContainer);
     this.building.appendChild(placementContainer);
+
+    this.el.sceneEl.addEventListener("teleported", this.toggleVisibility);
+    this.el.sceneEl.addEventListener("controls-tutorial-dismiss-triggered", this.dismissControls);
   },
+
   remove: function () {
     this.el.sceneEl.removeEventListener("teleported", this.toggleVisibility);
+    this.el.sceneEl.removeEventListener("controls-tutorial-dismiss-triggered", this.dismissControls);
   },
+
+  dismissControls: function() {
+    document.querySelectorAll('[id^="controls-tutorial"]').forEach((control) => control.setAttribute("visible", "false"));
+  }
 });
