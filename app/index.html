@@ -12,7 +12,7 @@
     <script src="https://unpkg.com/aframe-template-component@3.x.x/dist/aframe-template-component.min.js"></script>
     <script src="https://unpkg.com/aframe-layout-component@4.x.x/dist/aframe-layout-component.min.js"></script>
     <script src="https://unpkg.com/aframe-event-set-component@5.x.x/dist/aframe-event-set-component.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/gh/donmccurdy/aframe-extras@v6.1.1/dist/aframe-extras.min.js"></script>
+    <!-- <script src="https://cdn.jsdelivr.net/gh/donmccurdy/aframe-extras@v6.1.1/dist/aframe-extras.min.js"></script> -->
 
     <script src="./scripts/constants.js"></script>
     <script src="./scripts/system.js"></script>
@@ -128,11 +128,12 @@
                     blink-controls="cameraRig: #camRig; teleportOrigin: #cam; collisionEntities: #floor, .walkable; curveShootingSpeed: 12"
                     breath-capture
                 ></a-entity>
+                <!-- raycaster needs to be enabled for yoga buttons to work -->
                 <a-entity
                     class="right"
                     id="rightHand"
                     hand-controls="hand: right; handModelStyle: lowPoly"
-                    raycaster="lineOpacity: 0.0; enabled: false; objects: .rightclickable;"
+                    raycaster="lineOpacity: 0.0; enabled: true; objects: .rightclickable;"
                     laser-controls="hand: right; model: false"
                     menu-controls
                 >
@@ -504,6 +505,9 @@
             <!-- controls tutorial gifs -->
             <img id="teleport-gif" src="../assets/gif/teleport.gif">
             <img id="placement-gif" src="../assets/gif/placement.gif">
+            <!-- tutorial images -->
+            <img id="controls-img" src="../assets/img/menu/tutorial/zendin-controls.png">
+            <img id="controls-next-img" src="../assets/img/menu/tutorial/controls_next.png">
         </a-assets>
       
         <!-- yoga stuff -->
