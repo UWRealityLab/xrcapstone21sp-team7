@@ -43,7 +43,7 @@
     <script src="./scripts/meditation/breath-capture.js"></script>
     <script src="./scripts/meditation/cloud-meditation.js"></script>
     
-    <script src="./scripts/zendin-ocean.js"></script>
+    <script src="./scripts/a-lake.js"></script>
 
     <!-- teleportation-->
     <script src="./scripts/blink-teleportation.js"></script>
@@ -612,18 +612,18 @@
         ></a-entity>
 
         <!-- Mountain Meditation -->
-        <zendin-ocean
-          id="ocean"
-          position="103.11 29.24 51.83"
-          color="#48788c"
-          density="7"
-          width="12"
-          depth="14.5"
-          amplitude="0.00000000001"
-          amplitudeVariance="0"
-          speed="0.000001"
-          speedVariance="0">
-        </zendin-ocean>
+        <a-lake
+            id="ocean"
+            position="103.11 29.24 51.83"
+            color="#48788c"
+            density="7"
+            width="12"
+            depth="14.5"
+            amplitude="0.00000000001"
+            amplitudeVariance="0"
+            speed="0.000001"
+            speedVariance="0">
+        </a-lake>
         <a-entity
           class="lantern"
           gltf-model="#lantern"
@@ -635,7 +635,7 @@
         </a-entity>
 
 
-        <a-entity id="camRig" position="0 0.1 10" rotation="0 90 0">
+        <a-entity id="camRig" position="25 2 0" rotation="0 90 0">
           <a-camera
             id="cam"
             wasd-controls-enabled="true"  

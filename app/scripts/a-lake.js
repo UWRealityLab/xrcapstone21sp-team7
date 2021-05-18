@@ -1,23 +1,23 @@
 // Modified from https://github.com/n5ro/aframe-extras/blob/master/src/primitives/a-ocean.js
-AFRAME.registerPrimitive('zendin-ocean', {
+AFRAME.registerPrimitive('a-lake', {
   defaultComponents: {
-    ocean: {},
+    lake: {},
     rotation: { x: -90, y: 0, z: 0 }
   },
   mappings: {
-    width: 'ocean-component.width',
-    depth: 'ocean-component.depth',
-    density: 'ocean-component.density',
-    amplitude: 'ocean-component.amplitude',
-    amplitudeVariance: 'ocean-component.amplitudeVariance',
-    speed: 'ocean-component.speed',
-    speedVariance: 'ocean-component.speedVariance',
-    color: 'ocean-component.color',
-    opacity: 'ocean-component.opacity'
+    width: 'lake-component.width',
+    depth: 'lake-component.depth',
+    density: 'lake-component.density',
+    amplitude: 'lake-component.amplitude',
+    amplitudeVariance: 'lake-component.amplitudeVariance',
+    speed: 'lake-component.speed',
+    speedVariance: 'lake-component.speedVariance',
+    color: 'lake-component.color',
+    opacity: 'lake-component.opacity'
   }
 });
 
-AFRAME.registerComponent('ocean-component', {
+AFRAME.registerComponent('lake-component', {
   schema: {
     // Dimensions of the ocean area.
     width: { default: 10, min: 0 },
