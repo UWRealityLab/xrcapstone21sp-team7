@@ -14,6 +14,7 @@ AFRAME.registerComponent("menu-controls", {
     this.currAudioMenu;
     this.currSong = "background-music";
     this.currScript = "";
+    this.currVolume = "0.1";
 
     // the x value of the audio options at the start and end
     // need to change if change the number of audios.
@@ -557,7 +558,13 @@ AFRAME.registerComponent("menu-controls", {
       
     });
 
-    // We have to fetch the sound from the breathing exercise leftHand audio since the audio is not in the sky
+    let x = evt.detail.percent;
+    x = x * 100;
+    x = Math.round(x);
+    x = x / 100;
+    this.currVolume = x;
+    this.changeDisplayMenu();
+
   },
 
   /*
@@ -685,19 +692,6 @@ AFRAME.registerComponent("menu-controls", {
       button
         .querySelector(".container")
         .setAttribute("class", "rightclickable container");
-      //this.log(button.getAttribute("id"));
-
-      /*if (button.getAttribute("id") == "audio-menu-button") {
-        let attr = button
-          .querySelector(".container")
-          .querySelector(".songTitle")
-          .getAttribute("text");
-        attr.value = this.currSong;
-        button
-          .querySelector(".container")
-          .querySelector(".songTitle")
-          .setAttribute("text", attr);
-      }*/
     });
 
     element.querySelectorAll(".audio-slider").forEach((button) => {
@@ -759,6 +753,7 @@ AFRAME.registerComponent("menu-controls", {
     let display = document.querySelector("#display-box");
     let title_1 = display.querySelector(".title-1");
     let title_2 = display.querySelector(".title-2");
+    let title_3 = display.querySelector(".title-3");
 
     let text_1 = title_1.getAttribute("text");
     text_1.value = this.currSong;
@@ -767,6 +762,10 @@ AFRAME.registerComponent("menu-controls", {
     let text_2 = title_2.getAttribute("text");
     text_2.value = this.currScript;
     title_2.setAttribute("text", text_2);
+
+    let text_3 = title_3.getAttribute("text");
+    text_3.value = this.currVolume;
+    title_3.setAttribute("text", text_3);
   },
 
   remove: function () {

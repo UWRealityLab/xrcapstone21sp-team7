@@ -337,9 +337,9 @@ AFRAME.registerComponent('breath-capture', {
 
     this.meditating = false;
     this.el.setAttribute('breath-capture', 'deltaPositionAvg', 0);
-    this.waitBreathExercise2Audio.pause();
-    this.meditationCompleteTimeout.pause();
-    this.calibrationTimeout.pause();
+    if (this.waitBreathExercise2Audio) this.waitBreathExercise2Audio.pause();
+    if (this.meditationCompleteTimeout) this.meditationCompleteTimeout.pause();
+    if (this.calibrationTimeout) this.calibrationTimeout.pause();
   },
 
   onPauseBreathing: function (evt) {
@@ -356,13 +356,13 @@ AFRAME.registerComponent('breath-capture', {
         case CALIBRATION_STATES.FINDING_BREATH_IN_POSITION:
           break;
         case CALIBRATION_STATES.FINDING_BREATH_OUT_POSITION:
-          this.calibrationTimeout.pause();
+          if (this.calibrationTimeout) this.calibrationTimeout.pause();
           break;
         case CALIBRATION_STATES.CALIBRATION_COMPLETE:
-          this.waitBreathExercise2Audio.pause();
+          if (this.waitBreathExercise2Audio) this.waitBreathExercise2Audio.pause();
           break;
         case CALIBRATION_STATES.AUDIO2_COMPLETE_PLAYING:
-          this.meditationCompleteTimeout.pause();
+          if (this.meditationCompleteTimeout) this.meditationCompleteTimeout.pause();
           break;
       }
     } else {
@@ -371,13 +371,13 @@ AFRAME.registerComponent('breath-capture', {
           this.onToggleBreathCalibrationStart();
           break;
         case CALIBRATION_STATES.FINDING_BREATH_OUT_POSITION:
-          this.calibrationTimeout.resume();
+          if (this.calibrationTimeout) this.calibrationTimeout.resume();
           break;
         case CALIBRATION_STATES.CALIBRATION_COMPLETE:
-          this.waitBreathExercise2Audio.resume();
+          if (this.waitBreathExercise2Audio) this.waitBreathExercise2Audio.resume();
           break;
         case CALIBRATION_STATES.AUDIO2_COMPLETE_PLAYING:
-          this.meditationCompleteTimeout.resume();
+          if (this.meditationCompleteTimeout) this.meditationCompleteTimeout.resume();
           break;
       }
     }

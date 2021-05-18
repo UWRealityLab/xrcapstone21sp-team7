@@ -100,6 +100,7 @@ AFRAME.registerComponent("yoga-mode", {
   stopYogaMode: function() {
     if (this.inYogaMode) {
       this.inYogaMode = false;
+      this.el.sceneEl.emit('yogaStop');
       this.el.querySelector("#yoga-script").components.sound.stopSound();
       document.querySelector("#yoga-images").removeAttribute('sound');
       document.querySelector("#yoga-images").removeAttribute('src');
