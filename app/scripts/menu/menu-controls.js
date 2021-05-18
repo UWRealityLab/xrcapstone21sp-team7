@@ -656,7 +656,7 @@ AFRAME.registerComponent("menu-controls", {
     console.log("audio id: " + audio_id);
 
     sky.setAttribute("sound", attr);
-    this.currSong = audio_id;
+    this.currSong = evt.detail.audio_name;
 
     this.changeDisplayMenu();
     
