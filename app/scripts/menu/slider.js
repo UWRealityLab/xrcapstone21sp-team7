@@ -1,7 +1,8 @@
 // Needs to activated by the menu
 AFRAME.registerComponent("slider", {
   schema: {
-    title: { type: "string", default: ""}
+    title: { type: "string", default: ""},
+    color: { type: "string", default: "white" }
   },
   init: function () {
     let el = this.el;
@@ -17,6 +18,7 @@ AFRAME.registerComponent("slider", {
       value: data.title,
       align: "left",
       shader: "msdf",
+      color: data.color,
     });
 
     // Container
@@ -39,8 +41,9 @@ AFRAME.registerComponent("slider", {
     );
     this.line.setAttribute(
       "material",
-      "shader: flat; opacity: 1; color: white; side: front"
+      "shader: flat; opacity: 1; side: front"
     );
+    this.line.setAttribute("material", "color", data.color);
 
     // Circle
     this.marker = document.createElement("a-entity");
@@ -51,8 +54,9 @@ AFRAME.registerComponent("slider", {
     this.marker.setAttribute("rotation", "90 0 0");
     this.marker.setAttribute(
       "material",
-      "shader: flat; opacity: 1; side: double; color: white"
+      "shader: flat; opacity: 1; side: double"
     );
+    this.marker.setAttribute("material", "color", data.color);
     this.marker.setAttribute("position", "-0.4 0 0")
     
     el.appendChild(this.text);
