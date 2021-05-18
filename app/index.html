@@ -12,7 +12,7 @@
     <script src="https://unpkg.com/aframe-template-component@3.x.x/dist/aframe-template-component.min.js"></script>
     <script src="https://unpkg.com/aframe-layout-component@4.x.x/dist/aframe-layout-component.min.js"></script>
     <script src="https://unpkg.com/aframe-event-set-component@5.x.x/dist/aframe-event-set-component.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/gh/donmccurdy/aframe-extras@v6.1.1/dist/aframe-extras.min.js"></script>
+    <!--script src="https://cdn.jsdelivr.net/gh/donmccurdy/aframe-extras@v6.1.1/dist/aframe-extras.min.js"></script-->
 
     <script src="./scripts/constants.js"></script>
     <script src="./scripts/system.js"></script>
@@ -260,6 +260,9 @@
             <img id="play-button" src="../assets/img/menu/Play_Button.png">
             <img id="pause-button" src="../assets/img/menu/Pause_Button.png">
             <img id="replay-button" src="../assets/img/menu/Replay_Button.png">
+            <img id="background-1" src="../assets/img/menu/Background_1.png">
+            <img id="background-2" src="../assets/img/menu/Background_2.png">
+            <img id="background-3" src="../assets/img/menu/Background_3.png">
 
             <!-- breath menu -->
             <img id="hourglass-img" src="../assets/img/hourglass.png">
@@ -398,15 +401,15 @@
                 <!-- volume -->
 
                 <!-- display square-->
-                <a-entity id="display-box" horizontal-button="title_1: GARDEN AUDIO:; title_2: ACTIVITY:; title_3: VOLUME:" position="0.5 -1 0" mixin="horizontal-frame"></a-entity>
+                <a-entity id="display-box" horizontal-button="img: #background-3; title_1: GARDEN AUDIO:; title_2: ACTIVITY:; title_3: VOLUME:" position="0.5 -1 0" mixin="horizontal-frame"></a-entity>
 
                 <!-- audio -->
                 <!-- TODO: Find Better way to organize multiple audios -->
                 
                 <!-- audio menu button-->
                 <a-entity id="audio-menu" class="audio" visible="false" position="-0.7 -0.9 0">  <!--position="1.4 0 1.45" rotation="0 -70 0"-->
-                  <a-entity id="audio-menu-button" class="small-button" small-button="color: black; title: AUDIO" scale="2 1 1" mixin="small-button-scale-frame"></a-entity>
-                  <a-entity id="light-menu-button" class="small-button" small-button="color: black; title: LIGHTING" scale="2 1 1" position="0.5 0 0" mixin="small-button-scale-frame"></a-entity>
+                  <a-entity id="audio-menu-button" class="small-button" small-button="img: #background-1; title: AUDIO" scale="2 1 1" mixin="small-button-scale-frame"></a-entity>
+                  <a-entity id="light-menu-button" class="small-button" small-button="img: #background-2; title: LIGHTING" scale="2 1 1" position="0.5 0 0" mixin="small-button-scale-frame"></a-entity>
                 </a-entity>
 
                 <a-entity id="function-buttons" class="audio" visible="false" position="-0.4 -0.9 0">
@@ -419,16 +422,22 @@
                 <a-entity id="audio-options" class="audio" position="0 0.3 0" visible="false">
                   <!-- back to audio menu button -->
 
-                  <a-entity id="As-the-rain" class="small-button" audio-button="title: As The Rain; img: #As-the-rain-img" position="-0.45 0 0" mixin="thumbnail-frame"></a-entity>
-                  <a-entity id="Fairy-Forest" class="small-button" audio-button="title: Fairy Forest; img: #Fairy-Forest-img" position="0 0 0" mixin="thumbnail-frame"></a-entity>
-                  <a-entity id="Breath-of-life" class="small-button" audio-button="title: Breath of Life; img: #Breath-of-life-img" position="0.45 0 0" mixin="thumbnail-frame"></a-entity>
-                  <a-entity id="Imaginary-waterfalls" class="small-button" audio-button="title: Imaginary Waterfalls; img: #Imaginary-waterfalls-img" position="-0.45 -0.45 0" mixin="thumbnail-frame"></a-entity>
-                  <a-entity id="State-of-Zen" class="small-button" audio-button="title: State of Zen; img: #State-of-Zen-img" position="0 -0.45 0" mixin="thumbnail-frame"></a-entity>
-                  <a-entity id="Wren" class="small-button" audio-button="title: Wren; img: #Wren-img" position="0.45 -0.45 0" mixin="thumbnail-frame"></a-entity>
+                  <!--audio id="background-music" src="../assets/Music/default.m4a" preload="auto"></audio>
+                  <audio id="meditation-music" src="../assets/Music/meditation.m4a" preload="auto"></audio-->
+                  
+                  <a-entity id="background-music" class="small-button" audio-button="title: Default Zendin;" position="-0.45 0 0" mixin="thumbnail-frame"></a-entity>
+                  <a-entity id="meditation-music" class="small-button" audio-button="title: Meditation" position="0 0 0" mixin="thumbnail-frame"></a-entity>
 
-                  <a-entity id="Frogs-ambience" class="small-button" audio-button="title: Evening Frogs; img: #Frogs-ambience-img" position="0.9 0 0" mixin="thumbnail-frame"></a-entity>
-                  <a-entity id="City_Rain_Birds" class="small-button" audio-button="title: City Rain Birds; img: #City_Rain_Birds-img" position="1.35 0 0" mixin="thumbnail-frame"></a-entity>
-                  <a-entity id="City_Rain" class="small-button" audio-button="title: City Rain; img: #City_Rain-img" position="1.8 0 0" mixin="thumbnail-frame"></a-entity>
+                  <a-entity id="As-the-rain" class="small-button" audio-button="title: As The Rain; img: #As-the-rain-img" position="0.45 0 0" mixin="thumbnail-frame"></a-entity>
+                  <a-entity id="Fairy-Forest" class="small-button" audio-button="title: Fairy Forest; img: #Fairy-Forest-img" position="-0.45 -0.45 0" mixin="thumbnail-frame"></a-entity>
+                  <a-entity id="Breath-of-life" class="small-button" audio-button="title: Breath of Life; img: #Breath-of-life-img" position="0 -0.45 0" mixin="thumbnail-frame"></a-entity>
+                  <a-entity id="Imaginary-waterfalls" class="small-button" audio-button="title: Imaginary Waterfalls; img: #Imaginary-waterfalls-img" position="0.45 -0.45 0" mixin="thumbnail-frame"></a-entity>
+                  <a-entity id="State-of-Zen" class="small-button" audio-button="title: State of Zen; img: #State-of-Zen-img" position="0.9 0 0" mixin="thumbnail-frame"></a-entity>
+                  <a-entity id="Wren" class="small-button" audio-button="title: Wren; img: #Wren-img" position="1.35 0 0" mixin="thumbnail-frame"></a-entity>
+
+                  <a-entity id="Frogs-ambience" class="small-button" audio-button="title: Evening Frogs; img: #Frogs-ambience-img" position="1.8 0 0" mixin="thumbnail-frame"></a-entity>
+                  <a-entity id="City_Rain_Birds" class="small-button" audio-button="title: City Rain Birds; img: #City_Rain_Birds-img" position="0.9 -0.45 0" mixin="thumbnail-frame"></a-entity>
+                  <a-entity id="City_Rain" class="small-button" audio-button="title: City Rain; img: #City_Rain-img" position="1.35 -0.45 0" mixin="thumbnail-frame"></a-entity>
                   
                   <a-entity id="audio-menu-slider" class="audio-slider" slider="title: Audio Slider" position="0 0.3 0"></a-entity>
 
@@ -624,7 +633,7 @@
           speedVariance="0">
       </zendin-ocean>
 
-        <a-entity id="camRig" position="0 0.1 10" rotation="0 90 0">
+        <a-entity id="camRig" position="25 2 0" rotation="0 90 0"><!-- position="0 0.1 10"-->
           <a-camera
             id="cam"
             wasd-controls-enabled="true"  

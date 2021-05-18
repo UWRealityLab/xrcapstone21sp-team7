@@ -12,7 +12,7 @@ AFRAME.registerComponent("menu-controls", {
     this.yogaOn = false;
 
     this.currAudioMenu;
-    this.currSong = "background-music";
+    this.currSong = "Default Zendin";
     this.currScript = "";
     this.currVolume = "0.1";
 
