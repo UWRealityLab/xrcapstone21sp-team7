@@ -14,6 +14,7 @@ AFRAME.registerComponent("menu-controls", {
     this.currAudioMenu;
     this.currSong = "background-music";
     this.currScript = "";
+    this.currVolume = "0.1";
 
     // the x value of the audio options at the start and end
     // need to change if change the number of audios.
@@ -44,11 +45,15 @@ AFRAME.registerComponent("menu-controls", {
     this.uiHousing.appendChild(automatedMeditationRing);
     this.uiHousing.appendChild(meditationMenu);
 
+    // Grab env menu to display
+    this.envMenu = document.querySelector("#env-settings");
+
     // Event handlers
     this.onMenuActivate = this.onMenuActivate.bind(this);
     this.onMenuRecenter = this.onMenuRecenter.bind(this);
     this.onToggleMenuVisibility = this.onToggleMenuVisibility.bind(this);
     this.onVolumeChanged = this.onVolumeChanged.bind(this);
+    // this.onEnvSliderChanged = this.onEnvSliderChanged.bind(this);
     this.onMeditationButtonClicked = this.onMeditationButtonClicked.bind(this);
     this.onYogaButtonClicked = this.onYogaButtonClicked.bind(this);
     this.onAudioMenuChanged = this.onAudioMenuChanged.bind(this);
@@ -168,6 +173,11 @@ AFRAME.registerComponent("menu-controls", {
       this.onBreathAudio3
     );
 
+    // env menu listeners
+    this.el.sceneEl.addEventListener(
+      "env-menu-slider-changed",
+      this.onEnvSliderChanged
+    );
 
     // Helpers
     this.activate = this.activate.bind(this);
@@ -208,7 +218,7 @@ AFRAME.registerComponent("menu-controls", {
         this.ui.setAttribute("visible", "false");
         this.deactivateSmallButton(this.currAudioMenu);
         this.displayed = false;
-        this.el.setAttribute("raycaster", "enabled", false);
+        // this.el.setAttribute("raycaster", "enabled", false);
         this.el.setAttribute("raycaster", "lineOpacity", 0);
       } else {
         this.activate(document.querySelector("#first-menu"));
@@ -248,6 +258,7 @@ AFRAME.registerComponent("menu-controls", {
       this.activateSliders();
 
       this.activateSmallButton(document.querySelector("#audio-menu"));
+
       this.displayed = true;
       this.el.setAttribute("raycaster", "enabled", true);
       this.el.setAttribute("raycaster", "lineOpacity", 1);
@@ -291,7 +302,7 @@ AFRAME.registerComponent("menu-controls", {
     if (this.displayed) {
       let visible = this.ui.getAttribute("visible");
       this.ui.setAttribute("visible", !visible);
-      this.el.setAttribute("raycaster", "enabled", !visible);
+      // this.el.setAttribute("raycaster", "enabled", !visible);
       this.el.setAttribute("raycaster", "lineOpacity", !visible ? 1 : 0);
     }
   },
@@ -547,8 +558,28 @@ AFRAME.registerComponent("menu-controls", {
       
     });
 
-    // We have to fetch the sound from the breathing exercise leftHand audio since the audio is not in the sky
+    let x = evt.detail.percent;
+    x = x * 100;
+    x = Math.round(x);
+    x = x / 100;
+    this.currVolume = x;
+    this.changeDisplayMenu();
+
   },
+
+  /*
+  onEnvSliderChanged: function (evt) {
+    let sky = document.querySelector("#sky");
+
+    let light = {
+      property: 'light.intensity',
+      to: evt.detail.percent,
+      dur: 2000,
+      easing: 'linear'
+    };
+    sky.setAttribute('animation', light);
+  },
+  */
 
   onPlayButton: function () {
     if (this.currMeditationScript != undefined) {
@@ -661,19 +692,6 @@ AFRAME.registerComponent("menu-controls", {
       button
         .querySelector(".container")
         .setAttribute("class", "rightclickable container");
-      //this.log(button.getAttribute("id"));
-
-      /*if (button.getAttribute("id") == "audio-menu-button") {
-        let attr = button
-          .querySelector(".container")
-          .querySelector(".songTitle")
-          .getAttribute("text");
-        attr.value = this.currSong;
-        button
-          .querySelector(".container")
-          .querySelector(".songTitle")
-          .setAttribute("text", attr);
-      }*/
     });
 
     element.querySelectorAll(".audio-slider").forEach((button) => {
@@ -735,6 +753,7 @@ AFRAME.registerComponent("menu-controls", {
     let display = document.querySelector("#display-box");
     let title_1 = display.querySelector(".title-1");
     let title_2 = display.querySelector(".title-2");
+    let title_3 = display.querySelector(".title-3");
 
     let text_1 = title_1.getAttribute("text");
     text_1.value = this.currSong;
@@ -743,6 +762,10 @@ AFRAME.registerComponent("menu-controls", {
     let text_2 = title_2.getAttribute("text");
     text_2.value = this.currScript;
     title_2.setAttribute("text", text_2);
+
+    let text_3 = title_3.getAttribute("text");
+    text_3.value = this.currVolume;
+    title_3.setAttribute("text", text_3);
   },
 
   remove: function () {

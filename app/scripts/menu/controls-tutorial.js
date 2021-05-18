@@ -11,15 +11,48 @@ const CENTER_Z = -1;
 AFRAME.registerComponent("controls-tutorial", {
   init: function () {
     let el = this.el;
+    // grab building to place all instructions relative to the building
+    this.building = document.querySelector("#entrance-building");
+
+    // State
+    this.visible = true;
+
+    // Hides controls tutorial once now longer inside building
+    this.toggleVisibility = (evt) => {
+      const newPosition = evt.detail.newPosition;
+
+      // note: maybe check position since generate-base-garden
+      // can make the garden dynamic
+      const newVisibility =
+        19 < newPosition.x &&
+        newPosition.x < 26.5 &&
+        -5 < newPosition.z &&
+        newPosition.z < 5;
+
+      if (this.visible != newVisibility) {
+        this.building.querySelectorAll(".gif-panel").forEach((gifPanel) => {
+          gifPanel.components.gif.togglePlayback();
+        });
+        this.building
+          .querySelectorAll(".control-container")
+          .forEach((container) => {
+            container.setAttribute("visible", newVisibility);
+          });
+        this.visible = newVisibility;
+      }
+    };
+    el.sceneEl.addEventListener("teleported", this.toggleVisibility);
 
     /* Helpers */
     const createGif = (src) => {
       const gif = document.createElement("a-entity");
+      gif.setAttribute("class", "gif-panel");
       gif.setAttribute("geometry", "primitive: plane");
       gif.setAttribute("material", {
         shader: "gif",
         src: src,
       });
+      gif.setAttribute("gif", "");
       gif.setAttribute("scale", "2 2 2");
 
       return gif;
@@ -32,7 +65,7 @@ AFRAME.registerComponent("controls-tutorial", {
         align: "center",
         shader: "msdf",
         width: size,
-        color: "#000000"
+        color: "#000000",
       });
       textEl.setAttribute("position", {
         x: 0,
@@ -44,9 +77,6 @@ AFRAME.registerComponent("controls-tutorial", {
     };
     /* */
 
-    // grab building to place all instructions relative to the building
-    const building = document.querySelector("#entrance-building");
-
     // welcome message
     const welcome = document.createElement("a-entity");
     welcome.setAttribute("text", {
@@ -54,7 +84,7 @@ AFRAME.registerComponent("controls-tutorial", {
       align: "center",
       width: HEADER_TEXT_WIDTH,
       shader: "msdf",
-      color: "#000000"
+      color: "#000000",
     });
     welcome.setAttribute("position", "0 7 1.75");
     welcome.setAttribute("rotation", "25 180 0");
@@ -119,10 +149,17 @@ AFRAME.registerComponent("controls-tutorial", {
     //
 
     // Add to building
-    building.appendChild(welcome);
-    building.appendChild(menuContainer);
-    building.appendChild(locomotionContainer);
-    building.appendChild(placementContainer);
+    welcome.setAttribute("class", "control-container");
+    menuContainer.setAttribute("class", "control-container");
+    locomotionContainer.setAttribute("class", "control-container");
+    placementContainer.setAttribute("class", "control-container");
+
+    this.building.appendChild(welcome);
+    this.building.appendChild(menuContainer);
+    this.building.appendChild(locomotionContainer);
+    this.building.appendChild(placementContainer);
   },
-  remove: function () {},
+  remove: function () {
+    this.el.sceneEl.removeEventListener("teleported", this.toggleVisibility);
+  },
 });

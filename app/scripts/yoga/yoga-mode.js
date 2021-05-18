@@ -36,34 +36,40 @@ const TIME_ARRAY = [10000,  // welcome screen (0)
 /* This code will go through the linked images in the image array, and
  * switch to the next one after the amount of time in the corresponding
  * array.
- * TODO: draw up yoga images
- *       plan out future yoga functionality
- *       idea: skip to next slide button for yoga?
- *       play audio script so user doesn't have to look up at instructions
- *       integrate yoga into menu
- *       choose between yoga routines
  */
 AFRAME.registerComponent("yoga-mode", {
   init: function() {
+    this.paused = false;
+
     this.yogaStart = this.yogaStart.bind(this);
     this.stopYogaMode = this.stopYogaMode.bind(this);
     this.imageLoop = this.imageLoop.bind(this);
     this.onImageLoopTimeout = this.onImageLoopTimeout.bind(this);
     this.countdown = this.countdown.bind(this);
+    this.yogaBack = this.yogaBack.bind(this);
+    this.yogaPause = this.yogaPause.bind(this);
+    this.yogaNext = this.yogaNext.bind(this);
+
     this.el.sceneEl.addEventListener('menu-item-deselected', this.stopYogaMode);
     this.el.sceneEl.addEventListener('yogaStart', this.yogaStart);
+    this.el.sceneEl.addEventListener('yoga-control-back-triggered', this.yogaBack);
+    this.el.sceneEl.addEventListener('yoga-control-pause-triggered', this.yogaPause);
+    this.el.sceneEl.addEventListener('yoga-control-next-triggered', this.yogaNext);
   },
 
   remove: function() {
     this.el.sceneEl.removeEventListener('menu-item-deselected', this.stopYogaMode);
     this.el.sceneEl.removeEventListener("yogaStart", this.yogaStart);
+    this.el.sceneEl.removeEventListener('yoga-control-back-triggered', this.yogaBack);
+    this.el.sceneEl.removeEventListener('yoga-control-pause-triggered', this.yogaPause);
+    this.el.sceneEl.removeEventListener('yoga-control-next-triggered', this.yogaNext);
   },
 
   yogaStart: function() {
     console.log('starting yoga');
     this.inYogaMode = true;
     let imagesEl = document.querySelector("#yoga-images");
-    let timerEl = document.querySelector("#timer");
+    let timerEl = document.querySelector("#yoga-timer");
 
     this.timerId = setInterval(this.countdown, 1000);
 
@@ -71,11 +77,10 @@ AFRAME.registerComponent("yoga-mode", {
     this.timer = TIME_ARRAY[this.loopCount];
 
     // Initialization for first loop
-    // imagesEl.setAttribute("visible", "true");
     imagesEl.setAttribute("src", "#yoga-short-" + this.loopCount);
     timerEl.setAttribute("visible", "true");
-    //this.el.setAttribute("sound", "src: #yoga-audio-short-0; autoplay: true; loop: false; positional: false; volume: 0.25");
-    //this.el.components.sound.playSound();
+
+    // Enable sound
     let y = this.el.querySelector("#yoga-script");
     let attr = y.getAttribute("sound");
     attr.src = "#yoga-audio-short-0";
@@ -84,7 +89,10 @@ AFRAME.registerComponent("yoga-mode", {
 
     document.querySelector("#yoga-images").setAttribute("sound", "src: #As-the-rain; autoplay: true; loop: true; volume: 0.05");
 
-    console.log(this.timer);
+    // Show buttons
+    document.querySelectorAll('[id^="yoga-control"]').forEach((control) => control.setAttribute("visible", "true"));
+
+    // console.log(this.timer);
 
     this.imageLoop();
   },
@@ -93,13 +101,14 @@ AFRAME.registerComponent("yoga-mode", {
     if (this.inYogaMode) {
       this.inYogaMode = false;
       this.el.sceneEl.emit('yogaStop');
-      //this.el.components.sound.stopSound();
-      let y = this.el.querySelector("#yoga-script");
-      y.components.sound.stopSound();
+      this.el.querySelector("#yoga-script").components.sound.stopSound();
       document.querySelector("#yoga-images").removeAttribute('sound');
-      document.querySelector("#yoga-images").setAttribute('src', '#yoga-short-0');
-      document.querySelector('#timer').setAttribute("visible", "false");
-      document.querySelector("#timer").setAttribute('visible', 'false');
+      document.querySelector("#yoga-images").removeAttribute('src');
+      document.querySelector("#yoga-timer").setAttribute('visible', 'false');
+
+      // Hide buttons
+      document.querySelectorAll('[id^="yoga-control"]').forEach((control) => control.setAttribute("visible", "false"));
+
       if (this.timerId) {
         clearInterval(this.timerId);
       }
@@ -115,14 +124,15 @@ AFRAME.registerComponent("yoga-mode", {
   },
 
   onImageLoopTimeout: function() {
-    let timerEl = document.querySelector("#timer");
+    let timerEl = document.querySelector("#yoga-timer");
     let imagesEl = document.querySelector("#yoga-images");
 
     this.loopCount++;
 
     if (this.loopCount < TIME_ARRAY.length) {
       imagesEl.setAttribute("src", "#yoga-short-" + this.loopCount);
-      //this.el.setAttribute("sound", "src: #yoga-audio-short-" + this.loopCount + "; autoplay: true; loop: false; positional: false; volume: 0.25");
+
+      // Set yoga sound
       let y = this.el.querySelector("#yoga-script");
       let attr = y.getAttribute("sound");
       attr.src = "#yoga-audio-short-" + this.loopCount;
@@ -132,7 +142,6 @@ AFRAME.registerComponent("yoga-mode", {
       this.timer = TIME_ARRAY[this.loopCount];
       this.imageLoop();
     } else { // Clear when done looping
-      // imagesEl.setAttribute("visible", "false");
       timerEl.setAttribute("visible", "false");
       clearInterval(this.timerId);
     }
@@ -140,8 +149,70 @@ AFRAME.registerComponent("yoga-mode", {
   
   // Decrements timer every second
   countdown: function() {
-    let timerEl = document.querySelector("#timer");
-    this.timer -= 1000;
+    let timerEl = document.querySelector("#yoga-timer");
     timerEl.setAttribute("text", "value", this.timer / 1000);
+    this.timer -= 1000;
+  },
+
+  yogaBack: function() {
+    if (this.loopCount > 0) {
+      this.loopCount--;
+      document.querySelector("#yoga-images").setAttribute("src", "#yoga-short-" + this.loopCount);
+      
+      // Set yoga sound
+      let y = this.el.querySelector("#yoga-script");
+      let attr = y.getAttribute("sound");
+      attr.src = "#yoga-audio-short-" + this.loopCount;
+      y.setAttribute("sound", attr);
+      y.components.sound.playSound();
+
+      // TODO: Still some slight bugginess with going back while paused
+      this.timer = TIME_ARRAY[this.loopCount];
+      clearInterval(this.imageLoopTimeout);
+      if (this.paused) {
+        this.yogaPause();
+      } else {
+        this.imageLoop();
+      }
+    }
+  },
+
+  yogaPause: function() {
+    if (this.paused) {
+      this.timerId = setInterval(this.countdown, 1000);
+      setTimeout(this.onImageLoopTimeout, this.timer);
+      this.el.querySelector("#yoga-script").components.sound.playSound();
+      document.getElementById("yoga-control-pause-img")
+              .setAttribute("src", "#yoga-pause");
+    } else {
+      clearInterval(this.imageLoopTimeout);
+      clearInterval(this.timerId);
+      this.el.querySelector("#yoga-script").components.sound.pauseSound();
+      document.getElementById("yoga-control-pause-img")
+              .setAttribute("src", "#yoga-play");
+    }
+    this.paused = !this.paused;
+  },
+
+  yogaNext: function() {
+    if (this.loopCount < TIME_ARRAY.length - 1) {
+      this.loopCount++;
+      document.querySelector("#yoga-images").setAttribute("src", "#yoga-short-" + this.loopCount);
+
+      // Set yoga sound
+      let y = this.el.querySelector("#yoga-script");
+      let attr = y.getAttribute("sound");
+      attr.src = "#yoga-audio-short-" + this.loopCount;
+      y.setAttribute("sound", attr);
+      y.components.sound.playSound();
+
+      this.timer = TIME_ARRAY[this.loopCount];
+      clearInterval(this.imageLoopTimeout);
+      if (this.paused) {
+        this.yogaPause();
+      } else {
+        this.imageLoop();
+      }
+    }
   }
 });
