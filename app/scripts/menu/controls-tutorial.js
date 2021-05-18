@@ -1,10 +1,10 @@
 // Text Dimensions
-const HEADER_TEXT_WIDTH = 14;
-const TITLE_TEXT_WIDTH = 7;
-const INFO_TEXT_WIDTH = 3;
+const HEADER_TEXT_WIDTH = 10;
+const TITLE_TEXT_WIDTH = 4;
+const INFO_TEXT_WIDTH = 1.5;
 
 // Positions & Offsets
-const CENTER_X = 3.48;
+const CENTER_X = 2.5;
 const CENTER_Y = 3.5;
 const CENTER_Z = -1;
 
@@ -53,7 +53,6 @@ AFRAME.registerComponent("controls-tutorial", {
         src: src,
       });
       gif.setAttribute("gif", "");
-      gif.setAttribute("scale", "2 2 2");
 
       return gif;
     };
@@ -65,11 +64,11 @@ AFRAME.registerComponent("controls-tutorial", {
         align: "center",
         shader: "msdf",
         width: size,
-        color: "#000000",
+        color: "#555555",
       });
       textEl.setAttribute("position", {
         x: 0,
-        y: size === TITLE_TEXT_WIDTH ? 1.4 : -1.4, // probably enum instead
+        y: size === TITLE_TEXT_WIDTH ? 0.7 : -0.7, // probably enum instead
         z: 0,
       });
 
@@ -84,10 +83,10 @@ AFRAME.registerComponent("controls-tutorial", {
       align: "center",
       width: HEADER_TEXT_WIDTH,
       shader: "msdf",
-      color: "#000000",
+      color: "#555555",
     });
-    welcome.setAttribute("position", "0 7 1.75");
-    welcome.setAttribute("rotation", "25 180 0");
+    welcome.setAttribute("position", "0 6 1.75");
+    welcome.setAttribute("rotation", "20 180 0");
 
     /* Instructions 
       TODO: probably use images of some sort to avoid using text
@@ -108,7 +107,7 @@ AFRAME.registerComponent("controls-tutorial", {
     locomotionContainer.setAttribute("position", {
       x: CENTER_X,
       y: CENTER_Y,
-      z: CENTER_Z,
+      z: CENTER_Z - 1.5,
     });
     locomotionContainer.setAttribute("rotation", "0 -90 0");
 
@@ -129,7 +128,7 @@ AFRAME.registerComponent("controls-tutorial", {
     placementContainer.setAttribute("position", {
       x: -CENTER_X,
       y: CENTER_Y,
-      z: CENTER_Z,
+      z: CENTER_Z - 1.5,
     });
     placementContainer.setAttribute("rotation", "0 90 0");
 
