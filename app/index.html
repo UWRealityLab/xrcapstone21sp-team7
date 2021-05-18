@@ -12,7 +12,7 @@
     <script src="https://unpkg.com/aframe-template-component@3.x.x/dist/aframe-template-component.min.js"></script>
     <script src="https://unpkg.com/aframe-layout-component@4.x.x/dist/aframe-layout-component.min.js"></script>
     <script src="https://unpkg.com/aframe-event-set-component@5.x.x/dist/aframe-event-set-component.min.js"></script>
-    <script src="https://raw.githubusercontent.com/msj121/aframe-animation-component/master/dist/aframe-animation-component.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/gh/donmccurdy/aframe-extras@v6.1.1/dist/aframe-extras.min.js"></script>
 
     <script src="./scripts/constants.js"></script>
     <script src="./scripts/system.js"></script>
@@ -85,6 +85,10 @@
     >
         <!-- Load in assets -->
         <a-assets>
+            <a-asset-item id="yoga-animations" src="../assets/glb/yoga-animations.glb"></a-asset-item>
+            <a-asset-item id="sitting-yoga-animations" src="../assets/glb/sitting-yoga-animations.glb"></a-asset-item>
+            <a-asset-item id="yoga-cat-cow-animations" src="../assets/glb/yoga-cat-cow-animation.glb"></a-asset-item>
+
             <a-asset-item id="mountains" src="../assets/glb/mountain-range.glb"></a-asset-item>
             <a-asset-item id="env_arrow" src="../assets/obj/env_arrow.obj"></a-asset-item>
 
@@ -431,7 +435,7 @@
                 </a-entity>
                 <!-- audio -->
 
-                <!-- environment settings menu -->
+                <!-- environment settings menu, todo -->
                 </a-entity id="env-settings" visible="false" position="-1.4 0 1.45" rotation="0 70 0">
                   <a-entity id="default-env" class="small-button" env-button="title: Default Garden; img: #As-the-rain-img" position="0 0 0"/>
               
@@ -620,7 +624,7 @@
           speedVariance="0">
       </zendin-ocean>
 
-        <a-entity id="camRig" position="25 2 0" rotation="0 90 0">
+        <a-entity id="camRig" position="0 0.1 10" rotation="0 90 0">
           <a-camera
             id="cam"
             wasd-controls-enabled="true"  

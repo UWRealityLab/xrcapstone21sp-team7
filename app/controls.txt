@@ -1,0 +1,20 @@
+Note of all controls:
+
+Left controller:
+    With asset placement menu open:
+        Trigger down: select an item to place down
+        Trigger up: place selected item where left controller pointing
+        Grip: rotate item
+        Bottom button: undo placement
+    Joystick: teleport
+
+Right controller:
+    Grip: show item placement menu
+    With asset placement menu visible:
+        Joystick up/down: swap item groups
+        Joystick left/right: swap current item
+    Bottom button: open menu
+    With menu open:
+        Trigger: select a menu item
+        Bottom button: move back one level in menu or exit menu
+        Grip: toggle menu visibility
