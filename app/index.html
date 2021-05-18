@@ -185,6 +185,7 @@
               id="flame"
               src="../assets/glb/lantern-flame.glb"
             ></a-asset-item>
+            <a-asset-itme id="flame-blue" src="../assets/glb/lantern-flame-blue.glb"></a-asset-itme>
 
             <!-- music -->
             <audio id="background-music" src="../assets/Music/default.m4a" preload="auto"></audio>
@@ -610,7 +611,7 @@
           shadow="receive: true; cast: true"
         ></a-entity>
 
-        <!-- position="102 29.4 51.8" -->
+        <!-- Mountain Meditation -->
         <zendin-ocean
           id="ocean"
           position="103.11 29.24 51.83"
@@ -622,7 +623,17 @@
           amplitudeVariance="0"
           speed="0.000001"
           speedVariance="0">
-      </zendin-ocean>
+        </zendin-ocean>
+        <a-entity
+          class="lantern"
+          gltf-model="#lantern"
+          position="108 29.8 60"
+          shadow="receive: false; cast: true"
+        >
+          <a-entity class="flame" position="0 1 0" gltf-model="#flame-blue" 
+            visible="false"></a-entity>
+        </a-entity>
+
 
         <a-entity id="camRig" position="0 0.1 10" rotation="0 90 0">
           <a-camera
