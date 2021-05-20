@@ -81,7 +81,7 @@
       color="#dbf5ff"
       fog="type: exponential; density: 0.008; far: 100; near: 10; color: #eeeeee"
       animation__lighten_fog="property: fog.color; to: #eeeeee; dur: 2000; startEvents: endMeditation"
-      animation__darken_fog="property: fog.color; to: #444444; dur: 2000; startEvents: startMeditation"
+      animation__darken_fog="property: fog.color; to: #222222; dur: 2000; startEvents: startMeditation"
     >
         <!-- Load in assets -->
         <a-assets>
@@ -632,7 +632,7 @@
         <!-- Mountain Meditation -->
         <a-lake
             id="ocean"
-            position="103.11 29.24 51.83"
+            position="103.11 29 51.83"
             color="#48788c"
             density="7"
             width="12"
@@ -645,7 +645,16 @@
         <a-entity
           class="lantern"
           gltf-model="#lantern"
-          position="108 29.8 60"
+          position="105.57 29.8 60"
+          shadow="receive: false; cast: true"
+        >
+          <a-entity class="flame" position="0 1 0" gltf-model="#flame-blue" 
+            visible="false"></a-entity>
+        </a-entity>
+        <a-entity
+          class="lantern"
+          gltf-model="#lantern"
+          position="110 29.8 54.01"
           shadow="receive: false; cast: true"
         >
           <a-entity class="flame" position="0 1 0" gltf-model="#flame-blue" 
