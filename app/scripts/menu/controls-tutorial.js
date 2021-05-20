@@ -5,7 +5,7 @@ const INFO_TEXT_WIDTH = 1.5;
 
 // Positions & Offsets
 const CENTER_X = 2.5;
-const CENTER_Y = 3.5;
+const CENTER_Y = 3.4;
 const CENTER_Z = -1;
 const OFFSET_Z = 1.7;
 
@@ -42,7 +42,6 @@ AFRAME.registerComponent("controls-tutorial", {
         this.visible = newVisibility;
       }
     };
-    el.sceneEl.addEventListener("teleported", this.toggleVisibility);
 
     /* Helpers */
     const createGif = (src) => {
@@ -95,9 +94,9 @@ AFRAME.registerComponent("controls-tutorial", {
     controls.setAttribute("class", "control-container");
     controls.setAttribute("src", "#controls-img");
     controls.setAttribute("position", {
-      x: -CENTER_X,
+      x: -CENTER_X - 1,
       y: CENTER_Y,
-      z: CENTER_Z
+      z: CENTER_Z,
     });
     controls.setAttribute("rotation", "0 90 0");
     controls.setAttribute("width", "4");
@@ -120,7 +119,6 @@ AFRAME.registerComponent("controls-tutorial", {
     // controlsButtonImg.setAttribute("width", "0.5");
     // controlsButtonImg.setAttribute("height", "0.5");
 
-
     /* Instructions */
 
     // menu
@@ -133,10 +131,14 @@ AFRAME.registerComponent("controls-tutorial", {
     menuContainer.setAttribute("rotation", "0 -90 0");
 
     const navigateTheMenu = createText("Navigate the Menu", TITLE_TEXT_WIDTH);
-    const menuInstructions = createText("TODO: Menu Instructions", INFO_TEXT_WIDTH);
-
+    const menuGif = createGif("#menu-gif");
+    const menuInstructions = createText(
+      "Explore meditation sounds,\nyoga routines, different music/sounds\n and more in the menu",
+      INFO_TEXT_WIDTH
+    );
 
     menuContainer.append(navigateTheMenu);
+    menuContainer.append(menuGif);
     menuContainer.append(menuInstructions);
     //
 
@@ -202,12 +204,18 @@ AFRAME.registerComponent("controls-tutorial", {
     this.building.appendChild(placementContainer);
 
     this.el.sceneEl.addEventListener("teleported", this.toggleVisibility);
-    this.el.sceneEl.addEventListener("controls-tutorial-dismiss-triggered", this.dismissControls);
+    // this.el.sceneEl.addEventListener(
+    //   "controls-tutorial-dismiss-triggered",
+    //   this.dismissControls
+    // );
   },
 
   remove: function () {
     this.el.sceneEl.removeEventListener("teleported", this.toggleVisibility);
-    this.el.sceneEl.removeEventListener("controls-tutorial-dismiss-triggered", this.dismissControls);
+    // this.el.sceneEl.removeEventListener(
+    //   "controls-tutorial-dismiss-triggered",
+    //   this.dismissControls
+    // );
   },
 
   // dismissControls: function() {
