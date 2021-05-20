@@ -183,6 +183,10 @@
               src="../assets/glb/stone-lantern.glb"
             ></a-asset-item>
             <a-asset-item
+              id="brown-lantern"
+              src="../assets/glb/brown-short-lantern.glb"
+            ></a-asset-item>
+            <a-asset-item
               id="flame"
               src="../assets/glb/lantern-flame.glb"
             ></a-asset-item>
@@ -214,10 +218,7 @@
             <audio id="breath-exercise-meditation-2" src="../assets/meditation-scripts/breath-exercise-meditation-2.m4a" preload="auto"></audio>
             <audio id="breath-exercise-meditation-3" src="../assets/meditation-scripts/breath-exercise-meditation-3.m4a" preload="auto"></audio>
 
-            <!--a-asset-item id="meditation-building" src="../assets/glb/meditation-room.glb"></a-asset-item-->
-            <a-asset-item id="meditation-building" 
-                src="https://cdn.glitch.com/d278d22e-cba0-423d-9948-00c332e0a3d7%2Fmeditation-room-small.glb?v=1618960941936">
-            </a-asset-item>
+            <a-asset-item id="center-structure" src="../assets/glb/center-structure.glb"></a-asset-item>
 
             <!-- yoga images -->
             <!-- note: there's gotta be a better way to load these. -->
@@ -588,32 +589,35 @@
         <!-- testing out meditation start -->
         <a-entity
           class="lantern"
-          gltf-model="#lantern"
-          position="2 0 -3"
+          gltf-model="#brown-lantern"
+          scale="0.5 0.5 0.5"
+          position="4 0 2"
           shadow="receive: false; cast: true"
         >
-          <a-entity class="flame" position="0 1 0" gltf-model="#flame" 
+          <a-entity class="flame" position="0 1.7 0" gltf-model="#flame" 
           visible="false"></a-entity>
         </a-entity>
 
         <a-entity
           class="lantern"
-          gltf-model="#lantern"
-          position="-2 0 -3"
+          gltf-model="#brown-lantern"
+          scale="0.5 0.5 0.5"
+          position="4 0 -2"
           shadow="receive: false; cast: true"
         >
-          <a-entity class="flame" position="0 1 0" gltf-model="#flame" 
+          <a-entity class="flame" position="0 1.7 0" gltf-model="#flame" 
             visible="false"></a-entity>
         </a-entity>
 
-        <a-entity
-          name="default" 
-          gltf-model="#meditation-building" 
-          scale="0.5 0.5 0.5" 
-          rotation="0 90 0" 
-          position="0 0.1 -1" 
-          shadow="receive: true; cast: true"
-        ></a-entity>
+        <a-box name="default" width="5" height="0.2" depth="5" material="color: #2f2222; roughness: 0.8">
+            <a-entity
+                gltf-model="#center-structure" 
+                scale="0.5 0.5 0.5" 
+                rotation="0 90 0" 
+                position="0 0.1 -0.28" 
+                shadow="receive: true; cast: true"
+            ></a-entity>
+        </a-box>
 
         <!-- Mountain Meditation -->
         <a-lake

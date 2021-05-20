@@ -73,6 +73,7 @@ AFRAME.registerComponent("cloud-meditation", {
       // on a cloud :)
       let camRig = document.querySelector("#camRig");
       camRig.setAttribute("position", "0 0 0");
+      camRig.setAttribute('rotation', '0 -90 0');
       this.meditating = false;
     }
   },
