@@ -48,12 +48,36 @@ html(lang='en')
                     .col-lg-8.col-md-10.mx-auto
                         .site-heading
                             h1 Zendin
-                            //- img(src='assets/img/logo.png' height='400px')
                             span.subheading
         // Main Content
         .container
             .row
                 .col-lg-8.col-md-10.mx-auto
+                    .carousel.slide(id="carouselExampleIndicators" data-ride="carousel")
+                        ol.carousel-indicators
+                            li.active(data-target="#carouselExampleIndicators" data-slide-to="0")
+                            li(data-target="#carouselExampleIndicators" data-slide-to="1")
+                            li(data-target="#carouselExampleIndicators" data-slide-to="2")
+                            li(data-target="#carouselExampleIndicators" data-slide-to="3")
+                            li(data-target="#carouselExampleIndicators" data-slide-to="4")
+                        .carousel-inner
+                            .carousel-item.active
+                                img.d-block.w-100(src="assets/img/new-garden-side-ground-view.jpg")
+                            .carousel-item
+                                img.d-block.w-100(src="assets/img/new-garden-straight-ground-view.jpg")
+                            .carousel-item
+                                img.d-block.w-100(src="assets/img/new-garden-ground-meditation-view.jpg")
+                            .carousel-item
+                                img.d-block.w-100(src="assets/img/new-garden-cloud-view.jpg")
+                            .carousel-item
+                                img.d-block.w-100(src="assets/img/new-garden-vantage-point-view.jpg")
+                        a.carousel-control-prev(href="#carouselExampleIndicators" role="button" data-slide="prev")
+                            span.carousel-control-prev-icon(aria-hidden="true")
+                            span.sr-only Previous
+                        a.carousel-control-next(href="#carouselExampleIndicators" role="button" data-slide="next")
+                            span.carousel-control-next-icon(aria-hidden="true")
+                            span.sr-only Next
+
                     .post-preview
                         a(href='deliverables.html')
                             h2.post-title
