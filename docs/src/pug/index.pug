@@ -50,28 +50,22 @@ html(lang='en')
                             h1 Zendin
                             span.subheading
 
-        // Welcome info
-        .container
-                article
-                    .container
-                        .row
-                            .col-lg-10.col-md-10.mx-auto
-                                ul.list-inline.text-center
-                                    h1 Welcome to Zendin
-                                    img(src='assets/img/zendin.png' width=`100px`)
-                                p
-                                    | Zendin is your very own customizable zen garden simulation, where you can let your creativity shine and share it with your friends and peers. 
-                                    | Within the garden, you can participate in various activities such as yoga, mediation, and breathing exercises, providing you with a space to escape and relax from reality.
-                                p
-                                    | To check out our project click /app from this link
-                                    strong
-                                        a(href='https://courses.cs.washington.edu/courses/cse481v/21sp/projects/team7/') here.
-                                b   Device: This application is made and developed for the Oculus Quest 2.
-
         // Main Content
         .container
             .row
                 .col-lg-8.col-md-10.mx-auto
+                    ul.list-inline.text-center
+                        h1 Welcome to Zendin
+                        img(src='assets/img/zendin.png' width=`100px`)
+                    p
+                        | Zendin is your very own customizable zen garden simulation, where you can let your creativity shine and share it with your friends and peers. 
+                        | Within the garden, you can participate in various activities such as yoga, mediation, and breathing exercises, providing you with a space to escape and relax from reality.
+                    p
+                        | Check out our project
+                        strong
+                            a(href='https://courses.cs.washington.edu/courses/cse481v/21sp/projects/team7/app') here.
+                    b   Device: This application is made and developed for the Oculus Quest 2.
+                    hr
                     .carousel.slide(id="carouselExampleIndicators" data-ride="carousel")
                         ol.carousel-indicators
                             li.active(data-target="#carouselExampleIndicators" data-slide-to="0")
@@ -96,7 +90,7 @@ html(lang='en')
                         a.carousel-control-next(href="#carouselExampleIndicators" role="button" data-slide="next")
                             span.carousel-control-next-icon(aria-hidden="true")
                             span.sr-only Next
-
+                    hr
                     .post-preview
                         a(href='deliverables.html')
                             h2.post-title
