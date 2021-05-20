@@ -76,6 +76,7 @@ AFRAME.registerComponent("menu-controls", {
     this.onCloudMeditationButtonClicked = this.onCloudMeditationButtonClicked.bind(
       this
     );
+    this.onMountainMeditationButtonClicked = this.onMountainMeditationButtonClicked.bind(this);
     this.onGuidedYogaButtonClicked = this.onGuidedYogaButtonClicked.bind(this);
 
     // Breathing Audio
@@ -118,6 +119,7 @@ AFRAME.registerComponent("menu-controls", {
       "cloud-meditation-button-clicked",
       this.onCloudMeditationButtonClicked
     );
+    this.el.sceneEl.addEventListener("mountain-meditation-button-clicked", this.onMountainMeditationButtonClicked);
     this.el.sceneEl.addEventListener(
       "guided-yoga-button-clicked",
       this.onGuidedYogaButtonClicked
@@ -503,6 +505,14 @@ AFRAME.registerComponent("menu-controls", {
 
     this.currScript = "Cloud Meditation";
     this.changeDisplayMenu();
+  },
+
+  /*
+    Displays gates leading to hot spring
+    and also makes those elements visible
+  */
+  onMountainMeditationButtonClicked: function() {
+    this.el.sceneEl.emit("mountain-meditation-start");
   },
 
   /*
