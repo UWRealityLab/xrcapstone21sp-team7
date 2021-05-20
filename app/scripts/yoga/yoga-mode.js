@@ -38,19 +38,20 @@ const TIME_ARRAY = [10000,  // welcome screen (0)
 const SHORT_ANIM_ARRAY = [
   null,
   null,
-  YOGA_ANIMATIONS.LYING_AND_STANDING.mountain,
-  YOGA_ANIMATIONS.LYING_AND_STANDING.tree,
-  YOGA_ANIMATIONS.LYING_AND_STANDING.chair,
-  YOGA_ANIMATIONS.LYING_AND_STANDING.lunge,
-  YOGA_ANIMATIONS.LYING_AND_STANDING.lunge2,
-  YOGA_ANIMATIONS.LYING_AND_STANDING.warrior,
-  YOGA_ANIMATIONS.LYING_AND_STANDING.warrior,
-  YOGA_ANIMATIONS.LYING_AND_STANDING.plank,
-  YOGA_ANIMATIONS.LYING_AND_STANDING.sidePlank,
+  YOGA_ANIMATIONS[0].mountain,
+  YOGA_ANIMATIONS[0].tree,
+  YOGA_ANIMATIONS[0].chair,
+  YOGA_ANIMATIONS[0].lunge,
+  YOGA_ANIMATIONS[0].lunge2,
+  YOGA_ANIMATIONS[0].warrior,
+  YOGA_ANIMATIONS[0].warrior,
+  YOGA_ANIMATIONS[0].plank,
+  YOGA_ANIMATIONS[0].sidePlank,
   null
 ];
 
-const SHORT_TIME_ARRAY = [
+// const SHORT_TIME_ARRAY = [
+const TIME_ARRAY = [
   10000,  // welcome screen
   15000,  // headset adjustment
   30000,  // mountain pose
@@ -102,6 +103,7 @@ AFRAME.registerComponent("yoga-mode", {
     this.inYogaMode = true;
     let imagesEl = document.querySelector("#yoga-images");
     let timerEl = document.querySelector("#yoga-timer");
+    let instructorEl = document.querySelector("#yoga-instructor").components['animate-yoga-poses'];
 
     this.timerId = setInterval(this.countdown, 1000);
 
@@ -110,7 +112,7 @@ AFRAME.registerComponent("yoga-mode", {
 
     // Initialization for first loop
     // imagesEl.setAttribute("src", "#yoga-short-" + this.loopCount);
-    animatePose(SHORT_ANIM_ARRAY[this.loopCount], null);
+    instructorEl.animatePose(SHORT_ANIM_ARRAY[this.loopCount], null);
     timerEl.setAttribute("visible", "true");
 
     // Enable sound
@@ -154,18 +156,21 @@ AFRAME.registerComponent("yoga-mode", {
 
   // Recursively goes through images and timers until done
   imageLoop : function() {
+    // Add earlier timeout to transition animation back to neutral
     this.imageLoopTimeout = setTimeout(this.onImageLoopTimeout, TIME_ARRAY[this.loopCount]);
   },
 
   onImageLoopTimeout: function() {
     let timerEl = document.querySelector("#yoga-timer");
     let imagesEl = document.querySelector("#yoga-images");
+    let instructorEl = document.querySelector("#yoga-instructor").components['animate-yoga-poses'];
 
     this.loopCount++;
 
     if (this.loopCount < TIME_ARRAY.length) {
       // imagesEl.setAttribute("src", "#yoga-short-" + this.loopCount);
-      animatePose(SHORT_ANIM_ARRAY[this.loopCount], null);
+      console.log("Animating pose " + SHORT_ANIM_ARRAY[this.loopCount]);
+      instructorEl.animatePose(SHORT_ANIM_ARRAY[this.loopCount], null);
 
       // Set yoga sound
       let y = this.el.querySelector("#yoga-script");
@@ -193,7 +198,7 @@ AFRAME.registerComponent("yoga-mode", {
     if (this.loopCount > 0) {
       this.loopCount--;
       // document.querySelector("#yoga-images").setAttribute("src", "#yoga-short-" + this.loopCount);
-      animatePose(SHORT_ANIM_ARRAY[this.loopCount], null);
+      document.querySelector("#yoga-instructor").components['animate-yoga-poses'].animatePose(SHORT_ANIM_ARRAY[this.loopCount], null);
 
       // Set yoga sound
       let y = this.el.querySelector("#yoga-script");
@@ -234,7 +239,7 @@ AFRAME.registerComponent("yoga-mode", {
     if (this.loopCount < TIME_ARRAY.length - 1) {
       this.loopCount++;
       // document.querySelector("#yoga-images").setAttribute("src", "#yoga-short-" + this.loopCount);
-      animatePose(SHORT_ANIM_ARRAY[this.loopCount], null);
+      document.querySelector("#yoga-instructor").components['animate-yoga-poses'].animatePose(SHORT_ANIM_ARRAY[this.loopCount], null);
 
       // Set yoga sound
       let y = this.el.querySelector("#yoga-script");
