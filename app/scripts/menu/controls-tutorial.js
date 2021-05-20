@@ -42,7 +42,6 @@ AFRAME.registerComponent("controls-tutorial", {
         this.visible = newVisibility;
       }
     };
-    el.sceneEl.addEventListener("teleported", this.toggleVisibility);
 
     /* Helpers */
     const createGif = (src) => {
@@ -205,18 +204,18 @@ AFRAME.registerComponent("controls-tutorial", {
     this.building.appendChild(placementContainer);
 
     this.el.sceneEl.addEventListener("teleported", this.toggleVisibility);
-    this.el.sceneEl.addEventListener(
-      "controls-tutorial-dismiss-triggered",
-      this.dismissControls
-    );
+    // this.el.sceneEl.addEventListener(
+    //   "controls-tutorial-dismiss-triggered",
+    //   this.dismissControls
+    // );
   },
 
   remove: function () {
     this.el.sceneEl.removeEventListener("teleported", this.toggleVisibility);
-    this.el.sceneEl.removeEventListener(
-      "controls-tutorial-dismiss-triggered",
-      this.dismissControls
-    );
+    // this.el.sceneEl.removeEventListener(
+    //   "controls-tutorial-dismiss-triggered",
+    //   this.dismissControls
+    // );
   },
 
   // dismissControls: function() {
