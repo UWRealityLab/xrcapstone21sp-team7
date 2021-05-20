@@ -92,7 +92,7 @@ AFRAME.registerComponent("controls-tutorial", {
     // Controls image and remove buttonw
     const controls = document.createElement("a-image");
     controls.setAttribute("id", "controls-tutorial-img");
-    controls.setAttribute("class", "controls-container");
+    controls.setAttribute("class", "control-container");
     controls.setAttribute("src", "#controls-img");
     controls.setAttribute("position", {
       x: -CENTER_X,
