@@ -6,7 +6,8 @@ AFRAME.registerComponent("horizontal-button", {
       title_1: { type: "string", default: "" },
       title_2: { type: "string", default: "" },
       title_3: { type: "string", default: "" },
-      img: { type: "selector", default: "#meditation-img" }
+      img: { type: "selector", default: "#meditation-img" },
+      color: { type: "string", default: "white" }
     },
     init: function () {
       let el = this.el;
@@ -25,7 +26,7 @@ AFRAME.registerComponent("horizontal-button", {
       // Custom Text
       this.custom_1 = document.createElement("a-entity");
       this.custom_1.setAttribute("class", "title-1");
-      this.custom_1.setAttribute("position", "0.3 0.2 0");
+      this.custom_1.setAttribute("position", "0 0.1 0");
       this.custom_1.setAttribute("text", {
         value: "TEST",
         align: "center",
@@ -46,7 +47,7 @@ AFRAME.registerComponent("horizontal-button", {
       // Custom Text 2
       this.custom_2 = document.createElement("a-entity");
       this.custom_2.setAttribute("class", "title-2");
-      this.custom_2.setAttribute("position", "0.3 0 0");
+      this.custom_2.setAttribute("position", "0 -0.1 0");
       this.custom_2.setAttribute("text", {
         value: "TEST_2",
         align: "center",
@@ -67,7 +68,7 @@ AFRAME.registerComponent("horizontal-button", {
       // Custom Text 3
       this.custom_3 = document.createElement("a-entity");
       this.custom_3.setAttribute("class", "title-3");
-      this.custom_3.setAttribute("position", "0.3 -0.2 0");
+      this.custom_3.setAttribute("position", "-0.1 -0.2 0");
       this.custom_3.setAttribute("text", {
         value: "TEST_3",
         align: "center",
@@ -88,7 +89,8 @@ AFRAME.registerComponent("horizontal-button", {
       // Container
       this.container = document.createElement("a-entity");
       this.container.setAttribute("class", "container");
-      this.container.setAttribute("material", "color", "black");
+      this.container.setAttribute("material", "src", data.img);
+      this.container.setAttribute("material", "color", data.color);
       this.container.setAttribute("mixin", "horizontal-menu");
   
       //el.appendChild(this.text);
