@@ -219,6 +219,7 @@
             <audio id="breath-exercise-meditation-3" src="../assets/meditation-scripts/breath-exercise-meditation-3.m4a" preload="auto"></audio>
 
             <a-asset-item id="center-structure" src="../assets/glb/center-structure.glb"></a-asset-item>
+            <a-asset-item id="red-gate" src="../assets/glb/torii-gate-red.glb"></a-asset-item>
 
             <!-- yoga images -->
             <!-- note: there's gotta be a better way to load these. -->
@@ -659,6 +660,25 @@
         >
           <a-entity class="flame" position="0 1 0" gltf-model="#flame-blue" 
             visible="false"></a-entity>
+        </a-entity>
+
+        <!-- Gates to Mountain -->
+        <a-entity id="gate-path">
+          <a-entity
+            gltf-model="#red-gate"
+            position="61 0.5 -9.2"
+            rotation="0 107.6 0">
+          </a-entity>
+          <a-entity
+            gltf-model="#red-gate"
+            position="93.32 16.04 -4.92"
+            rotation="0 24 0">
+          </a-entity>
+          <a-entity
+            gltf-model="#red-gate"
+            position="97.038 29.69 23.596"
+            rotation="0 17.06 0">
+          </a-entity>
         </a-entity>
 
 
