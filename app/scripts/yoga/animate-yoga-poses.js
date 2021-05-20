@@ -104,8 +104,10 @@ AFRAME.registerComponent('animate-yoga-poses', {
    */
   animatePose(pose, lastPose) {
     if (pose != null) {
+      // Regular usage from default to wantedPose: animatePose(wantedPose, null)
       this.playAnimation(pose, lastPose, false);
     } else {
+      // Reversal usage from wantedPose to default: animatePose(null, wantedPose)
       this.playAnimation(lastPose, pose, true);
     }
   },
@@ -114,7 +116,10 @@ AFRAME.registerComponent('animate-yoga-poses', {
     var poseEntity = this.findModelEntity(pose);
     var lastPoseEntity = this.findModelEntity(lastPose);
 
+    // Need one non-null pose
     if (poseEntity == null && lastPoseEntity == null) return;
+
+    // No transitioning between poses
     if (poseEntity != lastPoseEntity && poseEntity != null && lastPoseEntity != null) return;
 
     var entityToUse = poseEntity || lastPoseEntity;

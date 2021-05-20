@@ -16,7 +16,7 @@ const TIME_ARRAY = [10000,  // welcome screen (0)
                     25000,
                     10000  // transition to child's pose (14)
                    ];
-*/
+
 
 // Time array for short yoga routine - 3 min 40 sec
 const TIME_ARRAY = [10000,  // welcome screen (0)
@@ -32,6 +32,38 @@ const TIME_ARRAY = [10000,  // welcome screen (0)
                     45000,  // transition to baby back end (10)
                     10000   // end (11)
                     ];
+                    */
+
+// Arrays for short yoga routine - 4 min 35 sec
+const SHORT_ANIM_ARRAY = [
+  null,
+  null,
+  YOGA_ANIMATIONS.LYING_AND_STANDING.mountain,
+  YOGA_ANIMATIONS.LYING_AND_STANDING.tree,
+  YOGA_ANIMATIONS.LYING_AND_STANDING.chair,
+  YOGA_ANIMATIONS.LYING_AND_STANDING.lunge,
+  YOGA_ANIMATIONS.LYING_AND_STANDING.lunge2,
+  YOGA_ANIMATIONS.LYING_AND_STANDING.warrior,
+  YOGA_ANIMATIONS.LYING_AND_STANDING.warrior,
+  YOGA_ANIMATIONS.LYING_AND_STANDING.plank,
+  YOGA_ANIMATIONS.LYING_AND_STANDING.sidePlank,
+  null
+];
+
+const SHORT_TIME_ARRAY = [
+  10000,  // welcome screen
+  15000,  // headset adjustment
+  30000,  // mountain pose
+  30000,  // tree pose
+  30000,  // chair pose
+  15000,  // lunge 1
+  15000,  // lunge 2
+  30000,  // warrior (side 1)
+  30000,  // warrior (side 2)
+  30000,  // plank
+  30000,  // side plank
+  10000   // end
+];
 
 /* This code will go through the linked images in the image array, and
  * switch to the next one after the amount of time in the corresponding
@@ -77,7 +109,8 @@ AFRAME.registerComponent("yoga-mode", {
     this.timer = TIME_ARRAY[this.loopCount];
 
     // Initialization for first loop
-    imagesEl.setAttribute("src", "#yoga-short-" + this.loopCount);
+    // imagesEl.setAttribute("src", "#yoga-short-" + this.loopCount);
+    animatePose(SHORT_ANIM_ARRAY[this.loopCount], null);
     timerEl.setAttribute("visible", "true");
 
     // Enable sound
@@ -87,7 +120,8 @@ AFRAME.registerComponent("yoga-mode", {
     y.setAttribute("sound", attr);
     y.components.sound.playSound();
 
-    document.querySelector("#yoga-images").setAttribute("sound", "src: #As-the-rain; autoplay: true; loop: true; volume: 0.05");
+    document.querySelector("#yoga-images")
+            .setAttribute("sound", "src: #As-the-rain; autoplay: true; loop: true; volume: 0.05");
 
     // Show buttons
     document.querySelectorAll('[id^="yoga-control"]').forEach((control) => control.setAttribute("visible", "true"));
@@ -130,7 +164,8 @@ AFRAME.registerComponent("yoga-mode", {
     this.loopCount++;
 
     if (this.loopCount < TIME_ARRAY.length) {
-      imagesEl.setAttribute("src", "#yoga-short-" + this.loopCount);
+      // imagesEl.setAttribute("src", "#yoga-short-" + this.loopCount);
+      animatePose(SHORT_ANIM_ARRAY[this.loopCount], null);
 
       // Set yoga sound
       let y = this.el.querySelector("#yoga-script");
@@ -157,8 +192,9 @@ AFRAME.registerComponent("yoga-mode", {
   yogaBack: function() {
     if (this.loopCount > 0) {
       this.loopCount--;
-      document.querySelector("#yoga-images").setAttribute("src", "#yoga-short-" + this.loopCount);
-      
+      // document.querySelector("#yoga-images").setAttribute("src", "#yoga-short-" + this.loopCount);
+      animatePose(SHORT_ANIM_ARRAY[this.loopCount], null);
+
       // Set yoga sound
       let y = this.el.querySelector("#yoga-script");
       let attr = y.getAttribute("sound");
@@ -197,7 +233,8 @@ AFRAME.registerComponent("yoga-mode", {
   yogaNext: function() {
     if (this.loopCount < TIME_ARRAY.length - 1) {
       this.loopCount++;
-      document.querySelector("#yoga-images").setAttribute("src", "#yoga-short-" + this.loopCount);
+      // document.querySelector("#yoga-images").setAttribute("src", "#yoga-short-" + this.loopCount);
+      animatePose(SHORT_ANIM_ARRAY[this.loopCount], null);
 
       // Set yoga sound
       let y = this.el.querySelector("#yoga-script");

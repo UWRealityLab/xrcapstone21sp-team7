@@ -19,8 +19,6 @@
     <script src="./scripts/component.js"></script>
     <script src="./scripts/index.js" type="module"></script>
 
-    <script src="./scripts/yoga/animate-yoga-poses.js"></script>
-
     <!-- fake hands for croquet -->
     <script src="./scripts/fake-hands.js"></script>
 
@@ -52,6 +50,7 @@
     <script src="https://cdn.jsdelivr.net/npm/aframe-blink-controls/dist/aframe-blink-controls.min.js"></script>
 
     <!-- yoga -->
+    <script src="./scripts/yoga/animate-yoga-poses.js"></script>
     <script src="./scripts/yoga/yoga-button.js"></script>
     <script src="./scripts/yoga/yoga-mode.js"></script>
 
@@ -536,6 +535,7 @@
         <a-entity id="yoga-timer" position="0 1.85 21" scale="10 10 10" rotation="0 180 0" visible="false"
                   text="color: white; align: center; value: 0;"></a-entity>
 
+        <a-entity position="0 0 19" rotation="0 180 0" scale="1 1 1" animate-yoga-poses></a-entity>
         <!-- yoga menu -->
         <a-entity id="yoga-buttons" position="0 2.5 20.5" rotation="-15 0 180">
           <a-box id="yoga-control-back" class="rightclickable" visible="false" scale="0.6 0.6 0.2" position="-1 0 0.125" color="white" yoga-button></a-box>
@@ -578,8 +578,6 @@
             <a-entity id="yoga-script" class="audio" sound="src: #yoga-audio-short-0; autoplay: false; loop: false; positional: false; volume: 0.25"></a-entity>
             <!--scripts-->
         </a-simple-sun-sky>
-
-        <a-entity position="-3 0 12" rotation="0 180 0" scale="1 1 1" animate-yoga-poses></a-entity>
 
         <a-entity
           id="light"
