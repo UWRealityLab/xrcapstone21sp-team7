@@ -26,6 +26,7 @@ AFRAME.registerComponent("small-button", {
       this.container.setAttribute("class", "container");
       this.container.setAttribute("material", "src", data.img);
       this.container.setAttribute("material", "color", data.color);
+      this.container.setAttribute("material", "alphaTest", 0.5);
       this.container.setAttribute("mixin", "small-square");
   
       this.container.appendChild(this.text);

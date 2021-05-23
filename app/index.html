@@ -323,6 +323,8 @@
               geometry="primitive: plane; width: 0.2; height: 0.2"
               material="color: white; shader: flat"
               position="0 0 0.008"
+              animation__scale="property: scale; to: 1.2 1.2 1.2; dur: 500; easing: easeOutExpo; startEvents: mouseenter"
+              animation__scale_reverse="property: scale; to: 1 1 1; dur: 500; easing: easeOutExpo; startEvents: mouseleave"
             ></a-mixin>
             <!-- Note is there a way to make this "frame" mixin more general?? -->
             <a-mixin
@@ -423,9 +425,9 @@
                 </a-entity>
 
                 <a-entity id="function-buttons" class="audio" visible="false" position="-0.4 -0.9 0">
-                  <a-entity id="play-button" class="small-button" small-button="img: #play-button" position="-0.3 0 0" mixin="small-button-frame"></a-entity>
-                  <a-entity id="pause-button" class="small-button" small-button="img: #pause-button" position="0 0 0" mixin="small-button-frame"></a-entity>
-                  <a-entity id="replay-button" class="small-button" small-button="img: #replay-button" position="0.3 0 0" mixin="small-button-frame"></a-entity>
+                  <a-entity id="play-button" class="small-button" small-button="img: #play-button" position="-0.3 0 0" ></a-entity>
+                  <a-entity id="pause-button" class="small-button" small-button="img: #pause-button" position="0 0 0"></a-entity>
+                  <a-entity id="replay-button" class="small-button" small-button="img: #replay-button" position="0.3 0 0" ></a-entity>
                 </a-entity>
 
 
