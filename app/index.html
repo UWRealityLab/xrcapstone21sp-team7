@@ -258,6 +258,8 @@
             <!-- menu -->
             <img id="meditation-img" src="../assets/img/menu/meditation.png"/>
             <img id="yoga-img" src="../assets/img/menu/yoga.png"/>
+            <img id="scenes-img" src="../assets/img/menu/scenes.png">
+            <img id="music-img" src="../assets/img/menu/music.png">
             <img id="clouds-img" src="../assets/img/menu/clouds.png"/>
             <img id="hot-springs-img" src="../assets/img/menu/hot-springs.png">
             <img id="volume-img" src="../assets/img/menu/Volume_icon.png">
@@ -362,11 +364,17 @@
               <a-entity id="ui" position="0 1.5 -2.5" visible="false">
                 <!-- 1 -->
                 <a-entity id="first-menu" class="submenu" visible="false">
-                  <a-entity id="meditation-button" class="option" mixin="frame" position="-0.4 0 0"
+                  <a-entity id="scenes-button" class="option" mixin="frame" position="-1.05 0 0.2" rotation="0 20 0"
+                    menu-button="title: Scenes; info: Explore outside\nof the garden; img: #scenes-img; width: 2">
+                  </a-entity>
+                  <a-entity id="meditation-button" class="option" mixin="frame" position="-0.35 0 0.1"
                     menu-button="title: Meditate; info: Take a breather; img: #meditation-img; width: 2">
                   </a-entity>
-                  <a-entity id="yoga-button" class="option" mixin="frame" position="0.4 0 0"
+                  <a-entity id="yoga-button" class="option" mixin="frame" position="0.35 0 0.1"
                     menu-button="title: Yoga; info: Stretch out a bit; img: #yoga-img; width: 2">
+                  </a-entity>
+                  <a-entity id="music-button" class="option" mixin="frame" position="1.05 0 0.2" rotation="0 -20 0"
+                    menu-button="title: Music\n&\nSounds; info: Choose from relaxing\nsounds and songs; img: #music-img; width: 2">
                   </a-entity>
                 </a-entity> <!-- 1 -->
                 <!-- meditation submenu - removed class="rightclickable" from each button to avoid raycasting on it  -->
