@@ -51,28 +51,30 @@ AFRAME.registerComponent("meditation-mode", {
 
     let sunPositionAnimation = 'property: material.sunPosition; to: 0 -70 0; dur: 2000';
     let lightColorAnimation = 'property: material.lightColor; to: #0b1026; dur: 2000';
-    let lightDarkColorAnimation = 'property: material.darkColor; to: #242b4b; dur: 2000';
-    let lightFogAnimation = 'property: material.fogColor; to: #000000; dur: 2000';
+    let darkColorAnimation = 'property: material.darkColor; to: #111422; dur: 2000';
+    let lightFogAnimation = 'property: material.fogColor; to: #111422; dur: 2000';
     this.el.setAttribute('animation__sun', sunPositionAnimation);
     this.el.setAttribute('animation__light_color', lightColorAnimation);
-    this.el.setAttribute('animation__dark_color', lightDarkColorAnimation);
+    this.el.setAttribute('animation__dark_color', darkColorAnimation);
     this.el.setAttribute('animation__fog_color', lightFogAnimation);
   },
 
   onMeditationEnd: function (evt) {
-    this.changeSkyAndMusic({
-      color: "#FFF",
-      music: "#" + evt.detail.song,
-      visibility: false,
-    });
+    if (evt.detail.light != 0.2) {  // Have this if statement because don't want to turn everything back if use has it in "night mode"
+      this.changeSkyAndMusic({
+        color: "#FFF",
+        music: "#" + evt.detail.song,
+        visibility: false,
+      });
 
-    let sunPositionAnimation = 'property: material.sunPosition; to: 10 70 20; dur: 2000';
-    let lightColorAnimation = 'property: material.lightColor; to: #8fdeea; dur: 2000'
-    let lightDarkColorAnimation = 'property: material.darkColor; to: #ebf7f5; dur: 2000';
-    let lightFogAnimation = 'property: material.fogColor; to: #eeeeee; dur: 2000';
-    this.el.setAttribute('animation__sun', sunPositionAnimation);
-    this.el.setAttribute('animation__color', lightColorAnimation);
-    this.el.setAttribute('animation__dark_color', lightDarkColorAnimation);
-    this.el.setAttribute('animation__fog_color', lightFogAnimation);
+      let sunPositionAnimation = 'property: material.sunPosition; to: 10 70 20; dur: 2000';
+      let lightColorAnimation = 'property: material.lightColor; to: #8fdeea; dur: 2000';
+      let darkColorAnimation = 'property: material.darkColor; to: #ebf7f5; dur: 2000';
+      let lightFogAnimation = 'property: material.fogColor; to: #eeeeee; dur: 2000';
+      this.el.setAttribute('animation__sun', sunPositionAnimation);
+      this.el.setAttribute('animation__light_color', lightColorAnimation);
+      this.el.setAttribute('animation__dark_color', darkColorAnimation);
+      this.el.setAttribute('animation__fog_color', lightFogAnimation);
+    }
   },
 });

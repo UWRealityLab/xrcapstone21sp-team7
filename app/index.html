@@ -40,6 +40,7 @@
     <script src="./scripts/meditation/meditation-ring-automated.js"></script>
     <script src="./scripts/meditation/breath-capture.js"></script>
     <script src="./scripts/meditation/cloud-meditation.js"></script>
+    <script src="./scripts/meditation/mountain-meditation.js"></script>
     
     <script src="./scripts/a-lake.js"></script>
 
@@ -80,7 +81,7 @@
       color="#dbf5ff"
       fog="type: exponential; density: 0.008; far: 100; near: 10; color: #eeeeee"
       animation__lighten_fog="property: fog.color; to: #eeeeee; dur: 2000; startEvents: endMeditation"
-      animation__darken_fog="property: fog.color; to: #444444; dur: 2000; startEvents: startMeditation"
+      animation__darken_fog="property: fog.color; to: #222222; dur: 2000; startEvents: startMeditation"
     >
         <!-- Load in assets -->
         <a-assets>
@@ -132,7 +133,7 @@
                     class="right"
                     id="rightHand"
                     hand-controls="hand: right; handModelStyle: lowPoly"
-                    raycaster="lineOpacity: 0.0; enabled: true; objects: .rightclickable;"
+                    raycaster="lineOpacity: 0.0; enabled: false; objects: .rightclickable;"
                     laser-controls="hand: right; model: false"
                     menu-controls
                 >
@@ -191,7 +192,7 @@
             ></a-asset-item>
             <a-asset-itme id="flame-blue" src="../assets/glb/lantern-flame-blue.glb"></a-asset-itme>
 
-            <!-- music -->
+            <!-- All music foreground and background are previews taken from the Adobe Stock Royalty-free music library -->
             <audio id="background-music" src="../assets/Music/default.m4a" preload="auto"></audio>
             <audio id="meditation-music" src="../assets/Music/meditation.m4a" preload="auto"></audio>
 
@@ -218,6 +219,7 @@
             <audio id="breath-exercise-meditation-3" src="../assets/meditation-scripts/breath-exercise-meditation-3.m4a" preload="auto"></audio>
 
             <a-asset-item id="center-structure" src="../assets/glb/center-structure.glb"></a-asset-item>
+            <a-asset-item id="red-gate" src="../assets/glb/torii-gate-red.glb"></a-asset-item>
 
             <!-- yoga images -->
             <!-- note: there's gotta be a better way to load these. -->
@@ -256,6 +258,7 @@
             <img id="meditation-img" src="../assets/img/menu/meditation.png"/>
             <img id="yoga-img" src="../assets/img/menu/yoga.png"/>
             <img id="clouds-img" src="../assets/img/menu/clouds.png"/>
+            <img id="hot-springs-img" src="../assets/img/menu/hot-springs.png">
             <img id="volume-img" src="../assets/img/menu/Volume_icon.png">
             <img id="sound-wave" src="../assets/img/sound_wave.png">
             <img id="back-arrow" src="../assets/img/Back_Arrow.png">
@@ -265,6 +268,8 @@
             <img id="background-1" src="../assets/img/menu/Background_1.png">
             <img id="background-2" src="../assets/img/menu/Background_2.png">
             <img id="background-3" src="../assets/img/menu/Background_3.png">
+            <img id="daylight" src="../assets/img/menu/daylight.png">
+            <img id="nightlight" src="../assets/img/menu/nightlight.png">
 
             <!-- breath menu -->
             <img id="hourglass-img" src="../assets/img/hourglass.png">
@@ -280,6 +285,7 @@
             <img id="Frogs-ambience-img" src="../assets/img/frogs.png">
             <img id="City_Rain_Birds-img" src="../assets/img/city_rain.png">
             <img id="City_Rain-img" src="../assets/img/city.png">
+            <img id="Zendin-img" src="../assets/img/zendin.png">
 
             <a-mixin
               id="frame"
@@ -318,6 +324,8 @@
               geometry="primitive: plane; width: 0.2; height: 0.2"
               material="color: white; shader: flat"
               position="0 0 0.008"
+              animation__scale="property: scale; to: 1.2 1.2 1.2; dur: 500; easing: easeOutExpo; startEvents: mouseenter"
+              animation__scale_reverse="property: scale; to: 1 1 1; dur: 500; easing: easeOutExpo; startEvents: mouseleave"
             ></a-mixin>
             <!-- Note is there a way to make this "frame" mixin more general?? -->
             <a-mixin
@@ -371,11 +379,14 @@
                   <a-entity id="confidence-booster-button" class="option" mixin="frame" position="0.35 0 0.1" rotation="0 0 0"
                     menu-button="title: Confidence Booster; info: Feel good about yourself; img: #meditation-img; width: 1.2">
                   </a-entity>
-                  <a-entity id="breathing-exercise-button" class="option" mixin="frame" position="1.05 0 0.2" rotation="0 -20 0"
+                  <a-entity id="breathing-exercise-button" class="option" mixin="frame" position="1.05 0 0.3" rotation="0 -20 0"
                     menu-button="title: Breathing Exercises; info: Improve meditation\nbreathing techniques; img: #meditation-img; width: 1.2">
                   </a-entity>
-                  <a-entity id="cloud-meditation-button" class="option" mixin="frame" position="0 0.9 0.3" rotation="20 0 0"
+                  <a-entity id="cloud-meditation-button" class="option" mixin="frame" position="-0.35 0.9 0.3" rotation="20 0 0"
                     menu-button="title: Head in the Clouds; info: Climb up the clouds\nand relax; img: #clouds-img; width: 1.2">
+                  </a-entity>
+                  <a-entity id="mountain-meditation-button" class="option" mixin="frame" position="0.35 0.9 0.3" rotation="20 0 0"
+                    menu-button="title: Hot Spring Serenity; info: Explore outside the\nwalls and enjoy the\ngentle sway of the water; img: #hot-springs-img; width: 1.2">
                   </a-entity>
                 </a-entity> <!-- meditation submenu -->
                 <!-- yoga submenu -->
@@ -390,7 +401,17 @@
                   <a-entity id="yoga-button-3" class="option" mixin="frame" position="0.7 0 0.1" rotation="0 -20 0"
                     menu-button="title: Unwind; info: Excellent for athletes\nand those stressed out; img: #yoga-img; width: 1.2">
                   </a-entity>
-                </a-entity> <!-- meditation submenu -->
+                </a-entity> <!-- yoga submenu -->
+                <!-- light submenu -->
+                <a-entity id="light-menu" class="submenu" visible="false">
+                  <!-- samples -->
+                  <a-entity id="Day" class="option" mixin="frame" position="-0.4 0 0"
+                    menu-button="title: Day Mode; info: Change to Day; img: #daylight; width: 2">
+                  </a-entity>
+                  <a-entity id="Night" class="option" mixin="frame" position="0.4 0 0"
+                    menu-button="title: Night Mode; info: Change to Night; img: #nightlight; width: 2">
+                  </a-entity>
+                </a-entity> <!-- light submenu -->
 
                 <!-- bar -->
                 <a-plane color="black" rotation="0 0 0" position="0 -0.57 0" scale="2 0.03 0.05"></a-plane>
@@ -415,9 +436,9 @@
                 </a-entity>
 
                 <a-entity id="function-buttons" class="audio" visible="false" position="-0.4 -0.9 0">
-                  <a-entity id="play-button" class="small-button" small-button="img: #play-button" position="-0.3 0 0" mixin="small-button-frame"></a-entity>
-                  <a-entity id="pause-button" class="small-button" small-button="img: #pause-button" position="0 0 0" mixin="small-button-frame"></a-entity>
-                  <a-entity id="replay-button" class="small-button" small-button="img: #replay-button" position="0.3 0 0" mixin="small-button-frame"></a-entity>
+                  <a-entity id="play-button" class="small-button" small-button="img: #play-button" position="-0.3 0 0" ></a-entity>
+                  <a-entity id="pause-button" class="small-button" small-button="img: #pause-button" position="0 0 0"></a-entity>
+                  <a-entity id="replay-button" class="small-button" small-button="img: #replay-button" position="0.3 0 0" ></a-entity>
                 </a-entity>
 
 
@@ -427,7 +448,7 @@
                   <!--audio id="background-music" src="../assets/Music/default.m4a" preload="auto"></audio>
                   <audio id="meditation-music" src="../assets/Music/meditation.m4a" preload="auto"></audio-->
                   
-                  <a-entity id="background-music" class="small-button" audio-button="title: Default Zendin;" position="-0.45 0 0" mixin="thumbnail-frame"></a-entity>
+                  <a-entity id="background-music" class="small-button" audio-button="title: Default Zendin; img: #Zendin-img" position="-0.45 0 0" mixin="thumbnail-frame"></a-entity>
                   <a-entity id="meditation-music" class="small-button" audio-button="title: Meditation" position="0 0 0" mixin="thumbnail-frame"></a-entity>
 
                   <a-entity id="As-the-rain" class="small-button" audio-button="title: As The Rain; img: #As-the-rain-img" position="0.45 0 0" mixin="thumbnail-frame"></a-entity>
@@ -441,7 +462,7 @@
                   <a-entity id="City_Rain_Birds" class="small-button" audio-button="title: City Rain Birds; img: #City_Rain_Birds-img" position="0.9 -0.45 0" mixin="thumbnail-frame"></a-entity>
                   <a-entity id="City_Rain" class="small-button" audio-button="title: City Rain; img: #City_Rain-img" position="1.35 -0.45 0" mixin="thumbnail-frame"></a-entity>
                   
-                  <a-entity id="audio-menu-slider" class="audio-slider" slider="title: Audio Slider; color: red" position="0 0.3 0"></a-entity>
+                  <a-entity id="audio-menu-slider" class="audio-slider" slider="title: Audio Slider;" position="0 0.3 0"></a-entity>
 
                 </a-entity>
                 <!-- audio -->
@@ -588,6 +609,7 @@
           meditation-light-mode
         ></a-entity>
         <a-entity
+          id="light-2"
           light="type: hemisphere; color: #e0fbff; ground-color: #fffab3; intensity: 2.5"
           meditation-light-mode
         ></a-entity>
@@ -629,9 +651,10 @@
         </a-box>
 
         <!-- Mountain Meditation -->
-        <a-lake
+        <a-entity id="mountain-meditation-container" mountain-meditation visible="false">
+          <a-lake
             id="ocean"
-            position="103.11 29.24 51.83"
+            position="103.11 29 51.83"
             color="#48788c"
             density="7"
             width="12"
@@ -640,24 +663,40 @@
             amplitudeVariance="0"
             speed="0.000001"
             speedVariance="0">
-        </a-lake>
-        <a-entity
-          class="lantern"
-          gltf-model="#lantern"
-          position="105.57 29.8 60"
-          shadow="receive: false; cast: true"
-        >
-          <a-entity class="flame" position="0 1 0" gltf-model="#flame-blue" 
-            visible="false"></a-entity>
-        </a-entity>
-        <a-entity
-          class="lantern"
-          gltf-model="#lantern"
-          position="110 29.8 54.01"
-          shadow="receive: false; cast: true"
-        >
-          <a-entity class="flame" position="0 1 0" gltf-model="#flame-blue" 
-            visible="false"></a-entity>
+          </a-lake>
+          <a-entity
+            class="lantern"
+            gltf-model="#lantern"
+            position="105.57 29.8 60"
+            shadow="receive: false; cast: true"
+          >
+            <a-entity class="flame" position="0 1 0" gltf-model="#flame-blue" 
+              visible="false"></a-entity>
+          </a-entity>
+          <a-entity
+            class="lantern"
+            gltf-model="#lantern"
+            position="110 29.8 54.01"
+            shadow="receive: false; cast: true"
+          >
+            <a-entity class="flame" position="0 1 0" gltf-model="#flame-blue" 
+              visible="false"></a-entity>
+          </a-entity>
+          <a-entity
+            gltf-model="#red-gate"
+            position="61 0.5 -9.2"
+            rotation="0 107.6 0">
+          </a-entity>
+          <a-entity
+            gltf-model="#red-gate"
+            position="93.32 16.04 -4.92"
+            rotation="0 24 0">
+          </a-entity>
+          <a-entity
+            gltf-model="#red-gate"
+            position="97.038 29.69 23.596"
+            rotation="0 17.06 0">
+          </a-entity>
         </a-entity>
 
 

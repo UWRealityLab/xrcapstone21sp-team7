@@ -15,6 +15,7 @@ AFRAME.registerComponent("menu-controls", {
     this.currSong = "Default Zendin";
     this.currScript = "";
     this.currVolume = "0.1";
+    this.currLight = "2.5";
 
     // the x value of the audio options at the start and end
     // need to change if change the number of audios.
@@ -59,6 +60,9 @@ AFRAME.registerComponent("menu-controls", {
     this.onAudioMenuChanged = this.onAudioMenuChanged.bind(this);
     this.audioChanged = this.audioChanged.bind(this);
     this.onAudioShift = this.onAudioShift.bind(this);
+    this.onLightModeClicked = this.onLightModeClicked.bind(this);
+    this.onDayLight = this.onDayLight.bind(this);
+    this.onNightLight = this.onNightLight.bind(this);
 
     this.onPlayButton = this.onPlayButton.bind(this);
     this.onPauseButton = this.onPauseButton.bind(this);
@@ -76,6 +80,7 @@ AFRAME.registerComponent("menu-controls", {
     this.onCloudMeditationButtonClicked = this.onCloudMeditationButtonClicked.bind(
       this
     );
+    this.onMountainMeditationButtonClicked = this.onMountainMeditationButtonClicked.bind(this);
     this.onGuidedYogaButtonClicked = this.onGuidedYogaButtonClicked.bind(this);
 
     // Breathing Audio
@@ -99,6 +104,10 @@ AFRAME.registerComponent("menu-controls", {
       this.onYogaButtonClicked
     );
     this.el.sceneEl.addEventListener(
+      "light-menu-button-changed",
+      this.onLightModeClicked
+    );
+    this.el.sceneEl.addEventListener(
       "guided-meditation-button-clicked",
       this.onGuidedMeditationClicked
     );
@@ -118,6 +127,7 @@ AFRAME.registerComponent("menu-controls", {
       "cloud-meditation-button-clicked",
       this.onCloudMeditationButtonClicked
     );
+    this.el.sceneEl.addEventListener("mountain-meditation-button-clicked", this.onMountainMeditationButtonClicked);
     this.el.sceneEl.addEventListener(
       "guided-yoga-button-clicked",
       this.onGuidedYogaButtonClicked
@@ -157,6 +167,15 @@ AFRAME.registerComponent("menu-controls", {
     this.el.sceneEl.addEventListener(
       "replay-button-changed",
       this.onReplayButton
+    );
+
+    this.el.sceneEl.addEventListener(
+      "Day-clicked",
+      this.onDayLight
+    );
+    this.el.sceneEl.addEventListener(
+      "Night-clicked",
+      this.onNightLight
     );
 
     // changing audio of breathing exercise
@@ -222,7 +241,8 @@ AFRAME.registerComponent("menu-controls", {
         this.el.setAttribute("raycaster", "lineOpacity", 0);
       } else {
         this.activate(document.querySelector("#first-menu"));
-        this.el.emit("endMeditation", { song: this.currSong });
+        console.log("CURRLIGHT: " + this.currLight);
+        this.el.emit("endMeditation", { song: this.currSong, light: this.currLight });
         this.meditationSong.components.sound.stopSound();
         this.breathingSong.components.sound.stopSound();
         if (this.currMeditationScript != undefined && !this.breathingOn) {
@@ -332,7 +352,7 @@ AFRAME.registerComponent("menu-controls", {
     let attr = sky.getAttribute("sound");
     this.log("sky before:" + attr.src);
 
-    this.el.emit("startMeditation");
+    this.el.emit("startMeditation", { light: 0.2 });
     
     sky.components.sound.stopSound();
     attr = sky.getAttribute("sound");
@@ -506,6 +526,14 @@ AFRAME.registerComponent("menu-controls", {
   },
 
   /*
+    Displays gates leading to hot spring
+    and also makes those elements visible
+  */
+  onMountainMeditationButtonClicked: function() {
+    this.el.sceneEl.emit("mountain-meditation-start");
+  },
+
+  /*
     Displays the different yoga options
   */
   onYogaButtonClicked: function () {
@@ -638,7 +666,7 @@ AFRAME.registerComponent("menu-controls", {
     this.deactivateSmallButton(firstMenu);
 
     // also deactivate the firstMenu
-    this.deactivate(document.querySelector("#first-menu"));
+    this.deactivate(this.currentMenu);
 
     // activate the volume bar
     this.activateSliders();
@@ -646,6 +674,16 @@ AFRAME.registerComponent("menu-controls", {
     // Activate meditation options
     let audioSubMenu = document.querySelector("#audio-options");
     this.activateSmallButton(audioSubMenu);
+  },
+
+  onLightModeClicked: function () {
+    // Deactivate first menu options
+    let firstMenu = document.querySelector("#first-menu");
+    this.deactivate(this.currentMenu);
+
+    // Activate meditation options
+    let lightMenu = document.querySelector("#light-menu");
+    this.activate(lightMenu);
   },
 
   audioChanged: function (evt) {
@@ -660,6 +698,16 @@ AFRAME.registerComponent("menu-controls", {
 
     this.changeDisplayMenu();
     
+  },
+
+  onDayLight: function () {
+    this.currLight = 2.5;
+    this.el.emit("endMeditation", { song: this.currSong, light: this.currLight });
+  },
+
+  onNightLight: function () {
+    this.currLight = 0.2;
+    this.el.emit("startMeditation", { light: this.currLight });
   },
 
   /*
@@ -791,6 +839,10 @@ AFRAME.registerComponent("menu-controls", {
       "yoga-button-clicked",
       this.onYogaButtonClicked
     );
+    this.el.sceneEl.removeEventListener(
+      "light-menu-button-changed",
+      this.onLightModeClicked
+    );
 
     el.sceneEl.removeEventListener(
       "guided-meditation-button-clicked",
@@ -849,6 +901,15 @@ AFRAME.registerComponent("menu-controls", {
     this.el.sceneEl.removeEventListener(
       "breath-capture-end",
       this.onBreathAudio3
+    );
+
+    this.el.sceneEl.removeEventListener(
+      "Day-clicked",
+      this.onDayLight
+    );
+    this.el.sceneEl.removeEventListener(
+      "Night-clicked",
+      this.onNightLight
     );
   },
 
