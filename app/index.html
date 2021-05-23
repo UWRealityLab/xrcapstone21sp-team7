@@ -269,6 +269,8 @@
             <img id="background-1" src="../assets/img/menu/Background_1.png">
             <img id="background-2" src="../assets/img/menu/Background_2.png">
             <img id="background-3" src="../assets/img/menu/Background_3.png">
+            <img id="daylight" src="../assets/img/menu/daylight.png">
+            <img id="nightlight" src="../assets/img/menu/nightlight.png">
 
             <!-- breath menu -->
             <img id="hourglass-img" src="../assets/img/hourglass.png">
@@ -398,7 +400,17 @@
                   <a-entity id="yoga-button-3" class="option" mixin="frame" position="0.7 0 0.1" rotation="0 -20 0"
                     menu-button="title: Unwind; info: Excellent for athletes\nand those stressed out; img: #yoga-img; width: 1.2">
                   </a-entity>
-                </a-entity> <!-- meditation submenu -->
+                </a-entity> <!-- yoga submenu -->
+                <!-- light submenu -->
+                <a-entity id="light-menu" class="submenu" visible="false">
+                  <!-- samples -->
+                  <a-entity id="Day" class="option" mixin="frame" position="-0.4 0 0"
+                    menu-button="title: Day Mode; info: Change to Day; img: #daylight; width: 2">
+                  </a-entity>
+                  <a-entity id="Night" class="option" mixin="frame" position="0.4 0 0"
+                    menu-button="title: Night Mode; info: Change to Night; img: #nightlight; width: 2">
+                  </a-entity>
+                </a-entity> <!-- light submenu -->
 
                 <!-- bar -->
                 <a-plane color="black" rotation="0 0 0" position="0 -0.57 0" scale="2 0.03 0.05"></a-plane>
@@ -419,7 +431,7 @@
                 <!-- audio menu button-->
                 <a-entity id="audio-menu" class="audio" visible="false" position="-0.7 -0.9 0">  <!--position="1.4 0 1.45" rotation="0 -70 0"-->
                   <a-entity id="audio-menu-button" class="small-button" small-button="img: #background-1; title: AUDIO" scale="2 1 1" mixin="small-button-scale-frame"></a-entity>
-                  <!--a-entity id="light-menu-button" class="small-button" small-button="img: #background-2; title: LIGHTING" scale="2 1 1" position="0.5 0 0" mixin="small-button-scale-frame"></a-entity-->
+                  <a-entity id="light-menu-button" class="small-button" small-button="img: #background-2; title: LIGHTING" scale="2 1 1" position="0.5 0 0" mixin="small-button-scale-frame"></a-entity>
                 </a-entity>
 
                 <a-entity id="function-buttons" class="audio" visible="false" position="-0.4 -0.9 0">
@@ -596,6 +608,7 @@
           meditation-light-mode
         ></a-entity>
         <a-entity
+          id="light-2"
           light="type: hemisphere; color: #e0fbff; ground-color: #fffab3; intensity: 2.5"
           meditation-light-mode
         ></a-entity>

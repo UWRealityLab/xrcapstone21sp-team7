@@ -24,10 +24,12 @@ AFRAME.registerComponent('meditation-light-mode', {
     };
     this.el.setAttribute('animation', light);
   },
-  onMeditationEnd: function() {
-    this.changeLighting(2.5);
+  onMeditationEnd: function(evt) {
+    console.log("EVT Song:" + evt.detail.song);
+    console.log("EVT LIGHT:" + evt.detail.light);
+    this.changeLighting(evt.detail.light);
   },
-  onMeditationStart: function() {
-    this.changeLighting(0.2);
+  onMeditationStart: function(evt) {
+    this.changeLighting(evt.detail.light);
   }
 })
