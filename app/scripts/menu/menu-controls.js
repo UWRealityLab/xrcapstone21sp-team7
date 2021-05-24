@@ -444,7 +444,7 @@ AFRAME.registerComponent("menu-controls", {
 
     sky.setAttribute("sound", attr);
 
-    sky.querySelectorAll(".audio").forEach((audio) => {
+    sky.querySelectorAll(".audio")?.forEach((audio) => {
       
       let sound = audio.getAttribute("sound");
       sound.volume = evt.detail.percent;
@@ -521,7 +521,7 @@ AFRAME.registerComponent("menu-controls", {
 
     let y = m * x;
 
-    this.currentMenu.querySelectorAll(".option").forEach((option) => {
+    this.currentMenu.querySelectorAll(".option")?.forEach((option) => {
       let attr = option.getAttribute("position");
       attr.x = attr.x - y;
       option.setAttribute("position", attr);
@@ -565,11 +565,11 @@ AFRAME.registerComponent("menu-controls", {
     Turn on sliders
   */
   activateSliders: function (element) {
-    element.querySelectorAll(".slider").forEach((slider) => {
+    element.querySelectorAll(".slider")?.forEach((slider) => {
       slider.setAttribute("visible", true);
       slider
         .querySelector(".container")
-        .setAttribute("class", "rightclickable container");
+        ?.setAttribute("class", "rightclickable container");
     });
   },
 
@@ -577,7 +577,7 @@ AFRAME.registerComponent("menu-controls", {
     Turn off sliders
   */
   deactivateSliders: function (element) {
-    element.querySelectorAll(".slider").forEach((slider) => {
+    element.querySelectorAll(".slider")?.forEach((slider) => {
       slider.setAttribute("visible", false);
       slider.querySelector(".container").setAttribute("class", "container");
     });
@@ -588,7 +588,7 @@ AFRAME.registerComponent("menu-controls", {
   */
   activate: function (element) {
     // Buttons
-    element.querySelectorAll(".option").forEach((option) => {
+    element.querySelectorAll(".option")?.forEach((option) => {
       option.setAttribute("class", "rightclickable option");
     });
     element.setAttribute("visible", "true");
@@ -602,7 +602,7 @@ AFRAME.registerComponent("menu-controls", {
   */
   deactivate: function (element) {
     element.setAttribute("visible", "false");
-    element.querySelectorAll(".option").forEach((option) => {
+    element.querySelectorAll(".option")?.forEach((option) => {
       option.setAttribute("class", "option");
     });
 
@@ -667,86 +667,25 @@ AFRAME.registerComponent("menu-controls", {
     el.removeEventListener("abuttondown", this.onMenuActivate); // maybe change trigger button?
     el.removeEventListener('bbuttondown', this.onMenuRecenter);
     el.removeEventListener("gripup", this.onToggleMenuVisibility);
-    el.sceneEl.removeEventListener(
-      "meditation-button-clicked",
-      this.onMeditationButtonClicked
-    );
-    el.sceneEl.removeEventListener(
-      "yoga-button-clicked",
-      this.onYogaButtonClicked
-    );
-    this.el.sceneEl.removeEventListener(
-      "lighting-button-clicked",
-      this.onLightModeClicked
-    );
-
-    el.sceneEl.removeEventListener(
-      "guided-meditation-button-clicked",
-      this.onGuidedMeditationClicked
-    );
-    el.sceneEl.removeEventListener(
-      "story-telling-button-clicked",
-      this.onStoryMeditationClicked
-    );
-    el.sceneEl.removeEventListener(
-      "confidence-booster-button-clicked",
-      this.onConfidenceBoosterClicked
-    );
-    el.sceneEl.removeEventListener(
-      "breathing-exercise-button-clicked",
-      this.onBreathingExerciseButtonClicked
-    );
-    this.el.sceneEl.removeEventListener(
-      "volume-slider-changed",
-      this.onVolumeChanged
-    );
-
-    el.sceneEl.removeEventListener(
-      "audio-button-clicked",
-      this.onAudioMenuClicked
-    );
+    el.sceneEl.removeEventListener("meditation-button-clicked", this.onMeditationButtonClicked);
+    el.sceneEl.removeEventListener("yoga-button-clicked", this.onYogaButtonClicked);
+    el.sceneEl.removeEventListener("lighting-button-clicked", this.onLightModeClicked);
+    el.sceneEl.removeEventListener("guided-meditation-button-clicked", this.onGuidedMeditationClicked);
+    el.sceneEl.removeEventListener("story-telling-button-clicked", this.onStoryMeditationClicked);
+    el.sceneEl.removeEventListener("confidence-booster-button-clicked", this.onConfidenceBoosterClicked);
+    el.sceneEl.removeEventListener("breathing-exercise-button-clicked", this.onBreathingExerciseButtonClicked);
+    el.sceneEl.removeEventListener("volume-slider-changed",this.onVolumeChanged);
+    el.sceneEl.removeEventListener("audio-button-clicked", this.onAudioMenuClicked);
     el.sceneEl.removeEventListener("audio-changed", this.audioChanged);
-    el.sceneEl.removeEventListener(
-      "audio-menu-slider-changed",
-      this.onAudioShift
-    );
-
-    this.el.sceneEl.removeEventListener(
-      "play-button-changed",
-      this.onPlayButton
-    );
-
-    this.el.sceneEl.removeEventListener(
-      "pause-button-changed",
-      this.onPauseButton
-    );
-
-    this.el.sceneEl.removeEventListener(
-      "replay-button-changed",
-      this.onReplayButton
-    );
-
-    this.el.sceneEl.removeEventListener(
-      "breath-capture-start",
-      this.onBreathAudio1
-    );
-    this.el.sceneEl.removeEventListener(
-      "change-breathing-exercise-2",
-      this.onBreathAudio2
-    );
-    this.el.sceneEl.removeEventListener(
-      "breath-capture-end",
-      this.onBreathAudio3
-    );
-
-    this.el.sceneEl.removeEventListener(
-      "Day-clicked",
-      this.onDayLight
-    );
-    this.el.sceneEl.removeEventListener(
-      "Night-clicked",
-      this.onNightLight
-    );
+    el.sceneEl.removeEventListener("audio-menu-slider-changed", this.onAudioShift);
+    el.sceneEl.removeEventListener("play-button-changed", this.onPlayButton);
+    el.sceneEl.removeEventListener("pause-button-changed", this.onPauseButton);
+    el.sceneEl.removeEventListener("replay-button-changed", this.onReplayButton);
+    el.sceneEl.removeEventListener("breath-capture-start", this.onBreathAudio1);
+    el.sceneEl.removeEventListener("change-breathing-exercise-2", this.onBreathAudio2);
+    el.sceneEl.removeEventListener("breath-capture-end", this.onBreathAudio3);
+    el.sceneEl.removeEventListener("Day-clicked", this.onDayLight);
+    el.sceneEl.removeEventListener("Night-clicked", this.onNightLight);
   },
 
   log(string, ...etc) {
