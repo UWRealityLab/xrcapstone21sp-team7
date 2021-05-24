@@ -260,6 +260,7 @@
             <img id="yoga-img" src="../assets/img/menu/yoga.png"/>
             <img id="scenes-img" src="../assets/img/menu/scenes.png">
             <img id="music-img" src="../assets/img/menu/music.png">
+            <img id="lighting-img" src="../assets/img/menu/lighting.png">
             <img id="clouds-img" src="../assets/img/menu/clouds.png"/>
             <img id="hot-springs-img" src="../assets/img/menu/hot-springs.png">
             <img id="volume-img" src="../assets/img/menu/Volume_icon.png">
@@ -373,8 +374,11 @@
                   <a-entity id="yoga-button" class="option" mixin="frame" position="0.35 0 0.1"
                     menu-button="title: Yoga; info: Stretch out a bit; img: #yoga-img; width: 2">
                   </a-entity>
-                  <a-entity id="music-button" class="option" mixin="frame" position="1.05 0 0.2" rotation="0 -20 0"
+                  <a-entity id="audio-button" class="option" mixin="frame" position="1.05 0 0.2" rotation="0 -20 0"
                     menu-button="title: Music\n&\nSounds; info: Choose from relaxing\nsounds and songs; img: #music-img; width: 2">
+                  </a-entity>
+                  <a-entity id="lighting-button" class="option" mixin="frame" position="0 0.9 0.3" rotation="20 0 0"
+                   menu-button="title: Lighting; info: Choose your preferred\nscene lighting; img: #lighting-img; width: 2">
                   </a-entity>
                 </a-entity> <!-- 1 -->
                 <!-- meditation submenu - removed class="rightclickable" from each button to avoid raycasting on it  -->
@@ -421,36 +425,6 @@
                     menu-button="title: Night Mode; info: Change to Night; img: #nightlight; width: 2">
                   </a-entity>
                 </a-entity> <!-- light submenu -->
-
-                <!-- bar -->
-                <a-plane color="black" rotation="0 0 0" position="0 -0.57 0" scale="2 0.03 0.05"></a-plane>
-
-                 <!-- volume -->
-                
-                <a-entity id="volume-slider" class="slider" slider="title: Audio Volume" position="-0.4 -0.7 0" visible="false">
-                  
-                </a-entity>
-                <!-- volume -->
-
-                <!-- display square-->
-                <a-entity id="display-box" horizontal-button="img: #background-3; title_1: GARDEN AUDIO:; title_2: ACTIVITY:; title_3: VOLUME:" position="0.5 -1 0" mixin="horizontal-frame"></a-entity>
-
-                <!-- audio -->
-                <!-- TODO: Find Better way to organize multiple audios -->
-                
-                <!-- audio menu button-->
-                <a-entity id="audio-menu" class="audio" visible="false" position="-0.7 -0.9 0">  <!--position="1.4 0 1.45" rotation="0 -70 0"-->
-                  <a-entity id="audio-menu-button" class="small-button" small-button="img: #background-1; title: AUDIO" scale="2 1 1" mixin="small-button-scale-frame"></a-entity>
-                  <a-entity id="light-menu-button" class="small-button" small-button="img: #background-2; title: LIGHTING" scale="2 1 1" position="0.5 0 0" mixin="small-button-scale-frame"></a-entity>
-                </a-entity>
-
-                <a-entity id="function-buttons" class="audio" visible="false" position="-0.4 -0.9 0">
-                  <a-entity id="play-button" class="small-button" small-button="img: #play-button" position="-0.3 0 0" ></a-entity>
-                  <a-entity id="pause-button" class="small-button" small-button="img: #pause-button" position="0 0 0"></a-entity>
-                  <a-entity id="replay-button" class="small-button" small-button="img: #replay-button" position="0.3 0 0" ></a-entity>
-                </a-entity>
-
-
                 <a-entity id="audio-options" class="audio" position="0 0.3 0" visible="false">
                   <!-- back to audio menu button -->
 
@@ -473,6 +447,34 @@
                   
                   <a-entity id="audio-menu-slider" class="audio-slider" slider="title: Audio Slider;" position="0 0.3 0"></a-entity>
 
+                </a-entity>
+
+                <!-- bar -->
+                <a-plane color="black" rotation="0 0 0" position="0 -0.57 0" scale="2 0.03 0.05"></a-plane>
+
+                 <!-- volume -->
+                
+                <a-entity id="volume-slider" class="slider" slider="title: Audio Volume" position="-0.4 -0.7 0" visible="false">
+                  
+                </a-entity>
+                <!-- volume -->
+
+                <!-- display square-->
+                <a-entity id="display-box" horizontal-button="img: #background-3; title_1: GARDEN AUDIO:; title_2: ACTIVITY:; title_3: VOLUME:" position="0.5 -1 0" mixin="horizontal-frame"></a-entity>
+
+                <!-- audio -->
+                <!-- TODO: Find Better way to organize multiple audios -->
+                
+                <!-- audio menu button-->
+                <!-- <a-entity id="audio-menu" class="audio" visible="false" position="-0.7 -0.9 0">
+                  <a-entity id="audio-menu-button" class="small-button" small-button="img: #background-1; title: AUDIO" scale="2 1 1" mixin="small-button-scale-frame"></a-entity>
+                  <a-entity id="light-menu-button" class="small-button" small-button="img: #background-2; title: LIGHTING" scale="2 1 1" position="0.5 0 0" mixin="small-button-scale-frame"></a-entity>
+                </a-entity> -->
+
+                <a-entity id="function-buttons" class="audio" visible="false" position="-0.4 -0.9 0">
+                  <a-entity id="play-button" class="small-button" small-button="img: #play-button" position="-0.3 0 0" ></a-entity>
+                  <a-entity id="pause-button" class="small-button" small-button="img: #pause-button" position="0 0 0"></a-entity>
+                  <a-entity id="replay-button" class="small-button" small-button="img: #replay-button" position="0.3 0 0" ></a-entity>
                 </a-entity>
                 <!-- audio -->
 
