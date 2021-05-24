@@ -242,7 +242,7 @@ AFRAME.registerComponent("menu-controls", {
       } else {
         this.activate(document.querySelector("#first-menu"));
         console.log("CURRLIGHT: " + this.currLight);
-        this.el.emit("endMeditation", { song: this.currSong, light: this.currLight });
+        //this.el.emit("endMeditation", { song: this.currSong, light: this.currLight });
         this.meditationSong.components.sound.stopSound();
         this.breathingSong.components.sound.stopSound();
         if (this.currMeditationScript != undefined && !this.breathingOn) {
@@ -352,7 +352,7 @@ AFRAME.registerComponent("menu-controls", {
     let attr = sky.getAttribute("sound");
     this.log("sky before:" + attr.src);
 
-    this.el.emit("startMeditation", { light: 0.2 });
+    //this.el.emit("startMeditation", { light: 0.2 });
     
     sky.components.sound.stopSound();
     attr = sky.getAttribute("sound");
