@@ -52,7 +52,7 @@ const SHORT_ANIM_ARRAY = [
 
 // const SHORT_TIME_ARRAY = [
 const TIME_ARRAY = [
-  10000,  // welcome screen
+  15000,  // welcome screen
   15000,  // headset adjustment
   30000,  // mountain pose
   30000,  // tree pose
@@ -60,7 +60,7 @@ const TIME_ARRAY = [
   15000,  // lunge 1
   15000,  // lunge 2
   30000,  // warrior 2
-  30000,  // warrior 3
+  30000,  // warrior 1 (even though its called 3)
   30000,  // plank
   30000,  // side plank
   10000   // end
@@ -105,7 +105,6 @@ AFRAME.registerComponent("yoga-mode", {
   yogaStart: function() {
     console.log('starting yoga');
     this.inYogaMode = true;
-    let imagesEl = document.querySelector("#yoga-images");
     let timerEl = document.querySelector("#yoga-timer");
     let instructorEl = document.querySelector("#yoga-instructor").components['animate-yoga-poses'];
 
@@ -126,7 +125,7 @@ AFRAME.registerComponent("yoga-mode", {
     y.setAttribute("sound", attr);
     y.components.sound.playSound();
 
-    document.querySelector("#yoga-images")
+    document.querySelector("#yoga-instructor")
             .setAttribute("sound", "src: #As-the-rain; autoplay: true; loop: true; volume: 0.05");
 
     // Show buttons
@@ -142,8 +141,8 @@ AFRAME.registerComponent("yoga-mode", {
       this.inYogaMode = false;
       this.el.sceneEl.emit('yogaStop');
       this.el.querySelector("#yoga-script").components.sound.stopSound();
-      document.querySelector("#yoga-images").removeAttribute('sound');
-      document.querySelector("#yoga-images").removeAttribute('src');
+      document.querySelector("#yoga-instructor").removeAttribute('sound');
+      document.querySelector("#yoga-instructor").removeAttribute('src');
       document.querySelector("#yoga-timer").setAttribute('visible', 'false');
 
       // Hide buttons
@@ -154,6 +153,9 @@ AFRAME.registerComponent("yoga-mode", {
       }
       if (this.imageLoopTimeout) {
         clearTimeout(this.imageLoopTimeout);
+      }
+      if (this.animationTimeout) {
+        clearTimeout(this.animationTimeout);
       }
     }
   },
@@ -167,9 +169,6 @@ AFRAME.registerComponent("yoga-mode", {
   },
 
   onImageLoopTimeout: function() {
-    let timerEl = document.querySelector("#yoga-timer");
-    let imagesEl = document.querySelector("#yoga-images");
-
     this.loopCount++;
 
     if (this.loopCount < TIME_ARRAY.length) {
@@ -183,8 +182,7 @@ AFRAME.registerComponent("yoga-mode", {
       this.timer = TIME_ARRAY[this.loopCount];
       this.imageLoop();
     } else { // Clear when done looping
-      timerEl.setAttribute("visible", "false");
-      clearInterval(this.timerId);
+      this.stopYogaMode();
     }
   },
   
@@ -234,6 +232,7 @@ AFRAME.registerComponent("yoga-mode", {
 
   yogaPause: function() {
     if (this.paused) {
+      // Resume timeouts with saved timer, and change icon to pause
       setTimeout(this.onImageLoopTimeout, this.timer);
       setTimeout(this.animateTo(this.loopCount, this.loopCount + 1), 
                                 Math.max(this.timer - (this.animationDelay / 2), 0));
@@ -243,6 +242,7 @@ AFRAME.registerComponent("yoga-mode", {
       document.getElementById("yoga-control-pause-img")
               .setAttribute("src", "#yoga-pause");
     } else {
+      // Clear current intervals and sound, and change icon to play
       clearInterval(this.imageLoopTimeout);
       clearInterval(this.animationTimeout);
       clearInterval(this.timerId);
