@@ -7,6 +7,8 @@ AFRAME.registerComponent("audio-button", {
     init: function () {
       let el = this.el;
       let data = this.data;
+
+      el.setAttribute("class", "option");
   
       // Text
       this.text = document.createElement("a-entity");

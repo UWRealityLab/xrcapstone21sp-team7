@@ -9,8 +9,9 @@ AFRAME.registerComponent("small-button", {
     init: function () {
       let el = this.el;
       let data = this.data;
-  
 
+      el.setAttribute("class", "option");
+  
       // Title
       // Title Text
       this.text = document.createElement("a-entity");

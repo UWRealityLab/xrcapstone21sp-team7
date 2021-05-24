@@ -365,85 +365,83 @@
               <a-entity id="ui" position="0 1.5 -2.5" visible="false">
                 <!-- 1 -->
                 <a-entity id="first-menu" class="submenu" visible="false">
-                  <a-entity id="scenes-button" class="option" mixin="frame" position="-1.05 0 0.2" rotation="0 20 0"
+                  <a-entity id="scenes-button" position="-1.05 0 0.2" rotation="0 20 0"
                     menu-button="title: Scenes; info: Explore outside\nof the garden; img: #scenes-img; width: 2">
                   </a-entity>
-                  <a-entity id="meditation-button" class="option" mixin="frame" position="-0.35 0 0.1"
+                  <a-entity id="meditation-button" position="-0.35 0 0.1"
                     menu-button="title: Meditate; info: Take a breather; img: #meditation-img; width: 2">
                   </a-entity>
-                  <a-entity id="yoga-button" class="option" mixin="frame" position="0.35 0 0.1"
+                  <a-entity id="yoga-button" position="0.35 0 0.1"
                     menu-button="title: Yoga; info: Stretch out a bit; img: #yoga-img; width: 2">
                   </a-entity>
-                  <a-entity id="audio-button" class="option" mixin="frame" position="1.05 0 0.2" rotation="0 -20 0"
+                  <a-entity id="audio-button" position="1.05 0 0.2" rotation="0 -20 0"
                     menu-button="title: Music\n&\nSounds; info: Choose from relaxing\nsounds and songs; img: #music-img; width: 2">
                   </a-entity>
-                  <a-entity id="lighting-button" class="option" mixin="frame" position="0 0.9 0.3" rotation="20 0 0"
+                  <a-entity id="lighting-button" position="0 0.9 0.3" rotation="20 0 0"
                    menu-button="title: Lighting; info: Choose your preferred\nscene lighting; img: #lighting-img; width: 2">
                   </a-entity>
                 </a-entity> <!-- 1 -->
                 <!-- meditation submenu - removed class="rightclickable" from each button to avoid raycasting on it  -->
                 <a-entity id="meditation-menu" class="submenu" visible="false">
-                  <a-entity id="guided-meditation-button" class="option" mixin="frame" position="-1.05 0 0.2" rotation="0 20 0"
+                  <a-entity id="guided-meditation-button" position="-1.05 0 0.2" rotation="0 20 0"
                     menu-button="title: Guided Meditation; info: Let us walk you through; img: #meditation-img; width: 1.2">
                   </a-entity>
-                  <a-entity id="story-telling-button" class="option" mixin="frame" position="-0.35 0 0.1" rotation="0 0 0"
+                  <a-entity id="story-telling-button" position="-0.35 0 0.1" rotation="0 0 0"
                     menu-button="title: Story Telling; info: Listen to a brief story; img: #meditation-img; width: 1.2">
                   </a-entity>
-                  <a-entity id="confidence-booster-button" class="option" mixin="frame" position="0.35 0 0.1" rotation="0 0 0"
+                  <a-entity id="confidence-booster-button" position="0.35 0 0.1" rotation="0 0 0"
                     menu-button="title: Confidence Booster; info: Feel good about yourself; img: #meditation-img; width: 1.2">
                   </a-entity>
-                  <a-entity id="breathing-exercise-button" class="option" mixin="frame" position="1.05 0 0.3" rotation="0 -20 0"
+                  <a-entity id="breathing-exercise-button" position="1.05 0 0.3" rotation="0 -20 0"
                     menu-button="title: Breathing Exercises; info: Improve meditation\nbreathing techniques; img: #meditation-img; width: 1.2">
                   </a-entity>
-                  <a-entity id="cloud-meditation-button" class="option" mixin="frame" position="-0.35 0.9 0.3" rotation="20 0 0"
+                  <a-entity id="cloud-meditation-button" position="-0.35 0.9 0.3" rotation="20 0 0"
                     menu-button="title: Head in the Clouds; info: Climb up the clouds\nand relax; img: #clouds-img; width: 1.2">
                   </a-entity>
-                  <a-entity id="mountain-meditation-button" class="option" mixin="frame" position="0.35 0.9 0.3" rotation="20 0 0"
+                  <a-entity id="mountain-meditation-button" position="0.35 0.9 0.3" rotation="20 0 0"
                     menu-button="title: Hot Spring Serenity; info: Explore outside the\nwalls and enjoy the\ngentle sway of the water; img: #hot-springs-img; width: 1.2">
                   </a-entity>
                 </a-entity> <!-- meditation submenu -->
                 <!-- yoga submenu -->
                 <a-entity id="yoga-menu" class="submenu" visible="false">
                   <!-- samples -->
-                  <a-entity id="guided-yoga-button" class="option" mixin="frame" position="-0.7 0 0.1" rotation="0 20 0"
+                  <a-entity id="guided-yoga-button" position="-0.7 0 0.1" rotation="0 20 0"
                     menu-button="title: Morning Yoga\nRoutine; info: Walk through a\nquick minute yoga\nroutine, perfect\nfor beginners; img: #yoga-img; width: 1.2">
                   </a-entity>
-                  <a-entity id="yoga-button-2" class="option" mixin="frame" position="0 0 0" rotation="0 0 0"
+                  <a-entity id="yoga-button-2" position="0 0 0" rotation="0 0 0"
                     menu-button="title: Inner Flow; info: Enjoy a relaxing\nroutine that'll put\nyou at ease; img: #yoga-img; width: 1.2">
                   </a-entity>
-                  <a-entity id="yoga-button-3" class="option" mixin="frame" position="0.7 0 0.1" rotation="0 -20 0"
+                  <a-entity id="yoga-button-3" position="0.7 0 0.1" rotation="0 -20 0"
                     menu-button="title: Unwind; info: Excellent for athletes\nand those stressed out; img: #yoga-img; width: 1.2">
                   </a-entity>
                 </a-entity> <!-- yoga submenu -->
                 <!-- light submenu -->
                 <a-entity id="light-menu" class="submenu" visible="false">
                   <!-- samples -->
-                  <a-entity id="Day" class="option" mixin="frame" position="-0.4 0 0"
+                  <a-entity id="Day" position="-0.4 0 0"
                     menu-button="title: Day Mode; info: Change to Day; img: #daylight; width: 2">
                   </a-entity>
-                  <a-entity id="Night" class="option" mixin="frame" position="0.4 0 0"
+                  <a-entity id="Night" position="0.4 0 0"
                     menu-button="title: Night Mode; info: Change to Night; img: #nightlight; width: 2">
                   </a-entity>
                 </a-entity> <!-- light submenu -->
-                <a-entity id="audio-options" class="audio" position="0 0.3 0" visible="false">
-                  <!-- back to audio menu button -->
-
+                <a-entity id="audio-options" class="submenu" position="0 0.3 0" visible="false">
                   <!--audio id="background-music" src="../assets/Music/default.m4a" preload="auto"></audio>
                   <audio id="meditation-music" src="../assets/Music/meditation.m4a" preload="auto"></audio-->
                   
-                  <a-entity id="background-music" class="small-button" audio-button="title: Default Zendin; img: #Zendin-img" position="-0.45 0 0" mixin="thumbnail-frame"></a-entity>
-                  <a-entity id="meditation-music" class="small-button" audio-button="title: Meditation" position="0 0 0" mixin="thumbnail-frame"></a-entity>
+                  <a-entity id="background-music" audio-button="title: Default Zendin; img: #Zendin-img" position="-0.45 0 0" mixin="thumbnail-frame"></a-entity>
+                  <a-entity id="meditation-music" audio-button="title: Meditation" position="0 0 0" mixin="thumbnail-frame"></a-entity>
 
-                  <a-entity id="As-the-rain" class="small-button" audio-button="title: As The Rain; img: #As-the-rain-img" position="0.45 0 0" mixin="thumbnail-frame"></a-entity>
-                  <a-entity id="Fairy-Forest" class="small-button" audio-button="title: Fairy Forest; img: #Fairy-Forest-img" position="-0.45 -0.45 0" mixin="thumbnail-frame"></a-entity>
-                  <a-entity id="Breath-of-life" class="small-button" audio-button="title: Breath of Life; img: #Breath-of-life-img" position="0 -0.45 0" mixin="thumbnail-frame"></a-entity>
-                  <a-entity id="Imaginary-waterfalls" class="small-button" audio-button="title: Imaginary Waterfalls; img: #Imaginary-waterfalls-img" position="0.45 -0.45 0" mixin="thumbnail-frame"></a-entity>
-                  <a-entity id="State-of-Zen" class="small-button" audio-button="title: State of Zen; img: #State-of-Zen-img" position="0.9 0 0" mixin="thumbnail-frame"></a-entity>
-                  <a-entity id="Wren" class="small-button" audio-button="title: Wren; img: #Wren-img" position="1.35 0 0" mixin="thumbnail-frame"></a-entity>
+                  <a-entity id="As-the-rain" audio-button="title: As The Rain; img: #As-the-rain-img" position="0.45 0 0" mixin="thumbnail-frame"></a-entity>
+                  <a-entity id="Fairy-Forest" audio-button="title: Fairy Forest; img: #Fairy-Forest-img" position="-0.45 -0.45 0" mixin="thumbnail-frame"></a-entity>
+                  <a-entity id="Breath-of-life" audio-button="title: Breath of Life; img: #Breath-of-life-img" position="0 -0.45 0" mixin="thumbnail-frame"></a-entity>
+                  <a-entity id="Imaginary-waterfalls" audio-button="title: Imaginary Waterfalls; img: #Imaginary-waterfalls-img" position="0.45 -0.45 0" mixin="thumbnail-frame"></a-entity>
+                  <a-entity id="State-of-Zen" audio-button="title: State of Zen; img: #State-of-Zen-img" position="0.9 0 0" mixin="thumbnail-frame"></a-entity>
+                  <a-entity id="Wren" audio-button="title: Wren; img: #Wren-img" position="1.35 0 0" mixin="thumbnail-frame"></a-entity>
 
-                  <a-entity id="Frogs-ambience" class="small-button" audio-button="title: Evening Frogs; img: #Frogs-ambience-img" position="1.8 0 0" mixin="thumbnail-frame"></a-entity>
-                  <a-entity id="City_Rain_Birds" class="small-button" audio-button="title: City Rain Birds; img: #City_Rain_Birds-img" position="0.9 -0.45 0" mixin="thumbnail-frame"></a-entity>
-                  <a-entity id="City_Rain" class="small-button" audio-button="title: City Rain; img: #City_Rain-img" position="1.35 -0.45 0" mixin="thumbnail-frame"></a-entity>
+                  <a-entity id="Frogs-ambience" audio-button="title: Evening Frogs; img: #Frogs-ambience-img" position="1.8 0 0" mixin="thumbnail-frame"></a-entity>
+                  <a-entity id="City_Rain_Birds" audio-button="title: City Rain Birds; img: #City_Rain_Birds-img" position="0.9 -0.45 0" mixin="thumbnail-frame"></a-entity>
+                  <a-entity id="City_Rain" audio-button="title: City Rain; img: #City_Rain-img" position="1.35 -0.45 0" mixin="thumbnail-frame"></a-entity>
                   
                   <a-entity id="audio-menu-slider" class="audio-slider" slider="title: Audio Slider;" position="0 0.3 0"></a-entity>
 
@@ -452,11 +450,6 @@
                 <!-- bar -->
                 <a-plane color="black" rotation="0 0 0" position="0 -0.57 0" scale="2 0.03 0.05"></a-plane>
 
-                 <!-- volume -->
-                
-                <a-entity id="volume-slider" class="slider" slider="title: Audio Volume" position="-0.4 -0.7 0" visible="false">
-                  
-                </a-entity>
                 <!-- volume -->
 
                 <!-- display square-->
@@ -464,27 +457,21 @@
 
                 <!-- audio -->
                 <!-- TODO: Find Better way to organize multiple audios -->
-                
-                <!-- audio menu button-->
-                <!-- <a-entity id="audio-menu" class="audio" visible="false" position="-0.7 -0.9 0">
-                  <a-entity id="audio-menu-button" class="small-button" small-button="img: #background-1; title: AUDIO" scale="2 1 1" mixin="small-button-scale-frame"></a-entity>
-                  <a-entity id="light-menu-button" class="small-button" small-button="img: #background-2; title: LIGHTING" scale="2 1 1" position="0.5 0 0" mixin="small-button-scale-frame"></a-entity>
-                </a-entity> -->
-
                 <a-entity id="function-buttons" class="audio" visible="false" position="-0.4 -0.9 0">
-                  <a-entity id="play-button" class="small-button" small-button="img: #play-button" position="-0.3 0 0" ></a-entity>
-                  <a-entity id="pause-button" class="small-button" small-button="img: #pause-button" position="0 0 0"></a-entity>
-                  <a-entity id="replay-button" class="small-button" small-button="img: #replay-button" position="0.3 0 0" ></a-entity>
+                  <a-entity id="volume-slider" slider="title: Audio Volume" position="-0.4 -0.7 0" visible="false"></a-entity>
+                  <a-entity id="play-button" small-button="img: #play-button" position="-0.3 0 0" ></a-entity>
+                  <a-entity id="pause-button" small-button="img: #pause-button" position="0 0 0"></a-entity>
+                  <a-entity id="replay-button" small-button="img: #replay-button" position="0.3 0 0" ></a-entity>
                 </a-entity>
                 <!-- audio -->
 
                 <!-- environment settings menu, todo -->
-                </a-entity id="env-settings" visible="false" position="-1.4 0 1.45" rotation="0 70 0">
+                <!-- <a-entity id="env-settings" visible="false" position="-1.4 0 1.45" roftation="0 70 0">
                   <a-entity id="default-env" class="small-button" env-button="title: Default Garden; img: #As-the-rain-img" position="0 0 0"/>
               
                   <a-entity id="env-menu-slider" class="env-slider" slider="title: Lighting Intensity" position="0 -0.7 0"></a-entity>
-                </a-entity>
-
+                </a-entity> -->
+                  
               </a-entity>
             </template>
 

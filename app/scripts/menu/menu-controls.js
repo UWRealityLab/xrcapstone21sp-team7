@@ -11,7 +11,6 @@ AFRAME.registerComponent("menu-controls", {
     this.breathingOn = false;
     this.yogaOn = false;
 
-    this.currAudioMenu;
     this.currSong = "Default Zendin";
     this.currScript = "";
     this.currVolume = "0.1";
@@ -203,9 +202,10 @@ AFRAME.registerComponent("menu-controls", {
     this.deactivate = this.deactivate.bind(this);
     this.activateSliders = this.activateSliders.bind(this);
     this.deactivateSliders = this.deactivateSliders.bind(this);
+    this.activateMediaKeys = this.activateMediaKeys.bind(this);
+    this.deactivateMediaKeys = this.deactivateMediaKeys.bind(this);
 
-    this.activateSmallButton = this.activateSmallButton.bind(this);
-    this.deactivateSmallButton = this.deactivateSmallButton.bind(this);
+    // this.activateSmallButton = this.activateSmallButton.bind(this);
     this.changeCurrentMenu = this.changeCurrentMenu.bind(this);
 
     this.changeDisplayMenu = this.changeDisplayMenu.bind(this);
@@ -217,27 +217,16 @@ AFRAME.registerComponent("menu-controls", {
   onMenuActivate: function () {
     if (this.displayed) {
       // TODO: change this, still want if user selected a meditation mode
-      let id;
-      if (this.currentMenu == null && this.currAudioMenu != null) {
-        // then it must be audio menu
-        id = this.currAudioMenu.id;
-      } else {
-        id = this.currentMenu.id;
-        this.deactivate(this.currentMenu);
-      }
-      //const id = this.currentMenu.id;
-      //this.deactivate(this.currentMenu);
-
+      const id = this.currentMenu.id;
       this.el.sceneEl.emit("menu-item-deselected");
 
       // Hide first menu or go back to first menu
       if (id === "first-menu") {
-        this.deactivateSliders(this.currAudioMenu);
         this.ui.setAttribute("visible", "false");
         this.displayed = false;
         this.el.setAttribute("raycaster", "lineOpacity", 0);
       } else {
-        this.activate(document.querySelector("#first-menu"));
+        this.changeCurrentMenu("#first-menu");
         console.log("CURRLIGHT: " + this.currLight);
         this.el.emit("endMeditation", { song: this.currSong, light: this.currLight });
         this.meditationSong.components.sound.stopSound();
@@ -253,25 +242,17 @@ AFRAME.registerComponent("menu-controls", {
         }
 
         // play pause replay buttons
-        this.deactivateSmallButton(document.querySelector("#function-buttons"));
+        this.deactivateMediaKeys();
 
         this.currMeditationScript = null;
-
-        // deactive volume slider
-        //this.deactivateSliders();
 
         this.currScript = "";
         this.changeDisplayMenu();
       }
     } else {
-      //this.el.emit("startMeditation");
       this.ui.setAttribute("visible", "true");
-      this.activate(document.querySelector("#first-menu"));
-
-      // Turn on sliders
-      this.activateSliders();
-
-      // this.activateSmallButton(document.querySelector("#audio-menu"));
+      this.changeCurrentMenu("#first-menu");
+      this.activateMediaKeys();
 
       this.displayed = true;
       this.el.setAttribute("raycaster", "enabled", true);
@@ -279,8 +260,6 @@ AFRAME.registerComponent("menu-controls", {
 
       this.changeDisplayMenu();
     }
-
-    // this.displayed = !this.displayed;
   },
 
   /**
@@ -316,7 +295,6 @@ AFRAME.registerComponent("menu-controls", {
     if (this.displayed) {
       let visible = this.ui.getAttribute("visible");
       this.ui.setAttribute("visible", !visible);
-      // this.el.setAttribute("raycaster", "enabled", !visible);
       this.el.setAttribute("raycaster", "lineOpacity", !visible ? 1 : 0);
     }
   },
@@ -326,15 +304,6 @@ AFRAME.registerComponent("menu-controls", {
   */
   onMeditationButtonClicked: function () {
     this.changeCurrentMenu("#meditation-menu");
-
-    // play pause replay buttons
-    this.activateSmallButton(document.querySelector("#function-buttons"));
-
-    // deactivate audio option
-    this.deactivateSmallButton(document.querySelector("#audio-menu"));
-
-    // activate volume
-    //this.activateSliders();
 
     let sky = document.querySelector("#sky");
     let attr = sky.getAttribute("sound");
@@ -526,12 +495,6 @@ AFRAME.registerComponent("menu-controls", {
   */
   onYogaButtonClicked: function () {
     this.changeCurrentMenu("#yoga-menu");
-
-    // deactivate audio option
-    this.deactivateSmallButton(document.querySelector("#audio-menu"));
-
-    // activate volume
-    //this.activateSliders();
   },
 
   onGuidedYogaButtonClicked: function () {
@@ -635,24 +598,16 @@ AFRAME.registerComponent("menu-controls", {
 
     let y = m * x;
 
-    this.currAudioMenu.querySelectorAll(".small-button").forEach((button) => {
-      let attr = button.getAttribute("position");
+    this.currentMenu.querySelectorAll(".option").forEach((option) => {
+      let attr = option.getAttribute("position");
       attr.x = attr.x - y;
-      button.setAttribute("position", attr);
+      option.setAttribute("position", attr);
     });
     this.prevAudioSlider = evt.detail.percent;
   },
 
   onAudioMenuClicked: function () {
-    // also deactivate the firstMenu
-    this.deactivate(this.currentMenu);
-
-    // activate the volume bar
-    this.activateSliders();
-
-    // Activate meditation options
-    let audioSubMenu = document.querySelector("#audio-options");
-    this.activateSmallButton(audioSubMenu);
+    this.changeCurrentMenu("#audio-options");
   },
 
   onLightModeClicked: function () {
@@ -686,8 +641,8 @@ AFRAME.registerComponent("menu-controls", {
   /*
     Turn on sliders
   */
-  activateSliders: function () {
-    this.ui.querySelectorAll(".slider").forEach((slider) => {
+  activateSliders: function (element) {
+    element.querySelectorAll(".slider").forEach((slider) => {
       slider.setAttribute("visible", true);
       slider
         .querySelector(".container")
@@ -698,64 +653,25 @@ AFRAME.registerComponent("menu-controls", {
   /*
     Turn off sliders
   */
-  deactivateSliders: function () {
-    this.ui.querySelectorAll(".slider").forEach((slider) => {
+  deactivateSliders: function (element) {
+    element.querySelectorAll(".slider").forEach((slider) => {
       slider.setAttribute("visible", false);
       slider.querySelector(".container").setAttribute("class", "container");
     });
   },
 
   /*
-    Turn on small-button
-  */
-  activateSmallButton: function (element) {
-    element.querySelectorAll(".small-button").forEach((button) => {
-      button
-        .querySelector(".container")
-        .setAttribute("class", "rightclickable container");
-    });
-
-    element.querySelectorAll(".audio-slider").forEach((button) => {
-      button
-        .querySelector(".container")
-        .setAttribute("class", "rightclickable container");
-      //this.log(button.getAttribute("id"));
-    });
-
-    element.querySelectorAll(".back-button").forEach((button) => {
-      button
-        .querySelector(".container")
-        .setAttribute("class", "rightclickable container");
-      //this.log(button.getAttribute("id"));
-    });
-    element.setAttribute("visible", true);
-
-    this.currAudioMenu = element;
-  },
-
-  /*
-  Turn off small-button
-*/
-  deactivateSmallButton: function (element) {
-    element.querySelectorAll(".small-button").forEach((button) => {
-      button.querySelector(".container").setAttribute("class", "container");
-    });
-    element.setAttribute("visible", false);
-
-    this.currAudioMenu = null;
-  },
-
-  /*
     Activates menu options so they can be detected by raycasting
   */
   activate: function (element) {
+    // Buttons
     element.querySelectorAll(".option").forEach((option) => {
       option.setAttribute("class", "rightclickable option");
     });
     element.setAttribute("visible", "true");
 
-    // set active menu
-    this.currentMenu = element;
+    // Sliders
+    this.activateSliders(element);
   },
 
   /*
@@ -767,18 +683,38 @@ AFRAME.registerComponent("menu-controls", {
       option.setAttribute("class", "option");
     });
 
-    this.currentMenu = null;
+    // Sliders
+    this.deactivateSliders(element);
+  },
+
+  activateMediaKeys: function() {
+    const mediakeys = document.querySelector("#function-buttons");
+
+    // Turn on volume slider and playback buttons
+    this.activateSliders(mediakeys);
+    this.activate(mediakeys);
+  },
+
+  deactivateMediaKeys: function() {
+    const mediaKeys = document.querySelector("#function-buttons");
+
+    // Turn off volume slider and playback buttons
+    this.deactivateSliders(mediaKeys);
+    this.deactivate(mediaKeys);
   },
 
   /* Switches from the current displayed menu to the 
     next menu given by its id selector
   */
   changeCurrentMenu: function(next) {
-    this.deactivate(this.currentMenu);
+    if (this.currentMenu) {
+      this.deactivate(this.currentMenu);
+    }
 
     // Activate meditation options
     const nextMenu = document.querySelector(next);
     this.activate(nextMenu);
+    this.currentMenu = nextMenu;
   },
 
   changeDisplayMenu: function () {
@@ -803,11 +739,6 @@ AFRAME.registerComponent("menu-controls", {
   remove: function () {
     this.removeEventListeners();
   },
-
-  //   addEventListeners: function() {
-  //     this.el.addEventListener('meditation-button-clicked', this.onMeditationButtonClicked);
-  //     this.el.addEventListener('yoga-button-clicked', this.onYogaButtonClicked);
-  //   },
 
   removeEventListeners: function () {
     let el = this.el;
