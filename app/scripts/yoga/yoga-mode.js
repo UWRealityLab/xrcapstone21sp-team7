@@ -36,8 +36,8 @@ const TIME_ARRAY = [10000,  // welcome screen (0)
 
 // Arrays for short yoga routine - 4 min 35 sec
 const SHORT_ANIM_ARRAY = [
-  'mountain',
-  'null',
+  null,
+  null,
   'mountain',
   'tree',
   'chair',
@@ -114,7 +114,6 @@ AFRAME.registerComponent("yoga-mode", {
     this.timer = TIME_ARRAY[this.loopCount];
 
     // Initialization for first loop
-    // imagesEl.setAttribute("src", "#yoga-short-" + this.loopCount);
     instructorEl.animatePose(SHORT_ANIM_ARRAY[this.loopCount], null);
     timerEl.setAttribute("visible", "true");
 
