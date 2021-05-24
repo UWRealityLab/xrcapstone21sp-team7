@@ -37,15 +37,15 @@ AFRAME.registerComponent("audio-button", {
       this.onMouseLeave = this.onMouseLeave.bind(this);
   
       // Listeners
-      this.container.addEventListener("click", this.onClick);
-      this.container.addEventListener("mouseenter", this.onMouseEnter);
-      this.container.addEventListener("mouseleave", this.onMouseLeave);
+      el.addEventListener("click", this.onClick);
+      el.addEventListener("mouseenter", this.onMouseEnter);
+      el.addEventListener("mouseleave", this.onMouseLeave);
     },
   
     remove: function () {
-      this.container.removeEventListener("click", this.onClick);
-      this.container.removeEventListener("mouseenter", this.onMouseEnter);
-      this.container.removeEventListener("mouseleave", this.onMouseLeave);
+      this.el.removeEventListener("click", this.onClick);
+      this.el.removeEventListener("mouseenter", this.onMouseEnter);
+      this.el.removeEventListener("mouseleave", this.onMouseLeave);
     },
   
     onClick: function (evt) {

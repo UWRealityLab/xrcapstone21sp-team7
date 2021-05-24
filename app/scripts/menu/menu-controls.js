@@ -54,6 +54,7 @@ AFRAME.registerComponent("menu-controls", {
     this.onToggleMenuVisibility = this.onToggleMenuVisibility.bind(this);
     this.onVolumeChanged = this.onVolumeChanged.bind(this);
     // this.onEnvSliderChanged = this.onEnvSliderChanged.bind(this);
+    this.onScenesButtonClicked = this.onScenesButtonClicked.bind(this);
     this.onMeditationButtonClicked = this.onMeditationButtonClicked.bind(this);
     this.onYogaButtonClicked = this.onYogaButtonClicked.bind(this);
     this.onAudioMenuClicked = this.onAudioMenuClicked.bind(this);
@@ -69,16 +70,10 @@ AFRAME.registerComponent("menu-controls", {
 
     this.onGuidedMeditationClicked = this.onGuidedMeditationClicked.bind(this);
     this.onStoryMeditationClicked = this.onStoryMeditationClicked.bind(this);
-    this.onConfidenceBoosterClicked = this.onConfidenceBoosterClicked.bind(
-      this
-    );
-    this.onBreathingExerciseButtonClicked = this.onBreathingExerciseButtonClicked.bind(
-      this
-    );
+    this.onConfidenceBoosterClicked = this.onConfidenceBoosterClicked.bind(this);
+    this.onBreathingExerciseButtonClicked = this.onBreathingExerciseButtonClicked.bind(this);
 
-    this.onCloudMeditationButtonClicked = this.onCloudMeditationButtonClicked.bind(
-      this
-    );
+    this.onCloudMeditationButtonClicked = this.onCloudMeditationButtonClicked.bind(this);
     this.onMountainMeditationButtonClicked = this.onMountainMeditationButtonClicked.bind(this);
     this.onGuidedYogaButtonClicked = this.onGuidedYogaButtonClicked.bind(this);
 
@@ -94,108 +89,35 @@ AFRAME.registerComponent("menu-controls", {
     this.el.addEventListener("abuttondown", this.onMenuActivate);
     this.el.sceneEl.addEventListener('bbuttondown', this.onMenuRecenter);
     this.el.addEventListener("gripup", this.onToggleMenuVisibility);
-    this.el.sceneEl.addEventListener(
-      "meditation-button-clicked",
-      this.onMeditationButtonClicked
-    );
-    this.el.sceneEl.addEventListener(
-      "yoga-button-clicked",
-      this.onYogaButtonClicked
-    );
-    this.el.sceneEl.addEventListener(
-      "lighting-button-clicked",
-      this.onLightModeClicked
-    );
-    this.el.sceneEl.addEventListener(
-      "guided-meditation-button-clicked",
-      this.onGuidedMeditationClicked
-    );
-    this.el.sceneEl.addEventListener(
-      "story-telling-button-clicked",
-      this.onStoryMeditationClicked
-    );
-    this.el.sceneEl.addEventListener(
-      "confidence-booster-button-clicked",
-      this.onConfidenceBoosterClicked
-    );
-    this.el.sceneEl.addEventListener(
-      "breathing-exercise-button-clicked",
-      this.onBreathingExerciseButtonClicked
-    );
-    this.el.sceneEl.addEventListener(
-      "cloud-meditation-button-clicked",
-      this.onCloudMeditationButtonClicked
-    );
+    this.el.sceneEl.addEventListener("scenes-button-clicked", this.onScenesButtonClicked);
+    this.el.sceneEl.addEventListener("meditation-button-clicked", this.onMeditationButtonClicked);
+    this.el.sceneEl.addEventListener("yoga-button-clicked", this.onYogaButtonClicked);
+    this.el.sceneEl.addEventListener("lighting-button-clicked", this.onLightModeClicked);
+    this.el.sceneEl.addEventListener("guided-meditation-button-clicked", this.onGuidedMeditationClicked);
+    this.el.sceneEl.addEventListener("story-telling-button-clicked", this.onStoryMeditationClicked);
+    this.el.sceneEl.addEventListener("confidence-booster-button-clicked", this.onConfidenceBoosterClicked);
+    this.el.sceneEl.addEventListener("breathing-exercise-button-clicked", this.onBreathingExerciseButtonClicked);
+    this.el.sceneEl.addEventListener("cloud-meditation-button-clicked", this.onCloudMeditationButtonClicked);
     this.el.sceneEl.addEventListener("mountain-meditation-button-clicked", this.onMountainMeditationButtonClicked);
-    this.el.sceneEl.addEventListener(
-      "guided-yoga-button-clicked",
-      this.onGuidedYogaButtonClicked
-    );
-    this.el.sceneEl.addEventListener(
-      "volume-slider-changed",
-      this.onVolumeChanged
-    );
-
-    this.el.sceneEl.addEventListener(
-      "audio-button-clicked",
-      this.onAudioMenuClicked
-    );
-
+    this.el.sceneEl.addEventListener("guided-yoga-button-clicked", this.onGuidedYogaButtonClicked);
+    this.el.sceneEl.addEventListener("volume-slider-changed", this.onVolumeChanged);
+    this.el.sceneEl.addEventListener("audio-button-clicked", this.onAudioMenuClicked);
     this.el.sceneEl.addEventListener("audio-changed", this.audioChanged);
-
-    this.el.sceneEl.addEventListener(
-      "audio-menu-slider-changed",
-      this.onAudioShift
-    );
-
-    this.el.sceneEl.addEventListener(
-      "play-button-changed",
-      this.onPlayButton
-    );
-
-    this.el.sceneEl.addEventListener(
-      "pause-button-changed",
-      this.onPauseButton
-    );
-
-    this.el.sceneEl.addEventListener(
-      "replay-button-changed",
-      this.onReplayButton
-    );
-
-    this.el.sceneEl.addEventListener(
-      "replay-button-changed",
-      this.onReplayButton
-    );
-
-    this.el.sceneEl.addEventListener(
-      "Day-clicked",
-      this.onDayLight
-    );
-    this.el.sceneEl.addEventListener(
-      "Night-clicked",
-      this.onNightLight
-    );
+    this.el.sceneEl.addEventListener("audio-menu-slider-changed", this.onAudioShift);
+    this.el.sceneEl.addEventListener("play-button-changed", this.onPlayButton);
+    this.el.sceneEl.addEventListener("pause-button-changed", this.onPauseButton);
+    this.el.sceneEl.addEventListener("replay-button-changed", this.onReplayButton);
+    this.el.sceneEl.addEventListener("replay-button-changed", this.onReplayButton);
+    this.el.sceneEl.addEventListener("Day-clicked", this.onDayLight);
+    this.el.sceneEl.addEventListener("Night-clicked", this.onNightLight);
 
     // changing audio of breathing exercise
-    this.el.sceneEl.addEventListener(
-      "breath-capture-start",
-      this.onBreathAudio1
-    );
-    this.el.sceneEl.addEventListener(
-      "change-breathing-exercise-2",
-      this.onBreathAudio2
-    );
-    this.el.sceneEl.addEventListener(
-      "breath-capture-end",
-      this.onBreathAudio3
-    );
+    this.el.sceneEl.addEventListener("breath-capture-start", this.onBreathAudio);
+    this.el.sceneEl.addEventListener("change-breathing-exercise-2", this.onBreathAudio);
+    this.el.sceneEl.addEventListener("breath-capture-end", this.onBreathAudio);
 
     // env menu listeners
-    this.el.sceneEl.addEventListener(
-      "env-menu-slider-changed",
-      this.onEnvSliderChanged
-    );
+    this.el.sceneEl.addEventListener("env-menu-slider-changed", this.onEnvSliderChanged);
 
     // Helpers
     this.activate = this.activate.bind(this);
@@ -204,10 +126,7 @@ AFRAME.registerComponent("menu-controls", {
     this.deactivateSliders = this.deactivateSliders.bind(this);
     this.activateMediaKeys = this.activateMediaKeys.bind(this);
     this.deactivateMediaKeys = this.deactivateMediaKeys.bind(this);
-
-    // this.activateSmallButton = this.activateSmallButton.bind(this);
     this.changeCurrentMenu = this.changeCurrentMenu.bind(this);
-
     this.changeDisplayMenu = this.changeDisplayMenu.bind(this);
   },
 
@@ -225,6 +144,8 @@ AFRAME.registerComponent("menu-controls", {
         this.ui.setAttribute("visible", "false");
         this.displayed = false;
         this.el.setAttribute("raycaster", "lineOpacity", 0);
+        // play pause replay buttons
+        this.deactivateMediaKeys();
       } else {
         this.changeCurrentMenu("#first-menu");
         console.log("CURRLIGHT: " + this.currLight);
@@ -240,12 +161,7 @@ AFRAME.registerComponent("menu-controls", {
         if (id != "audio-options") { // && id != "yoga-menu") {
           document.querySelector("#sky").components.sound.playSound();
         }
-
-        // play pause replay buttons
-        this.deactivateMediaKeys();
-
         this.currMeditationScript = null;
-
         this.currScript = "";
         this.changeDisplayMenu();
       }
@@ -297,6 +213,13 @@ AFRAME.registerComponent("menu-controls", {
       this.ui.setAttribute("visible", !visible);
       this.el.setAttribute("raycaster", "lineOpacity", !visible ? 1 : 0);
     }
+  },
+
+  /*
+    Displays the scene menu
+  */
+  onScenesButtonClicked: function() {
+    this.changeCurrentMenu("#scenes-menu");
   },
 
   /*
@@ -691,7 +614,6 @@ AFRAME.registerComponent("menu-controls", {
     const mediakeys = document.querySelector("#function-buttons");
 
     // Turn on volume slider and playback buttons
-    this.activateSliders(mediakeys);
     this.activate(mediakeys);
   },
 
@@ -699,7 +621,6 @@ AFRAME.registerComponent("menu-controls", {
     const mediaKeys = document.querySelector("#function-buttons");
 
     // Turn off volume slider and playback buttons
-    this.deactivateSliders(mediaKeys);
     this.deactivate(mediaKeys);
   },
 
