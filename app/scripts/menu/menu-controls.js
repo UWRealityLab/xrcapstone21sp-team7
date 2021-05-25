@@ -249,7 +249,7 @@ AFRAME.registerComponent("menu-controls", {
           this.currMeditationScript.components.sound.stopSound();
           //this.breathingOn = false;
         }
-        
+
         // TODO JANE: something's happening here, find bug so no need for this if else statement
         if (id != "audio-options") { // && id != "yoga-menu") {
           document.querySelector("#sky").components.sound.playSound();
@@ -455,14 +455,6 @@ AFRAME.registerComponent("menu-controls", {
   onBreathingExerciseButtonClicked: function () {
     this.breathingOn = true;
 
-    let sky = document.querySelector("#sky");
-    //sound =
-      //"on: model-loaded; src: #Meditation-Aquatic; autoplay: true; loop: true; positional: false; volume: 0.1";
-    //sky.setAttribute("sound", sound);
-    //let attr = sky.getAttribute("sound");
-    //attr.src = "#Imaginary-waterfalls";
-    //sky.setAttribute("sound", attr);
-
     // Stop the meditation background song
     this.meditationSong.components.sound.stopSound();
     // stop if another script is playing
@@ -613,7 +605,10 @@ AFRAME.registerComponent("menu-controls", {
     if (this.currMeditationScript != undefined) {
       this.currMeditationScript.components.sound.playSound();
       if (this.breathingOn) {
-        this.el.emit("play-breathing");
+        let detail = {
+          state: "play"
+        };
+        this.el.emit("pause-breathing", detail);
       }
       // do same for yoga
       //this.el.emit("play-yoga");
@@ -625,7 +620,10 @@ AFRAME.registerComponent("menu-controls", {
     if (this.currMeditationScript != undefined) {
       this.currMeditationScript.components.sound.pauseSound();
       if (this.breathingOn) {
-        this.el.emit("pause-breathing");
+        let detail = {
+          state: "pause"
+        };
+        this.el.emit("pause-breathing", detail);
       }
       // do same for yoga
       //this.el.emit("pause-yoga");
@@ -639,7 +637,10 @@ AFRAME.registerComponent("menu-controls", {
       this.currMeditationScript.components.sound.playSound();
 
       if (this.breathingOn) {
-        this.el.emit("replay-breathing");
+        let detail = {
+          state: "replay"
+        }
+        this.el.emit("pause-breathing", detail);
       }
       // do same for yoga
       //this.el.emit("replay-yoga");
@@ -678,7 +679,6 @@ AFRAME.registerComponent("menu-controls", {
 
   onLightModeClicked: function () {
     // Deactivate first menu options
-    let firstMenu = document.querySelector("#first-menu");
     this.deactivate(this.currentMenu);
 
     // Activate meditation options
@@ -689,15 +689,19 @@ AFRAME.registerComponent("menu-controls", {
   audioChanged: function (evt) {
     let audio_id = evt.detail.audio_id;
     let sky = document.querySelector("#sky");
-    let attr = sky.getAttribute("sound");
-    attr.src = "#" + audio_id;
-    console.log("audio id: " + audio_id);
 
-    sky.setAttribute("sound", attr);
+    // Stop old audio (maybe not necessary but a-frame says that we are overloading the maximum number of audio files playing at once
+    // so something tells me that just setting the attribute to the new sound isn't cleaning up the old sound properly)
+    sky.components.sound.stopSound();
+
+    this.log("audio id: " + audio_id);
+
+    sky.setAttribute("sound", 'src', `#${audio_id}`);
     this.currSong = evt.detail.audio_name;
 
+    this.log('all sound', document.querySelectorAll('[sound]'));
+
     this.changeDisplayMenu();
-    
   },
 
   onDayLight: function () {
@@ -776,6 +780,7 @@ AFRAME.registerComponent("menu-controls", {
     Activates menu options so they can be detected by raycasting
   */
   activate: function (element) {
+    if (!element) return;
     element.querySelectorAll(".option").forEach((option) => {
       option.setAttribute("class", "rightclickable option");
     });
@@ -789,6 +794,7 @@ AFRAME.registerComponent("menu-controls", {
     Deactivates menu options so they can't be detected by raycasting
   */
   deactivate: function (element) {
+    if (!element) return;
     element.setAttribute("visible", "false");
     element.querySelectorAll(".option").forEach((option) => {
       option.setAttribute("class", "option");
