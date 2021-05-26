@@ -33,13 +33,24 @@ AFRAME.registerComponent('meditation-ring-automated', {
   },
 
   onPauseBreathing: function(evt) {
-    this.paused = evt.detail;
+    let el = this.el;
+
+    let state = evt.detail.state;
+    if (state == 'replay') {
+      // stop the automated meditation ring since this will be restarted after the intro.
+      this.endAutomatedMeditationRing();
+      return;
+    }
+
+    this.paused = (state == 'pause');
     if (this.paused) {
-      this.loopTimer.pause();
-      this.timeLeftTimer.pause();
+      if (this.loopTimer) this.loopTimer.pause();
+      if (this.timeLeftTimer) this.timeLeftTimer.pause();
+      el.removeAttribute('animation__scale');
+      el.removeAttribute('animation__color');
     } else {
-      this.loopTimer.resume();
-      this.timeLeftTimer.resume();
+      if (this.loopTimer) this.loopTimer.resume();
+      if (this.timeLeftTimer) this.timeLeftTimer.resume();
     }
   },
 

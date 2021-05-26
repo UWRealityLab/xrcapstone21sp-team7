@@ -49,7 +49,7 @@ AFRAME.registerComponent("audio-button", {
     },
   
     onClick: function (evt) {
-      this.el.sceneEl.emit(`audio-changed`, {audio_id: this.el.id, audio_name: this.data.title});
+      this.el.sceneEl.emit(`audio-changed`, {audio_id: `${this.el.id}-audio`, audio_name: this.data.title});
       console.log(`${this.el.id}-changed`);
     },
   

@@ -149,14 +149,14 @@ AFRAME.registerComponent("menu-controls", {
       } else {
         this.changeCurrentMenu("#first-menu");
         console.log("CURRLIGHT: " + this.currLight);
-        this.el.emit("endMeditation", { song: this.currSong, light: this.currLight });
+        //this.el.emit("endMeditation", { song: this.currSong, light: this.currLight });
         this.meditationSong.components.sound.stopSound();
         this.breathingSong.components.sound.stopSound();
         if (this.currMeditationScript != undefined && !this.breathingOn) {
           this.currMeditationScript.components.sound.stopSound();
           //this.breathingOn = false;
         }
-        
+
         // TODO JANE: something's happening here, find bug so no need for this if else statement
         if (id != "audio-options") { // && id != "yoga-menu") {
           document.querySelector("#sky").components.sound.playSound();
@@ -232,7 +232,7 @@ AFRAME.registerComponent("menu-controls", {
     let attr = sky.getAttribute("sound");
     this.log("sky before:" + attr.src);
 
-    this.el.emit("startMeditation", { light: 0.2 });
+    //this.el.emit("startMeditation", { light: 0.2 });
     
     sky.components.sound.stopSound();
     attr = sky.getAttribute("sound");
@@ -334,14 +334,6 @@ AFRAME.registerComponent("menu-controls", {
    */
   onBreathingExerciseButtonClicked: function () {
     this.breathingOn = true;
-
-    let sky = document.querySelector("#sky");
-    //sound =
-      //"on: model-loaded; src: #Meditation-Aquatic; autoplay: true; loop: true; positional: false; volume: 0.1";
-    //sky.setAttribute("sound", sound);
-    //let attr = sky.getAttribute("sound");
-    //attr.src = "#Imaginary-waterfalls";
-    //sky.setAttribute("sound", attr);
 
     // Stop the meditation background song
     this.meditationSong.components.sound.stopSound();
@@ -481,7 +473,10 @@ AFRAME.registerComponent("menu-controls", {
     if (this.currMeditationScript != undefined) {
       this.currMeditationScript.components.sound.playSound();
       if (this.breathingOn) {
-        this.el.emit("play-breathing");
+        let detail = {
+          state: "play"
+        };
+        this.el.emit("pause-breathing", detail);
       }
       // do same for yoga
       //this.el.emit("play-yoga");
@@ -493,7 +488,10 @@ AFRAME.registerComponent("menu-controls", {
     if (this.currMeditationScript != undefined) {
       this.currMeditationScript.components.sound.pauseSound();
       if (this.breathingOn) {
-        this.el.emit("pause-breathing");
+        let detail = {
+          state: "pause"
+        };
+        this.el.emit("pause-breathing", detail);
       }
       // do same for yoga
       //this.el.emit("pause-yoga");
@@ -507,7 +505,10 @@ AFRAME.registerComponent("menu-controls", {
       this.currMeditationScript.components.sound.playSound();
 
       if (this.breathingOn) {
-        this.el.emit("replay-breathing");
+        let detail = {
+          state: "replay"
+        }
+        this.el.emit("pause-breathing", detail);
       }
       // do same for yoga
       //this.el.emit("replay-yoga");
@@ -540,15 +541,19 @@ AFRAME.registerComponent("menu-controls", {
   audioChanged: function (evt) {
     let audio_id = evt.detail.audio_id;
     let sky = document.querySelector("#sky");
-    let attr = sky.getAttribute("sound");
-    attr.src = "#" + audio_id;
-    console.log("audio id: " + audio_id);
 
-    sky.setAttribute("sound", attr);
+    // Stop old audio (maybe not necessary but a-frame says that we are overloading the maximum number of audio files playing at once
+    // so something tells me that just setting the attribute to the new sound isn't cleaning up the old sound properly)
+    sky.components.sound.stopSound();
+
+    this.log("audio id: " + audio_id);
+
+    sky.setAttribute("sound", 'src', `#${audio_id}`);
     this.currSong = evt.detail.audio_name;
 
+    this.log('all sound', document.querySelectorAll('[sound]'));
+
     this.changeDisplayMenu();
-    
   },
 
   onDayLight: function () {
@@ -587,7 +592,7 @@ AFRAME.registerComponent("menu-controls", {
     Activates menu options so they can be detected by raycasting
   */
   activate: function (element) {
-    // Buttons
+    if (!element) return;
     element.querySelectorAll(".option")?.forEach((option) => {
       option.setAttribute("class", "rightclickable option");
     });
@@ -601,6 +606,7 @@ AFRAME.registerComponent("menu-controls", {
     Deactivates menu options so they can't be detected by raycasting
   */
   deactivate: function (element) {
+    if (!element) return;
     element.setAttribute("visible", "false");
     element.querySelectorAll(".option")?.forEach((option) => {
       option.setAttribute("class", "option");

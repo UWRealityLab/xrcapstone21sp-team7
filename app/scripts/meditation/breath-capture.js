@@ -343,11 +343,19 @@ AFRAME.registerComponent('breath-capture', {
   },
 
   onPauseBreathing: function (evt) {
+    this.log('onPauseBreathing ', evt.detail);
+
     if (!this.meditating) {
       return;
     }
 
-    this.paused = evt.detail;
+    if (evt.detail.state == 'replay') {
+      this.el.sceneEl.emit('breath-capture-end');
+      this.el.sceneEl.emit('breath-capture-start');
+      return;
+    }
+
+    this.paused = evt.detail.state == 'pause'
 
     if (this.paused) {
       // Stop calibration and reset calibration state to beginning since pausing in the middle of calibration
