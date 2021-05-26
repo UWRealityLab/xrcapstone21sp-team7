@@ -8,6 +8,7 @@ AFRAME.registerComponent("menu-controls", {
     this.currMeditationScript = document.querySelector("#sky").querySelector("#meditation-1");
     this.meditationSong = document.querySelector("#sky").querySelector("#meditation");
     this.breathingSong = document.querySelector("#sky").querySelector("#breathing-meditation");
+    // for now we need to initialize each script here, at least for meditation, so that we can trigger the background music to start playing again.
 
     this.breathingOn = false;
     this.yogaOn = false;
@@ -117,7 +118,9 @@ AFRAME.registerComponent("menu-controls", {
     
     // will this work? only want to play background music again once the scripts have fully ended. not when any other sound has ended.
     // edit: this does not work at all lol. why doesn't sound-ended not work?
-    this.el.sceneEl.addEventListener("sound-ended", this.onBackgroundMusic);
+    document.querySelector("#sky").querySelector("#meditation-1").addEventListener("sound-ended", this.onBackgroundMusic);
+    document.querySelector("#sky").querySelector("#rain").addEventListener("sound-ended", this.onBackgroundMusic);
+    document.querySelector("#sky").querySelector("#rain").addEventListener("confidence-meditation", this.onBackgroundMusic);
 
     // changing audio of breathing exercise
     this.el.sceneEl.addEventListener("breath-capture-start", this.onBreathAudio1);
@@ -722,7 +725,9 @@ AFRAME.registerComponent("menu-controls", {
     el.sceneEl.removeEventListener("Day-clicked", this.onDayLight);
     el.sceneEl.removeEventListener("Night-clicked", this.onNightLight);
 
-    el.sceneEl.removeEventListener("sound-ended", onBackgroundMusic);
+    document.querySelector("#sky").querySelector("#meditation-1").removeEventListener("sound-ended", this.onBackgroundMusic);
+    document.querySelector("#sky").querySelector("#rain").removeEventListener("sound-ended", this.onBackgroundMusic);
+    document.querySelector("#sky").querySelector("#rain").removeEventListener("confidence-meditation", this.onBackgroundMusic);
   },
 
   log(string, ...etc) {
