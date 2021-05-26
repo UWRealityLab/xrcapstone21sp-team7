@@ -11,14 +11,26 @@ AFRAME.registerComponent('meditation-ring', {
     this.onMeditationStart = this.onMeditationStart.bind(this);
     this.onMeditationEnd = this.onMeditationEnd.bind(this);
     this.onBreathCaptureCalibrationComplete = this.onBreathCaptureCalibrationComplete.bind(this);
+    this.onPauseBreathing = this.onPauseBreathing.bind(this);
 
     el.sceneEl.addEventListener('breathing-in', this.onBreathIn);
     el.sceneEl.addEventListener('breathing-out', this.onBreathOut);
     el.sceneEl.addEventListener('breath-capture-start', this.onMeditationStart);
     el.sceneEl.addEventListener('breath-capture-end', this.onMeditationEnd);
     el.sceneEl.addEventListener('breath-capture-calibration-complete', this.onBreathCaptureCalibrationComplete);
+    el.sceneEl.addEventListener('pause-breathing', this.onPauseBreathing);
 
     el.setAttribute('visible', 'false');
+  },
+
+  onPauseBreathing: function(evt) {
+    let state = evt.detail.state;
+    if (state == 'replay') {
+      // stop the automated meditation ring since this will be restarted after the intro.
+      this.onMeditationEnd();
+      this.onMeditationStart();
+      return;
+    }
   },
 
   onMeditationStart: function() {
@@ -87,6 +99,7 @@ AFRAME.registerComponent('meditation-ring', {
     el.sceneEl.removeEventListener('breath-capture-start', onMeditationStart);
     el.sceneEl.removeEventListener('breath-capture-end', onMeditationEnd);
     el.sceneEl.removeEventListener('breath-capture-calibration-complete', this.onBreathCaptureCalibrationComplete);
+    el.sceneEl.removeEventListener('pause-breathing', this.onPauseBreathing);
   },
 
   log(string, ...etc) {
