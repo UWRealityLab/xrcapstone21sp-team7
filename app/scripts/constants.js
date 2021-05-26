@@ -34,4 +34,5 @@ Q.GARDEN_BUILDER = {
     AssetsDir: '../assets/',
     GardenAssetLocation: '../assets/glb/',
     RotationSpeedModifier: 6,
+    GardenAssetCreationCapture: false
 };

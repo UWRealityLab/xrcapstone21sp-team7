@@ -1,0 +1,544 @@
+[
+  {
+    "name": "Cherry Blossoms",
+    "data": [
+      {
+        "position": "7.043934151544951 0 0.22365943570943542",
+        "rotation": "0 287.99999999999994 0",
+        "scale": "1 1 1",
+        "gltf-model": "../assets/glb/stone-pathway.glb",
+        "croquet-name": "3b9f09e8-cf97-460c-9933-fab6d6d415a3"
+      },
+      {
+        "position": "13.267990751917242 0 -0.1993659364257731",
+        "rotation": "0 125.99999999999969 0",
+        "scale": "1 1 1",
+        "gltf-model": "../assets/glb/stone-pathway.glb",
+        "croquet-name": "37f01ff4-fb3f-4a6c-926c-0f1e21417401"
+      },
+      {
+        "position": "7.028390717959425 0 3.017021942235399",
+        "rotation": "0 125.99999999999969 0",
+        "scale": "1 1 1",
+        "gltf-model": "../assets/glb/tall-grass.glb",
+        "croquet-name": "d3374c01-b7a7-4028-a569-9548328391fe"
+      },
+      {
+        "position": "10.936812366507317 0 2.534512139043959",
+        "rotation": "0 125.99999999999969 0",
+        "scale": "1 1 1",
+        "gltf-model": "../assets/glb/tall-grass.glb",
+        "croquet-name": "12f5ad5f-0cf2-43df-9863-3b7626a9609a"
+      },
+      {
+        "position": "8.991786209468952 0 2.7598207068655194",
+        "rotation": "0 125.99999999999969 0",
+        "scale": "1 1 1",
+        "gltf-model": "../assets/glb/tall-grass.glb",
+        "croquet-name": "6c58791f-99a3-44c6-8dae-159f77e43d5c"
+      },
+      {
+        "position": "7.098469869542836 0 -2.4140745496173515",
+        "rotation": "0 125.99999999999969 0",
+        "scale": "1 1 1",
+        "gltf-model": "../assets/glb/tall-grass.glb",
+        "croquet-name": "942ba10c-5612-4540-8590-ddc331eb48a6"
+      },
+      {
+        "position": "12.249281859035406 0 -1.504358261716421",
+        "rotation": "0 125.99999999999969 0",
+        "scale": "1 1 1",
+        "gltf-model": "../assets/glb/tall-grass.glb",
+        "croquet-name": "f1a72a40-7c1d-4571-a866-e32ec4eae525"
+      },
+      {
+        "position": "9.234361749756832 0 -2.7904331993892675",
+        "rotation": "0 125.99999999999969 0",
+        "scale": "1 1 1",
+        "gltf-model": "../assets/glb/tall-grass.glb",
+        "croquet-name": "0c84eacb-8e1d-454c-802a-054e4c721644"
+      },
+      {
+        "position": "10.57431487590144 0 4.741418186823359",
+        "rotation": "0 125.99999999999969 0",
+        "scale": "1 1 1",
+        "gltf-model": "../assets/glb/cherry-blossom.glb",
+        "croquet-name": "f1861a30-07be-4b57-b670-19f0aaf47c97"
+      },
+      {
+        "position": "9.926166290138745 0 -5.361947719408708",
+        "rotation": "0 233.99999999999986 0",
+        "scale": "1 1 1",
+        "gltf-model": "../assets/glb/cherry-blossom.glb",
+        "croquet-name": "fef5f5d2-bf39-410a-b56a-03c57215be92"
+      },
+      {
+        "position": "-0.9557884319033185 0 -6.433946545333447",
+        "rotation": "0 317.9999999999996 0",
+        "scale": "1 1 1",
+        "gltf-model": "../assets/glb/cherry-blossom.glb",
+        "croquet-name": "36460866-2297-4d89-a974-b947e4a45b40"
+      },
+      {
+        "position": "2.9149305522838693 0 5.7254328666231",
+        "rotation": "0 335.9999999999996 0",
+        "scale": "1 1 1",
+        "gltf-model": "../assets/glb/cherry-blossom.glb",
+        "croquet-name": "24af197e-fa6d-43cd-9f8a-8b95755438cc"
+      },
+      {
+        "position": "-6.890183463758251 0 4.018456356137746",
+        "rotation": "0 71.99999999999946 0",
+        "scale": "1 1 1",
+        "gltf-model": "../assets/glb/cherry-blossom.glb",
+        "croquet-name": "c6a0d4e5-0cf0-4686-a257-c0a2cdfa368f"
+      },
+      {
+        "position": "-9.939936421474037 0 -2.747250238600175",
+        "rotation": "0 173.99999999999952 0",
+        "scale": "1 1 1",
+        "gltf-model": "../assets/glb/cherry-blossom.glb",
+        "croquet-name": "61f42b66-2bd7-4b36-a929-9f51377f29b9"
+      },
+      {
+        "position": "-4.008736015190197 0 3.2648515246869994",
+        "rotation": "0 173.99999999999952 0",
+        "scale": "1 1 1",
+        "gltf-model": "../assets/glb/tall-grass.glb",
+        "croquet-name": "b832a47e-d37a-4814-8463-a7c2f4355c19"
+      },
+      {
+        "position": "-4.7722861768459355 0 -0.2971602938450951",
+        "rotation": "0 173.99999999999952 0",
+        "scale": "1 1 1",
+        "gltf-model": "../assets/glb/tall-grass.glb",
+        "croquet-name": "d21bdeda-fe4f-4acf-84f1-49d3a53bebd8"
+      },
+      {
+        "position": "-5.208126379695393 0 -2.053492471012569",
+        "rotation": "0 173.99999999999952 0",
+        "scale": "1 1 1",
+        "gltf-model": "../assets/glb/tall-grass.glb",
+        "croquet-name": "844577d8-cb36-412d-b084-6dd822270a63"
+      },
+      {
+        "position": "-7.476609333246276 0 -0.9462621862264852",
+        "rotation": "0 173.99999999999952 0",
+        "scale": "1 1 1",
+        "gltf-model": "../assets/glb/tall-grass.glb",
+        "croquet-name": "617b2ac4-f1e3-4ab9-80d0-c116b0df3778"
+      },
+      {
+        "position": "-1.5544984981136116 0 -3.7389351328963003",
+        "rotation": "0 173.99999999999952 0",
+        "scale": "1 1 1",
+        "gltf-model": "../assets/glb/tall-grass.glb",
+        "croquet-name": "9506fdd1-28e6-4e3c-92c3-2f6e5faa629b"
+      },
+      {
+        "position": "0.605132740039136 0 -4.856316131419269",
+        "rotation": "0 173.99999999999952 0",
+        "scale": "1 1 1",
+        "gltf-model": "../assets/glb/tall-grass.glb",
+        "croquet-name": "96f18dc4-5586-4c15-866c-6e47e4b9668b"
+      },
+      {
+        "position": "3.7242939549212752 0 -3.0795868638410413",
+        "rotation": "0 173.99999999999952 0",
+        "scale": "1 1 1",
+        "gltf-model": "../assets/glb/tall-grass.glb",
+        "croquet-name": "f43e2114-d507-4eaf-bba2-d2be5821f8e1"
+      },
+      {
+        "position": "2.179553667667556 0 -3.4411192086040456",
+        "rotation": "0 173.99999999999952 0",
+        "scale": "1 1 1",
+        "gltf-model": "../assets/glb/tall-grass.glb",
+        "croquet-name": "9f82c132-7caa-4997-a16e-25d32febfdd3"
+      },
+      {
+        "position": "4.279979597746294 0 5.513963143993747",
+        "rotation": "0 173.99999999999952 0",
+        "scale": "1 1 1",
+        "gltf-model": "../assets/glb/tall-grass.glb",
+        "croquet-name": "49b04d8c-9021-4bdf-88cb-76622256881d"
+      },
+      {
+        "position": "2.9531775511938463 0 4.528458593189097",
+        "rotation": "0 173.99999999999952 0",
+        "scale": "1 1 1",
+        "gltf-model": "../assets/glb/tall-grass.glb",
+        "croquet-name": "f011b59d-7b50-41f1-bd20-8b6e02822e10"
+      },
+      {
+        "position": "-5.2455003239143005 0 4.291409775421471",
+        "rotation": "0 173.99999999999952 0",
+        "scale": "1 1 1",
+        "gltf-model": "../assets/glb/tall-grass.glb",
+        "croquet-name": "76cea250-a450-41a8-8b3f-a98c99024f11"
+      },
+      {
+        "position": "-5.2596311281452 0 1.1100747253279108",
+        "rotation": "0 173.99999999999952 0",
+        "scale": "1 1 1",
+        "gltf-model": "../assets/glb/tall-grass.glb",
+        "croquet-name": "65c5cd6c-5622-45ee-9bf3-2d79f9209884"
+      },
+      {
+        "position": "11.220889146292887 0 -2.579574581901703",
+        "rotation": "0 173.99999999999952 0",
+        "scale": "1 1 1",
+        "gltf-model": "../assets/glb/tall-grass.glb",
+        "croquet-name": "f2a97bb9-3bbc-46c6-a761-a73a654b6ac7"
+      },
+      {
+        "position": "7.170616818512878 0 10.629335665665227",
+        "rotation": "0 173.99999999999952 0",
+        "scale": "0.6 0.6 0.6",
+        "gltf-model": "../assets/glb/large-rock.glb",
+        "croquet-name": "a2fd4141-d812-4fb8-9ced-55dcc4690e8a"
+      },
+      {
+        "position": "0.20008130097019894 0 8.218815244074188",
+        "rotation": "0 245.99999999999955 0",
+        "scale": "0.8 0.8 0.8",
+        "gltf-model": "../assets/glb/round-rock-patch.glb",
+        "croquet-name": "ada61ac7-b3e0-4a66-b578-0f1d53db30c9"
+      },
+      {
+        "position": "-10.442996080160873 0 2.8208399835410702",
+        "rotation": "0 245.99999999999955 0",
+        "scale": "1 1 1",
+        "gltf-model": "../assets/glb/medium-rock.glb",
+        "croquet-name": "2dd39a2f-c3b4-49dd-a722-a44e05ccb7ac"
+      },
+      {
+        "position": "3.7588859337328087 0 11.00201292972843",
+        "rotation": "0 245.99999999999955 0",
+        "scale": "1 1 1",
+        "gltf-model": "../assets/glb/rock-04.glb",
+        "croquet-name": "a476b1f8-d625-470d-9d27-9208aab07e56"
+      },
+      {
+        "position": "10.427055130178864 0 7.995827584124102",
+        "rotation": "0 245.99999999999955 0",
+        "scale": "1 1 1",
+        "gltf-model": "../assets/glb/rock-06.glb",
+        "croquet-name": "fdd29020-2b8c-4baf-9a7f-8866d566e99a"
+      },
+      {
+        "position": "1.9754476385916044 0 -7.250268656229613",
+        "rotation": "0 245.99999999999955 0",
+        "scale": "1 1 1",
+        "gltf-model": "../assets/glb/rock-04.glb",
+        "croquet-name": "726cd4ce-665e-4797-b288-bc87d23943c8"
+      },
+      {
+        "position": "7.625611574553263 0 -7.639587772897768",
+        "rotation": "0 335.9999999999993 0",
+        "scale": "1 1 1",
+        "gltf-model": "../assets/glb/rock-07.glb",
+        "croquet-name": "21d8f13f-4eb8-4feb-8f26-0b9bfaf57c6d"
+      },
+      {
+        "position": "3.8585210980872864 0 -7.5916037920202",
+        "rotation": "0 341.99999999999926 0",
+        "scale": "1 1 1",
+        "gltf-model": "../assets/glb/tall-rock.glb",
+        "croquet-name": "d7343bcd-f9da-4b16-b597-46c9f8ce2919"
+      },
+      {
+        "position": "6.22955543811153 0 -7.95031721381107",
+        "rotation": "0 341.99999999999926 0",
+        "scale": "1 1 1",
+        "gltf-model": "../assets/glb/medium-rock.glb",
+        "croquet-name": "8db97e66-bbff-425e-a705-dd796f6315ab"
+      },
+      {
+        "position": "-5.61012938287476 0 -5.942261726533776",
+        "rotation": "0 233.99999999999935 0",
+        "scale": "1 1 1",
+        "gltf-model": "../assets/glb/scattered-rocks.glb",
+        "croquet-name": "c490cef2-0550-424d-b494-88df7ba3f83e"
+      }
+    ]
+  },
+  {
+    "name": "Flower Patch",
+    "data": [
+      {
+        "position": "7.580997567418801 0 0.7974278322703526",
+        "rotation": "0 0 0",
+        "scale": "1 1 1",
+        "gltf-model": "../assets/glb/flower-06.glb",
+        "croquet-name": "e2bf1ee6-34ed-4723-8275-ac2748ecd09d"
+      },
+      {
+        "position": "8.787986958605362 0 0.36132095083215804",
+        "rotation": "0 0 0",
+        "scale": "1 1 1",
+        "gltf-model": "../assets/glb/flower-04.glb",
+        "croquet-name": "78167819-8e97-425a-bbf6-967f9520343c"
+      },
+      {
+        "position": "8.916425552116094 0 0.8797555702889173",
+        "rotation": "0 0 0",
+        "scale": "1 1 1",
+        "gltf-model": "../assets/glb/flower-05.glb",
+        "croquet-name": "50cdcf37-73c7-4f43-8471-12849c58e9c5"
+      },
+      {
+        "position": "9.927727502478428 0 -0.7073266574006487",
+        "rotation": "0 72 0",
+        "scale": "1 1 1",
+        "gltf-model": "../assets/glb/flower-02.glb",
+        "croquet-name": "8329fdc4-5faf-48da-9e34-bb947c341533"
+      },
+      {
+        "position": "10.262926467957634 0 0.33906295630037975",
+        "rotation": "0 119.99999999999997 0",
+        "scale": "1 1 1",
+        "gltf-model": "../assets/glb/flower-03.glb",
+        "croquet-name": "ec900574-9d3c-4b08-b77b-96c671080d10"
+      },
+      {
+        "position": "11.328402050721515 0 -0.15115321625594608",
+        "rotation": "0 168.00000000000006 0",
+        "scale": "1 1 1",
+        "gltf-model": "../assets/glb/flower-04.glb",
+        "croquet-name": "3beee16f-ffaf-429f-8ca5-cc14fff2641c"
+      },
+      {
+        "position": "10.930556039171611 0 -0.6916684705156922",
+        "rotation": "0 198.0000000000001 0",
+        "scale": "1 1 1",
+        "gltf-model": "../assets/glb/flower-05.glb",
+        "croquet-name": "b2129756-ea61-4be6-9f98-2eae9306db84"
+      },
+      {
+        "position": "9.283086746181668 0 -0.6297745324824835",
+        "rotation": "0 252.00000000000006 0",
+        "scale": "1 1 1",
+        "gltf-model": "../assets/glb/flower-05.glb",
+        "croquet-name": "618ae90b-73e8-4b8f-b759-35b2dee420d9"
+      },
+      {
+        "position": "9.203505761847923 0 -1.5718562187898666",
+        "rotation": "0 282 0",
+        "scale": "1 1 1",
+        "gltf-model": "../assets/glb/flower-06.glb",
+        "croquet-name": "ec7573d7-7c9e-4109-8a51-232a6fe5b80d"
+      },
+      {
+        "position": "10.170158097348839 0 1.0661491721845495",
+        "rotation": "0 311.9999999999999 0",
+        "scale": "1 1 1",
+        "gltf-model": "../assets/glb/flower-06.glb",
+        "croquet-name": "5b99067b-4ffd-4e6f-91ef-8db82b4f150f"
+      },
+      {
+        "position": "11.287669497784451 0 0.7500129516361558",
+        "rotation": "0 347.9999999999998 0",
+        "scale": "1 1 1",
+        "gltf-model": "../assets/glb/flower-02.glb",
+        "croquet-name": "830f0ad7-7b11-4697-a32b-1ecfcf2ee4c5"
+      },
+      {
+        "position": "9.767941837872522 0 1.1321120611788895",
+        "rotation": "0 23.999999999999723 0",
+        "scale": "1 1 1",
+        "gltf-model": "../assets/glb/flower-01.glb",
+        "croquet-name": "5dd9c043-2fc3-438e-ab89-56721162643a"
+      },
+      {
+        "position": "10.682242612073178 0 -1.179635778167093",
+        "rotation": "0 23.999999999999723 0",
+        "scale": "1 1 1",
+        "gltf-model": "../assets/glb/flower-01.glb",
+        "croquet-name": "72fc5cb2-fe5d-4ad3-952f-6b30fe7589d8"
+      },
+      {
+        "position": "11.324907141621482 0 -1.3392145056075333",
+        "rotation": "0 83.99999999999972 0",
+        "scale": "1 1 1",
+        "gltf-model": "../assets/glb/flower-03.glb",
+        "croquet-name": "96a7919f-8d64-4cdc-b37d-7759c20353e7"
+      },
+      {
+        "position": "10.257416070559092 0 -1.6315796065240578",
+        "rotation": "0 113.99999999999969 0",
+        "scale": "1 1 1",
+        "gltf-model": "../assets/glb/flower-04.glb",
+        "croquet-name": "67343da6-3144-4cc6-8ad3-4b4f850ee1fb"
+      },
+      {
+        "position": "11.001836136384663 0 1.369904074937127",
+        "rotation": "0 113.99999999999969 0",
+        "scale": "1 1 1",
+        "gltf-model": "../assets/glb/flower-05.glb",
+        "croquet-name": "1468aa28-988a-42d5-972b-1b635e73bc3f"
+      },
+      {
+        "position": "8.238287973752582 0 -0.9358234177202454",
+        "rotation": "0 113.99999999999969 0",
+        "scale": "1 1 1",
+        "gltf-model": "../assets/glb/flower-01.glb",
+        "croquet-name": "6df00803-7ea1-443a-bcc9-ce708cf2383a"
+      },
+      {
+        "position": "8.353884994980293 0 -0.2241399012523999",
+        "rotation": "0 113.99999999999969 0",
+        "scale": "1 1 1",
+        "gltf-model": "../assets/glb/flower-05.glb",
+        "croquet-name": "17999b56-a951-491b-bb6e-2feca451d70f"
+      },
+      {
+        "position": "7.872827845553246 0 -1.4796980676096745",
+        "rotation": "0 113.99999999999969 0",
+        "scale": "1 1 1",
+        "gltf-model": "../assets/glb/flower-06.glb",
+        "croquet-name": "e92440da-0e9d-497e-9d39-ef360d30c99e"
+      },
+      {
+        "position": "7.443847276164788 0 -0.4455068262296591",
+        "rotation": "0 113.99999999999969 0",
+        "scale": "1 1 1",
+        "gltf-model": "../assets/glb/flower-03.glb",
+        "croquet-name": "8a41ed3e-4ef2-4ca7-8833-327430552623"
+      },
+      {
+        "position": "9.030585220550215 0 1.806480935276144",
+        "rotation": "0 113.99999999999969 0",
+        "scale": "1 1 1",
+        "gltf-model": "../assets/glb/flower-03.glb",
+        "croquet-name": "67169aae-21d7-4f3d-8b08-af753f08de76"
+      },
+      {
+        "position": "9.960617407855944 0 2.4033383520417884",
+        "rotation": "0 113.99999999999969 0",
+        "scale": "1 1 1",
+        "gltf-model": "../assets/glb/flower-03.glb",
+        "croquet-name": "48b1fce7-2786-4c1c-94bc-2fd4d9044c35"
+      },
+      {
+        "position": "8.804982090681722 0 2.86378125821318",
+        "rotation": "0 113.99999999999969 0",
+        "scale": "1 1 1",
+        "gltf-model": "../assets/glb/flower-04.glb",
+        "croquet-name": "b07c612f-8084-4167-8eae-ed516661037f"
+      },
+      {
+        "position": "8.228327181288137 0 1.6140220297316792",
+        "rotation": "0 113.99999999999969 0",
+        "scale": "1 1 1",
+        "gltf-model": "../assets/glb/flower-05.glb",
+        "croquet-name": "13ebea68-5ff1-45a5-ae82-ecdde88bc486"
+      },
+      {
+        "position": "7.17930510097114 0 -1.9350438729527422",
+        "rotation": "0 221.99999999999983 0",
+        "scale": "1 1 1",
+        "gltf-model": "../assets/glb/flat-rock.glb",
+        "croquet-name": "d1e166e1-aa17-4649-8cdc-daf2efd4a07b"
+      },
+      {
+        "position": "6.277476585635268 0 -1.007822017369294",
+        "rotation": "0 221.99999999999983 0",
+        "scale": "1 1 1",
+        "gltf-model": "../assets/glb/rock-07.glb",
+        "croquet-name": "27d7d815-4194-44b5-849f-be23d854fcff"
+      },
+      {
+        "position": "6.50085335935275 0 0.6602187775414929",
+        "rotation": "0 263.9999999999998 0",
+        "scale": "1 1 1",
+        "gltf-model": "../assets/glb/medium-rock.glb",
+        "croquet-name": "e275b1b3-da3d-444c-b2bc-40de7855f0b1"
+      },
+      {
+        "position": "7.769071685934071 0 2.541707394920319",
+        "rotation": "0 263.9999999999998 0",
+        "scale": "1 1 1",
+        "gltf-model": "../assets/glb/tall-rock.glb",
+        "croquet-name": "8abcca1a-3476-424a-ac66-df38b900df9b"
+      },
+      {
+        "position": "9.804872508437164 0 3.2600178560486306",
+        "rotation": "0 347.9999999999996 0",
+        "scale": "1 1 1",
+        "gltf-model": "../assets/glb/flat-rock.glb",
+        "croquet-name": "1e7b0082-ce69-4470-965f-6a2beb704bbb"
+      },
+      {
+        "position": "7.456490953200104 0 3.7286356734234603",
+        "rotation": "0 263.9999999999995 0",
+        "scale": "0.8 0.8 0.8",
+        "gltf-model": "../assets/glb/stump-08.glb",
+        "croquet-name": "f1dd792a-1cad-4af2-866c-b8f9d406ee0b"
+      },
+      {
+        "position": "9.937074694310608 0 -2.4921980450668837",
+        "rotation": "0 83.9999999999992 0",
+        "scale": "0.8 0.8 0.8",
+        "gltf-model": "../assets/glb/stump-07.glb",
+        "croquet-name": "e9aee0c1-be85-40af-bf12-128620d22bc9"
+      },
+      {
+        "position": "6.182698107221942 0 -2.9003210946290316",
+        "rotation": "0 83.9999999999992 0",
+        "scale": "0.8 0.8 0.8",
+        "gltf-model": "../assets/glb/stump-03.glb",
+        "croquet-name": "8d2e1c5c-0e26-4c06-b4c8-9812b3fdfd92"
+      },
+      {
+        "position": "5.436056692802847 0 4.037303321975703",
+        "rotation": "0 245.9999999999993 0",
+        "scale": "0.8 0.8 0.8",
+        "gltf-model": "../assets/glb/stump-06.glb",
+        "croquet-name": "4b688abe-a35e-4283-bd55-a5ade2f2024b"
+      },
+      {
+        "position": "10.202078183613285 0 4.036210473448151",
+        "rotation": "0 281.9999999999992 0",
+        "scale": "0.8 0.8 0.8",
+        "gltf-model": "../assets/glb/stump-02.glb",
+        "croquet-name": "64a9fc1b-63e6-4316-9f8d-8b9c7a2df90f"
+      },
+      {
+        "position": "0.5604472656142327 0 5.579434115705125",
+        "rotation": "0 41.99999999999896 0",
+        "scale": "0.8 0.8 0.8",
+        "gltf-model": "../assets/glb/tree-08.glb",
+        "croquet-name": "4871ac4c-79ca-48ee-beb1-a6b5105d6985"
+      },
+      {
+        "position": "4.461569002207279 0 -4.623596064429113",
+        "rotation": "0 161.99999999999898 0",
+        "scale": "0.8 0.8 0.8",
+        "gltf-model": "../assets/glb/tree-07.glb",
+        "croquet-name": "edba7c3d-bbc3-4be1-9145-76d256bbe8d5"
+      },
+      {
+        "position": "-3.90491980757664 0 -5.519217283577724",
+        "rotation": "0 299.9999999999989 0",
+        "scale": "0.8 0.8 0.8",
+        "gltf-model": "../assets/glb/tree-04.glb",
+        "croquet-name": "7ec5f48e-79bb-4ab3-91c5-b0db23083e60"
+      },
+      {
+        "position": "-5.822852941218362 0 4.042631345149685",
+        "rotation": "0 71.9999999999987 0",
+        "scale": "0.8 0.8 0.8",
+        "gltf-model": "../assets/glb/tree-05.glb",
+        "croquet-name": "f168ae93-c23a-4d4c-b60a-2ca7392151a4"
+      },
+      {
+        "position": "-7.312853165211727 0 -0.740702481091819",
+        "rotation": "0 197.99999999999878 0",
+        "scale": "0.8 0.8 0.8",
+        "gltf-model": "../assets/glb/tree-02.glb",
+        "croquet-name": "71d92ba8-7a6c-477e-a1a8-28535355b79f"
+      }
+    ]
+  }
+]

@@ -137,8 +137,6 @@ AFRAME.registerComponent('garden-controls', {
 
         this.log.bind(this);
 
-        this.log('hello world');
-
         // get the list of object group json directories - which json files should we read?
         // for each group, fetch the json file and populate the optgroup and option elements as children of the appropriate menu element
         let list = ['plants', 'rocks', 'trees', 'stumps', 'decorations', 'mushrooms'];
@@ -360,6 +358,26 @@ AFRAME.registerComponent('garden-controls', {
     tick: function () {
         this.updateItemRotaton();
         this.updatePreviewItem();
+        if (Q.GARDEN_BUILDER.GardenAssetCreationCapture) {
+            let elements = document.getElementById('new-asset-container').children;
+            if (!elements) return;
+            let str="[\n";
+            for (let i = 0; i < elements.length; i++) {
+              let element = elements[i];
+              str+="{\n"
+              let p = element.getAttribute('position');
+              str+=`"position": "${p.x} ${p.y} ${p.z}",\n`;
+              let r = element.getAttribute('rotation');
+              str+=`"rotation": "${r.x} ${r.y} ${r.z}",\n`;
+              let s = element.getAttribute('scale');
+              str+=`"scale": "${s.x} ${s.y} ${s.z}",\n`;
+              str+=`"gltf-model": "${element.getAttribute('gltf-model')}",\n`;
+              str+=`"croquet-name": "${element.getAttribute('croquet', 'name').name}"\n`;
+              str+="},\n"
+            }
+            str+="]";
+            console.log(str);
+        }
     },
 
     /**

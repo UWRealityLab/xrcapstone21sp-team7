@@ -17,6 +17,7 @@
         rel="stylesheet" type="text/css" />
     <!-- Core theme CSS (includes Bootstrap)-->
     <link href="css/styles.css" rel="stylesheet" />
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 </head>
 
 <body>
@@ -37,15 +38,24 @@
                                         <il class="list-inline-item">
                                             <input id="join-room-text" type="text" placeholder="Room ID">
                                             <button id="existing-button" class="bg-secondary" type="submit"
-                                                onclick="joinRoom(document.getElementById('join-room-text').value)"><i
+                                                onclick="joinRoom(document.getElementById('join-room-text').value, document.getElementById('pre-made-garden'))"><i
                                                     class="fa fa-search"></i></button>
                                         </il>
                                         <il class="list-inline-item">
-                                            <button type="button" class="bg-secondary" onclick="createRoom()">Generate!</button>
+                                            <button type="button" class="bg-secondary"
+                                                onclick="createRoom()">Generate!</button>
                                         </il>
                                     </ul>
                                 </div>
                             </div>
+                            Want to skip the hassle of creating a garden from scratch? Select a starter garden from the
+                            dropdown below (a room may have up to one pre-generated garden)!
+                            <br><br>
+                            <select id="gardenSelect" class="form-select" aria-label="Default select example">
+                                <option selected>Select a pre-generated garden</option>
+                                <option value="1">Cherry Blossoms</option>
+                                <option value="2">Flower Patch</option>
+                            </select>
                             <br>
                             <h2 id="room-id"></h2>
                         </span>
@@ -56,6 +66,13 @@
     </header>
 
     <script>
+        let selectedGarden = null;
+
+        $('#gardenSelect').change(function () {
+            var selectedText = $(this).find("option:selected").text();
+            selectedGarden = selectedText;
+        });
+
         const characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
         function joinRoom(roomId) {
             if (roomId.length == 0) {
@@ -65,6 +82,7 @@
             const url = new URL("zendin.html", document.baseURI);
             const params = new URLSearchParams(url.search);
             params.set("q", roomId);
+            params.set('preMadeGarden', selectedGarden);
             // params.set("existingRoom", "true");
             window.open(`${url.toString()}?${params.toString()}`, "_self");
         }
