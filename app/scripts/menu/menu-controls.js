@@ -646,21 +646,25 @@ AFRAME.registerComponent("menu-controls", {
 
   changeDisplayMenu: function () {
     let display = document.querySelector("#display-box");
-    let title_1 = display.querySelector(".title-1");
-    let title_2 = display.querySelector(".title-2");
-    let title_3 = display.querySelector(".title-3");
+    let audioInfo = display.querySelector("#audio-info");
+    let activityInfo = display.querySelector("#activity-info");
 
-    let text_1 = title_1.getAttribute("text");
-    text_1.value = this.currSong;
-    title_1.setAttribute("text", text_1);
+    if (!audioInfo || !activityInfo) {
+      return;
+    }
+    // let title_3 = display.querySelector(".title-3");
 
-    let text_2 = title_2.getAttribute("text");
-    text_2.value = this.currScript;
-    title_2.setAttribute("text", text_2);
+    let songText = audioInfo.getAttribute("text");
+    songText.value = this.currSong;
+    audioInfo.setAttribute("text", songText);
 
-    let text_3 = title_3.getAttribute("text");
-    text_3.value = this.currVolume;
-    title_3.setAttribute("text", text_3);
+    let activityText = activityInfo.getAttribute("text");
+    activityText.value = this.currScript;
+    activityInfo.setAttribute("text", activityText);
+
+    // let text_3 = title_3.getAttribute("text");
+    // text_3.value = this.currVolume;
+    // title_3.setAttribute("text", text_3);
   },
 
   remove: function () {

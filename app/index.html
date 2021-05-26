@@ -66,6 +66,7 @@
     <script src="./scripts/menu/vertical-slider.js"></script>
     <script src="./scripts/menu/small-button.js"></script>
     <script src="./scripts/menu/controls-tutorial.js"></script>
+    <script src="./scripts/menu/info-panel.js"></script>
     <script src="https://rawgit.com/mayognaise/aframe-gif-shader/master/dist/aframe-gif-shader.min.js"></script>
     <script src="https://rawgit.com/mayognaise/aframe-gif-component/master/dist/aframe-gif-component.min.js"></script>
     <!-- <script src="./scripts/menu/title.js"></script> -->
@@ -269,7 +270,6 @@
             <img id="replay-button" src="../assets/img/menu/Replay_Button.png">
             <img id="background-1" src="../assets/img/menu/Background_1.png">
             <img id="background-2" src="../assets/img/menu/Background_2.png">
-            <img id="background-3" src="../assets/img/menu/Background_3.png">
             <img id="daylight" src="../assets/img/menu/daylight.png">
             <img id="nightlight" src="../assets/img/menu/nightlight.png">
 
@@ -322,7 +322,7 @@
             ></a-mixin>
             <a-mixin
               id="small-square"
-              geometry="primitive: plane; width: 0.2; height: 0.2"
+              geometry="primitive: plane; width: 0.15; height: 0.15"
               material="color: white; shader: flat"
               position="0 0 0.008"
               animation__scale="property: scale; to: 1.2 1.2 1.2; dur: 500; easing: easeOutExpo; startEvents: mouseenter"
@@ -446,23 +446,16 @@
 
                 </a-entity>
 
-                <!-- bar -->
-                <!-- <a-plane color="black" rotation="0 0 0" position="0 -0.57 0" scale="2 0.03 0.05"></a-plane> -->
-
-                <!-- volume -->
-
-                <!-- display square-->
-                <a-entity id="display-box" visible="false" horizontal-button="img: #background-3; title_1: GARDEN AUDIO:; title_2: ACTIVITY:; title_3: VOLUME:" position="0.5 -1 0" mixin="horizontal-frame"></a-entity>
-
-                <!-- audio -->
-                <!-- TODO: Find Better way to organize multiple audios -->
-                <a-entity id="function-buttons" class="audio" visible="false" position="0 -0.9 0">
-                  <a-entity id="volume-slider" slider="title: Volume" position="0 0.2 0"></a-entity>
-                  <a-entity id="play-button" small-button="img: #play-button" position="-0.3 0 0" ></a-entity>
-                  <a-entity id="pause-button" small-button="img: #pause-button" position="0 0 0"></a-entity>
-                  <a-entity id="replay-button" small-button="img: #replay-button" position="0.3 0 0" ></a-entity>
+                <a-entity id="function-buttons" class="audio" visible="false" position="0 -0.8 0">
+                  <!-- display square-->
+                  <a-entity id="display-box" info-panel position="0 0 0.1"></a-entity>
+                  <a-entity id="volume-slider" slider="title: Volume" position="0 0 0"></a-entity>
+                  <a-entity id="play-button" small-button="img: #play-button" position="-0.3 -0.2 0" ></a-entity>
+                  <a-entity id="pause-button" small-button="img: #pause-button" position="0 -0.2 0"></a-entity>
+                  <a-entity id="replay-button" small-button="img: #replay-button" position="0.3 -0.2 0" ></a-entity>
                 </a-entity>
-                <!-- audio -->
+
+                
 
                 <!-- environment settings menu, todo -->
                 <!-- <a-entity id="env-settings" visible="false" position="-1.4 0 1.45" roftation="0 70 0">
