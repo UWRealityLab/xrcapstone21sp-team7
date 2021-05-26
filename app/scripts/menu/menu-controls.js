@@ -116,8 +116,7 @@ AFRAME.registerComponent("menu-controls", {
     this.el.sceneEl.addEventListener("Day-clicked", this.onDayLight);
     this.el.sceneEl.addEventListener("Night-clicked", this.onNightLight);
     
-    // will this work? only want to play background music again once the scripts have fully ended. not when any other sound has ended.
-    // edit: this does not work at all lol. why doesn't sound-ended not work?
+    // this is to know when the meditation scripts end so that we can start playing backround music again.
     document.querySelector("#sky").querySelector("#meditation-1").addEventListener("sound-ended", this.onBackgroundMusic);
     document.querySelector("#sky").querySelector("#rain").addEventListener("sound-ended", this.onBackgroundMusic);
     document.querySelector("#sky").querySelector("#rain").addEventListener("confidence-meditation", this.onBackgroundMusic);
@@ -689,8 +688,6 @@ AFRAME.registerComponent("menu-controls", {
   },
 
   onBackgroundMusic: function (evt) {
-    console.log("EVENT:" + evt.detail.name);
-    console.log("END OF SCRIPT");
     this.scriptPlaying = false;
     document.querySelector("#sky").components.sound.playSound();
   },
