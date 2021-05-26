@@ -48,30 +48,27 @@ AFRAME.registerComponent("menu-controls", {
     this.uiHousing.appendChild(automatedMeditationRing);
     this.uiHousing.appendChild(meditationMenu);
 
-    // Grab env menu to display
-    this.envMenu = document.querySelector("#env-settings");
-
-    // Event handlers
+    /* Bind Functions */
     this.onMenuActivate = this.onMenuActivate.bind(this);
     this.onMenuRecenter = this.onMenuRecenter.bind(this);
     this.onToggleMenuVisibility = this.onToggleMenuVisibility.bind(this);
     this.onVolumeChanged = this.onVolumeChanged.bind(this);
-    // this.onEnvSliderChanged = this.onEnvSliderChanged.bind(this);
+
     this.onScenesButtonClicked = this.onScenesButtonClicked.bind(this);
     this.onMeditationButtonClicked = this.onMeditationButtonClicked.bind(this);
     this.onYogaButtonClicked = this.onYogaButtonClicked.bind(this);
     this.onAudioMenuClicked = this.onAudioMenuClicked.bind(this);
+    this.onLightModeClicked = this.onLightModeClicked.bind(this);
+
     this.audioChanged = this.audioChanged.bind(this);
     this.onAudioShift = this.onAudioShift.bind(this);
-    this.onLightModeClicked = this.onLightModeClicked.bind(this);
     this.onDayLight = this.onDayLight.bind(this);
     this.onNightLight = this.onNightLight.bind(this);
+    this.onBackgroundMusic = this.onBackgroundMusic.bind(this);
 
     this.onPlayButton = this.onPlayButton.bind(this);
     this.onPauseButton = this.onPauseButton.bind(this);
     this.onReplayButton = this.onReplayButton.bind(this);
-
-    this.onBackgroundMusic = this.onBackgroundMusic.bind(this);
 
     this.onGuidedMeditationClicked = this.onGuidedMeditationClicked.bind(this);
     this.onStoryMeditationClicked = this.onStoryMeditationClicked.bind(this);
@@ -89,32 +86,31 @@ AFRAME.registerComponent("menu-controls", {
 
     this.removeEventListeners = this.removeEventListeners.bind(this);
 
-    // Button event listeners
-    // TODO: change trigger button
-    this.el.addEventListener("abuttondown", this.onMenuActivate);
-    this.el.sceneEl.addEventListener('bbuttondown', this.onMenuRecenter);
-    this.el.addEventListener("gripup", this.onToggleMenuVisibility);
-    this.el.sceneEl.addEventListener("scenes-button-clicked", this.onScenesButtonClicked);
-    this.el.sceneEl.addEventListener("meditation-button-clicked", this.onMeditationButtonClicked);
-    this.el.sceneEl.addEventListener("yoga-button-clicked", this.onYogaButtonClicked);
-    this.el.sceneEl.addEventListener("lighting-button-clicked", this.onLightModeClicked);
-    this.el.sceneEl.addEventListener("guided-meditation-button-clicked", this.onGuidedMeditationClicked);
-    this.el.sceneEl.addEventListener("story-telling-button-clicked", this.onStoryMeditationClicked);
-    this.el.sceneEl.addEventListener("confidence-booster-button-clicked", this.onConfidenceBoosterClicked);
-    this.el.sceneEl.addEventListener("breathing-exercise-button-clicked", this.onBreathingExerciseButtonClicked);
-    this.el.sceneEl.addEventListener("cloud-meditation-button-clicked", this.onCloudMeditationButtonClicked);
-    this.el.sceneEl.addEventListener("mountain-meditation-button-clicked", this.onMountainMeditationButtonClicked);
-    this.el.sceneEl.addEventListener("guided-yoga-button-clicked", this.onGuidedYogaButtonClicked);
-    this.el.sceneEl.addEventListener("volume-slider-changed", this.onVolumeChanged);
-    this.el.sceneEl.addEventListener("audio-button-clicked", this.onAudioMenuClicked);
-    this.el.sceneEl.addEventListener("audio-changed", this.audioChanged);
-    this.el.sceneEl.addEventListener("audio-menu-slider-changed", this.onAudioShift);
-    this.el.sceneEl.addEventListener("play-button-changed", this.onPlayButton);
-    this.el.sceneEl.addEventListener("pause-button-changed", this.onPauseButton);
-    this.el.sceneEl.addEventListener("replay-button-changed", this.onReplayButton);
-    this.el.sceneEl.addEventListener("replay-button-changed", this.onReplayButton);
-    this.el.sceneEl.addEventListener("Day-clicked", this.onDayLight);
-    this.el.sceneEl.addEventListener("Night-clicked", this.onNightLight);
+    /* Event Listeners */
+    el.addEventListener("abuttondown", this.onMenuActivate);
+    el.sceneEl.addEventListener('bbuttondown', this.onMenuRecenter);
+    el.addEventListener("gripup", this.onToggleMenuVisibility);
+    el.sceneEl.addEventListener("scenes-button-clicked", this.onScenesButtonClicked);
+    el.sceneEl.addEventListener("meditation-button-clicked", this.onMeditationButtonClicked);
+    el.sceneEl.addEventListener("yoga-button-clicked", this.onYogaButtonClicked);
+    el.sceneEl.addEventListener("lighting-button-clicked", this.onLightModeClicked);
+    el.sceneEl.addEventListener("guided-meditation-button-clicked", this.onGuidedMeditationClicked);
+    el.sceneEl.addEventListener("story-telling-button-clicked", this.onStoryMeditationClicked);
+    el.sceneEl.addEventListener("confidence-booster-button-clicked", this.onConfidenceBoosterClicked);
+    el.sceneEl.addEventListener("breathing-exercise-button-clicked", this.onBreathingExerciseButtonClicked);
+    el.sceneEl.addEventListener("cloud-meditation-button-clicked", this.onCloudMeditationButtonClicked);
+    el.sceneEl.addEventListener("mountain-meditation-button-clicked", this.onMountainMeditationButtonClicked);
+    el.sceneEl.addEventListener("guided-yoga-button-clicked", this.onGuidedYogaButtonClicked);
+    el.sceneEl.addEventListener("volume-slider-changed", this.onVolumeChanged);
+    el.sceneEl.addEventListener("audio-button-clicked", this.onAudioMenuClicked);
+    el.sceneEl.addEventListener("audio-changed", this.audioChanged);
+    el.sceneEl.addEventListener("audio-menu-slider-changed", this.onAudioShift);
+    el.sceneEl.addEventListener("play-button-changed", this.onPlayButton);
+    el.sceneEl.addEventListener("pause-button-changed", this.onPauseButton);
+    el.sceneEl.addEventListener("replay-button-changed", this.onReplayButton);
+    el.sceneEl.addEventListener("replay-button-changed", this.onReplayButton);
+    el.sceneEl.addEventListener("Day-clicked", this.onDayLight);
+    el.sceneEl.addEventListener("Night-clicked", this.onNightLight);
     
     // this is to know when the meditation scripts end so that we can start playing backround music again.
     document.querySelector("#sky").querySelector("#meditation-1").addEventListener("sound-ended", this.onBackgroundMusic);
@@ -122,12 +118,9 @@ AFRAME.registerComponent("menu-controls", {
     document.querySelector("#sky").querySelector("#rain").addEventListener("confidence-meditation", this.onBackgroundMusic);
 
     // changing audio of breathing exercise
-    this.el.sceneEl.addEventListener("breath-capture-start", this.onBreathAudio1);
-    this.el.sceneEl.addEventListener("change-breathing-exercise-2", this.onBreathAudio2);
-    this.el.sceneEl.addEventListener("breath-capture-end", this.onBreathAudio3);
-
-    // env menu listeners
-    this.el.sceneEl.addEventListener("env-menu-slider-changed", this.onEnvSliderChanged);
+    el.sceneEl.addEventListener("breath-capture-start", this.onBreathAudio1);
+    el.sceneEl.addEventListener("change-breathing-exercise-2", this.onBreathAudio2);
+    el.sceneEl.addEventListener("breath-capture-end", this.onBreathAudio3);
 
     // Helpers
     this.activate = this.activate.bind(this);
@@ -140,8 +133,8 @@ AFRAME.registerComponent("menu-controls", {
     this.changeDisplayMenu = this.changeDisplayMenu.bind(this);
   },
 
-  /*
-    Displays or hides the menu
+  /** 
+   * Displays the menu, or hides if already displayed
   */
   onMenuActivate: function () {
     if (this.displayed) {
@@ -225,16 +218,16 @@ AFRAME.registerComponent("menu-controls", {
     }
   },
 
-  /*
-    Displays the scene menu
-  */
+  /**
+   * Displays the scenes menu
+   */
   onScenesButtonClicked: function() {
     this.changeCurrentMenu("#scenes-menu");
   },
 
-  /*
-    Displays the different meditation options
-  */
+  /**
+   * Displays the meditation menu
+   */
   onMeditationButtonClicked: function () {
     this.changeCurrentMenu("#meditation-menu");
 
@@ -249,7 +242,9 @@ AFRAME.registerComponent("menu-controls", {
     //this.meditationSong.components.sound.playSound();
   },
 
-  // Start the meditation script
+  /**
+   * Starts the guided meditation script
+   */
   onGuidedMeditationClicked: function () {
     let sky = document.querySelector("#sky");
 
@@ -279,7 +274,9 @@ AFRAME.registerComponent("menu-controls", {
     this.changeDisplayMenu();
   },
 
-  // Start the rain story script
+  /**
+   * Starst the rain story meditation script
+   */
   onStoryMeditationClicked: function () {
     let sky = document.querySelector("#sky");
 
@@ -310,7 +307,9 @@ AFRAME.registerComponent("menu-controls", {
 
   },
 
-  // Start confidence booster script
+  /**
+   * Starts the confidence booster meditation script
+   */
   onConfidenceBoosterClicked: function () {
     let sky = document.querySelector("#sky");
 
@@ -401,9 +400,9 @@ AFRAME.registerComponent("menu-controls", {
     this.scriptPlaying = false;
   },
 
-  /*
-    Starts cloud meditation
-  */
+  /**
+   * Starts cloud meditation scene
+   */
   onCloudMeditationButtonClicked: function () {
     // TODO: maybe change scene a bit
     this.el.sceneEl.emit("cloud-meditation-start");
@@ -412,16 +411,15 @@ AFRAME.registerComponent("menu-controls", {
     this.changeDisplayMenu();
   },
 
-  /*
-    Displays gates leading to hot spring
-    and also makes those elements visible
-  */
+  /**
+   * Starts mountain/hot springs meditation scene
+   */
   onMountainMeditationButtonClicked: function() {
     this.el.sceneEl.emit("mountain-meditation-start");
   },
 
-  /*
-    Displays the different yoga options
+  /**
+   * Displays the different yoga options
   */
   onYogaButtonClicked: function () {
     this.changeCurrentMenu("#yoga-menu");
@@ -469,20 +467,6 @@ AFRAME.registerComponent("menu-controls", {
     this.changeDisplayMenu();
 
   },
-
-  /*
-  onEnvSliderChanged: function (evt) {
-    let sky = document.querySelector("#sky");
-
-    let light = {
-      property: 'light.intensity',
-      to: evt.detail.percent,
-      dur: 2000,
-      easing: 'linear'
-    };
-    sky.setAttribute('animation', light);
-  },
-  */
 
   onPlayButton: function () {
     if (this.currMeditationScript != undefined) {
@@ -586,8 +570,8 @@ AFRAME.registerComponent("menu-controls", {
     this.el.emit("startMeditation", { light: this.currLight });
   },
 
-  /*
-    Turn on sliders
+  /**
+   * Turn on sliders to be detected by raycasting
   */
   activateSliders: function (element) {
     element.querySelectorAll(".slider")?.forEach((slider) => {
@@ -598,8 +582,8 @@ AFRAME.registerComponent("menu-controls", {
     });
   },
 
-  /*
-    Turn off sliders
+  /**
+   * Turn off sliders, no longer raycastable
   */
   deactivateSliders: function (element) {
     element.querySelectorAll(".slider")?.forEach((slider) => {
@@ -608,9 +592,10 @@ AFRAME.registerComponent("menu-controls", {
     });
   },
 
-  /*
-    Activates menu options so they can be detected by raycasting
-  */
+  /**
+   * 
+   * @param {*} element submenu element to activate
+   */
   activate: function (element) {
     if (!element) return;
     element.querySelectorAll(".option")?.forEach((option) => {
@@ -622,9 +607,10 @@ AFRAME.registerComponent("menu-controls", {
     this.activateSliders(element);
   },
 
-  /*
-    Deactivates menu options so they can't be detected by raycasting
-  */
+  /**
+   * 
+   * @param {*} element submenu element to deactivate
+   */
   deactivate: function (element) {
     if (!element) return;
     element.setAttribute("visible", "false");
@@ -636,6 +622,9 @@ AFRAME.registerComponent("menu-controls", {
     this.deactivateSliders(element);
   },
 
+  /**
+   * Turns on media keys
+   */
   activateMediaKeys: function() {
     const mediakeys = document.querySelector("#function-buttons");
 
@@ -643,6 +632,9 @@ AFRAME.registerComponent("menu-controls", {
     this.activate(mediakeys);
   },
 
+  /**
+   * Turns off media keys
+   */
   deactivateMediaKeys: function() {
     const mediaKeys = document.querySelector("#function-buttons");
 
@@ -650,9 +642,11 @@ AFRAME.registerComponent("menu-controls", {
     this.deactivate(mediaKeys);
   },
 
-  /* Switches from the current displayed menu to the 
-    next menu given by its id selector
-  */
+  /**
+   * 
+   * @param {*} next selector of menu to change to
+   *  
+   */
   changeCurrentMenu: function(next) {
     if (this.currentMenu) {
       this.deactivate(this.currentMenu);
