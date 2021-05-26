@@ -35,7 +35,9 @@ const TIME_ARRAY = [10000,  // welcome screen (0)
                     */
 
 // Arrays for short yoga routine - 4 min 35 sec
+// Needs one extra mountain pose at start to set default pose
 const SHORT_ANIM_ARRAY = [
+  'mountain',
   null,
   null,
   'mountain',
@@ -47,7 +49,7 @@ const SHORT_ANIM_ARRAY = [
   'warrior3',
   'plank',
   'sidePlank',
-  null
+  'mountain'
 ];
 
 // const SHORT_TIME_ARRAY = [
@@ -92,6 +94,14 @@ AFRAME.registerComponent("yoga-mode", {
     this.el.sceneEl.addEventListener('yoga-control-back-triggered', this.yogaBack);
     this.el.sceneEl.addEventListener('yoga-control-pause-triggered', this.yogaPause);
     this.el.sceneEl.addEventListener('yoga-control-next-triggered', this.yogaNext);
+
+    // Debugging
+    this.el.addEventListener('z_press', this.yogaBack);
+    this.el.addEventListener('x_press', this.yogaPause);
+    this.el.addEventListener('c_press', this.yogaNext);
+
+    document.querySelector("#yoga-instructor").setAttribute("visible", "true");
+    this.yogaStart();
   },
 
   remove: function() {
@@ -114,7 +124,7 @@ AFRAME.registerComponent("yoga-mode", {
     this.timer = TIME_ARRAY[this.loopCount];
 
     // Initialization for first loop
-    instructorEl.animatePose(SHORT_ANIM_ARRAY[this.loopCount], null);
+    this.animateTo(this.loopCount, null);
     timerEl.setAttribute("visible", "true");
 
     // Enable sound

@@ -222,7 +222,8 @@
             <div id="yoga-audio"></div>
             <script>
               var audio = document.querySelector("#yoga-audio");
-              for (let i = 0; i < SHORT_ANIM_ARRAY.length; i++) {
+              // One less audio file since we add an extra pose to set the starting pose
+              for (let i = 0; i < SHORT_ANIM_ARRAY.length - 1; i++) {
                 audio.innerHTML += "<audio id='yoga-audio-short-" + i + 
                 "' src='../assets/img/yoga/yoga-short/short-audio/audio-" + i + ".mp3'></audio>";
               }
@@ -527,7 +528,7 @@
         <a-entity id="yoga-instructor" position="0 0 24" rotation="0 180 0" scale="1 1 1" animate-yoga-poses
         sound="on: model-loaded, autoplay: false; positional: false; volume: 0.25"></a-entity>
         
-        <!-- yoga menu, temporarily disabled for bugginess
+        <!-- yoga menu, temporarily disabled for bugginess-->
         <a-entity id="yoga-buttons" position="0 2.75 25" rotation="-15 0 180">
           <a-box id="yoga-control-back" class="rightclickable" visible="false" scale="0.6 0.6 0.2" position="-1 0 0.125" color="white" yoga-button></a-box>
           <a-image id="yoga-control-back-img" src="#yoga-back" visible="false" width="0.5" height="0.5" position="-1 0 0"></a-image>
@@ -536,7 +537,7 @@
           <a-box id="yoga-control-next"  class="rightclickable" visible="false" scale="0.6 0.6 0.2" position="1 0 0.125" color="white" yoga-button></a-box>
           <a-image id="yoga-control-next-img" src="#yoga-next" visible="false" width="0.5" height="0.5" position="1 0 0"></a-image>
         </a-entity>
-        -->
+        
 
         <!-- Generated garden -->
         <a-entity id="garden" base-garden="sceneWidth: 4; sceneDepth: 5" controls-tutorial></a-entity>
