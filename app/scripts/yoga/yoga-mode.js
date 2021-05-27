@@ -95,8 +95,10 @@ AFRAME.registerComponent("yoga-mode", {
     this.el.sceneEl.addEventListener('yoga-control-pause-triggered', this.yogaPause);
     this.el.sceneEl.addEventListener('yoga-control-next-triggered', this.yogaNext);
 
+    /* for debugging
     document.querySelector("#yoga-instructor").setAttribute("visible", "true");
     this.yogaStart();
+    */
   },
 
   remove: function() {
