@@ -168,6 +168,69 @@ AFRAME.registerComponent("base-garden", {
       "raycaster-intersected-cleared",
       this.raycasterIntersectedCleared.bind(this)
     );
+
+    // If a predefined garden has been specified, load it in
+    const urlParams = new URLSearchParams(window.location.search);
+    const preMadeGarden = urlParams.get('preMadeGarden');
+    const gardenJsonURL = urlParams.get('gardenJson');
+    if (preMadeGarden) {
+      // read json file with garden parameters
+
+      const gardenMetaDataURL = gardenJsonURL || `${Q.GARDEN_BUILDER.AssetsDir}preMadeGardens.json`;
+
+      let request = new XMLHttpRequest();
+      request.open('GET', gardenMetaDataURL);
+      request.responseType = 'json';
+      request.send();
+
+      request.onload = function () {
+        let sharedEntities = document.getElementById('new-asset-container');
+        let jsonArray = request.response;
+
+        if (!jsonArray) {
+          return;
+        }
+
+        let gardenJsonData = null;
+        jsonArray.forEach(element => {
+          if (element.name == preMadeGarden) {
+            gardenJsonData = element.data
+          }
+        });
+
+        if (!gardenJsonData) {
+          return false;
+        }
+
+        // Wait to let the croquet assets load
+        setTimeout(() => {
+          // Check if any hidden identifying asset is already in the garden, meaning a garden has already been loaded
+          if (sharedEntities.querySelectorAll('a-box').length > 0) {
+            console.log('garden already loaded');
+            return;
+          }
+
+          console.log('loading garden');
+
+          let newEl = document.createElement('a-box');
+          newEl.setAttribute('id', 'preloaded-garden');
+          newEl.setAttribute('croquet', 'name=preloaded-garden');
+          newEl.setAttribute('class', 'sdfklsdklflsdkfjkl');
+          newEl.setAttribute('visible', false);
+          sharedEntities.appendChild(newEl);
+
+          gardenJsonData.forEach(element => {
+            let newEl = document.createElement('a-entity');
+            newEl.setAttribute('position', element['position']);
+            newEl.setAttribute('scale', element['scale']);
+            newEl.setAttribute('rotation', element['rotation']);
+            newEl.setAttribute('gltf-model', element['gltf-model']);
+            newEl.setAttribute('croquet', `name=${element['croquet-name']}`);
+            sharedEntities.appendChild(newEl);
+          });
+        }, 5000);
+      };
+    }
   },
 
   remove: function () {
