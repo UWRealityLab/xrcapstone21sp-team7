@@ -30,7 +30,7 @@ AFRAME.registerComponent("cloud-meditation", {
 
     // Event listeners
     this.el.sceneEl.addEventListener("cloud-meditation-start", this.onCloudMeditationStart);
-    this.el.sceneEl.addEventListener("cloud-meditation-end", this.onCloudMeditationEnd);
+    this.el.sceneEl.addEventListener("menu-item-deselected", this.onCloudMeditationEnd);
   },
 
   generateCloud: function (position) {
@@ -69,6 +69,11 @@ AFRAME.registerComponent("cloud-meditation", {
         cloud.removeAttribute("animation");
       });
 
+      // Teleport the user to the center in case they are chilling
+      // on a cloud :)
+      let camRig = document.querySelector("#camRig");
+      camRig.setAttribute("position", "0 0 0");
+      camRig.setAttribute('rotation', '0 -90 0');
       this.meditating = false;
     }
   },

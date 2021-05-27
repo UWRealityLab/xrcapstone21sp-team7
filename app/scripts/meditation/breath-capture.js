@@ -94,7 +94,7 @@ AFRAME.registerComponent('breath-capture', {
 
     el.sceneEl.addEventListener('breath-capture-start', this.onBreathCaptureStart);
     el.sceneEl.addEventListener('breath-capture-end', this.onBreathCaptureEnd);
-    // el.sceneEl.addEventListener('menu-item-deselected', this.onMenuItemDeselected);
+    el.sceneEl.addEventListener('menu-item-deselected', this.onMenuItemDeselected);
     el.sceneEl.addEventListener('pause-breathing', this.onPauseBreathing);
     el.addEventListener('controllerconnected', this.onControllerConnected);
     el.addEventListener('controllerdisconnected', this.onControllerDisconnected);
@@ -105,7 +105,7 @@ AFRAME.registerComponent('breath-capture', {
     let el = this.el;
     el.sceneEl.removeEventListener('breath-capture-start', this.onBreathCaptureStart);
     el.sceneEl.removeEventListener('breath-capture-end', this.onBreathCaptureEnd);
-    // el.sceneEl.removeEventListener('menu-item-deselected', this.onMenuItemDeselected);
+    el.sceneEl.removeEventListener('menu-item-deselected', this.onMenuItemDeselected);
     el.sceneEl.removeEventListener('pause-breathing', this.onPauseBreathing);
     el.removeEventListener('controllerconnected', this.onControllerConnected);
     el.removeEventListener('controllerdisconnected', this.onControllerDisconnected);

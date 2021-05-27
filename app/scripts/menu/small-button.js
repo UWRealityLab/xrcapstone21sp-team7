@@ -4,17 +4,33 @@ AFRAME.registerComponent("small-button", {
       //title: { type: "string", default: ""},
       img: { type: "selector", default: "" },
       color: { type: "string", default: "white"},
+      title: { type: "string", default: ""}
     },
     init: function () {
       let el = this.el;
       let data = this.data;
+  
+
+      // Title
+      // Title Text
+      this.text = document.createElement("a-entity");
+      this.text.setAttribute("position", "0 0 0");
+      this.text.setAttribute("text", {
+        value: data.title,
+        align: "center",
+        shader: "msdf",
+      });
 
       // Container
-      el.setAttribute("class", "option");
-      el.setAttribute("material", "src", data.img);
-      el.setAttribute("material", "color", data.color);
-      el.setAttribute("material", "alphaTest", 0.5);
-      el.setAttribute("mixin", "small-square");
+      this.container = document.createElement("a-entity");
+      this.container.setAttribute("class", "container");
+      this.container.setAttribute("material", "src", data.img);
+      this.container.setAttribute("material", "color", data.color);
+      this.container.setAttribute("material", "alphaTest", 0.5);
+      this.container.setAttribute("mixin", "small-square");
+  
+      this.container.appendChild(this.text);
+      el.appendChild(this.container);
   
       // Handlers
       this.onClick = this.onClick.bind(this);
@@ -22,15 +38,15 @@ AFRAME.registerComponent("small-button", {
       this.onMouseLeave = this.onMouseLeave.bind(this);
   
       // Listeners
-      this.el.addEventListener("click", this.onClick);
-      this.el.addEventListener("mouseenter", this.onMouseEnter);
-      this.el.addEventListener("mouseleave", this.onMouseLeave);
+      this.container.addEventListener("click", this.onClick);
+      this.container.addEventListener("mouseenter", this.onMouseEnter);
+      this.container.addEventListener("mouseleave", this.onMouseLeave);
     },
   
     remove: function () {
-      this.el.removeEventListener("click", this.onClick);
-      this.el.removeEventListener("mouseenter", this.onMouseEnter);
-      this.el.removeEventListener("mouseleave", this.onMouseLeave);
+      this.container.removeEventListener("click", this.onClick);
+      this.container.removeEventListener("mouseenter", this.onMouseEnter);
+      this.container.removeEventListener("mouseleave", this.onMouseLeave);
     },
   
     onClick: function (evt) {
