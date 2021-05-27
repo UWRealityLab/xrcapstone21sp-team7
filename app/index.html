@@ -268,6 +268,7 @@
             <img id="play-icon" src="../assets/img/menu/Play_Button.png">
             <img id="pause-icon" src="../assets/img/menu/Pause_Button.png">
             <img id="stop-icon" src="../assets/img/menu/Stop_Button.png">
+            <img id="home-icon" src="../assets/img/menu/Home_Button.png">
             <img id="replay-icon" src="../assets/img/menu/Replay_Button.png">
             <img id="background-1" src="../assets/img/menu/Background_1.png">
             <img id="background-2" src="../assets/img/menu/Background_2.png">
@@ -449,11 +450,12 @@
 
                 <a-entity id="function-buttons" class="audio" visible="false" position="0 -0.8 0">
                   <!-- display square-->
-                  <a-entity id="display-box" info-panel position="0 0 0.1"></a-entity>
+                  <a-entity id="display-box" info-panel position="0 0 0"></a-entity>
                   <a-entity id="volume-slider" slider="title: Volume" position="0 0 0"></a-entity>
-                  <a-entity id="play-pause-button" small-button="img: #play-icon" position="-0.3 -0.2 0" ></a-entity>
-                  <a-entity id="stop-button" small-button="img: #stop-icon" position="0 -0.2 0"></a-entity>
-                  <a-entity id="replay-button" small-button="img: #replay-icon" position="0.3 -0.2 0" ></a-entity>
+                  <a-entity id="home-button" small-button="img: #home-icon" position="-0.45 -0.2 0"></a-entity>
+                  <a-entity id="play-pause-button" small-button="img: #play-icon" position="-0.15 -0.2 0" ></a-entity>
+                  <a-entity id="stop-button" small-button="img: #stop-icon" position="0.15 -0.2 0"></a-entity>
+                  <a-entity id="replay-button" small-button="img: #replay-icon" position="0.45 -0.2 0" ></a-entity>
                 </a-entity>
               </a-entity>
             </template>

@@ -1,3 +1,11 @@
+const CLOUDS_SCENE = "Head in the Clouds";
+const HOT_SPRINGS_SCENE = "Hot Spring Serenity";
+
+const SCENE_EVENTS = {
+  CLOUDS_SCENE: "cloud-meditation",
+  HOT_SPRINGS_SCENE: "moutain-meditation",
+}
+
 AFRAME.registerComponent("menu-controls", {
   init: function () {
     let el = this.el;
@@ -52,7 +60,7 @@ AFRAME.registerComponent("menu-controls", {
     /* Bind Functions */
     this.onMenuActivate = this.onMenuActivate.bind(this);
     this.onMenuRecenter = this.onMenuRecenter.bind(this);
-    this.onToggleMenuVisibility = this.onToggleMenuVisibility.bind(this);
+    // this.onToggleMenuVisibility = this.onToggleMenuVisibility.bind(this);
     this.onVolumeChanged = this.onVolumeChanged.bind(this);
 
     this.onScenesButtonClicked = this.onScenesButtonClicked.bind(this);
@@ -67,6 +75,7 @@ AFRAME.registerComponent("menu-controls", {
     this.onNightLight = this.onNightLight.bind(this);
     this.onBackgroundMusic = this.onBackgroundMusic.bind(this);
 
+    this.onHomeButton = this.onHomeButton.bind(this);
     this.onPlayPauseButton = this.onPlayPauseButton.bind(this);
     this.onStopButton = this.onStopButton.bind(this);
     this.onReplayButton = this.onReplayButton.bind(this);
@@ -90,7 +99,7 @@ AFRAME.registerComponent("menu-controls", {
     /* Event Listeners */
     el.addEventListener("abuttondown", this.onMenuActivate);
     el.sceneEl.addEventListener('bbuttondown', this.onMenuRecenter);
-    el.addEventListener("gripup", this.onToggleMenuVisibility);
+    // el.addEventListener("gripup", this.onToggleMenuVisibility);
     el.sceneEl.addEventListener("scenes-button-clicked", this.onScenesButtonClicked);
     el.sceneEl.addEventListener("meditation-button-clicked", this.onMeditationButtonClicked);
     el.sceneEl.addEventListener("yoga-button-clicked", this.onYogaButtonClicked);
@@ -106,6 +115,7 @@ AFRAME.registerComponent("menu-controls", {
     el.sceneEl.addEventListener("audio-button-clicked", this.onAudioMenuClicked);
     el.sceneEl.addEventListener("audio-changed", this.audioChanged);
     el.sceneEl.addEventListener("audio-menu-slider-changed", this.onAudioShift);
+    el.sceneEl.addEventListener("home-button-changed", this.onHomeButton);
     el.sceneEl.addEventListener("play-pause-button-changed", this.onPlayPauseButton);
     el.sceneEl.addEventListener("stop-button-changed", this.onStopButton);
     el.sceneEl.addEventListener("replay-button-changed", this.onReplayButton);
@@ -141,17 +151,16 @@ AFRAME.registerComponent("menu-controls", {
   onMenuActivate: function () {
     if (this.displayed) {
       const id = this.currentMenu.id;
-      this.el.sceneEl.emit("menu-item-deselected");
 
       // Exit menu or go to previous menu
       if (id === "first-menu") {
         this.ui.setAttribute("visible", "false");
         this.displayed = false;
         this.el.setAttribute("raycaster", "lineOpacity", 0);
+        this.el.setAttribute("raycaster", "enabled", false);
         this.deactivateMediaKeys();
       } else {
         this.changeCurrentMenu("#first-menu");
-        console.log("CURRLIGHT: " + this.currLight);
       }
     } else {
       this.ui.setAttribute("visible", "true");
@@ -244,15 +253,11 @@ AFRAME.registerComponent("menu-controls", {
   onBreathingExerciseButtonClicked: function () {
     // Play the breathing exercise background song
     this.breathingSong.components.sound.playSound();
-
-    this.el.sceneEl.emit("breath-capture-start");
-
     this.startScript("", "Breathing Exercise", true);
   },
 
   onBreathAudio1: function () {
-    console.log("BREATH CAPTURE");
-    if (this.currMeditationScript != undefined) {
+    if (this.currMeditationScript) {
       this.currMeditationScript.components.sound.stopSound();
     }
 
@@ -263,7 +268,7 @@ AFRAME.registerComponent("menu-controls", {
   },
 
   onBreathAudio2: function () {
-    if (this.currMeditationScript != undefined) {
+    if (this.currMeditationScript) {
       this.currMeditationScript.components.sound.stopSound();
     }
 
@@ -274,7 +279,7 @@ AFRAME.registerComponent("menu-controls", {
   },
 
   onBreathAudio3: function () {
-    if (this.currMeditationScript != undefined) {
+    if (this.currMeditationScript) {
       this.currMeditationScript.components.sound.stopSound();
     }
     this.breathSong.components.sound.stopSound();
@@ -293,7 +298,7 @@ AFRAME.registerComponent("menu-controls", {
     // TODO: maybe change scene a bit
     this.el.sceneEl.emit("cloud-meditation-start");
 
-    this.currScene = "Cloud Meditation";
+    this.currScene = CLOUDS_SCENE;
     this.changeDisplayMenu();
   },
 
@@ -303,7 +308,8 @@ AFRAME.registerComponent("menu-controls", {
   onMountainMeditationButtonClicked: function() {
     this.el.sceneEl.emit("mountain-meditation-start");
 
-    this.currScene = "Hot Spring";
+    this.currScene = HOT_SPRINGS_SCENE
+    this.changeDisplayMenu();
   },
 
   /**
@@ -369,12 +375,13 @@ AFRAME.registerComponent("menu-controls", {
     this.meditationSong.components.sound.stopSound();
     sky.components.sound.stopSound();
     // stop a script that is currently playing
-    if (this.currMeditationScript != undefined) {
+    if (this.currMeditationScript) {
       this.currMeditationScript.components.sound.stopSound();
     }
 
     // Start breathing song if needed
     if (startBreathing) {
+      this.el.sceneEl.emit("breath-capture-start");
       this.breathingSong.components.sound.playSound();
       this.breathingOn = true;
     } else {
@@ -383,11 +390,10 @@ AFRAME.registerComponent("menu-controls", {
         this.breathingOn = false;
         this.el.emit("breath-capture-end");
         this.breathingSong.components.sound.stopSound();
-      } else {
-        const script = sky.querySelector(audioID);
-        script.components.sound.playSound();
-        this.currMeditationScript = script;
       }
+      const script = sky.querySelector(audioID);
+      script.components.sound.playSound();
+      this.currMeditationScript = script;
     }
 
     this.scriptPlaying = true;
@@ -396,10 +402,30 @@ AFRAME.registerComponent("menu-controls", {
     this.changeDisplayMenu();
   },
 
+  /**
+   * Ends the current scene if there is one, brings the user
+   * back to the center of the garden
+   */
+  onHomeButton: function() {
+    if (this.currScene) {
+      this.el.sceneEl.emit(`${SCENE_EVENTS[this.currScene]}-end`);
+    }
+
+    // Bring user back to the home building
+    const camRig = document.querySelector("#camRig");
+    camRig.setAttribute("position", "0 0 0");
+    camRig.setAttribute('rotation', '0 -90 0');
+  },
+
   onPlayPauseButton: function () {
+    // Only do something if we have an active script
+    if (!this.currScript) {
+      return;
+    }
     const button = document.querySelector("#play-pause-button");
-    // Pause the current script
-    if (this.currScript && this.scriptPlaying) {
+    
+    // Pause script
+    if (this.scriptPlaying) {
       this.currMeditationScript.components.sound.pauseSound();
       if (this.breathingOn) {
         let detail = {
@@ -414,6 +440,7 @@ AFRAME.registerComponent("menu-controls", {
 
       document.querySelector("#sky").components.sound.playSound();
     } else {
+      // Play script
       document.querySelector("#sky").components.sound.stopSound();
       this.currMeditationScript.components.sound.playSound();
       if (this.breathingOn) {
@@ -441,7 +468,7 @@ AFRAME.registerComponent("menu-controls", {
   },
 
   onReplayButton: function () {
-    if (this.currMeditationScript != undefined) {
+    if (this.currMeditationScript) {
       this.currMeditationScript.components.sound.stopSound();
       this.currMeditationScript.components.sound.playSound();
 
@@ -637,7 +664,7 @@ AFRAME.registerComponent("menu-controls", {
 
     el.removeEventListener("abuttondown", this.onMenuActivate); // maybe change trigger button?
     el.removeEventListener('bbuttondown', this.onMenuRecenter);
-    el.removeEventListener("gripup", this.onToggleMenuVisibility);
+    // el.removeEventListener("gripup", this.onToggleMenuVisibility);
     el.sceneEl.removeEventListener("meditation-button-clicked", this.onMeditationButtonClicked);
     el.sceneEl.removeEventListener("yoga-button-clicked", this.onYogaButtonClicked);
     el.sceneEl.removeEventListener("lighting-button-clicked", this.onLightModeClicked);
@@ -649,6 +676,7 @@ AFRAME.registerComponent("menu-controls", {
     el.sceneEl.removeEventListener("audio-button-clicked", this.onAudioMenuClicked);
     el.sceneEl.removeEventListener("audio-changed", this.audioChanged);
     el.sceneEl.removeEventListener("audio-menu-slider-changed", this.onAudioShift);
+    el.sceneEl.removeEventListener("home-button-changed", this.onHomeButton);
     el.sceneEl.removeEventListener("play-pause-button-changed", this.onPlayPauseButton);
     el.sceneEl.removeEventListener("stop-button-changed", this.onStopButton);
     el.sceneEl.removeEventListener("replay-button-changed", this.onReplayButton);
