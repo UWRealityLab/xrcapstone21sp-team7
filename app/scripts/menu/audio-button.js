@@ -7,26 +7,26 @@ AFRAME.registerComponent("audio-button", {
     init: function () {
       let el = this.el;
       let data = this.data;
-
-      el.setAttribute("class", "option");
-
-      this.infoText = document.createElement("a-entity");
-      this.infoText.setAttribute("mixin", "thumbnail-info-text");
-      this.infoText.setAttribute("text", {
+  
+      // Text
+      this.text = document.createElement("a-entity");
+      this.text.setAttribute("position", "0.3 0.15 0");
+      this.text.setAttribute("text", {
         value: data.title,
-        align: "center",
+        align: "left",
         shader: "msdf",
-        width: 1,
-        opacity: 0,
-        zOffset: 0.009
       });
+  
+      // Container
+      //this.container = document.createElement("a-image");
+      //this.container.setAttribute("src", data.img);
 
       this.container = document.createElement("a-entity");
       this.container.setAttribute("class", "container");
       this.container.setAttribute("material", "src", data.img);
       this.container.setAttribute("mixin", "thumbnail");
   
-      el.appendChild(this.infoText);
+      el.appendChild(this.text);
       el.appendChild(this.container);
   
       // Handlers
@@ -35,15 +35,15 @@ AFRAME.registerComponent("audio-button", {
       this.onMouseLeave = this.onMouseLeave.bind(this);
   
       // Listeners
-      el.addEventListener("click", this.onClick);
-      el.addEventListener("mouseenter", this.onMouseEnter);
-      el.addEventListener("mouseleave", this.onMouseLeave);
+      this.container.addEventListener("click", this.onClick);
+      this.container.addEventListener("mouseenter", this.onMouseEnter);
+      this.container.addEventListener("mouseleave", this.onMouseLeave);
     },
   
     remove: function () {
-      this.el.removeEventListener("click", this.onClick);
-      this.el.removeEventListener("mouseenter", this.onMouseEnter);
-      this.el.removeEventListener("mouseleave", this.onMouseLeave);
+      this.container.removeEventListener("click", this.onClick);
+      this.container.removeEventListener("mouseenter", this.onMouseEnter);
+      this.container.removeEventListener("mouseleave", this.onMouseLeave);
     },
   
     onClick: function (evt) {
@@ -53,36 +53,10 @@ AFRAME.registerComponent("audio-button", {
   
     onMouseEnter: function() {
       // TODO: Add so it pops out a bit
-      this.infoText.setAttribute("animation", {
-        property: "material.opacity",
-        to: 0.9,
-        dur: 500,
-        easing: "easeOutExpo",
-      });
-  
-      this.infoText.setAttribute("animation__text", {
-        property: "text.opacity",
-        to: 1,
-        dur: 500,
-        easing: "easeOutExpo",
-      });
     },
   
     onMouseLeave: function() {
       // TODO: Add so it goes back to normal after mouse leaves
-      this.infoText.setAttribute("animation", {
-        property: "material.opacity",
-        to: 0,
-        dur: 500,
-        easing: "easeOutExpo",
-      });
-  
-      this.infoText.setAttribute("animation__text", {
-        property: "text.opacity",
-        to: 0,
-        dur: 500,
-        easing: "easeOutExpo"
-      });
     },
   });
   

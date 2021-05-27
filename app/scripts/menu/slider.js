@@ -8,8 +8,6 @@ AFRAME.registerComponent("slider", {
     let el = this.el;
     let data = this.data;
 
-    el.setAttribute("class", "slider");
-
     // Dimensions
     this.barWidth = 1;
 
