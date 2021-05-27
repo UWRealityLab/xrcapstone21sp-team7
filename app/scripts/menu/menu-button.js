@@ -3,7 +3,7 @@
 AFRAME.registerComponent("menu-button", {
   schema: {
     title: { type: "string", default: "Title" },
-    info: { type: "string", default: "Info" },
+    info: { type: "string", default: "" },
     img: { type: "selector", default: "#meditation-img" },
     width: { type: "number", default: 1 },
   },
@@ -11,6 +11,9 @@ AFRAME.registerComponent("menu-button", {
   init: function () {
     let el = this.el;
     let data = this.data;
+
+    el.setAttribute("class", "option");
+    el.setAttribute("mixin", "frame");
 
     // add image and text
     let imageEl = document.createElement("a-entity");
