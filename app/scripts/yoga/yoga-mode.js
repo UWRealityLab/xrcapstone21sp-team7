@@ -95,11 +95,6 @@ AFRAME.registerComponent("yoga-mode", {
     this.el.sceneEl.addEventListener('yoga-control-pause-triggered', this.yogaPause);
     this.el.sceneEl.addEventListener('yoga-control-next-triggered', this.yogaNext);
 
-    // Debugging
-    this.el.addEventListener('z_press', this.yogaBack);
-    this.el.addEventListener('x_press', this.yogaPause);
-    this.el.addEventListener('c_press', this.yogaNext);
-
     document.querySelector("#yoga-instructor").setAttribute("visible", "true");
     this.yogaStart();
   },
@@ -116,7 +111,6 @@ AFRAME.registerComponent("yoga-mode", {
     console.log('starting yoga');
     this.inYogaMode = true;
     let timerEl = document.querySelector("#yoga-timer");
-    let instructorEl = document.querySelector("#yoga-instructor").components['animate-yoga-poses'];
 
     this.timerId = setInterval(this.countdown, 1000);
 

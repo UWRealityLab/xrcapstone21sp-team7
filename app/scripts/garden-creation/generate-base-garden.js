@@ -25,6 +25,9 @@ AFRAME.registerComponent("base-garden", {
     // console.log("sceneWidth: ", sceneWidth);
     // console.log("sceneDepth: ", sceneDepth);
 
+    this.raycasterIntersected = this.raycasterIntersected.bind(this);
+    this.raycasterIntersectedCleared = this.raycasterIntersectedCleared.bind(this);
+
     let cornerPositions = [
       new THREE.Vector3(-sceneWidth / 2, 0, -sceneDepth / 2),
       new THREE.Vector3(sceneWidth / 2, 0, -sceneDepth / 2),
@@ -49,6 +52,114 @@ AFRAME.registerComponent("base-garden", {
       wall.setAttribute("scale", "1.0006 0.6 1");
       wall.setAttribute("id", name);
       el.appendChild(wall);
+    }
+
+    function createYogaCorner(index, xoffset, yoffset, rotation) {
+      let corner = document.createElement("a-entity");
+      corner.setAttribute("gltf-model", "#corner-wall-asset");
+      corner.setAttribute("scale", "1 0.6 1.1");
+      corner.setAttribute(
+        "position",
+        el.object3D.worldToLocal(
+          new THREE.Vector3(
+            cornerPositions[0].x + xoffset,
+            0,
+            cornerPositions[0].z + index * WALL_SEG_WIDTH + CORNER_WALL_SEG_WIDTH + yoffset
+          )
+        )
+      );
+      corner.setAttribute(
+        "rotation",
+        el.object3D.worldToLocal(new THREE.Vector3(0, rotation, 0))
+      );
+      corner.setAttribute("shadow", "receive: true; cast: true");
+      el.appendChild(corner);
+    }
+
+    function generateYogaGarden(index) {
+        // gate, walls, and corners
+        // TODO: change hardcoded offsets for corners
+        createYogaCorner(index, 0, 1.8, 0);
+        createYogaCorner(index, -10, 1.8, 180);
+        createYogaCorner(index, 0, 8.2, 90);
+        createYogaCorner(index, -10, 8.2, 270);
+
+        createWall(
+          new THREE.Vector3(
+            cornerPositions[0].x - 5,
+            0,
+            cornerPositions[0].z + index * WALL_SEG_WIDTH + wallOffset - 3.25
+          ),
+          new THREE.Vector3(0, 0, 0),
+          "yoga-wall-left"
+        )
+        createWall(
+          new THREE.Vector3(
+            cornerPositions[0].x - 5,
+            0,
+            cornerPositions[0].z + index * WALL_SEG_WIDTH + wallOffset + 3.2
+          ),
+          new THREE.Vector3(0, 0, 0),
+          "yoga-wall-right"
+        )
+        // Custom scaling for back wall
+        let wall = document.createElement("a-entity");
+        wall.setAttribute("gltf-model", "#single-wall-asset");
+        wall.setAttribute("position", 
+        el.object3D.worldToLocal(new THREE.Vector3(
+          cornerPositions[0].x - 10,
+          0,
+          cornerPositions[0].z + index * WALL_SEG_WIDTH + wallOffset 
+        )));
+        wall.setAttribute("rotation", el.object3D.worldToLocal(new THREE.Vector3(0, 90, 0)));
+        wall.setAttribute("shadow", "receive: true; cast: true");
+        wall.setAttribute("scale", "0.75 0.6 1");
+        wall.setAttribute("id", "yoga-wall-back");
+        el.appendChild(wall);
+
+        // Add yoga area gate
+        let gate = document.createElement("a-entity");
+        gate.setAttribute("id", "yoga-gate");
+        gate.setAttribute("gltf-model", "#wall-gate");
+        gate.setAttribute(
+          "position",
+          el.object3D.worldToLocal(
+            new THREE.Vector3(
+              cornerPositions[0].x,
+              0,
+              cornerPositions[0].z + index * WALL_SEG_WIDTH + wallOffset
+            )
+          )
+        );
+        gate.setAttribute(
+          "rotation",
+          el.object3D.worldToLocal(new THREE.Vector3(0, 270, 0))
+        );
+        gate.setAttribute("scale", "0.6 0.6 1");
+        el.appendChild(gate);
+
+        // Add yoga floor
+        this.yogaPlane = document.createElement("a-plane");
+        this.yogaPlane.setAttribute("position", "-25 0 0");
+        this.yogaPlane.setAttribute("width", 14.75);
+        this.yogaPlane.setAttribute("height", 7.25);
+        this.yogaPlane.setAttribute("rotation", "-90 0 0");
+        this.yogaPlane.setAttribute("id", "floor");
+        this.yogaPlane.setAttribute("color", "green");
+        this.yogaPlane.setAttribute("class", "ground");
+        this.yogaPlane.setAttribute("roughness", "0.9");
+        this.yogaPlane.setAttribute("shadow", "receive: true; cast: false");
+
+        el.appendChild(this.yogaPlane);
+
+        this.yogaPlane.addEventListener(
+          "raycaster-intersected",
+          this.raycasterIntersected
+        );
+        this.yogaPlane.addEventListener(
+          "raycaster-intersected-cleared",
+          this.raycasterIntersectedCleared
+        );
     }
 
     // Add straight walls, 1 less to account for corners
@@ -79,21 +190,25 @@ AFRAME.registerComponent("base-garden", {
       );
     }
 
-    const middle = Math.floor(depthGap / WALL_SEG_WIDTH / 2);
+    const depthMiddle = Math.floor(depthGap / WALL_SEG_WIDTH / 2);
     for (let i = 0; i < depthGap / WALL_SEG_WIDTH; i++) {
-      // back
-      createWall(
-        new THREE.Vector3(
-          cornerPositions[0].x,
-          0,
-          cornerPositions[0].z + i * WALL_SEG_WIDTH + wallOffset
-        ),
-        new THREE.Vector3(0, 270, 0),
-        "wall" + i.toString() + "back"
-      );
+      // back and yoga area
+      if (i != depthMiddle) {
+        createWall(
+          new THREE.Vector3(
+            cornerPositions[0].x,
+            0,
+            cornerPositions[0].z + i * WALL_SEG_WIDTH + wallOffset
+          ),
+          new THREE.Vector3(0, 270, 0),
+          "wall" + i.toString() + "back"
+        );
+      } else {
+        generateYogaGarden(i);
+      }
 
       // front and entry building
-      if (i != middle) {
+      if (i != depthMiddle) {
         createWall(
           new THREE.Vector3(
             cornerPositions[2].x,
@@ -162,11 +277,11 @@ AFRAME.registerComponent("base-garden", {
 
     this.floorPlane.addEventListener(
       "raycaster-intersected",
-      this.raycasterIntersected.bind(this)
+      this.raycasterIntersected
     );
     this.floorPlane.addEventListener(
       "raycaster-intersected-cleared",
-      this.raycasterIntersectedCleared.bind(this)
+      this.raycasterIntersectedCleared
     );
 
     // If a predefined garden has been specified, load it in
@@ -239,6 +354,14 @@ AFRAME.registerComponent("base-garden", {
       this.raycasterIntersected
     );
     this.floorPlane.removeEventListener(
+      "raycaster-intersected-cleared",
+      this.raycasterIntersectedCleared
+    );
+    this.yogaPlane.removeEventListener(
+      "raycaster-intersected",
+      this.raycasterIntersected
+    );
+    this.yogaPlane.removeEventListener(
       "raycaster-intersected-cleared",
       this.raycasterIntersectedCleared
     );
