@@ -2,9 +2,9 @@ const CLOUDS_SCENE = "Head in the Clouds";
 const HOT_SPRINGS_SCENE = "Hot Spring Serenity";
 
 const SCENE_EVENTS = {
-  CLOUDS_SCENE: "cloud-meditation",
-  HOT_SPRINGS_SCENE: "moutain-meditation",
-}
+  "Head in the Clouds": "cloud-meditation",
+  "Hot Spring Serenity": "moutain-meditation",
+};
 
 AFRAME.registerComponent("menu-controls", {
   init: function () {
@@ -308,7 +308,7 @@ AFRAME.registerComponent("menu-controls", {
   onMountainMeditationButtonClicked: function() {
     this.el.sceneEl.emit("mountain-meditation-start");
 
-    this.currScene = HOT_SPRINGS_SCENE
+    this.currScene = HOT_SPRINGS_SCENE;
     this.changeDisplayMenu();
   },
 
@@ -408,7 +408,8 @@ AFRAME.registerComponent("menu-controls", {
    */
   onHomeButton: function() {
     if (this.currScene) {
-      this.el.sceneEl.emit(`${SCENE_EVENTS[this.currScene]}-end`);
+      const eventEnd = SCENE_EVENTS[this.currScene];
+      this.el.sceneEl.emit(`${eventEnd}-end`);
     }
 
     // Bring user back to the home building

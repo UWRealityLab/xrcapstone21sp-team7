@@ -1,0 +1,101 @@
+<!-- TODO update this name to be "index.html" and current index.html to be "zendin.html" -->
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+    <meta name="description" content="" />
+    <meta name="author" content="" />
+    <title>Zendin</title>
+    <link rel="icon" type="image/x-icon" href="../assets/favicon.ico" />
+    <!-- Font Awesome icons (free version)-->
+    <script src="https://use.fontawesome.com/releases/v5.15.3/js/all.js" crossorigin="anonymous"></script>
+    <!-- Google fonts-->
+    <link href="https://fonts.googleapis.com/css2?family=Varela+Round&amp;display=swap" rel="stylesheet" &gt;'
+        rel="stylesheet" type="text/css" />
+    <!-- Core theme CSS (includes Bootstrap)-->
+    <link href="css/styles.css" rel="stylesheet" />
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+</head>
+
+<body>
+    <header class="masthead" style="background-image: url('../assets/img/background-img.png')">
+        <div class="overlay"></div>
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8 col-md-10 mx-auto">
+                    <div class="site-heading">
+                        <h1>Your Zendin Awaits!</h1>
+                        <span class="subheading">
+                            Has your friend already created an existing garden? Join them by
+                            entering their room ID below. Otherwise, create a new room ID and enter it below.
+                            <br><br>
+                            <div class="row">
+                                <div class="col-lg-8 col-md-10 mx-auto">
+                                    <ul class="list-inline text-center">
+                                        <il class="list-inline-item">
+                                            <input id="join-room-text" type="text" placeholder="Room ID">
+                                            <button id="existing-button" class="bg-secondary" type="submit"
+                                                onclick="joinRoom(document.getElementById('join-room-text').value, document.getElementById('pre-made-garden'))"><i
+                                                    class="fa fa-search"></i></button>
+                                        </il>
+                                        <il class="list-inline-item">
+                                            <button type="button" class="bg-secondary"
+                                                onclick="createRoom()">Generate!</button>
+                                        </il>
+                                    </ul>
+                                </div>
+                            </div>
+                            Want to skip the hassle of creating a garden from scratch? Select a starter garden from the
+                            dropdown below (a room may have up to one pre-generated garden)!
+                            <br><br>
+                            <select id="gardenSelect" class="form-select" aria-label="Default select example">
+                                <option selected>Select a pre-generated garden</option>
+                                <option value="1">Cherry Blossoms</option>
+                                <option value="2">Flower Patch</option>
+                            </select>
+                            <br>
+                            <h2 id="room-id"></h2>
+                        </span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <script>
+        let selectedGarden = null;
+
+        $('#gardenSelect').change(function () {
+            var selectedText = $(this).find("option:selected").text();
+            selectedGarden = selectedText;
+        });
+
+        const characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+        function joinRoom(roomId) {
+            if (roomId.length == 0) {
+                return;
+            }
+            console.log(document.baseURI);
+            const url = new URL("zendin.html", document.baseURI);
+            const params = new URLSearchParams(url.search);
+            params.set("q", roomId);
+            params.set('preMadeGarden', selectedGarden);
+            // params.set("existingRoom", "true");
+            window.open(`${url.toString()}?${params.toString()}`, "_self");
+        }
+        function createRoom() {
+            // Generate 5 character long random name
+            id = "";
+            for (let characterIndex = 0; characterIndex < 10; characterIndex++) {
+                id += characters.charAt(Math.floor(Math.random() * characters.length));
+            }
+            document.getElementById("room-id").textContent = "Your new room ID is: " + id;
+            document.getElementById("join-room-text").value = id;
+        }
+    </script>
+</body>
+
+</html>
