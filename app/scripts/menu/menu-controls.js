@@ -3,7 +3,7 @@ const HOT_SPRINGS_SCENE = "Hot Spring Serenity";
 
 const SCENE_EVENTS = {
   "Head in the Clouds": "cloud-meditation",
-  "Hot Spring Serenity": "moutain-meditation",
+  "Hot Spring Serenity": "mountain-meditation",
 };
 
 AFRAME.registerComponent("menu-controls", {
