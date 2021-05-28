@@ -136,6 +136,7 @@ AFRAME.registerComponent("base-garden", {
           el.object3D.worldToLocal(new THREE.Vector3(0, 270, 0))
         );
         gate.setAttribute("scale", "0.65 0.6 1");
+        gate.setAttribute("shadow", "receive: true; cast: false");
         el.appendChild(gate);
 
         // Add yoga floor
