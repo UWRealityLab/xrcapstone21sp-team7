@@ -70,6 +70,8 @@ AFRAME.registerComponent("menu-controls", {
     this.onLightModeClicked = this.onLightModeClicked.bind(this);
 
     this.audioChanged = this.audioChanged.bind(this);
+    this.enterAudioHover = this.enterAudioHover.bind(this);
+    this.exitAudioHover = this.exitAudioHover.bind(this);
     this.onAudioShift = this.onAudioShift.bind(this);
     this.onDayLight = this.onDayLight.bind(this);
     this.onNightLight = this.onNightLight.bind(this);
@@ -114,6 +116,8 @@ AFRAME.registerComponent("menu-controls", {
     el.sceneEl.addEventListener("volume-slider-changed", this.onVolumeChanged);
     el.sceneEl.addEventListener("audio-button-clicked", this.onAudioMenuClicked);
     el.sceneEl.addEventListener("audio-changed", this.audioChanged);
+    el.sceneEl.addEventListener("enter-hover-audio", this.enterAudioHover);
+    el.sceneEl.addEventListener("exit-hover-audio", this.exitAudioHover);
     el.sceneEl.addEventListener("audio-menu-slider-changed", this.onAudioShift);
     el.sceneEl.addEventListener("home-button-changed", this.onHomeButton);
     el.sceneEl.addEventListener("play-pause-button-changed", this.onPlayPauseButton);
@@ -143,6 +147,7 @@ AFRAME.registerComponent("menu-controls", {
     this.changeCurrentMenu = this.changeCurrentMenu.bind(this);
     this.changeDisplayMenu = this.changeDisplayMenu.bind(this);
     this.startScript = this.startScript.bind(this);
+    this.helperSoundOn = this.helperSoundOn.bind(this);
   },
 
   /** 
@@ -528,6 +533,35 @@ AFRAME.registerComponent("menu-controls", {
     this.changeDisplayMenu();
   },
 
+  enterAudioHover: function (evt) {
+    if (!this.scriptPlaying) {
+      //clearTimeout(this.helperSoundOn);
+      let hover = document.querySelector("#hover-audio");
+      hover.setAttribute("sound", "src", "#" + evt.detail.audio_id);
+
+      document.querySelector("#sky").components.sound.pauseSound();
+      //setTimeout( function() { hover.components.sound.playSound(); }, 300);
+      this.helperSoundOn(hover);
+      
+    }
+  },
+
+  exitAudioHover: function (evt) {
+    if (!this.scriptPlaying) {
+      //clearTimeout(this.helperSoundOn);
+      let hover = document.querySelector("#hover-audio");
+      console.log("TEST: " + "#" + evt.detail.id);
+      hover.components.sound.stopSound();
+
+      //setTimeout( function() { document.querySelector("#sky").components.sound.playSound(); }, 300);
+      this.helperSoundOn(document.querySelector("#sky"));
+    }
+  },
+
+  helperSoundOn: function (element) {
+    element.components.sound.playSound();
+  },
+
   onDayLight: function () {
     this.currLight = 2.5;
     this.el.emit("endMeditation", { song: this.currSong, light: this.currLight });
@@ -676,6 +710,8 @@ AFRAME.registerComponent("menu-controls", {
     el.sceneEl.removeEventListener("volume-slider-changed",this.onVolumeChanged);
     el.sceneEl.removeEventListener("audio-button-clicked", this.onAudioMenuClicked);
     el.sceneEl.removeEventListener("audio-changed", this.audioChanged);
+    el.sceneEl.removeEventListener("enter-hover-audio", this.enterAudioHover);
+    el.sceneEl.removeEventListener("exit-hover-audio", this.exitAudioHover);
     el.sceneEl.removeEventListener("audio-menu-slider-changed", this.onAudioShift);
     el.sceneEl.removeEventListener("home-button-changed", this.onHomeButton);
     el.sceneEl.removeEventListener("play-pause-button-changed", this.onPlayPauseButton);

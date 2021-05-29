@@ -52,7 +52,7 @@ AFRAME.registerComponent("audio-button", {
     },
   
     onMouseEnter: function() {
-      // TODO: Add so it pops out a bit
+      // Display the info text
       this.infoText.setAttribute("animation", {
         property: "material.opacity",
         to: 0.9,
@@ -66,10 +66,19 @@ AFRAME.registerComponent("audio-button", {
         dur: 500,
         easing: "easeOutExpo",
       });
+
+      this.el.sceneEl.emit(`enter-hover-audio`, {audio_id: `${this.el.id}-audio`, id: this.el.id});
+
+      // get the "hover-audio"
+      /*let hover = document.querySelector("#hover-audio");
+      hover.setAttribute("sound", "src", `#${this.el.id}-audio`);
+      
+      document.querySelector("#sky").components.sound.pauseSound();*/
+
     },
   
     onMouseLeave: function() {
-      // TODO: Add so it goes back to normal after mouse leaves
+      // Display the info text
       this.infoText.setAttribute("animation", {
         property: "material.opacity",
         to: 0,
@@ -83,6 +92,9 @@ AFRAME.registerComponent("audio-button", {
         dur: 500,
         easing: "easeOutExpo"
       });
+
+      this.el.sceneEl.emit(`exit-hover-audio`, {id: this.el.id});
     },
+
   });
   
