@@ -13,12 +13,14 @@ AFRAME.registerComponent("yoga-mode", {
     this.yogaBack = this.yogaBack.bind(this);
     this.yogaPause = this.yogaPause.bind(this);
     this.yogaNext = this.yogaNext.bind(this);
+    this.yogaReplay = this.yogaReplay.bind(this);
 
     this.el.sceneEl.addEventListener('menu-item-deselected', this.stopYogaMode);
     this.el.sceneEl.addEventListener('yogaStart', this.yogaStart);
     this.el.sceneEl.addEventListener('yoga-control-back-triggered', this.yogaBack);
     this.el.sceneEl.addEventListener('yoga-control-pause-triggered', this.yogaPause);
     this.el.sceneEl.addEventListener('yoga-control-next-triggered', this.yogaNext);
+    this.el.sceneEl.addEventListener('replay-yoga', this.yogaReplay);
 
     /* for debugging*/
     document.querySelector("#yoga-instructor").setAttribute("visible", "true");
@@ -34,10 +36,10 @@ AFRAME.registerComponent("yoga-mode", {
     this.el.sceneEl.removeEventListener('yoga-control-back-triggered', this.yogaBack);
     this.el.sceneEl.removeEventListener('yoga-control-pause-triggered', this.yogaPause);
     this.el.sceneEl.removeEventListener('yoga-control-next-triggered', this.yogaNext);
+    this.el.sceneEl.removeEventListener('replay-yoga', this.yogaReplay);
   },
 
   yogaStart: function(evt) {
-    console.log(evt.detail.script);
     this.inYogaMode = true;
     this.loopCount = 0;
 
@@ -45,7 +47,8 @@ AFRAME.registerComponent("yoga-mode", {
     this.timerId = setInterval(this.countdown, 1000);
 
     // Select which animation and time array gets used
-    switch (evt.detail.script) {
+    this.currScript = evt.detail.script;
+    switch (this.currScript) {
       case "morning-yoga":
         this.animArray = MORNING_YOGA_ANIM_ARRAY;
         this.timeArray = MORNING_YOGA_TIME_ARRAY;
@@ -109,8 +112,18 @@ AFRAME.registerComponent("yoga-mode", {
     }
   },
 
+  yogaReplay: function() {
+    if (this.inYogaMode) {
+      this.stopYogaMode();
+      let detail = {
+        script: this.currScript
+      };
+      this.yogaStart(detail);
+    }
+  },
+
   // Recursively goes through images and timers until done
-  imageLoop : function() {
+  imageLoop: function() {
     // Add earlier timeout to transition animation back to neutral, so it transitions to next pose as next audio clip plays
     this.animationTimeout = setTimeout(this.animateTo(this.loopCount, this.loopCount + 1),
                                        this.timeArray[this.loopCount] - (this.animationDelay / 2));

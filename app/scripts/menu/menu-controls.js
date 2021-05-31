@@ -88,6 +88,8 @@ AFRAME.registerComponent("menu-controls", {
     this.onCloudMeditationButtonClicked = this.onCloudMeditationButtonClicked.bind(this);
     this.onMountainMeditationButtonClicked = this.onMountainMeditationButtonClicked.bind(this);
     this.onMorningYogaButtonClicked = this.onMorningYogaButtonClicked.bind(this);
+    this.onQuickYogaButtonClicked = this.onQuickYogaButtonClicked.bind(this);
+    this.onPlankYogaButtonClicked = this.onPlankYogaButtonClicked.bind(this);
 
     // Breathing Audio
     this.onBreathAudio1 = this.onBreathAudio1.bind(this);
@@ -111,6 +113,8 @@ AFRAME.registerComponent("menu-controls", {
     el.sceneEl.addEventListener("cloud-meditation-button-clicked", this.onCloudMeditationButtonClicked);
     el.sceneEl.addEventListener("mountain-meditation-button-clicked", this.onMountainMeditationButtonClicked);
     el.sceneEl.addEventListener("morning-yoga-button-clicked", this.onMorningYogaButtonClicked);
+    el.sceneEl.addEventListener("quick-yoga-button-clicked", this.onQuickYogaButtonClicked);
+    el.sceneEl.addEventListener("plank-yoga-button-clicked", this.onPlankYogaButtonClicked);
     el.sceneEl.addEventListener("volume-slider-changed", this.onVolumeChanged);
     el.sceneEl.addEventListener("audio-button-clicked", this.onAudioMenuClicked);
     el.sceneEl.addEventListener("audio-changed", this.audioChanged);
@@ -336,6 +340,40 @@ AFRAME.registerComponent("menu-controls", {
     this.changeDisplayMenu();
   },
 
+  onQuickYogaButtonClicked: function () {
+    this.yogaOn = true;
+    let detail = {
+      script: "quick-yoga"
+    };
+    this.el.sceneEl.emit("yogaStart", detail);
+
+    // set yoga-script entity to the current script
+    this.currMeditationScript = document.querySelector("#sky").querySelector("#yoga-script");
+    
+    // stop the background music
+    document.querySelector("#sky").components.sound.stopSound();
+
+    this.currScript = "Quick Yoga";
+    this.changeDisplayMenu();
+  },
+
+  onPlankYogaButtonClicked: function () {
+    this.yogaOn = true;
+    let detail = {
+      script: "plank-yoga"
+    };
+    this.el.sceneEl.emit("yogaStart", detail);
+
+    // set yoga-script entity to the current script
+    this.currMeditationScript = document.querySelector("#sky").querySelector("#yoga-script");
+    
+    // stop the background music
+    document.querySelector("#sky").components.sound.stopSound();
+
+    this.currScript = "Planking Yoga";
+    this.changeDisplayMenu();
+  },
+
   onVolumeChanged: function (evt) {
     let sky = document.querySelector("#sky");
     let attr = sky.getAttribute("sound");
@@ -493,7 +531,7 @@ AFRAME.registerComponent("menu-controls", {
       // change play button to pause
       document.querySelector("#play-pause-button").setAttribute("material", "src", "#pause-icon");
       // do same for yoga
-      //this.el.emit("replay-yoga");
+      this.el.emit("replay-yoga");
     }
 
   },
