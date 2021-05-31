@@ -84,6 +84,7 @@
       fog="type: exponential; density: 0.008; far: 100; near: 10; color: #eeeeee"
       animation__lighten_fog="property: fog.color; to: #eeeeee; dur: 2000; startEvents: endMeditation"
       animation__darken_fog="property: fog.color; to: #222222; dur: 2000; startEvents: startMeditation"
+      stats
     >
         <!-- Load in assets -->
         <a-assets timeout="20000">
@@ -94,9 +95,10 @@
             <a-asset-item id="mountains" src="../assets/glb/mountain-range.glb"></a-asset-item>
             <a-asset-item id="env_arrow" src="../assets/obj/env_arrow.obj"></a-asset-item>
 
-            <a-asset-item id="entry-building" src="../assets/glb/entry-building.glb"></a-asset-item>
-            <a-asset-item id="corner-wall-asset" src="../assets/glb/corner-wall.glb"></a-asset-item>
-            <a-asset-item id="single-wall-asset" src="../assets/glb/large-wall.glb"></a-asset-item>
+            <!-- <a-asset-item id="entry-building" src="../assets/glb/entry-building.glb"></a-asset-item> -->
+            <!-- <a-asset-item id="corner-wall-asset" src="../assets/glb/corner-wall.glb"></a-asset-item> -->
+            <!-- <a-asset-item id="single-wall-asset" src="../assets/glb/large-wall.glb"></a-asset-item> -->
+            <a-asset-item id="garden-walls" src="../assets/glb/garden-walls.glb"></a-asset-item>
             <a-asset-item id="wall-gate" src="../assets/glb/wall-gate.glb"></a-asset-item>
             <!-- cloud-meditation -->
             <a-asset-item id="walkable-cloud" src="../assets/glb/walkable-cloud.glb"></a-asset-item>
@@ -518,14 +520,14 @@
         </a-assets>
       
         <!-- yoga stuff -->
-        <a-box id="yoga-mat" height="0.1" width="1" depth="2" position="-27 0 0" rotation="0 90 0" color="#DB7093"></a-box>
+        <a-box id="yoga-mat" height="0.1" width="1" depth="2" position="-32.68 0 0" rotation="0 90 0" color="#DB7093"></a-box>
 
-        <a-cylinder radius="0.5" height="0.1" position="-30.75 2.5 0" rotation="90 0 90" color="#455A64">
+        <a-cylinder radius="0.5" height="0.1" position="-37.2 2.5 0" rotation="90 0 90" color="#455A64">
           <a-entity id="yoga-timer" position="0 -0.075 0" scale="10 10 10" rotation="90 180 0" visible="false"
           text="color: white; align: center; value: 0;"></a-entity>
         </a-cylinder> 
 
-        <a-entity id="yoga-instructor" position="-30 0 0" rotation="0 90 0" scale="1 1 1" animate-yoga-poses></a-entity>
+        <a-entity id="yoga-instructor" position="-36.47 0 0" rotation="0 90 0" scale="1 1 1" animate-yoga-poses></a-entity>
 
 
         <!-- yoga menu, currently not working with animations
@@ -670,7 +672,7 @@
         </a-entity>
 
 
-        <a-entity id="camRig" position="25 2 0" rotation="0 90 0">
+        <a-entity id="camRig" position="31.75 2 0" rotation="0 90 0">
           <a-camera
             id="cam"
             wasd-controls-enabled="true"  
