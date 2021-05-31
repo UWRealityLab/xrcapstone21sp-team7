@@ -87,7 +87,7 @@ AFRAME.registerComponent("menu-controls", {
 
     this.onCloudMeditationButtonClicked = this.onCloudMeditationButtonClicked.bind(this);
     this.onMountainMeditationButtonClicked = this.onMountainMeditationButtonClicked.bind(this);
-    this.onGuidedYogaButtonClicked = this.onGuidedYogaButtonClicked.bind(this);
+    this.onMorningYogaButtonClicked = this.onMorningYogaButtonClicked.bind(this);
 
     // Breathing Audio
     this.onBreathAudio1 = this.onBreathAudio1.bind(this);
@@ -110,7 +110,7 @@ AFRAME.registerComponent("menu-controls", {
     el.sceneEl.addEventListener("breathing-exercise-button-clicked", this.onBreathingExerciseButtonClicked);
     el.sceneEl.addEventListener("cloud-meditation-button-clicked", this.onCloudMeditationButtonClicked);
     el.sceneEl.addEventListener("mountain-meditation-button-clicked", this.onMountainMeditationButtonClicked);
-    el.sceneEl.addEventListener("guided-yoga-button-clicked", this.onGuidedYogaButtonClicked);
+    el.sceneEl.addEventListener("morning-yoga-button-clicked", this.onMorningYogaButtonClicked);
     el.sceneEl.addEventListener("volume-slider-changed", this.onVolumeChanged);
     el.sceneEl.addEventListener("audio-button-clicked", this.onAudioMenuClicked);
     el.sceneEl.addEventListener("audio-changed", this.audioChanged);
@@ -319,9 +319,12 @@ AFRAME.registerComponent("menu-controls", {
     this.changeCurrentMenu("#yoga-menu");
   },
 
-  onGuidedYogaButtonClicked: function () {
+  onMorningYogaButtonClicked: function () {
     this.yogaOn = true;
-    this.el.sceneEl.emit("yogaStart");
+    let detail = {
+      script: "morning-yoga"
+    };
+    this.el.sceneEl.emit("yogaStart", detail);
 
     // set yoga-script entity to the current script
     this.currMeditationScript = document.querySelector("#sky").querySelector("#yoga-script");
@@ -329,7 +332,7 @@ AFRAME.registerComponent("menu-controls", {
     // stop the background music
     document.querySelector("#sky").components.sound.stopSound();
 
-    this.currScript = "Guided Yoga";
+    this.currScript = "Morning Yoga";
     this.changeDisplayMenu();
   },
 
