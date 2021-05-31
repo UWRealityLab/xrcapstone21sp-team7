@@ -282,7 +282,7 @@ AFRAME.registerComponent("menu-controls", {
     if (this.currMeditationScript) {
       this.currMeditationScript.components.sound.stopSound();
     }
-    this.breathSong.components.sound.stopSound();
+    this.breathingSong.components.sound.stopSound();
 
     let sky = document.querySelector("#sky");
     let script = sky.querySelector("#breathing-meditation-3");
@@ -464,6 +464,7 @@ AFRAME.registerComponent("menu-controls", {
     if (this.currScript) {
       this.currMeditationScript.components.sound.stopSound();
       if (this.breathingOn) {
+        console.log("WORKING");
         this.el.emit("breath-capture-end");
       }
       
