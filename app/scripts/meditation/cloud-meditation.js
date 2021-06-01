@@ -1,6 +1,6 @@
-const DX = 15;
-const DY = 5;
-const DZ = 14;
+// const DX = 15;
+// const DY = 5;
+// const DZ = 14;
 
 AFRAME.registerComponent("cloud-meditation", {
   init: function () {
@@ -13,20 +13,12 @@ AFRAME.registerComponent("cloud-meditation", {
 
     // Create Clouds
     let position = {
-      x: -30,
-      y: DY,
-      z: 0,
+      x: -33,
+      y: 2,
+      z: -16,
     };
-    for (let i = 0; i < 3; i++) {
-      this.generateCloud(position);
-      position.z -= DZ;
-      position.y += 2;
-    }
-    for (let i = 0; i < 3; i++) {
-      this.generateCloud(position);
-      position.x += DX;
-      position.y += DY;
-    }
+
+    this.generateCloud(position);
 
     // Event listeners
     this.el.sceneEl.addEventListener("cloud-meditation-start", this.onCloudMeditationStart);
@@ -36,27 +28,19 @@ AFRAME.registerComponent("cloud-meditation", {
   generateCloud: function (position) {
     let cloud = document.createElement("a-entity");
     cloud.setAttribute("visible", false);
-    cloud.setAttribute("class", "cloud");
+    cloud.setAttribute("class", "cloud walkable");
     cloud.setAttribute("gltf-model", "#walkable-cloud");
     cloud.setAttribute("scale", "3 2.8 3");
     cloud.setAttribute("position", position);
-    // Need this surface to teleport to
-    let surface = document.createElement("a-plane");
-    surface.setAttribute("class", "walkable");
-    surface.setAttribute("visible", "false");
-    surface.setAttribute("rotation", "-90 0 0");
-    surface.setAttribute("position", "0.05 0 -0.26");
-    surface.setAttribute("scale", "3.77 3.39 1");
-    cloud.appendChild(surface);
     this.el.appendChild(cloud);
   },
 
   onCloudMeditationStart: function () {
     this.meditating = true;
-    this.el.querySelectorAll(".cloud").forEach((cloud) => {
+    this.el.querySelectorAll(".cloud")?.forEach((cloud) => {
       cloud.setAttribute(
         "animation",
-        "property: scale; to: 3.2 3 3.2; dur: 6000; loop: true; dir: alternate;"
+        "property: scale; to: 3.05 2.85 3.05; dur: 6000; loop: true; dir: alternate;"
       );
       cloud.setAttribute("visible", true);
     });
@@ -64,11 +48,10 @@ AFRAME.registerComponent("cloud-meditation", {
 
   onCloudMeditationEnd: function () {
     if (this.meditating) {
-      this.el.querySelectorAll(".cloud").forEach(cloud => {
+      this.el.querySelectorAll(".cloud")?.forEach(cloud => {
         cloud.setAttribute("visible", "false");
         cloud.removeAttribute("animation");
       });
-
       this.meditating = false;
     }
   },
