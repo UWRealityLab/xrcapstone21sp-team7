@@ -13,7 +13,7 @@ AFRAME.registerComponent("cloud-meditation", {
 
     // Create Clouds
     let position = {
-      x: -33,
+      x: -36,
       y: 2,
       z: -16,
     };
