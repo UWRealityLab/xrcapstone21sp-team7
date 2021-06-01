@@ -46,7 +46,7 @@ AFRAME.registerComponent('meditation-ring', {
     let displacement = evt.detail;
     console.log('displacement...', displacement);
     // scale change magnitude is inversely proportional to displacement
-    this.scaleChangeMagnitude = 200 / displacement;
+    this.scaleChangeMagnitude = 300 / displacement;
   },
 
   onMeditationEnd: function() {
@@ -77,19 +77,9 @@ AFRAME.registerComponent('meditation-ring', {
     }
   },
 
-  onBreathIn : function(evt) {
-    let el = this.el;
+  onBreathIn : function() {},
 
-    let colorAnimation = 'property: material.color; type: color; to: #00ff00; dur: 5000';
-    el.setAttribute('animation__color', colorAnimation);
-  },
-
-  onBreathOut : function(evt) {
-    let el = this.el;
-
-    let colorAnimation = 'property: material.color; type: color; to: #ff0000; dur: 5000';
-    el.setAttribute('animation__color', colorAnimation);
-  },
+  onBreathOut : function() {},
 
   remove: function () {
     let el = this.el;

@@ -1,7 +1,7 @@
 AFRAME.registerComponent('meditation-ring-automated', {
   schema: {
     breathCaptureId: { type: 'string' },
-    meditationBreathAcceptableThreshold: { type: 'number', default: 1000 },
+    meditationBreathAcceptableThreshold: { type: 'number', default: 2500 },
     meditationBreathInOutHoldTime: { type: 'number', default: 5000 }
   },
 
@@ -74,6 +74,7 @@ AFRAME.registerComponent('meditation-ring-automated', {
 
   onHoldingBreathInComplete: function(evt) {
     this.log('holding breath in time ', evt.detail);
+    this.onBreathChangeHelper(evt);
   },
 
   onHoldingBreathOutComplete: function(evt) {
@@ -102,8 +103,8 @@ AFRAME.registerComponent('meditation-ring-automated', {
       params.color = '#ff0000';
     } else if (evt.detail > this.data.meditationBreathInOutHoldTime + this.data.meditationBreathAcceptableThreshold) {
       this.log('too long outwards breath');
-      params.value = 'Too Deep!';
-      params.color = '#ff0000';
+      params.value = 'Great!';  // OK if you are breathing too deep, probably a sw bug if this state is entered :(
+      params.color = '#00ff00';
     } else {
       params.value = 'Great!';
       params.color = '#00ff00';
@@ -142,6 +143,7 @@ AFRAME.registerComponent('meditation-ring-automated', {
     let colorAnimation = 'property: material.color; type: color; from: #ff0000; to: #00ff00; dur: 4999';
     el.setAttribute('animation__scale', scaleAnimation);
     el.setAttribute('animation__color', colorAnimation);
+    document.getElementById('meditation-ring').setAttribute('animation__color', colorAnimation);
 
     this.loopCount = 0;
     this.loopTimer = new RecurringTimer(this.onLoopTimeout, this.data.meditationBreathInOutHoldTime);
@@ -164,12 +166,14 @@ AFRAME.registerComponent('meditation-ring-automated', {
     let el = this.el;
     this.loopCount++;
     this.loopCount %= 3;
+    let meditationRingManual = document.getElementById('meditation-ring');
     if (this.loopCount == 0) {
       document.getElementById('breath-meditation-text').setAttribute('text', 'value', 'Breath In');
       let scaleAnimation = 'property: scale; from: 1 1 1; to: 6 6 6; dur: 4999';
       let colorAnimation = 'property: material.color; type: color; from: #ff0000; to: #00ff00; dur: 4999';
       el.setAttribute('animation__scale', scaleAnimation);
       el.setAttribute('animation__color', colorAnimation);
+      meditationRingManual.setAttribute('animation__color', colorAnimation);
     } else if (this.loopCount == 1) {
       document.getElementById('breath-meditation-text').setAttribute('text', 'value', 'Hold Breath');
     } else {
@@ -178,6 +182,7 @@ AFRAME.registerComponent('meditation-ring-automated', {
       let colorAnimation = 'property: material.color; type: color; from: #00ff00; to: #ff0000; dur: 4999';
       el.setAttribute('animation__scale', scaleAnimation);
       el.setAttribute('animation__color', colorAnimation);
+      meditationRingManual.setAttribute('animation__color', colorAnimation);
     }
   },
 

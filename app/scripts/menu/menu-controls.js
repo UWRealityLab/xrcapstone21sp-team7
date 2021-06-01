@@ -286,7 +286,10 @@ AFRAME.registerComponent("menu-controls", {
     if (this.currMeditationScript) {
       this.currMeditationScript.components.sound.stopSound();
     }
-    this.breathingSong.components.sound.stopSound();
+
+    if (this.breathSong) {
+      this.breathingSong.components.sound.stopSound();
+    }
 
     let sky = document.querySelector("#sky");
     let script = sky.querySelector("#breathing-meditation-3");
