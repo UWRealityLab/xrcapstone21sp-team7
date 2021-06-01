@@ -1,6 +1,7 @@
 [
   {
     "name": "Cherry Blossoms",
+    "model": "../assets/glb/cherry-blossom-premade-garden.glb",
     "data": [
       {
         "position": "7.043934151544951 0 0.22365943570943542",
