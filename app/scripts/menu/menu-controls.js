@@ -90,6 +90,7 @@ AFRAME.registerComponent("menu-controls", {
     this.onMorningYogaButtonClicked = this.onMorningYogaButtonClicked.bind(this);
     this.onQuickYogaButtonClicked = this.onQuickYogaButtonClicked.bind(this);
     this.onPlankYogaButtonClicked = this.onPlankYogaButtonClicked.bind(this);
+    this.onYogaEnded = this.onYogaEnded.bind(this);
 
     // Breathing Audio
     this.onBreathAudio1 = this.onBreathAudio1.bind(this);
@@ -115,6 +116,7 @@ AFRAME.registerComponent("menu-controls", {
     el.sceneEl.addEventListener("morning-yoga-button-clicked", this.onMorningYogaButtonClicked);
     el.sceneEl.addEventListener("quick-yoga-button-clicked", this.onQuickYogaButtonClicked);
     el.sceneEl.addEventListener("plank-yoga-button-clicked", this.onPlankYogaButtonClicked);
+    el.sceneEl.addEventListener("yoga-ended", this.onYogaEnded);
     el.sceneEl.addEventListener("volume-slider-changed", this.onVolumeChanged);
     el.sceneEl.addEventListener("audio-button-clicked", this.onAudioMenuClicked);
     el.sceneEl.addEventListener("audio-changed", this.audioChanged);
@@ -326,11 +328,17 @@ AFRAME.registerComponent("menu-controls", {
     this.changeCurrentMenu("#yoga-menu");
   },
 
+  onYogaEnded: function () {
+    this.yogaOn = false;
+  },
+
   onMorningYogaButtonClicked: function () {
     this.yogaOn = true;
+    this.scriptPlaying = true;
     let detail = {
       script: "morning-yoga"
     };
+    this.el.sceneEl.emit("yogaEnd");
     this.el.sceneEl.emit("yogaStart", detail);
 
     // set yoga-script entity to the current script
@@ -345,9 +353,11 @@ AFRAME.registerComponent("menu-controls", {
 
   onQuickYogaButtonClicked: function () {
     this.yogaOn = true;
+    this.scriptPlaying = true;
     let detail = {
       script: "quick-yoga"
     };
+    this.el.sceneEl.emit("yogaEnd");
     this.el.sceneEl.emit("yogaStart", detail);
 
     // set yoga-script entity to the current script
@@ -362,9 +372,11 @@ AFRAME.registerComponent("menu-controls", {
 
   onPlankYogaButtonClicked: function () {
     this.yogaOn = true;
+    this.scriptPlaying = true;
     let detail = {
       script: "plank-yoga"
     };
+    this.el.sceneEl.emit("yogaEnd");
     this.el.sceneEl.emit("yogaStart", detail);
 
     // set yoga-script entity to the current script
@@ -471,6 +483,12 @@ AFRAME.registerComponent("menu-controls", {
       return;
     }
     const button = document.querySelector("#play-pause-button");
+
+    /* For yoga
+    if (this.yogaOn) {
+      this.el.emit('yoga-control-pause-triggered');
+    }
+    */
     
     // Pause script
     if (this.scriptPlaying) {
@@ -510,6 +528,10 @@ AFRAME.registerComponent("menu-controls", {
       if (this.breathingOn) {
         console.log("WORKING");
         this.el.emit("breath-capture-end");
+        this.breathingOn = false;
+      } else if (this.yogaOn) {
+        this.el.emit("yogaEnd");
+        this.yogaOn = false;
       }
       
       this.onBackgroundMusic();
@@ -571,7 +593,7 @@ AFRAME.registerComponent("menu-controls", {
 
     this.log("audio id: " + audio_id);
 
-    if (this.scriptPlaying == true) {
+    if (this.scriptPlaying) {
       sky.setAttribute("sound", 'autoplay', false);
     }
     sky.setAttribute("sound", 'src', `#${audio_id}`);
@@ -728,6 +750,9 @@ AFRAME.registerComponent("menu-controls", {
     el.sceneEl.removeEventListener("story-telling-button-clicked", this.onStoryMeditationClicked);
     el.sceneEl.removeEventListener("confidence-booster-button-clicked", this.onConfidenceBoosterClicked);
     el.sceneEl.removeEventListener("breathing-exercise-button-clicked", this.onBreathingExerciseButtonClicked);
+    el.sceneEl.removeEventListener("morning-yoga-button-clicked", this.onMorningYogaButtonClicked);
+    el.sceneEl.removeEventListener("quick-yoga-button-clicked", this.onQuickYogaButtonClicked);
+    el.sceneEl.removeEventListener("plank-yoga-button-clicked", this.onPlankYogaButtonClicked);
     el.sceneEl.removeEventListener("volume-slider-changed",this.onVolumeChanged);
     el.sceneEl.removeEventListener("audio-button-clicked", this.onAudioMenuClicked);
     el.sceneEl.removeEventListener("audio-changed", this.audioChanged);
@@ -741,6 +766,7 @@ AFRAME.registerComponent("menu-controls", {
     el.sceneEl.removeEventListener("breath-capture-end", this.onBreathAudio3);
     el.sceneEl.removeEventListener("Day-clicked", this.onDayLight);
     el.sceneEl.removeEventListener("Night-clicked", this.onNightLight);
+    el.sceneEl.removeEventListener("yoga-ended", this.onYogaEnded);
 
     document.querySelector("#sky").querySelector("#meditation-1").removeEventListener("sound-ended", this.onBackgroundMusic);
     document.querySelector("#sky").querySelector("#rain").removeEventListener("sound-ended", this.onBackgroundMusic);

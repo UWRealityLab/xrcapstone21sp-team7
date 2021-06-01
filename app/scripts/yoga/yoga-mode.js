@@ -15,7 +15,7 @@ AFRAME.registerComponent("yoga-mode", {
     this.yogaNext = this.yogaNext.bind(this);
     this.yogaReplay = this.yogaReplay.bind(this);
 
-    this.el.sceneEl.addEventListener('menu-item-deselected', this.stopYogaMode);
+    this.el.sceneEl.addEventListener('yogaEnd', this.stopYogaMode);
     this.el.sceneEl.addEventListener('yogaStart', this.yogaStart);
     this.el.sceneEl.addEventListener('yoga-control-back-triggered', this.yogaBack);
     this.el.sceneEl.addEventListener('yoga-control-pause-triggered', this.yogaPause);
@@ -32,7 +32,7 @@ AFRAME.registerComponent("yoga-mode", {
   },
 
   remove: function() {
-    this.el.sceneEl.removeEventListener('menu-item-deselected', this.stopYogaMode);
+    this.el.sceneEl.removeEventListener('yogaEnd', this.stopYogaMode);
     this.el.sceneEl.removeEventListener("yogaStart", this.yogaStart);
     this.el.sceneEl.removeEventListener('yoga-control-back-triggered', this.yogaBack);
     this.el.sceneEl.removeEventListener('yoga-control-pause-triggered', this.yogaPause);
@@ -196,14 +196,13 @@ AFRAME.registerComponent("yoga-mode", {
   yogaPause: function() {
     if (this.paused) {
       // Resume timeouts with saved timer, and change icon to pause
-      setTimeout(this.onImageLoopTimeout, this.timer);
-      setTimeout(this.animateTo(this.loopCount, this.loopCount + 1), 
+      this.imageLoopTimeout = setTimeout(this.onImageLoopTimeout, this.timer);
+      this.animationTimeout = setTimeout(this.animateTo(this.loopCount, this.loopCount + 1), 
                                 Math.max(this.timer - (this.animationDelay / 2), 0));
       this.timerId = setInterval(this.countdown, 1000);
 
       this.el.querySelector("#yoga-script").components.sound.playSound();
-      document.getElementById("yoga-control-pause-img")
-              .setAttribute("src", "#yoga-pause");
+      // document.getElementById("yoga-control-pause-img").setAttribute("src", "#yoga-pause");
     } else {
       // Clear current intervals and sound, and change icon to play
       clearInterval(this.imageLoopTimeout);
@@ -211,9 +210,9 @@ AFRAME.registerComponent("yoga-mode", {
       clearInterval(this.timerId);
 
       this.el.querySelector("#yoga-script").components.sound.pauseSound();
-      document.getElementById("yoga-control-pause-img")
-              .setAttribute("src", "#yoga-play");
+      // document.getElementById("yoga-control-pause-img").setAttribute("src", "#yoga-play");
     }
+    console.log("paused toggle");
     this.paused = !this.paused;
   },
 
