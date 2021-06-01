@@ -284,7 +284,7 @@ AFRAME.registerComponent("menu-controls", {
     }
 
     if (this.breathSong) {
-      this.breathSong.components.sound.stopSound();
+      this.breathingSong.components.sound.stopSound();
     }
 
     let sky = document.querySelector("#sky");
@@ -403,6 +403,9 @@ AFRAME.registerComponent("menu-controls", {
 
     this.currScript = scriptName;
     this.changeDisplayMenu();
+
+    // change play button to pause
+    document.querySelector("#play-pause-button").setAttribute("material", "src", "#pause-icon");
   },
 
   /**
@@ -461,18 +464,23 @@ AFRAME.registerComponent("menu-controls", {
 
   onStopButton: function () {
     // Stop the current script
-    if (this.currScript && this.scriptPlaying) {
+    if (this.currScript) {
       this.currMeditationScript.components.sound.stopSound();
       if (this.breathingOn) {
+        console.log("WORKING");
         this.el.emit("breath-capture-end");
       }
       
       this.onBackgroundMusic();
+
+      // change pause button to play
+      document.querySelector("#play-pause-button").setAttribute("material", "src", "#play-icon");
     }
   },
 
   onReplayButton: function () {
-    if (this.currMeditationScript) {
+    if (this.currScript) {
+      document.querySelector("#sky").components.sound.stopSound();
       this.currMeditationScript.components.sound.stopSound();
       this.currMeditationScript.components.sound.playSound();
 
@@ -482,6 +490,8 @@ AFRAME.registerComponent("menu-controls", {
         }
         this.el.emit("pause-breathing", detail);
       }
+      // change play button to pause
+      document.querySelector("#play-pause-button").setAttribute("material", "src", "#pause-icon");
       // do same for yoga
       //this.el.emit("replay-yoga");
     }
@@ -656,6 +666,7 @@ AFRAME.registerComponent("menu-controls", {
   onBackgroundMusic: function () {
     this.scriptPlaying = false;
     this.currScript = "";
+    this.changeDisplayMenu();
     document.querySelector("#sky").components.sound.playSound();
   },
 
