@@ -308,13 +308,15 @@ AFRAME.registerComponent("base-garden", {
         }
 
         let gardenJsonData = null;
+        let model = null;
         jsonArray.forEach(element => {
           if (element.name == preMadeGarden) {
             gardenJsonData = element.data
+            model = element.model;
           }
         });
 
-        if (!gardenJsonData) {
+        if (!model && !gardenJsonData) {
           return false;
         }
 
@@ -331,19 +333,27 @@ AFRAME.registerComponent("base-garden", {
           let newEl = document.createElement('a-box');
           newEl.setAttribute('id', 'preloaded-garden');
           newEl.setAttribute('croquet', 'name=preloaded-garden');
-          newEl.setAttribute('class', 'sdfklsdklflsdkfjkl');
           newEl.setAttribute('visible', false);
           sharedEntities.appendChild(newEl);
 
-          gardenJsonData.forEach(element => {
-            let newEl = document.createElement('a-entity');
-            newEl.setAttribute('position', element['position']);
-            newEl.setAttribute('scale', element['scale']);
-            newEl.setAttribute('rotation', element['rotation']);
-            newEl.setAttribute('gltf-model', element['gltf-model']);
-            newEl.setAttribute('croquet', `name=${element['croquet-name']}`);
-            sharedEntities.appendChild(newEl);
-          });
+          if (model) {
+            this.gardenModel = document.createElement('a-entity');
+            this.gardenModel.setAttribute('gltf-model', model);
+            this.gardenModel.setAttribute('croquet', `name=${model}`);
+            sharedEntities.appendChild(this.gardenModel);  
+          } else {
+            // For backwards compatibility, its better to load in a single model with everything,
+            // but in case we don't specify a model load in the data individually
+            gardenJsonData.forEach(element => {
+              let newEl = document.createElement('a-entity');
+              newEl.setAttribute('position', element['position']);
+              newEl.setAttribute('scale', element['scale']);
+              newEl.setAttribute('rotation', element['rotation']);
+              newEl.setAttribute('gltf-model', element['gltf-model']);
+              newEl.setAttribute('croquet', `name=${element['croquet-name']}`);
+              sharedEntities.appendChild(newEl);
+            });
+          }
         }, 5000);
       };
     }

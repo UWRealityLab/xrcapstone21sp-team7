@@ -2,7 +2,7 @@ const CALIBRATION_TIME = 4000;
 const AUDIO_2_PLAY_TIME = 30000;
 const MEDITATION_TIME = 120000;
 
-const DELTA_SAMPLES_TO_AVG = 6;
+const DELTA_SAMPLES_TO_AVG = 8;
 // Any displacement below this amount (in meters) is not considered to be
 // the user breathing in or out
 const DISPLACEMENT_DEADZONE = 0.00001;
@@ -181,8 +181,7 @@ AFRAME.registerComponent('breath-capture', {
     this.calibrationObj.calibrationState = CALIBRATION_STATES.CALIBRATION_COMPLETE;
 
     // Initialize breath capture variables needed now that calibration is complete
-    let position = this.getControllerPosition();
-    this.previousPosition = position;
+    this.previousPosition = this.getControllerPosition();
 
     // Start breathing exercise audio 2 and timer that will expire when audio is done
     this.el.emit("change-breathing-exercise-2");
@@ -237,19 +236,6 @@ AFRAME.registerComponent('breath-capture', {
     }
   },
 
-  updateBreathingAverageTimes: function (newBreathClassification) {
-    if (this.breathClassification != newBreathClassification) {
-      if ((Date.now() - this.prevClassificationChangeTime) < FALSE_POSITIVE_TIME_DIFF) {
-        console.log('false positive');
-      } else {
-        this.breathOutEmitters[this.breathClassification].breathTime = Date.now() - this.prevClassificationChangeTime;
-        this.el.sceneEl.emit(this.breathOutEmitters[this.breathClassification].emitString, this.breathOutEmitters[this.breathClassification].breathTime);
-        this.prevClassificationChangeTime = Date.now();
-        this.breathClassification = newBreathClassification;
-      }
-    }
-  },
-
   classifyBreathing: function (deltaPositionAvg, position) {
     // Project positions onto the target vector and then find the current
     // controller displacement from breath in and out positions, if the displacement is
@@ -264,33 +250,57 @@ AFRAME.registerComponent('breath-capture', {
       this.calibrationObj.breathOutPosition.y - position.y,
       this.calibrationObj.breathOutPosition.z - position.z);
 
-    let breathInProjectedDisplacement = Math.abs(this.dot(this.targetVector, breathInDisplacementVector));
-    let breathOutProjectedDisplacement = Math.abs(this.dot(this.targetVector, breathOutDisplacementVector));
+    let breathInProjectedDisplacement = this.dot(this.targetVector, breathInDisplacementVector);
+    let breathOutProjectedDisplacement = this.dot(this.targetVector, breathOutDisplacementVector);
 
+    // this.log('breathInProjectedDisplacement ' + breathInProjectedDisplacement + ' breathOutProjectedDisplacement ' + breathOutProjectedDisplacement);
     // This is terrible but it works
-    if (Math.abs(breathInProjectedDisplacement) < HOLDING_BREATH_DISPLACEMENT_DEADZONE) {
+    if (breathInProjectedDisplacement < HOLDING_BREATH_DISPLACEMENT_DEADZONE) {
+      // You are at or past the calibrated breath in position
       this.updateBreathingAverageTimes(BREATH_STATES.HOLDING_BREATH_IN);
-      deltaPositionAvg = 0;
-    } else if (Math.abs(breathOutProjectedDisplacement) < HOLDING_BREATH_DISPLACEMENT_DEADZONE) {
-      this.updateBreathingAverageTimes(BREATH_STATES.HOLDING_BREATH_OUT);
-      deltaPositionAvg = 0;
+      // deltaPositionAvg = 0;
+    // } else if (breathOutProjectedDisplacement > HOLDING_BREATH_DISPLACEMENT_DEADZONE) {
+    //   // You are at or past the calibrated breath out position
+    //   this.updateBreathingAverageTimes(BREATH_STATES.HOLDING_BREATH_OUT);
+    //   // deltaPositionAvg = 0;
     } else if (Math.abs(deltaPositionAvg) > DISPLACEMENT_TOO_LARGE) {
+      // Too large displacement
+      this.log('error, too large displacement');
       this.updateBreathingAverageTimes(BREATH_STATES.ERROR);
       deltaPositionAvg = 0;
-    } else if (deltaPositionAvg > 0) {
-      if (this.breathClassification != BREATH_STATES.BREATHING_OUT ||
-        Math.abs(deltaPositionAvg) >= DISPLACEMENT_DEADZONE) {
-        this.updateBreathingAverageTimes(BREATH_STATES.BREATHING_IN);
-      }
     } else if (deltaPositionAvg < 0) {
-      if (this.breathClassification != BREATH_STATES.BREATHING_IN ||
-        Math.abs(deltaPositionAvg) >= DISPLACEMENT_DEADZONE) {
-        this.updateBreathingAverageTimes(BREATH_STATES.BREATHING_OUT);
+      if (this.breathClassification != BREATH_STATES.BREATHING_OUT) {
+        // you are breathing out
+        if (Math.abs(deltaPositionAvg) >= DISPLACEMENT_DEADZONE) {
+          this.updateBreathingAverageTimes(BREATH_STATES.BREATHING_OUT);
+        }
+      }
+    } else if (deltaPositionAvg > 0) {
+      // you are breathing in
+      if (this.breathClassification != BREATH_STATES.BREATHING_IN) {
+        if (Math.abs(deltaPositionAvg) >= DISPLACEMENT_DEADZONE) {
+          this.updateBreathingAverageTimes(BREATH_STATES.BREATHING_IN);
+        }
       }
     }
 
     this.el.setAttribute('breath-capture', 'deltaPositionAvg', deltaPositionAvg);
     // this.log(this.breathClassification, deltaPositionAvg, breathInProjectedDisplacement, breathOutProjectedDisplacement);
+  },
+
+  updateBreathingAverageTimes: function (newBreathClassification) {
+    if (this.breathClassification != newBreathClassification) {
+      if ((Date.now() - this.prevClassificationChangeTime) < FALSE_POSITIVE_TIME_DIFF) {
+        console.log('false positive');
+      } else {
+        this.breathOutEmitters[this.breathClassification].breathTime = Date.now() - this.prevClassificationChangeTime;
+        this.log(`emitting ${this.breathOutEmitters[this.breathClassification].emitString}, time = ${Date.now() - this.prevClassificationChangeTime}`);
+        this.el.sceneEl.emit(this.breathOutEmitters[this.breathClassification].emitString, this.breathOutEmitters[this.breathClassification].breathTime);
+        this.prevClassificationChangeTime = Date.now();
+        this.breathClassification = newBreathClassification;
+        this.breathClassificationCount = 0;
+      }
+    }
   },
 
   // Functions for starting/stopping breath classification
@@ -432,7 +442,7 @@ AFRAME.registerComponent('breath-capture', {
     if (!Q.LOGGING.BreathCapture) return;
 
     console.groupCollapsed(
-      `[UserView-${this.userViewId}${this.isMyUser ? " (YOU)" : ""}] ${string}`,
+      `[breath-capture] ${string}`,
       ...etc
     );
     console.trace(); // hidden in collapsed group
