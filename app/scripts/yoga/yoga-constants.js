@@ -48,7 +48,7 @@ const QUICK_YOGA_TIME_ARRAY = [
     20000,  // staff
     15000,  // leg stretches
     15000,  // other leg
-    15000,  // both legs
+    20000,  // both legs
     20000,  // lunge 1
     20000,  // lunge 2
     30000,  // garland

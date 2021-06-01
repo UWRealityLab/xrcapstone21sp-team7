@@ -22,12 +22,13 @@ AFRAME.registerComponent("yoga-mode", {
     this.el.sceneEl.addEventListener('yoga-control-next-triggered', this.yogaNext);
     this.el.sceneEl.addEventListener('replay-yoga', this.yogaReplay);
 
-    /* for debugging*/
+    /* for debugging
     document.querySelector("#yoga-instructor").setAttribute("visible", "true");
     let detail = {
-      script: "plank-yoga"
+      script: "quick-yoga"
     };
     this.el.sceneEl.emit("yogaStart", detail);
+    */
   },
 
   remove: function() {
