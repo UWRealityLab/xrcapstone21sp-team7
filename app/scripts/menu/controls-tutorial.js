@@ -114,7 +114,7 @@ AFRAME.registerComponent("controls-tutorial", {
     const navigateTheMenu = createText("Navigate the Menu", TITLE_TEXT_WIDTH);
     const menuGif = createGif("#menu-gif");
     const menuInstructions = createText(
-      "Explore meditation sounds,\nyoga routines, different music/sounds\n and more in the menu",
+      "Explore meditation sounds,\nyoga routines, different music/sounds\n and more in the menu.\nClick the A button (lower one on your right hand)\nto open and close the menu!",
       INFO_TEXT_WIDTH
     );
 
