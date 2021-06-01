@@ -304,11 +304,17 @@ AFRAME.registerComponent("menu-controls", {
    * Starts cloud meditation scene
    */
   onCloudMeditationButtonClicked: function () {
-    // TODO: maybe change scene a bit
     this.el.sceneEl.emit("cloud-meditation-start");
-
+    
     this.currScene = CLOUDS_SCENE;
     this.changeDisplayMenu();
+    
+    // Move user so they can see the clouds
+    const camRig = document.querySelector("#camRig");
+    if (camRig) {
+      camRig.setAttribute("position", "-15 0 -12");
+      camRig.setAttribute("rotation", "0 90 0");
+    }
   },
 
   /**
