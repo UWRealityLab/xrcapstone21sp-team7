@@ -325,6 +325,13 @@ AFRAME.registerComponent("menu-controls", {
 
     this.currScene = HOT_SPRINGS_SCENE;
     this.changeDisplayMenu();
+
+    // Move user so they can see the gates
+    const camRig = document.querySelector("#camRig");
+    if (camRig) {
+      camRig.setAttribute("position", "31.75 1.5 0");
+      camRig.setAttribute("rotation", "0 -90 0");
+    }
   },
 
   /**
