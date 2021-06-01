@@ -436,6 +436,7 @@ AFRAME.registerComponent("menu-controls", {
           state: "play"
         };
         this.el.emit("pause-breathing", detail);
+        this.breathingSong.components.sound.pauseSound();
       }
       this.scriptPlaying = false;
 
@@ -452,6 +453,7 @@ AFRAME.registerComponent("menu-controls", {
           state: "pause"
         };
         this.el.emit("pause-breathing", detail);
+        this.breathingSong.components.sound.playSound();
       }
       // Change to play icon
       this.scriptPlaying = true;
