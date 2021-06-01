@@ -53,6 +53,7 @@
     <script src="https://cdn.jsdelivr.net/npm/aframe-blink-controls/dist/aframe-blink-controls.min.js"></script>
 
     <!-- yoga -->
+    <script src="./scripts/yoga/yoga-constants.js"></script>
     <script src="./scripts/yoga/yoga-button.js"></script>
     <script src="./scripts/yoga/yoga-mode.js"></script>
 
@@ -227,10 +228,17 @@
             <div id="yoga-audio"></div>
             <script>
               var audio = document.querySelector("#yoga-audio");
-              // One less audio file since we add an extra pose to set the starting pose
-              for (let i = 0; i < SHORT_ANIM_ARRAY.length - 1; i++) {
-                audio.innerHTML += "<audio id='yoga-audio-short-" + i + 
-                "' src='../assets/img/yoga/yoga-short/short-audio/audio-" + i + ".mp3'></audio>";
+              for (let i = 0; i < MORNING_YOGA_TIME_ARRAY.length; i++) {
+                audio.innerHTML += "<audio id='morning-yoga-audio-" + i + 
+                "' src='../assets/yoga-scripts/morning-yoga/audio-" + i + ".mp3'></audio>";
+              }
+              for (let i = 0; i < QUICK_YOGA_TIME_ARRAY.length; i++) {
+                audio.innerHTML += "<audio id='quick-yoga-audio-" + i + 
+                "' src='../assets/yoga-scripts/quick-yoga/audio-" + i + ".mp3'></audio>";
+              }
+              for (let i = 0; i < PLANK_YOGA_TIME_ARRAY.length; i++) {
+                audio.innerHTML += "<audio id='plank-yoga-audio-" + i + 
+                "' src='../assets/yoga-scripts/plank-yoga/audio-" + i + ".mp3'></audio>";
               }
             </script>
 
@@ -243,6 +251,8 @@
             <!-- menu -->
             <img id="meditation-img" src="../assets/img/menu/meditation.png"/>
             <img id="yoga-img" src="../assets/img/menu/yoga.png"/>
+            <img id="yoga2-img" src="../assets/img/menu/yoga2.png"/>
+            <img id="yoga3-img" src="../assets/img/menu/yoga3.png"/>
             <img id="scenes-img" src="../assets/img/menu/scenes.png">
             <img id="music-img" src="../assets/img/menu/music.png">
             <img id="lighting-img" src="../assets/img/menu/lighting.png">
@@ -389,14 +399,14 @@
                 <!-- yoga submenu -->
                 <a-entity id="yoga-menu" class="submenu" visible="false">
                   <!-- samples -->
-                  <a-entity id="guided-yoga-button" position="-0.7 0 0.1" rotation="0 10 0"
-                    menu-button="title: Morning Yoga\nRoutine; info: Walk through a\nquick minute yoga\nroutine, perfect\nfor beginners; img: #yoga-img; width: 1.2">
+                  <a-entity id="morning-yoga-button" position="-0.7 0 0.1" rotation="0 10 0"
+                    menu-button="title: Morning Yoga\nRoutine; info: Walk through a\n5 minute yoga routine, \nperfect for beginners; img: #yoga-img; width: 1.2">
                   </a-entity>
-                  <a-entity id="yoga-button-2" position="0 0 0" rotation="0 0 0"
-                    menu-button="title: Inner Flow; info: Enjoy a relaxing\nroutine that'll put\nyou at ease; img: #yoga-img; width: 1.2">
+                  <a-entity id="quick-yoga-button" position="0 0 0" rotation="0 0 0"
+                    menu-button="title: Demo Yoga; info: Get right into it with\nour quick yoga routine; img: #yoga2-img; width: 1.2">
                   </a-entity>
-                  <a-entity id="yoga-button-3" position="0.7 0 0.1" rotation="0 -10 0"
-                    menu-button="title: Unwind; info: Excellent for athletes\nand those stressed out; img: #yoga-img; width: 1.2">
+                  <a-entity id="plank-yoga-button" position="0.7 0 0.1" rotation="0 -10 0"
+                    menu-button="title: Core Strengthener; info: Build your core with\nthis plank routine; img: #yoga3-img; width: 1.2">
                   </a-entity>
                 </a-entity> <!-- yoga submenu -->
                 <a-entity id="scenes-menu" class="submenu" visible="false">
@@ -520,8 +530,8 @@
         <!-- yoga stuff -->
         <a-box id="yoga-mat" height="0.1" width="1" depth="2" position="-27 0 0" rotation="0 90 0" color="#DB7093"></a-box>
 
-        <a-cylinder radius="0.5" height="0.1" position="-30.75 2.5 0" rotation="90 0 90" color="#455A64">
-          <a-entity id="yoga-timer" position="0 -0.075 0" scale="10 10 10" rotation="90 180 0" visible="false"
+        <a-cylinder radius="0.5" height="0.1" position="-30.85 2.5 0" rotation="0 0 85" color="#455A64">
+          <a-entity id="yoga-timer" position="0 -0.05 0" scale="10 10 10" rotation="90 180 90" visible="false"
           text="color: white; align: center; value: 0;"></a-entity>
         </a-cylinder> 
 
@@ -568,7 +578,7 @@
             <a-entity id="breathing-meditation-2" class="audio" sound="src: #breath-exercise-meditation-2; positional: false; volume: 0.1"></a-entity>
             <a-entity id="breathing-meditation-3" class="audio" sound="src: #breath-exercise-meditation-3; positional: false; volume: 0.1"></a-entity>
 
-            <a-entity id="yoga-script" class="audio" sound="src: #yoga-audio-short-0; autoplay: false; loop: false; positional: false; volume: 0.25"></a-entity>
+            <a-entity id="yoga-script" class="audio" sound="src: null; autoplay: false; loop: false; positional: false; volume: 0.25"></a-entity>
             <!--scripts-->
         </a-simple-sun-sky>
 
