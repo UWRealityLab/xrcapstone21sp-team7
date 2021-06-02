@@ -492,7 +492,8 @@ AFRAME.registerComponent("menu-controls", {
 
   onPlayPauseButton: function () {
     // Only do something if we have an active script
-    if (!this.currScript) {
+    // Currently do not have functionality for play/pause for yoga. For right now, if yoga routine is on, just return.
+    if (!this.currScript || this.yogaOn) {
       return;
     }
     const button = document.querySelector("#play-pause-button");
@@ -557,7 +558,8 @@ AFRAME.registerComponent("menu-controls", {
   },
 
   onReplayButton: function () {
-    if (this.currScript) {
+    // Currently do not have functionality for replay for yoga. For right now, if yoga routine is on, just return.
+    if (this.currScript && !this.yogaOn) {
       document.querySelector("#sky").components.sound.stopSound();
       this.currMeditationScript.components.sound.stopSound();
       this.currMeditationScript.components.sound.playSound();
