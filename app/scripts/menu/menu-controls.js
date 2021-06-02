@@ -87,7 +87,10 @@ AFRAME.registerComponent("menu-controls", {
 
     this.onCloudMeditationButtonClicked = this.onCloudMeditationButtonClicked.bind(this);
     this.onMountainMeditationButtonClicked = this.onMountainMeditationButtonClicked.bind(this);
-    this.onGuidedYogaButtonClicked = this.onGuidedYogaButtonClicked.bind(this);
+    this.onMorningYogaButtonClicked = this.onMorningYogaButtonClicked.bind(this);
+    this.onQuickYogaButtonClicked = this.onQuickYogaButtonClicked.bind(this);
+    this.onPlankYogaButtonClicked = this.onPlankYogaButtonClicked.bind(this);
+    this.onYogaEnded = this.onYogaEnded.bind(this);
 
     // Breathing Audio
     this.onBreathAudio1 = this.onBreathAudio1.bind(this);
@@ -110,7 +113,10 @@ AFRAME.registerComponent("menu-controls", {
     el.sceneEl.addEventListener("breathing-exercise-button-clicked", this.onBreathingExerciseButtonClicked);
     el.sceneEl.addEventListener("cloud-meditation-button-clicked", this.onCloudMeditationButtonClicked);
     el.sceneEl.addEventListener("mountain-meditation-button-clicked", this.onMountainMeditationButtonClicked);
-    el.sceneEl.addEventListener("guided-yoga-button-clicked", this.onGuidedYogaButtonClicked);
+    el.sceneEl.addEventListener("morning-yoga-button-clicked", this.onMorningYogaButtonClicked);
+    el.sceneEl.addEventListener("quick-yoga-button-clicked", this.onQuickYogaButtonClicked);
+    el.sceneEl.addEventListener("plank-yoga-button-clicked", this.onPlankYogaButtonClicked);
+    el.sceneEl.addEventListener("yoga-ended", this.onYogaEnded);
     el.sceneEl.addEventListener("volume-slider-changed", this.onVolumeChanged);
     el.sceneEl.addEventListener("audio-button-clicked", this.onAudioMenuClicked);
     el.sceneEl.addEventListener("audio-changed", this.audioChanged);
@@ -298,11 +304,17 @@ AFRAME.registerComponent("menu-controls", {
    * Starts cloud meditation scene
    */
   onCloudMeditationButtonClicked: function () {
-    // TODO: maybe change scene a bit
     this.el.sceneEl.emit("cloud-meditation-start");
-
+    
     this.currScene = CLOUDS_SCENE;
     this.changeDisplayMenu();
+    
+    // Move user so they can see the clouds
+    const camRig = document.querySelector("#camRig");
+    if (camRig) {
+      camRig.setAttribute("position", "-15 0 -12");
+      camRig.setAttribute("rotation", "0 90 0");
+    }
   },
 
   /**
@@ -313,6 +325,13 @@ AFRAME.registerComponent("menu-controls", {
 
     this.currScene = HOT_SPRINGS_SCENE;
     this.changeDisplayMenu();
+
+    // Move user so they can see the gates
+    const camRig = document.querySelector("#camRig");
+    if (camRig) {
+      camRig.setAttribute("position", "31.75 1.5 0");
+      camRig.setAttribute("rotation", "0 -90 0");
+    }
   },
 
   /**
@@ -322,9 +341,18 @@ AFRAME.registerComponent("menu-controls", {
     this.changeCurrentMenu("#yoga-menu");
   },
 
-  onGuidedYogaButtonClicked: function () {
+  onYogaEnded: function () {
+    this.yogaOn = false;
+  },
+
+  onMorningYogaButtonClicked: function () {
     this.yogaOn = true;
-    this.el.sceneEl.emit("yogaStart");
+    this.scriptPlaying = true;
+    let detail = {
+      script: "morning-yoga"
+    };
+    this.el.sceneEl.emit("yogaEnd");
+    this.el.sceneEl.emit("yogaStart", detail);
 
     // set yoga-script entity to the current script
     this.currMeditationScript = document.querySelector("#sky").querySelector("#yoga-script");
@@ -332,7 +360,45 @@ AFRAME.registerComponent("menu-controls", {
     // stop the background music
     document.querySelector("#sky").components.sound.stopSound();
 
-    this.currScript = "Guided Yoga";
+    this.currScript = "Morning Yoga";
+    this.changeDisplayMenu();
+  },
+
+  onQuickYogaButtonClicked: function () {
+    this.yogaOn = true;
+    this.scriptPlaying = true;
+    let detail = {
+      script: "quick-yoga"
+    };
+    this.el.sceneEl.emit("yogaEnd");
+    this.el.sceneEl.emit("yogaStart", detail);
+
+    // set yoga-script entity to the current script
+    this.currMeditationScript = document.querySelector("#sky").querySelector("#yoga-script");
+    
+    // stop the background music
+    document.querySelector("#sky").components.sound.stopSound();
+
+    this.currScript = "Quick Yoga";
+    this.changeDisplayMenu();
+  },
+
+  onPlankYogaButtonClicked: function () {
+    this.yogaOn = true;
+    this.scriptPlaying = true;
+    let detail = {
+      script: "plank-yoga"
+    };
+    this.el.sceneEl.emit("yogaEnd");
+    this.el.sceneEl.emit("yogaStart", detail);
+
+    // set yoga-script entity to the current script
+    this.currMeditationScript = document.querySelector("#sky").querySelector("#yoga-script");
+    
+    // stop the background music
+    document.querySelector("#sky").components.sound.stopSound();
+
+    this.currScript = "Planking Yoga";
     this.changeDisplayMenu();
   },
 
@@ -430,6 +496,12 @@ AFRAME.registerComponent("menu-controls", {
       return;
     }
     const button = document.querySelector("#play-pause-button");
+
+    /* For yoga
+    if (this.yogaOn) {
+      this.el.emit('yoga-control-pause-triggered');
+    }
+    */
     
     // Pause script
     if (this.scriptPlaying) {
@@ -439,6 +511,7 @@ AFRAME.registerComponent("menu-controls", {
           state: "play"
         };
         this.el.emit("pause-breathing", detail);
+        this.breathingSong.components.sound.pauseSound();
       }
       this.scriptPlaying = false;
 
@@ -455,6 +528,7 @@ AFRAME.registerComponent("menu-controls", {
           state: "pause"
         };
         this.el.emit("pause-breathing", detail);
+        this.breathingSong.components.sound.playSound();
       }
       // Change to play icon
       this.scriptPlaying = true;
@@ -469,6 +543,10 @@ AFRAME.registerComponent("menu-controls", {
       if (this.breathingOn) {
         console.log("WORKING");
         this.el.emit("breath-capture-end");
+        this.breathingOn = false;
+      } else if (this.yogaOn) {
+        this.el.emit("yogaEnd");
+        this.yogaOn = false;
       }
       
       this.onBackgroundMusic();
@@ -493,7 +571,7 @@ AFRAME.registerComponent("menu-controls", {
       // change play button to pause
       document.querySelector("#play-pause-button").setAttribute("material", "src", "#pause-icon");
       // do same for yoga
-      //this.el.emit("replay-yoga");
+      this.el.emit("replay-yoga");
     }
 
   },
@@ -530,7 +608,7 @@ AFRAME.registerComponent("menu-controls", {
 
     this.log("audio id: " + audio_id);
 
-    if (this.scriptPlaying == true) {
+    if (this.scriptPlaying) {
       sky.setAttribute("sound", 'autoplay', false);
     }
     sky.setAttribute("sound", 'src', `#${audio_id}`);
@@ -687,6 +765,9 @@ AFRAME.registerComponent("menu-controls", {
     el.sceneEl.removeEventListener("story-telling-button-clicked", this.onStoryMeditationClicked);
     el.sceneEl.removeEventListener("confidence-booster-button-clicked", this.onConfidenceBoosterClicked);
     el.sceneEl.removeEventListener("breathing-exercise-button-clicked", this.onBreathingExerciseButtonClicked);
+    el.sceneEl.removeEventListener("morning-yoga-button-clicked", this.onMorningYogaButtonClicked);
+    el.sceneEl.removeEventListener("quick-yoga-button-clicked", this.onQuickYogaButtonClicked);
+    el.sceneEl.removeEventListener("plank-yoga-button-clicked", this.onPlankYogaButtonClicked);
     el.sceneEl.removeEventListener("volume-slider-changed",this.onVolumeChanged);
     el.sceneEl.removeEventListener("audio-button-clicked", this.onAudioMenuClicked);
     el.sceneEl.removeEventListener("audio-changed", this.audioChanged);
@@ -700,6 +781,7 @@ AFRAME.registerComponent("menu-controls", {
     el.sceneEl.removeEventListener("breath-capture-end", this.onBreathAudio3);
     el.sceneEl.removeEventListener("Day-clicked", this.onDayLight);
     el.sceneEl.removeEventListener("Night-clicked", this.onNightLight);
+    el.sceneEl.removeEventListener("yoga-ended", this.onYogaEnded);
 
     document.querySelector("#sky").querySelector("#meditation-1").removeEventListener("sound-ended", this.onBackgroundMusic);
     document.querySelector("#sky").querySelector("#rain").removeEventListener("sound-ended", this.onBackgroundMusic);

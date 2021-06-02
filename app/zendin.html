@@ -53,6 +53,7 @@
     <script src="https://cdn.jsdelivr.net/npm/aframe-blink-controls/dist/aframe-blink-controls.min.js"></script>
 
     <!-- yoga -->
+    <script src="./scripts/yoga/yoga-constants.js"></script>
     <script src="./scripts/yoga/yoga-button.js"></script>
     <script src="./scripts/yoga/yoga-mode.js"></script>
 
@@ -94,13 +95,13 @@
             <a-asset-item id="mountains" src="../assets/glb/mountain-range.glb"></a-asset-item>
             <a-asset-item id="env_arrow" src="../assets/obj/env_arrow.obj"></a-asset-item>
 
-            <a-asset-item id="entry-building" src="../assets/glb/entry-building.glb"></a-asset-item>
-            <a-asset-item id="corner-wall-asset" src="../assets/glb/corner-wall.glb"></a-asset-item>
-            <a-asset-item id="single-wall-asset" src="../assets/glb/large-wall.glb"></a-asset-item>
+            <!-- <a-asset-item id="entry-building" src="../assets/glb/entry-building.glb"></a-asset-item> -->
+            <!-- <a-asset-item id="corner-wall-asset" src="../assets/glb/corner-wall.glb"></a-asset-item> -->
+            <!-- <a-asset-item id="single-wall-asset" src="../assets/glb/large-wall.glb"></a-asset-item> -->
+            <a-asset-item id="garden-walls" src="../assets/glb/garden-walls.glb"></a-asset-item>
             <a-asset-item id="wall-gate" src="../assets/glb/wall-gate.glb"></a-asset-item>
             <!-- cloud-meditation -->
             <a-asset-item id="walkable-cloud" src="../assets/glb/walkable-cloud.glb"></a-asset-item>
-            <a-asset-item id="cloud1" src="../assets/glb/cloud1.glb"></a-asset-item>
             
             <a-asset-item id="right-hand-low" src="../assets/glb/rightHandLow.glb"></a-asset-item>
             <a-asset-item id="left-hand-low" src="../assets/glb/leftHandLow.glb"></a-asset-item>
@@ -128,7 +129,7 @@
                     hand-controls="hand: left; handModelStyle: lowPoly"
                     raycaster="showLine: false; enabled: false; objects: .ground, .leftClickable, .menu-arrow;" 
                     garden-controls="menuId: menuItems; previewItemId: leftItem; gardenBaseId: garden; newAssetContainerId: new-asset-container"
-                    blink-controls="cameraRig: #camRig; teleportOrigin: #cam; collisionEntities: #floor, .walkable; curveShootingSpeed: 12"
+                    blink-controls="cameraRig: #camRig; teleportOrigin: #cam; collisionEntities: #floor, .walkable; curveShootingSpeed: 16"
                     breath-capture
                 ></a-entity>
                 <!-- raycaster needs to be enabled for yoga buttons to work -->
@@ -227,10 +228,17 @@
             <div id="yoga-audio"></div>
             <script>
               var audio = document.querySelector("#yoga-audio");
-              // One less audio file since we add an extra pose to set the starting pose
-              for (let i = 0; i < SHORT_ANIM_ARRAY.length - 1; i++) {
-                audio.innerHTML += "<audio id='yoga-audio-short-" + i + 
-                "' src='../assets/img/yoga/yoga-short/short-audio/audio-" + i + ".mp3'></audio>";
+              for (let i = 0; i < MORNING_YOGA_TIME_ARRAY.length; i++) {
+                audio.innerHTML += "<audio id='morning-yoga-audio-" + i + 
+                "' src='../assets/yoga-scripts/morning-yoga/audio-" + i + ".mp3'></audio>";
+              }
+              for (let i = 0; i < QUICK_YOGA_TIME_ARRAY.length; i++) {
+                audio.innerHTML += "<audio id='quick-yoga-audio-" + i + 
+                "' src='../assets/yoga-scripts/quick-yoga/audio-" + i + ".mp3'></audio>";
+              }
+              for (let i = 0; i < PLANK_YOGA_TIME_ARRAY.length; i++) {
+                audio.innerHTML += "<audio id='plank-yoga-audio-" + i + 
+                "' src='../assets/yoga-scripts/plank-yoga/audio-" + i + ".mp3'></audio>";
               }
             </script>
 
@@ -243,6 +251,8 @@
             <!-- menu -->
             <img id="meditation-img" src="../assets/img/menu/meditation.png"/>
             <img id="yoga-img" src="../assets/img/menu/yoga.png"/>
+            <img id="yoga2-img" src="../assets/img/menu/yoga2.png"/>
+            <img id="yoga3-img" src="../assets/img/menu/yoga3.png"/>
             <img id="scenes-img" src="../assets/img/menu/scenes.png">
             <img id="music-img" src="../assets/img/menu/music.png">
             <img id="lighting-img" src="../assets/img/menu/lighting.png">
@@ -389,14 +399,14 @@
                 <!-- yoga submenu -->
                 <a-entity id="yoga-menu" class="submenu" visible="false">
                   <!-- samples -->
-                  <a-entity id="guided-yoga-button" position="-0.7 0 0.1" rotation="0 10 0"
-                    menu-button="title: Morning Yoga\nRoutine; info: Walk through a\nquick minute yoga\nroutine, perfect\nfor beginners; img: #yoga-img; width: 1.2">
+                  <a-entity id="morning-yoga-button" position="-0.7 0 0.1" rotation="0 10 0"
+                    menu-button="title: Morning Yoga\nRoutine; info: Walk through a\n5 minute yoga routine, \nperfect for beginners; img: #yoga-img; width: 1.2">
                   </a-entity>
-                  <a-entity id="yoga-button-2" position="0 0 0" rotation="0 0 0"
-                    menu-button="title: Inner Flow; info: Enjoy a relaxing\nroutine that'll put\nyou at ease; img: #yoga-img; width: 1.2">
+                  <a-entity id="quick-yoga-button" position="0 0 0" rotation="0 0 0"
+                    menu-button="title: Demo Yoga; info: Get right into it with\nour quick yoga routine; img: #yoga2-img; width: 1.2">
                   </a-entity>
-                  <a-entity id="yoga-button-3" position="0.7 0 0.1" rotation="0 -10 0"
-                    menu-button="title: Unwind; info: Excellent for athletes\nand those stressed out; img: #yoga-img; width: 1.2">
+                  <a-entity id="plank-yoga-button" position="0.7 0 0.1" rotation="0 -10 0"
+                    menu-button="title: Core Strengthener; info: Build your core with\nthis plank routine; img: #yoga3-img; width: 1.2">
                   </a-entity>
                 </a-entity> <!-- yoga submenu -->
                 <a-entity id="scenes-menu" class="submenu" visible="false">
@@ -404,7 +414,7 @@
                     menu-button="title: Head in the Clouds; info: Climb up the clouds\nand relax; img: #clouds-img; width: 1.2">
                   </a-entity>
                   <a-entity id="mountain-meditation-button" position="0.4 0 0"
-                    menu-button="title: Hot Spring Serenity; info: Explore outside the\nwalls and enjoy the\ngentle sway of the water; img: #hot-springs-img; width: 1.2">
+                    menu-button="title: Hot Spring Serenity; info: Follow the gates and\nenjoy the sway\nof the water; img: #hot-springs-img; width: 1.2">
                   </a-entity>
                 </a-entity>
                 <!-- light submenu -->
@@ -518,14 +528,14 @@
         </a-assets>
       
         <!-- yoga stuff -->
-        <a-box id="yoga-mat" height="0.1" width="1" depth="2" position="-27 0 0" rotation="0 90 0" color="#DB7093"></a-box>
+        <a-box id="yoga-mat" height="0.1" width="1" depth="2" position="-32.68 0 0" rotation="0 90 0" color="#DB7093"></a-box>
 
-        <a-cylinder radius="0.5" height="0.1" position="-30.75 2.5 0" rotation="90 0 90" color="#455A64">
+        <a-cylinder radius="0.5" height="0.1" position="-37.2 2.5 0" rotation="0 0 85" color="#455A64">
           <a-entity id="yoga-timer" position="0 -0.075 0" scale="10 10 10" rotation="90 180 0" visible="false"
           text="color: white; align: center; value: 0;"></a-entity>
         </a-cylinder> 
 
-        <a-entity id="yoga-instructor" position="-30 0 0" rotation="0 90 0" scale="1 1 1" animate-yoga-poses></a-entity>
+        <a-entity id="yoga-instructor" position="-36.47 0 0" rotation="0 90 0" scale="1 1 1" animate-yoga-poses></a-entity>
 
 
         <!-- yoga menu, currently not working with animations
@@ -568,7 +578,7 @@
             <a-entity id="breathing-meditation-2" class="audio" sound="src: #breath-exercise-meditation-2; positional: false; volume: 0.1"></a-entity>
             <a-entity id="breathing-meditation-3" class="audio" sound="src: #breath-exercise-meditation-3; positional: false; volume: 0.1"></a-entity>
 
-            <a-entity id="yoga-script" class="audio" sound="src: #yoga-audio-short-0; autoplay: false; loop: false; positional: false; volume: 0.25"></a-entity>
+            <a-entity id="yoga-script" class="audio" sound="autoplay: false; loop: false; positional: false; volume: 0.25"></a-entity>
             <!--scripts-->
         </a-simple-sun-sky>
 
@@ -637,7 +647,7 @@
           <a-entity
             class="lantern"
             gltf-model="#lantern"
-            position="105.57 29.8 60"
+            position="109.7 29.77 48.54"
             shadow="receive: false; cast: true"
           >
             <a-entity class="flame" position="0 1 0" gltf-model="#flame-blue" 
@@ -646,7 +656,7 @@
           <a-entity
             class="lantern"
             gltf-model="#lantern"
-            position="110 29.8 54.01"
+            position="97.64 29.7 48.27"
             shadow="receive: false; cast: true"
           >
             <a-entity class="flame" position="0 1 0" gltf-model="#flame-blue" 
@@ -670,7 +680,7 @@
         </a-entity>
 
 
-        <a-entity id="camRig" position="25 2 0" rotation="0 90 0">
+        <a-entity id="camRig" position="31.75 2 0" rotation="0 90 0">
           <a-camera
             id="cam"
             wasd-controls-enabled="true"  
