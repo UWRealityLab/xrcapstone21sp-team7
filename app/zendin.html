@@ -126,7 +126,7 @@
                     class="left"
                     id="leftHand"
                     hand-controls="hand: left; handModelStyle: lowPoly"
-                    raycaster="showLine: false; enabled: false; objects: .ground, .previewFrame;" 
+                    raycaster="showLine: false; enabled: false; objects: .ground, .leftClickable, .menu-arrow;" 
                     garden-controls="menuId: menuItems; previewItemId: leftItem; gardenBaseId: garden; newAssetContainerId: new-asset-container"
                     blink-controls="cameraRig: #camRig; teleportOrigin: #cam; collisionEntities: #floor, .walkable; curveShootingSpeed: 12"
                     breath-capture
@@ -151,7 +151,7 @@
                         position="0 0.13 -0.17"
                     ></a-entity>
                     <a-entity
-                        select-bar="controllerID: rightHand"
+                        select-bar="controllerID: rightHand; selectorID: leftHand"
                         id="menuItems"
                         scale="0.7 0.7 0.7"
                         position="0 0.14 -0.03"

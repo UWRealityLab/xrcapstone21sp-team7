@@ -7,7 +7,8 @@ if (typeof AFRAME === 'undefined') {
 AFRAME.registerComponent('select-bar', {
     schema: {
         controls: { type: 'boolean', default: true },
-        controllerID: { type: 'string', default: 'leftController' }
+        controllerID: { type: 'string', default: 'rightController' },
+        selectorID: { type: 'string', default: 'leftController' }
     },
 
     log: function (string, ...etc) {
@@ -113,7 +114,7 @@ AFRAME.registerComponent('select-bar', {
             let originalOptionsArrayIndex = findWithAttr(optionsElementsArray, 'value', element.getAttribute('value'));
             selectOptionsHTML += `
   <a-entity id="${idPrefix}${originalOptionsArrayIndex}" visible="${visible}" class="preview${(selected) ? " selected" : ""}" optionid="${originalOptionsArrayIndex}" value="${element.getAttribute("value")}" optgroup="${selectedOptgroupEl.getAttribute("value")}" position="${startPositionX} ${offsetY} 0">
-    <a-box class="previewFrame" position="0 0 -0.003" scale="0.06 0.06 0.005" material="color: #747474"></a-box>
+    <a-box class="${(visible) ? "leftClickable " : ""}previewFrame" position="0 0 -0.003" scale="0.06 0.06 0.005" material="color: #747474"></a-box>
     <a-image class="previewImage" scale="0.05 0.05 0.05" src="${element.getAttribute("src")}" ></a-image>
     <a-entity class="objectName" position="0.065 -0.04 -0.003" scale="0.18 0.18 0.18" text="value: ${element.text}; color: yellow"></a-entity>
   </a-entity>`
@@ -155,10 +156,10 @@ AFRAME.registerComponent('select-bar', {
         selectRenderEl.id = this.idPrefix + "selectRender";
         selectRenderEl.innerHTML = `
   <a-box id="${this.idPrefix}Frame" scale="0.4 0.15 0.005" position="0 0 -0.0075"  material="opacity: 0.5; transparent: true; color: #000000"></a-box>
-  <a-entity id="${this.idPrefix}arrowRight" position="0.225 0 -0.005" rotation="90 180 -180" scale="0.004 0.002 0.004" obj-model="obj:#env_arrow" material="opacity: 0.5; transparent: true; color: #000000"></a-entity>
-  <a-entity id="${this.idPrefix}arrowLeft" position="-0.225 0 0" rotation="90 180 0" scale="0.004 0.002 0.004" obj-model="obj:#env_arrow" material="opacity:0.5; transparent:true; color:#000000"></a-entity>
-  <a-entity id="${this.idPrefix}arrowUp" position="0 0.1 0" rotation="0 270 90" scale="0.004 0.002 0.004" obj-model="obj:#env_arrow" material="opacity: 0.5; transparent: true; color: #000000"></a-entity>
-  <a-entity id="${this.idPrefix}arrowDown" position="0 -0.1 -0.005" rotation="0 270 -90" scale="0.004 0.002 0.004" obj-model="obj:#env_arrow" material="opacity: 0.5; transparent: true; color: #000000"></a-entity>`;
+  <a-entity id="${this.idPrefix}arrowRight" class="menu-arrow" position="0.225 0 -0.005" rotation="90 180 -180" scale="0.004 0.002 0.004" obj-model="obj:#env_arrow" material="opacity: 0.5; transparent: true; color: #000000"></a-entity>
+  <a-entity id="${this.idPrefix}arrowLeft" class="menu-arrow" position="-0.225 0 0" rotation="90 180 0" scale="0.004 0.002 0.004" obj-model="obj:#env_arrow" material="opacity:0.5; transparent:true; color:#000000"></a-entity>
+  <a-entity id="${this.idPrefix}arrowUp" class="menu-arrow" position="0 0.1 0" rotation="0 270 90" scale="0.004 0.002 0.004" obj-model="obj:#env_arrow" material="opacity: 0.5; transparent: true; color: #000000"></a-entity>
+  <a-entity id="${this.idPrefix}arrowDown" class="menu-arrow" position="0 -0.1 -0.005" rotation="0 270 -90" scale="0.004 0.002 0.004" obj-model="obj:#env_arrow" material="opacity: 0.5; transparent: true; color: #000000"></a-entity>`;
 
         this.el.appendChild(selectRenderEl);
 
@@ -188,6 +189,40 @@ AFRAME.registerComponent('select-bar', {
         // delete selectOptionsRowEl and optgroupLabelEl
         optgroupLabelEl.parentNode.removeChild(optgroupLabelEl);
         selectOptionsRowEl.parentNode.removeChild(selectOptionsRowEl);
+    },
+
+    onRaycasterIntersection: function (evt) {
+        console.log('f', evt.detail.els);
+        this.intersectedEl = evt.detail.els[0];
+    },
+
+    onRaycasterIntersectionCleared: function (evt) {
+        if (this.intersectedEl == evt.detail.clearedEls[0]) {
+            this.intersectedEl = null;
+        }
+    },
+
+    onSelectItem: function () {
+        if (!this.intersectedEl) {
+            return;
+        }
+
+        const className = this.intersectedEl.getAttribute('class');
+        if (!className || className != 'menu-arrow') return;
+
+        console.log('select arrow', className);
+        const id = this.intersectedEl.getAttribute('id');
+        if (id.includes('Left')) {
+            this.onOptionSwitch('previous');
+        } else if (id.includes('Right')) {
+            this.onOptionSwitch('next');
+        } else if (id.includes('Up')) {
+            this.onOptgroupPrevious();
+        } else if (id.includes('Down')) {
+            this.onOptgroupNext();
+        } else {
+            this.log('invalid id');
+        }
     },
 
     logThumbstick: function (evt) {
@@ -251,11 +286,18 @@ AFRAME.registerComponent('select-bar', {
         // If controls = true and a controllerID has been provided, then add controller event listeners
         if (this.data.controls && this.data.controllerID) {
             let controllerEl = document.getElementById(this.data.controllerID);
-            if (!controllerEl) return;
-            controllerEl.addEventListener('thumbstickmoved', this.logThumbstick.bind(this));
-            controllerEl.addEventListener('gripup', this.onMenuHidden.bind(this));
-            controllerEl.addEventListener('gripdown', this.onMenuVisible.bind(this));
-            controllerEl.addEventListener('ybuttondown', this.onMenuItemSelected.bind(this));
+            if (controllerEl) {
+                // controllerEl.addEventListener('thumbstickmoved', this.logThumbstick.bind(this));
+                controllerEl.addEventListener('gripup', this.onMenuHidden.bind(this));
+                controllerEl.addEventListener('gripdown', this.onMenuVisible.bind(this));
+                controllerEl.addEventListener('ybuttondown', this.onMenuItemSelected.bind(this));
+            }
+            let selectorEl = document.getElementById(this.data.selectorID)
+            if (selectorEl) {
+                selectorEl.addEventListener('raycaster-intersection-cleared', this.onRaycasterIntersectionCleared.bind(this));
+                selectorEl.addEventListener('raycaster-intersection', this.onRaycasterIntersection.bind(this));
+                selectorEl.addEventListener('triggerdown', this.onSelectItem.bind(this));
+            }
         }
     },
 
@@ -265,11 +307,18 @@ AFRAME.registerComponent('select-bar', {
     removeEventListeners: function () {
         if (this.data.controls && this.data.controllerID) {
             let controllerEl = document.getElementById(this.data.controllerID);
-            if (!controllerEl) return;
-            controllerEl.removeEventListener('thumbstickmoved', this.logThumbstick);
-            controllerEl.removeEventListener('gripup', this.onMenuHidden);
-            controllerEl.removeEventListener('gripdown', this.onMenuVisible);
-            controllerEl.removeEventListener('ybuttondown', this.onMenuItemSelected);
+            if (controllerEl) {
+                // controllerEl.removeEventListener('thumbstickmoved', this.logThumbstick);
+                controllerEl.removeEventListener('gripup', this.onMenuHidden);
+                controllerEl.removeEventListener('gripdown', this.onMenuVisible);
+                controllerEl.removeEventListener('ybuttondown', this.onMenuItemSelected);
+            }
+            let selectorEl = document.getElementById(this.data.selectorID);
+            if (selectorEl) {
+                controllerEl.removeEventListener('raycaster-intersection', this.onRaycasterIntersection.bind(this));
+                controllerEl.removeEventListener('raycaster-intersection-cleared', this.onRaycasterIntersectionCleared.bind(this));
+                controllerEl.removeEventListener('triggerdown', this.onSelectItem.bind(this));
+            }
         }
     },
 
@@ -423,6 +472,9 @@ AFRAME.registerComponent('select-bar', {
         newlyVisibleOptionEl.setAttribute('visible', 'true');
         newlyVisibleOptionEl.removeAttribute('animation');
         newlyVisibleOptionEl.setAttribute('animation', { property: 'scale', dur: 500, from: '0.5 0.5 0.5', to: '1.0 1.0 1.0' });
+        let el = newlyVisibleOptionEl.getElementsByClassName('previewFrame')[0];
+        el.setAttribute('class', 'previewFrame');
+        setTimeout(() => { el.setAttribute('class', 'leftClickable previewFrame'); }, 1000)
         newlyVisibleOptionEl.flushToDOM();
         this.log('made attribute visible: ', newlyVisibleOptionEl);
     },
