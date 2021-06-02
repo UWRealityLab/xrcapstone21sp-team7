@@ -145,7 +145,7 @@ AFRAME.registerComponent("yoga-mode", {
       this.timer = this.timeArray[this.loopCount];
       this.imageLoop();
     } else { // Clear when done looping
-      this.stopYogaMode();
+      this.el.emit("yogaEnd");
     }
   },
   
