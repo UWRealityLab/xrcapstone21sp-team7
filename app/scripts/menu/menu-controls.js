@@ -423,7 +423,7 @@ AFRAME.registerComponent("menu-controls", {
       }
       this.breathingOn = true;
 
-    }else if (startYoga) {
+    } else if (startYoga) {
       this.yogaOn = true;
       this.scriptPlaying = true;
       let detail = {
