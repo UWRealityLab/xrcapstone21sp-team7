@@ -334,6 +334,7 @@ AFRAME.registerComponent("base-garden", {
           this.gardenModel = document.createElement('a-entity');
           this.gardenModel.setAttribute('gltf-model', model);
           this.gardenModel.setAttribute('croquet', `name: ${model}`);
+          this.gardenModel.setAttribute('shadow', 'receive: false; cast: true');
           sharedEntities.appendChild(this.gardenModel);
         } else {
           // For backwards compatibility, its better to load in a single model with everything,
@@ -345,6 +346,7 @@ AFRAME.registerComponent("base-garden", {
             newEl.setAttribute('rotation', element['rotation']);
             newEl.setAttribute('gltf-model', element['gltf-model']);
             newEl.setAttribute('croquet', `name=${element['croquet-name']}`);
+            newEl.setAttribute('shadow', 'receive: false; cast: true');
             sharedEntities.appendChild(newEl);
           });
         }
