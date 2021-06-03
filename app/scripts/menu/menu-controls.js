@@ -13,8 +13,7 @@ AFRAME.registerComponent("menu-controls", {
     this.currentMenu;
 
     // will it cause audio overlapping problems if currMeditationScript is initialized here?
-    this.currMeditationScript = document.querySelector("#sky").querySelector("#meditation-1");
-    this.meditationSong = document.querySelector("#sky").querySelector("#meditation");
+    this.currMeditationScript;
     this.breathingSong = document.querySelector("#sky").querySelector("#breathing-meditation");
     // for now we need to initialize each script here, at least for meditation, so that we can trigger the background music to start playing again.
 
@@ -133,6 +132,7 @@ AFRAME.registerComponent("menu-controls", {
     document.querySelector("#sky").querySelector("#meditation-1").addEventListener("sound-ended", this.onBackgroundMusic);
     document.querySelector("#sky").querySelector("#rain").addEventListener("sound-ended", this.onBackgroundMusic);
     document.querySelector("#sky").querySelector("#confidence-meditation").addEventListener("sound-ended", this.onBackgroundMusic);
+    document.querySelector("#sky").querySelector("#breathing-meditation-3").addEventListener("sound-ended", this.onBackgroundMusic);
 
     // this is to konw when the yoga routine ends so that we can start playing background music again
     document.querySelector("#sky").addEventListener("yogaEnd", this.onBackgroundMusic);
@@ -261,7 +261,6 @@ AFRAME.registerComponent("menu-controls", {
    */
   onBreathingExerciseButtonClicked: function () {
     // Play the breathing exercise background song
-    this.breathingSong.components.sound.playSound();
     this.startScript("", "Breathing Exercise", true);
   },
 
@@ -288,19 +287,20 @@ AFRAME.registerComponent("menu-controls", {
   },
 
   onBreathAudio3: function () {
-    if (this.currMeditationScript) {
+    if (this.currScript) {
       this.currMeditationScript.components.sound.stopSound();
     }
 
-    if (this.breathSong) {
+    //if (this.breathSong) {
       this.breathingSong.components.sound.stopSound();
-    }
+    //}
 
     let sky = document.querySelector("#sky");
     let script = sky.querySelector("#breathing-meditation-3");
     script.components.sound.playSound();
     this.currMeditationScript = script;
-    this.scriptPlaying = false;
+    //this.scriptPlaying = false;
+    //this.breathingOn = false;
   },
 
   /**
@@ -349,60 +349,66 @@ AFRAME.registerComponent("menu-controls", {
   },
 
   onMorningYogaButtonClicked: function () {
-    this.yogaOn = true;
-    this.scriptPlaying = true;
-    let detail = {
-      script: "morning-yoga"
-    };
-    this.el.sceneEl.emit("yogaEnd");
-    this.el.sceneEl.emit("yogaStart", detail);
+    //if (!this.currScript && !this.currMeditationScript) {
+      this.yogaOn = true;
+      this.scriptPlaying = true;
+      let detail = {
+        script: "morning-yoga"
+      };
+      this.el.sceneEl.emit("yogaEnd");
+      this.el.sceneEl.emit("yogaStart", detail);
 
-    // set yoga-script entity to the current script
-    this.currMeditationScript = document.querySelector("#sky").querySelector("#yoga-script");
-    
-    // stop the background music
-    document.querySelector("#sky").components.sound.stopSound();
+      // set yoga-script entity to the current script
+      this.currMeditationScript = document.querySelector("#sky").querySelector("#yoga-script");
+      
+      // stop the background music
+      document.querySelector("#sky").components.sound.stopSound();
 
-    this.currScript = "Morning Yoga";
-    this.changeDisplayMenu();
+      this.currScript = "Morning Yoga";
+      this.changeDisplayMenu();
+    //}
   },
 
   onQuickYogaButtonClicked: function () {
-    this.yogaOn = true;
-    this.scriptPlaying = true;
-    let detail = {
-      script: "quick-yoga"
-    };
-    this.el.sceneEl.emit("yogaEnd");
-    this.el.sceneEl.emit("yogaStart", detail);
+    //if (!this.currScript && !this.currMeditationScript) {
+      this.yogaOn = true;
+      this.scriptPlaying = true;
+      let detail = {
+        script: "quick-yoga"
+      };
+      this.el.sceneEl.emit("yogaEnd");
+      this.el.sceneEl.emit("yogaStart", detail);
 
-    // set yoga-script entity to the current script
-    this.currMeditationScript = document.querySelector("#sky").querySelector("#yoga-script");
-    
-    // stop the background music
-    document.querySelector("#sky").components.sound.stopSound();
+      // set yoga-script entity to the current script
+      this.currMeditationScript = document.querySelector("#sky").querySelector("#yoga-script");
+      
+      // stop the background music
+      document.querySelector("#sky").components.sound.stopSound();
 
-    this.currScript = "Quick Yoga";
-    this.changeDisplayMenu();
+      this.currScript = "Quick Yoga";
+      this.changeDisplayMenu();
+    //}
   },
 
   onPlankYogaButtonClicked: function () {
-    this.yogaOn = true;
-    this.scriptPlaying = true;
-    let detail = {
-      script: "plank-yoga"
-    };
-    this.el.sceneEl.emit("yogaEnd");
-    this.el.sceneEl.emit("yogaStart", detail);
+    //if (!this.currScript && !this.currMeditationScript) {
+      this.yogaOn = true;
+      this.scriptPlaying = true;
+      let detail = {
+        script: "plank-yoga"
+      };
+      this.el.sceneEl.emit("yogaEnd");
+      this.el.sceneEl.emit("yogaStart", detail);
 
-    // set yoga-script entity to the current script
-    this.currMeditationScript = document.querySelector("#sky").querySelector("#yoga-script");
-    
-    // stop the background music
-    document.querySelector("#sky").components.sound.stopSound();
+      // set yoga-script entity to the current script
+      this.currMeditationScript = document.querySelector("#sky").querySelector("#yoga-script");
+      
+      // stop the background music
+      document.querySelector("#sky").components.sound.stopSound();
 
-    this.currScript = "Planking Yoga";
-    this.changeDisplayMenu();
+      this.currScript = "Planking Yoga";
+      this.changeDisplayMenu();
+    //}
   },
 
   onVolumeChanged: function (evt) {
@@ -442,25 +448,30 @@ AFRAME.registerComponent("menu-controls", {
    * @param {*} startBreathing whether or not starting breathing script
    */
   startScript: function(audioID, scriptName, startBreathing) {
+    // TODO: Incorporate yoga here, but for now, other scripts cannot start if yoga routine is going on
+    if (this.yogaOn) {
+      return;
+    }
     const sky = document.querySelector("#sky");
-    // stop background music
-    this.meditationSong.components.sound.stopSound();
     sky.components.sound.stopSound();
     // stop a script that is currently playing
-    if (this.currMeditationScript) {
+    if (this.currScript || this.currMeditationScript) {
       this.currMeditationScript.components.sound.stopSound();
     }
 
     // Start breathing song if needed
     if (startBreathing) {
       this.el.sceneEl.emit("breath-capture-start");
-      this.breathingSong.components.sound.playSound();
+      if (!this.breathingOn) {  // if breathing exercise is already on then no need for breathingSong to play again
+        this.breathingSong.components.sound.playSound();
+      }
       this.breathingOn = true;
     } else {
       // Turn off breathing
       if (this.breathingOn) {
         this.breathingOn = false;
         this.el.emit("breath-capture-end");
+        this.currMeditationScript.components.sound.stopSound();
         this.breathingSong.components.sound.stopSound();
       }
       const script = sky.querySelector(audioID);
@@ -545,18 +556,25 @@ AFRAME.registerComponent("menu-controls", {
     if (this.currScript) {
       this.currMeditationScript.components.sound.stopSound();
       if (this.breathingOn) {
-        console.log("WORKING");
         this.el.emit("breath-capture-end");
         this.breathingOn = false;
       } else if (this.yogaOn) {
         this.el.emit("yogaEnd");
         this.yogaOn = false;
+        this.currMeditationScript = null;
+        this.onBackgroundMusic();
+      } else {
+        this.onBackgroundMusic();
+        this.currMeditationScript = null;
       }
       
-      this.onBackgroundMusic();
+      //this.onBackgroundMusic();
 
       // change pause button to play
       document.querySelector("#play-pause-button").setAttribute("material", "src", "#play-icon");
+
+      // TODO: will this break anything?? -- yes with yoga and breathing exercise audio 3, they overlap if you start yoga while audio3 is going on
+      
     }
   },
 
@@ -609,7 +627,7 @@ AFRAME.registerComponent("menu-controls", {
 
     // Stop old audio (maybe not necessary but a-frame says that we are overloading the maximum number of audio files playing at once
     // so something tells me that just setting the attribute to the new sound isn't cleaning up the old sound properly)
-    sky.components.sound.stopSound();
+    //sky.components.sound.stopSound(); -- as of 6/3, no errors when this is commented out but will keep here just in case
 
     this.log("audio id: " + audio_id);
 
@@ -747,8 +765,12 @@ AFRAME.registerComponent("menu-controls", {
   },
 
   onBackgroundMusic: function () {
+    if (this.breathingOn) {
+      this.breathingOn = false;
+    }
     this.scriptPlaying = false;
     this.currScript = "";
+    this.currMeditationScript = null;
     this.changeDisplayMenu();
     document.querySelector("#sky").components.sound.playSound();
   },
