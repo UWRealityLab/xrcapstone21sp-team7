@@ -134,6 +134,9 @@ AFRAME.registerComponent("menu-controls", {
     document.querySelector("#sky").querySelector("#rain").addEventListener("sound-ended", this.onBackgroundMusic);
     document.querySelector("#sky").querySelector("#confidence-meditation").addEventListener("sound-ended", this.onBackgroundMusic);
 
+    // this is to konw when the yoga routine ends so that we can start playing background music again
+    document.querySelector("#sky").addEventListener("yogaEnd", this.onBackgroundMusic);
+
     // changing audio of breathing exercise
     el.sceneEl.addEventListener("breath-capture-start", this.onBreathAudio1);
     el.sceneEl.addEventListener("change-breathing-exercise-2", this.onBreathAudio2);
