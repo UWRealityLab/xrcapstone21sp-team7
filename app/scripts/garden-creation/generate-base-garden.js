@@ -328,42 +328,29 @@ AFRAME.registerComponent("base-garden", {
           return false;
         }
 
-        // Wait to let the croquet assets load
-        setTimeout(() => {
-          // Check if any hidden identifying asset is already in the garden, meaning a garden has already been loaded
-          if (sharedEntities.querySelectorAll('a-box').length > 0) {
-            console.log('garden already loaded');
-            return;
-          }
+        console.log('loading garden');
 
-          console.log('loading garden');
-
-          let newEl = document.createElement('a-box');
-          newEl.setAttribute('id', 'preloaded-garden');
-          newEl.setAttribute('croquet', 'name=preloaded-garden');
-          newEl.setAttribute('visible', false);
-          sharedEntities.appendChild(newEl);
-
-          if (model) {
-            this.gardenModel = document.createElement('a-entity');
-            this.gardenModel.setAttribute('gltf-model', model);
-            this.gardenModel.setAttribute('croquet', `name=${model}`);
-            sharedEntities.appendChild(this.gardenModel);  
-          } else {
-            // For backwards compatibility, its better to load in a single model with everything,
-            // but in case we don't specify a model load in the data individually
-            gardenJsonData.forEach(element => {
-              let newEl = document.createElement('a-entity');
-              newEl.setAttribute('position', element['position']);
-              newEl.setAttribute('scale', element['scale']);
-              newEl.setAttribute('rotation', element['rotation']);
-              newEl.setAttribute('gltf-model', element['gltf-model']);
-              newEl.setAttribute('croquet', `name=${element['croquet-name']}`);
-              sharedEntities.appendChild(newEl);
-            });
-          }
-        }, 5000);
-      };
+        if (model) {
+          this.gardenModel = document.createElement('a-entity');
+          this.gardenModel.setAttribute('gltf-model', model);
+          this.gardenModel.setAttribute('croquet', `name: ${model}`);
+          this.gardenModel.setAttribute('shadow', 'receive: false; cast: true');
+          sharedEntities.appendChild(this.gardenModel);
+        } else {
+          // For backwards compatibility, its better to load in a single model with everything,
+          // but in case we don't specify a model load in the data individually
+          gardenJsonData.forEach(element => {
+            let newEl = document.createElement('a-entity');
+            newEl.setAttribute('position', element['position']);
+            newEl.setAttribute('scale', element['scale']);
+            newEl.setAttribute('rotation', element['rotation']);
+            newEl.setAttribute('gltf-model', element['gltf-model']);
+            newEl.setAttribute('croquet', `name=${element['croquet-name']}`);
+            newEl.setAttribute('shadow', 'receive: false; cast: true');
+            sharedEntities.appendChild(newEl);
+          });
+        }
+      }
     }
   },
 
