@@ -239,21 +239,21 @@ AFRAME.registerComponent("menu-controls", {
    * Starts the guided meditation script
    */
   onGuidedMeditationClicked: function () {
-    this.startScript("#meditation-1", "Guided Meditation", false);
+    this.startScript("#meditation-1", "Guided Meditation", false, false);
   },
 
   /**
    * Starst the rain story meditation script
    */
   onStoryMeditationClicked: function () {
-    this.startScript("#rain", "Story Meditation", false);
+    this.startScript("#rain", "Story Meditation", false, false);
   },
 
   /**
    * Starts the confidence booster meditation script
    */
   onConfidenceBoosterClicked: function () {
-    this.startScript("#confidence-meditation", "Confidence Booster Meditation", false);
+    this.startScript("#confidence-meditation", "Confidence Booster Meditation", false, false);
   },
 
   /**
@@ -261,7 +261,7 @@ AFRAME.registerComponent("menu-controls", {
    */
   onBreathingExerciseButtonClicked: function () {
     // Play the breathing exercise background song
-    this.startScript("", "Breathing Exercise", true);
+    this.startScript("", "Breathing Exercise", true, false);
   },
 
   onBreathAudio1: function () {
@@ -349,66 +349,15 @@ AFRAME.registerComponent("menu-controls", {
   },
 
   onMorningYogaButtonClicked: function () {
-    //if (!this.currScript && !this.currMeditationScript) {
-      this.yogaOn = true;
-      this.scriptPlaying = true;
-      let detail = {
-        script: "morning-yoga"
-      };
-      this.el.sceneEl.emit("yogaEnd");
-      this.el.sceneEl.emit("yogaStart", detail);
-
-      // set yoga-script entity to the current script
-      this.currMeditationScript = document.querySelector("#sky").querySelector("#yoga-script");
-      
-      // stop the background music
-      document.querySelector("#sky").components.sound.stopSound();
-
-      this.currScript = "Morning Yoga";
-      this.changeDisplayMenu();
-    //}
+    this.startScript("morning-yoga", "Morning Yoga", false, true);
   },
 
   onQuickYogaButtonClicked: function () {
-    //if (!this.currScript && !this.currMeditationScript) {
-      this.yogaOn = true;
-      this.scriptPlaying = true;
-      let detail = {
-        script: "quick-yoga"
-      };
-      this.el.sceneEl.emit("yogaEnd");
-      this.el.sceneEl.emit("yogaStart", detail);
-
-      // set yoga-script entity to the current script
-      this.currMeditationScript = document.querySelector("#sky").querySelector("#yoga-script");
-      
-      // stop the background music
-      document.querySelector("#sky").components.sound.stopSound();
-
-      this.currScript = "Quick Yoga";
-      this.changeDisplayMenu();
-    //}
+    this.startScript("quick-yoga", "Quick Yoga", false, true);
   },
 
   onPlankYogaButtonClicked: function () {
-    //if (!this.currScript && !this.currMeditationScript) {
-      this.yogaOn = true;
-      this.scriptPlaying = true;
-      let detail = {
-        script: "plank-yoga"
-      };
-      this.el.sceneEl.emit("yogaEnd");
-      this.el.sceneEl.emit("yogaStart", detail);
-
-      // set yoga-script entity to the current script
-      this.currMeditationScript = document.querySelector("#sky").querySelector("#yoga-script");
-      
-      // stop the background music
-      document.querySelector("#sky").components.sound.stopSound();
-
-      this.currScript = "Planking Yoga";
-      this.changeDisplayMenu();
-    //}
+    this.startScript("plank-yoga", "Planking Yoga", false, true);
   },
 
   onVolumeChanged: function (evt) {
@@ -447,16 +396,23 @@ AFRAME.registerComponent("menu-controls", {
    * @param {*} scriptName name of script playing, used to display
    * @param {*} startBreathing whether or not starting breathing script
    */
-  startScript: function(audioID, scriptName, startBreathing) {
-    // TODO: Incorporate yoga here, but for now, other scripts cannot start if yoga routine is going on
-    if (this.yogaOn) {
-      return;
-    }
+  startScript: function(audioID, scriptName, startBreathing, startYoga) {
     const sky = document.querySelector("#sky");
     sky.components.sound.stopSound();
     // stop a script that is currently playing
     if (this.currScript || this.currMeditationScript) {
       this.currMeditationScript.components.sound.stopSound();
+    }
+
+    // if breathing or yoga are on, just turn it all off before starting new activity
+    if (this.breathingOn) {
+      this.breathingOn = false;
+      this.el.emit("breath-capture-end");
+      this.currMeditationScript.components.sound.stopSound();
+      this.breathingSong.components.sound.stopSound();
+    } else if (this.yogaOn) {
+      this.yogaOn = false;
+      this.el.sceneEl.emit("yogaEnd");
     }
 
     // Start breathing song if needed
@@ -466,14 +422,23 @@ AFRAME.registerComponent("menu-controls", {
         this.breathingSong.components.sound.playSound();
       }
       this.breathingOn = true;
+
+    } else if (startYoga) {
+      this.yogaOn = true;
+      this.scriptPlaying = true;
+      let detail = {
+        script: audioID
+      };
+      //this.el.sceneEl.emit("yogaEnd");
+      this.el.sceneEl.emit("yogaStart", detail);
+
+      // set yoga-script entity to the current script
+      this.currMeditationScript = document.querySelector("#sky").querySelector("#yoga-script");
+      
+      // stop the background music
+      document.querySelector("#sky").components.sound.stopSound();
+    
     } else {
-      // Turn off breathing
-      if (this.breathingOn) {
-        this.breathingOn = false;
-        this.el.emit("breath-capture-end");
-        this.currMeditationScript.components.sound.stopSound();
-        this.breathingSong.components.sound.stopSound();
-      }
       const script = sky.querySelector(audioID);
       script.components.sound.playSound();
       this.currMeditationScript = script;
@@ -624,10 +589,6 @@ AFRAME.registerComponent("menu-controls", {
   audioChanged: function (evt) {
     let audio_id = evt.detail.audio_id;
     let sky = document.querySelector("#sky");
-
-    // Stop old audio (maybe not necessary but a-frame says that we are overloading the maximum number of audio files playing at once
-    // so something tells me that just setting the attribute to the new sound isn't cleaning up the old sound properly)
-    //sky.components.sound.stopSound(); -- as of 6/3, no errors when this is commented out but will keep here just in case
 
     this.log("audio id: " + audio_id);
 
