@@ -94,18 +94,18 @@ AFRAME.registerComponent("controls-tutorial", {
     });
     welcome.setAttribute("rotation", "10 90 0");
 
-    // // Controls image and remove button
-    // const controls = document.createElement("a-image");
-    // controls.setAttribute("id", "controls-tutorial-img");
-    // controls.setAttribute("class", "control-container");
-    // controls.setAttribute("src", "#controls-img");
-    // controls.setAttribute("position", {
-    //   x: CENTER_X,
-    //   y: CENTER_Y,
-    //   z: -CENTER_Z,
-    // });
-    // controls.setAttribute("width", "4");
-    // controls.setAttribute("height", "1.75");
+    // Controls image and remove button
+    const controls = document.createElement("a-image");
+    controls.setAttribute("id", "controls-tutorial-img");
+    controls.setAttribute("class", "control-container");
+    controls.setAttribute("src", "#controls-img");
+    controls.setAttribute("position", {
+      x: CENTER_X + 1,
+      y: CENTER_Y,
+      z: -CENTER_Z - 4.5,
+    });
+    controls.setAttribute("width", "4");
+    controls.setAttribute("height", "1.75");
 
     /* Instructions */
 
@@ -182,7 +182,7 @@ AFRAME.registerComponent("controls-tutorial", {
     placementContainer.setAttribute("class", "control-container");
 
     this.building.appendChild(welcome);
-    // this.building.appendChild(controls);
+    this.building.appendChild(controls);
     this.building.appendChild(menuContainer);
     this.building.appendChild(locomotionContainer);
     this.building.appendChild(placementContainer);
