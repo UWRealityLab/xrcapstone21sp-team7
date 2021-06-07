@@ -1,13 +1,15 @@
 // Text Dimensions
-const HEADER_TEXT_WIDTH = 10;
-const TITLE_TEXT_WIDTH = 3.5;
-const INFO_TEXT_WIDTH = 1.5;
+const HEADER_TEXT_WIDTH = 7;
+const TITLE_TEXT_WIDTH = 4;
+const INFO_TEXT_WIDTH = 2;
 
 // Positions & Offsets
-const CENTER_X = 28.5;
+const CENTER_X = 27.5;
 const CENTER_Y = 3.4;
-const CENTER_Z = 3.7;
-const OFFSET_X = 1.7;
+const CENTER_Z = 0;
+const GAP = 1.9;
+
+const TEXT_COLOR = "#222222";
 
 AFRAME.registerComponent("controls-tutorial", {
   init: function () {
@@ -47,6 +49,7 @@ AFRAME.registerComponent("controls-tutorial", {
       const gif = document.createElement("a-entity");
       gif.setAttribute("class", "gif-panel");
       gif.setAttribute("geometry", "primitive: plane");
+      gif.setAttribute("scale", "1.2 1.2 1.2");
       gif.setAttribute("material", {
         shader: "gif",
         src: src,
@@ -63,11 +66,11 @@ AFRAME.registerComponent("controls-tutorial", {
         align: "center",
         shader: "msdf",
         width: size,
-        color: "#555555",
+        color: TEXT_COLOR,
       });
       textEl.setAttribute("position", {
         x: 0,
-        y: size === TITLE_TEXT_WIDTH ? 0.7 : -0.7, // probably enum instead
+        y: size === TITLE_TEXT_WIDTH ? 0.9 : -1, // probably enum instead
         z: 0,
       });
 
@@ -75,46 +78,50 @@ AFRAME.registerComponent("controls-tutorial", {
     };
     /* */
 
-    // // welcome message
-    // const welcome = document.createElement("a-entity");
-    // welcome.setAttribute("text", {
-    //   value: "Welcome to Zendin!",
-    //   align: "center",
-    //   width: HEADER_TEXT_WIDTH,
-    //   shader: "msdf",
-    //   color: "#555555",
-    // });
-    // welcome.setAttribute("position", "0 6 1.75");
-    // welcome.setAttribute("rotation", "20 180 0");
+    // welcome message
+    const welcome = document.createElement("a-entity");
+    welcome.setAttribute("text", {
+      value: "Welcome!\nStep into your garden whenever you're ready!",
+      align: "center",
+      width: HEADER_TEXT_WIDTH,
+      shader: "msdf",
+      color: TEXT_COLOR,
+    });
+    welcome.setAttribute("position", {
+      x: CENTER_X,
+      y: 5.5,
+      z: CENTER_Z
+    });
+    welcome.setAttribute("rotation", "10 90 0");
 
     // // Controls image and remove button
-    const controls = document.createElement("a-image");
-    controls.setAttribute("id", "controls-tutorial-img");
-    controls.setAttribute("class", "control-container");
-    controls.setAttribute("src", "#controls-img");
-    controls.setAttribute("position", {
-      x: CENTER_X,
-      y: CENTER_Y,
-      z: -CENTER_Z,
-    });
-    controls.setAttribute("width", "4");
-    controls.setAttribute("height", "1.75");
+    // const controls = document.createElement("a-image");
+    // controls.setAttribute("id", "controls-tutorial-img");
+    // controls.setAttribute("class", "control-container");
+    // controls.setAttribute("src", "#controls-img");
+    // controls.setAttribute("position", {
+    //   x: CENTER_X,
+    //   y: CENTER_Y,
+    //   z: -CENTER_Z,
+    // });
+    // controls.setAttribute("width", "4");
+    // controls.setAttribute("height", "1.75");
 
     /* Instructions */
 
     // menu
     const menuContainer = document.createElement("a-entity");
     menuContainer.setAttribute("position", {
-      x: CENTER_X - OFFSET_X,
+      x: CENTER_X,
       y: CENTER_Y,
-      z: CENTER_Z,
+      z: CENTER_Z - GAP,
     });
-    menuContainer.setAttribute("rotation", "0 -180 0");
+    menuContainer.setAttribute("rotation", "0 80 0");
 
     const navigateTheMenu = createText("Navigate the Menu", TITLE_TEXT_WIDTH);
     const menuGif = createGif("#menu-gif");
     const menuInstructions = createText(
-      "Explore meditation sounds,\nyoga routines, different music/sounds\n and more in the menu.\nClick the A button (lower one on your right hand)\nto open and close the menu!",
+      "Explore meditation sounds,\nyoga routines, different music/sounds\n and more in the menu.\nClick the A button (lower one on your right hand)\nto open, go back, and close the menu and\npress the right trigger to select!",
       INFO_TEXT_WIDTH
     );
 
@@ -126,16 +133,16 @@ AFRAME.registerComponent("controls-tutorial", {
     // locomotion
     const locomotionContainer = document.createElement("a-entity");
     locomotionContainer.setAttribute("position", {
-      x: CENTER_X + OFFSET_X,
+      x: CENTER_X,
       y: CENTER_Y,
-      z: CENTER_Z,
+      z: CENTER_Z + GAP,
     });
-    locomotionContainer.setAttribute("rotation", "0 -180 0");
+    locomotionContainer.setAttribute("rotation", "0 100 0");
 
     const gettingAround = createText("Getting Around", TITLE_TEXT_WIDTH);
     const teleportGif = createGif("#teleport-gif");
     const teleportInsructions = createText(
-      "Flick and hold the joystick\nforward to select your destination",
+      "Flick and hold the left joystick\nforward and release to\nget to your destination.\nTilt the joystick left or right to rotate.",
       INFO_TEXT_WIDTH
     );
 
@@ -147,11 +154,11 @@ AFRAME.registerComponent("controls-tutorial", {
     // asset placement
     const placementContainer = document.createElement("a-entity");
     placementContainer.setAttribute("position", {
-      x: CENTER_X,
+      x: CENTER_X - 0.2,
       y: CENTER_Y,
       z: CENTER_Z,
     });
-    placementContainer.setAttribute("rotation", "0 -180 0");
+    placementContainer.setAttribute("rotation", "0 90 0");
 
     const customizeYourGarden = createText(
       "Customize Your Garden",
@@ -159,7 +166,7 @@ AFRAME.registerComponent("controls-tutorial", {
     );
     const placementGif = createGif("#placement-gif");
     const placmentInstructions = createText(
-      "Hold the right grip to bring\nup the placement menu. Click and\nhold the left trigger to drag\nand drop the item",
+      "Hold the right grip to bring\nup the placement menu. Click and\nhold the left trigger to drag and\ndrop the item. Rotate the item using\nthe left grip and undo using\nthe X button (lower one on your left hand)",
       INFO_TEXT_WIDTH
     );
 
@@ -174,8 +181,8 @@ AFRAME.registerComponent("controls-tutorial", {
     locomotionContainer.setAttribute("class", "control-container");
     placementContainer.setAttribute("class", "control-container");
 
-    // this.building.appendChild(welcome);
-    this.building.appendChild(controls);
+    this.building.appendChild(welcome);
+    // this.building.appendChild(controls);
     this.building.appendChild(menuContainer);
     this.building.appendChild(locomotionContainer);
     this.building.appendChild(placementContainer);

@@ -2,6 +2,12 @@
 // const DY = 5;
 // const DZ = 14;
 
+const SCALE = {
+  x: 3,
+  y: 2.8,
+  z: 2
+};
+
 AFRAME.registerComponent("cloud-meditation", {
   init: function () {
     this.meditating = false;
@@ -30,7 +36,7 @@ AFRAME.registerComponent("cloud-meditation", {
     cloud.setAttribute("visible", false);
     cloud.setAttribute("class", "cloud walkable");
     cloud.setAttribute("gltf-model", "#walkable-cloud");
-    cloud.setAttribute("scale", "2 2.5 2");
+    cloud.setAttribute("scale", SCALE);
     cloud.setAttribute("position", position);
     this.el.appendChild(cloud);
   },
@@ -40,7 +46,7 @@ AFRAME.registerComponent("cloud-meditation", {
     this.el.querySelectorAll(".cloud")?.forEach((cloud) => {
       cloud.setAttribute(
         "animation",
-        "property: scale; to: 2.05 2.55 2.05; dur: 6000; loop: true; dir: alternate;"
+        `property: scale; to: ${SCALE.x + 0.05} ${SCALE.y} ${SCALE.z + 0.05}; dur: 6000; loop: true; dir: alternate;`
       );
       cloud.setAttribute("visible", true);
     });
