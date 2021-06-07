@@ -349,14 +349,35 @@ AFRAME.registerComponent("menu-controls", {
   },
 
   onMorningYogaButtonClicked: function () {
+    // Move user to yoga room
+    const camRig = document.querySelector("#camRig");
+    if (camRig) {
+      camRig.setAttribute("position", "-29 0 0");
+      camRig.setAttribute("rotation", "0 90 0");
+    }
+
     this.startScript("morning-yoga", "Morning Yoga", false, true);
   },
 
   onQuickYogaButtonClicked: function () {
+    // Move user to yoga room
+    const camRig = document.querySelector("#camRig");
+    if (camRig) {
+      camRig.setAttribute("position", "-29 0 0");
+      camRig.setAttribute("rotation", "0 90 0");
+    }
+
     this.startScript("quick-yoga", "Quick Yoga", false, true);
   },
 
   onPlankYogaButtonClicked: function () {
+    // Move user so they can see the clouds
+    const camRig = document.querySelector("#camRig");
+    if (camRig) {
+      camRig.setAttribute("position", "-29 0 0");
+      camRig.setAttribute("rotation", "0 90 0");
+    }
+
     this.startScript("plank-yoga", "Planking Yoga", false, true);
   },
 
@@ -465,8 +486,10 @@ AFRAME.registerComponent("menu-controls", {
 
     // Bring user back to the home building
     const camRig = document.querySelector("#camRig");
-    camRig.setAttribute("position", "0 0 0");
-    camRig.setAttribute('rotation', '0 -90 0');
+    if (camRig) {
+      camRig.setAttribute("position", "0 0 0");
+      camRig.setAttribute('rotation', '0 -90 0');
+    }
   },
 
   onPlayPauseButton: function () {
