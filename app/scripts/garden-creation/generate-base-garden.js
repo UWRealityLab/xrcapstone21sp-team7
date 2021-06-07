@@ -273,7 +273,7 @@ AFRAME.registerComponent("base-garden", {
     this.floorPlane = document.createElement("a-plane");
     // Hardcoded these for now since gates are one object
     this.floorPlane.setAttribute("width", 51);
-    this.floorPlane.setAttribute("height", 64);
+    this.floorPlane.setAttribute("height", 41);
     this.floorPlane.setAttribute("position", "0.87 0 0");
     this.floorPlane.setAttribute("rotation", "-90 0 0");
     this.floorPlane.setAttribute("id", "floor");

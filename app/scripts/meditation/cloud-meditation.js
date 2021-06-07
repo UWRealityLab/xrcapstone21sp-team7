@@ -14,7 +14,7 @@ AFRAME.registerComponent("cloud-meditation", {
     // Create Clouds
     let position = {
       x: -36,
-      y: 2,
+      y: 3.5,
       z: -16,
     };
 
@@ -30,7 +30,7 @@ AFRAME.registerComponent("cloud-meditation", {
     cloud.setAttribute("visible", false);
     cloud.setAttribute("class", "cloud walkable");
     cloud.setAttribute("gltf-model", "#walkable-cloud");
-    cloud.setAttribute("scale", "3 2.8 3");
+    cloud.setAttribute("scale", "2 2.5 2");
     cloud.setAttribute("position", position);
     this.el.appendChild(cloud);
   },
@@ -40,7 +40,7 @@ AFRAME.registerComponent("cloud-meditation", {
     this.el.querySelectorAll(".cloud")?.forEach((cloud) => {
       cloud.setAttribute(
         "animation",
-        "property: scale; to: 3.05 2.85 3.05; dur: 6000; loop: true; dir: alternate;"
+        "property: scale; to: 2.05 2.55 2.05; dur: 6000; loop: true; dir: alternate;"
       );
       cloud.setAttribute("visible", true);
     });
